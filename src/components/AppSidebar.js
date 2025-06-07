@@ -26,7 +26,7 @@ const AppSidebar = () => {
 
   return (
     <CSidebar
-      className="p-2"
+      className="p-2 sidebar_outer"
       colorScheme="dark"
       position="fixed"
       unfoldable={unfoldable}

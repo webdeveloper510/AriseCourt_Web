@@ -110,6 +110,22 @@ body {
   height: 50px;
   border-radius: 15px;
 }
+.sidebar_outer{
+  border-radius: 15px !important;
+}
+.add_new_butn{
+  background: #0860FB;
+  color: white;
+}
+
+
+
+
+
+
+
+
+
 @media screen and (max-width: 580px) {
   .registration_form{
     height: 100%;
