@@ -1,37 +1,48 @@
 import React from "react";
 import { CCardBody, CCol, CFormInput, CRow } from "@coreui/react";
 
-const CourtConfiguration = () => {
+const AddLocations = () => {
   return (
     <>
       <CCardBody className="p-2">
         <CRow>
           <CCol sm={5}>
-            <h4 id="traffic" className="card-title mb-0">
-            Court Configuration
+          <h4 id="traffic" className="card-title mb-0">
+            Locations
             </h4>
-            <div className="small text-body-secondary">Number of Courts Per Location
-            Fields</div>
+            <div className="small text-body-secondary">
+            List of Locations configured for Court Bookings.
+            </div>
           </CCol>
         </CRow>
 
         <div className="registration_form">
           <CRow className="d-flex justify-content-center">
             <CCol sm={12} md={6} lg={4}>
-              <label>Location Id</label>
+              <label>First Name</label>
               <CFormInput
                 type="text"
                 className="register_input"
-                placeholder="Enter Location Id"
+                placeholder="Enter First Name"
                 aria-label="default input example"
               />
             </CCol>
             <CCol sm={12} md={6} lg={4}>
-              <label>Court Number</label>
+              <label>Last Name</label>
               <CFormInput
                 type="text"
                 className="register_input"
-                placeholder="Enter Court Number"
+                placeholder="Enter Last Name"
+                aria-label="default input example"
+              />
+            </CCol>
+            <CCol sm={12} md={6} lg={4}>
+              <label>Email Address</label>
+
+              <CFormInput
+                type="text"
+                className="register_input"
+                placeholder="Enter Email Address"
                 aria-label="default input example"
               />
             </CCol>
@@ -46,26 +57,25 @@ const CourtConfiguration = () => {
               />
             </CCol>
             <CCol sm={12} md={6} lg={4}>
-              <label>Court Fee by Hour</label>
+              <label>Phone Number</label>
 
               <CFormInput
                 type="text"
                 className="register_input"
-                placeholder="Enter Court Fee by Hour"
+                placeholder="Enter Phone Number"
                 aria-label="default input example"
               />
             </CCol>
             <CCol sm={12} md={6} lg={4}>
-              <label>Taxes percentage</label>
+              <label>Password</label>
 
               <CFormInput
-                type="text"
+                type="password"
                 className="register_input"
-                placeholder="Enter Taxes percentage"
+                placeholder="Enter Password"
                 aria-label="default input example"
               />
             </CCol>
-           
           </CRow>
         </div>
       </CCardBody>
@@ -73,4 +83,4 @@ const CourtConfiguration = () => {
   );
 };
 
-export default CourtConfiguration;
+export default AddLocations;

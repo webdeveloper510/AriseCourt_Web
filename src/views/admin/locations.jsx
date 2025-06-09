@@ -15,15 +15,18 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from "@coreui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CDateRangePicker } from "@coreui/react-pro";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRangePicker } from "react-date-range";
 import CIcon, { CIconSvg } from "@coreui/icons-react";
-import { cilFilter, cilSearch } from "@coreui/icons";
+import { cilCloudUpload, cilDelete, cilFilter, cilPencil, cilSearch } from "@coreui/icons";
 
-const Dashboard = () => {
+const Locations = () => {
+
+    const navigate = useNavigate()
+
   const [selectionRange, setSelectionRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -49,6 +52,10 @@ const Dashboard = () => {
     }
   };
 
+  const handleEditLocation = () => {
+    navigate("/location-details")
+  }
+
   return (
     <>
       {/* <WidgetsDropdown className="mb-4" /> */}
@@ -57,14 +64,14 @@ const Dashboard = () => {
         <CRow>
           <CCol sm={12} md={6}>
             <h4 id="traffic" className="card-title mb-0">
-              Admin
+            Locations
             </h4>
             <div className="small text-body-secondary">
-              View all of your Admin information.
+            List of Locations configured for Court Bookings.
             </div>
           </CCol>
           <CCol sm={12} md={6} className="text-end">
-            <Link to="/admin-registraion">
+            <Link to="/add-locations">
               <CButton className="add_new_butn">+ Add New</CButton>
             </Link>
           </CCol>
@@ -118,94 +125,96 @@ const Dashboard = () => {
         <CTable className="mt-4" striped>
           <CTableHead>
             <CTableRow>
-              <CTableHeaderCell scope="col">Location Id</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Admin Id</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Password</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Type</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Access</CTableHeaderCell>
-              <CTableHeaderCell scope="col">E-mail Address</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Phone Number</CTableHeaderCell>
+              <CTableHeaderCell scope="col">ID KEY</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Logo & Name</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Email</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
               <CTableHeaderCell scope="col">City</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Country</CTableHeaderCell>
+              <CTableHeaderCell scope="col"># of Courts</CTableHeaderCell>
               <CTableHeaderCell scope="col">Action</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
             <CTableRow>
-              <CTableDataCell>#123</CTableDataCell>
-              <CTableDataCell>#123</CTableDataCell>
-              <CTableDataCell>8987464kkdfet</CTableDataCell>
-              <CTableDataCell>Admin</CTableDataCell>
-              <CTableDataCell>3</CTableDataCell>
+              <CTableDataCell>#3214</CTableDataCell>
+              <CTableDataCell>Beach Badminton Club</CTableDataCell>
               <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>01796-329869</CTableDataCell>
               <CTableDataCell>California</CTableDataCell>
-              <CTableDataCell>Edit</CTableDataCell>
+              <CTableDataCell>USA</CTableDataCell>
+              <CTableDataCell>19</CTableDataCell>
+              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
             </CTableRow>
             <CTableRow>
-              <CTableDataCell>#123</CTableDataCell>
-              <CTableDataCell>#123</CTableDataCell>
-              <CTableDataCell>8987464kkdfet</CTableDataCell>
-              <CTableDataCell>Admin</CTableDataCell>
-              <CTableDataCell>3</CTableDataCell>
+              <CTableDataCell>#3214</CTableDataCell>
+              <CTableDataCell>Beach Badminton Club</CTableDataCell>
               <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>01796-329869</CTableDataCell>
               <CTableDataCell>California</CTableDataCell>
-              <CTableDataCell>Edit</CTableDataCell>
+              <CTableDataCell>USA</CTableDataCell>
+              <CTableDataCell>19</CTableDataCell>
+              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
             </CTableRow>
             <CTableRow>
-              <CTableDataCell>#123</CTableDataCell>
-              <CTableDataCell>#123</CTableDataCell>
-              <CTableDataCell>8987464kkdfet</CTableDataCell>
-              <CTableDataCell>Admin</CTableDataCell>
-              <CTableDataCell>3</CTableDataCell>
+              <CTableDataCell>#3214</CTableDataCell>
+              <CTableDataCell>Beach Badminton Club</CTableDataCell>
               <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>01796-329869</CTableDataCell>
               <CTableDataCell>California</CTableDataCell>
-              <CTableDataCell>Edit</CTableDataCell>
+              <CTableDataCell>USA</CTableDataCell>
+              <CTableDataCell>19</CTableDataCell>
+              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
             </CTableRow>
             <CTableRow>
-              <CTableDataCell>#123</CTableDataCell>
-              <CTableDataCell>#123</CTableDataCell>
-              <CTableDataCell>8987464kkdfet</CTableDataCell>
-              <CTableDataCell>Admin</CTableDataCell>
-              <CTableDataCell>3</CTableDataCell>
+              <CTableDataCell>#3214</CTableDataCell>
+              <CTableDataCell>Beach Badminton Club</CTableDataCell>
               <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>01796-329869</CTableDataCell>
               <CTableDataCell>California</CTableDataCell>
-              <CTableDataCell>Edit</CTableDataCell>
+              <CTableDataCell>USA</CTableDataCell>
+              <CTableDataCell>19</CTableDataCell>
+              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
             </CTableRow>
             <CTableRow>
-              <CTableDataCell>#123</CTableDataCell>
-              <CTableDataCell>#123</CTableDataCell>
-              <CTableDataCell>8987464kkdfet</CTableDataCell>
-              <CTableDataCell>Admin</CTableDataCell>
-              <CTableDataCell>3</CTableDataCell>
+              <CTableDataCell>#3214</CTableDataCell>
+              <CTableDataCell>Beach Badminton Club</CTableDataCell>
               <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>01796-329869</CTableDataCell>
               <CTableDataCell>California</CTableDataCell>
-              <CTableDataCell>Edit</CTableDataCell>
+              <CTableDataCell>USA</CTableDataCell>
+              <CTableDataCell>19</CTableDataCell>
+              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
             </CTableRow>
             <CTableRow>
-              <CTableDataCell>#123</CTableDataCell>
-              <CTableDataCell>#123</CTableDataCell>
-              <CTableDataCell>8987464kkdfet</CTableDataCell>
-              <CTableDataCell>Admin</CTableDataCell>
-              <CTableDataCell>3</CTableDataCell>
+              <CTableDataCell>#3214</CTableDataCell>
+              <CTableDataCell>Beach Badminton Club</CTableDataCell>
               <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>01796-329869</CTableDataCell>
               <CTableDataCell>California</CTableDataCell>
-              <CTableDataCell>Edit</CTableDataCell>
+              <CTableDataCell>USA</CTableDataCell>
+              <CTableDataCell>19</CTableDataCell>
+              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
             </CTableRow>
             <CTableRow>
-              <CTableDataCell>#123</CTableDataCell>
-              <CTableDataCell>#123</CTableDataCell>
-              <CTableDataCell>8987464kkdfet</CTableDataCell>
-              <CTableDataCell>Admin</CTableDataCell>
-              <CTableDataCell>3</CTableDataCell>
+              <CTableDataCell>#3214</CTableDataCell>
+              <CTableDataCell>Beach Badminton Club</CTableDataCell>
               <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>01796-329869</CTableDataCell>
               <CTableDataCell>California</CTableDataCell>
-              <CTableDataCell>Edit</CTableDataCell>
+              <CTableDataCell>USA</CTableDataCell>
+              <CTableDataCell>19</CTableDataCell>
+              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+              <CTableDataCell>#3214</CTableDataCell>
+              <CTableDataCell>Beach Badminton Club</CTableDataCell>
+              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
+              <CTableDataCell>01796-329869</CTableDataCell>
+              <CTableDataCell>California</CTableDataCell>
+              <CTableDataCell>USA</CTableDataCell>
+              <CTableDataCell>19</CTableDataCell>
+              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
             </CTableRow>
           </CTableBody>
         </CTable>
@@ -215,4 +224,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Locations;

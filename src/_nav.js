@@ -8,9 +8,12 @@ import {
   cilDescription,
   cilDrop,
   cilExternalLink,
+  cilFile,
+  cilLocationPin,
   cilNotes,
   cilPencil,
   cilPuzzle,
+  cilReportSlash,
   cilSpeedometer,
   cilStar,
   cilUser,
@@ -30,9 +33,15 @@ const _nav = [
   // },
   {
     component: CNavItem,
-    name: 'Admin Registration',
-    to: '/admin-registraion',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    name: 'Locations',
+    to: '/locations',
+    icon: <CIcon icon={cilLocationPin} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Reporting',
+    to: '/reporting',
+    icon: <CIcon icon={cilFile} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
@@ -52,12 +61,7 @@ const _nav = [
     to: '/user-registraion',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
   },
-  // {
-  //   component: CNavItem,
-  //   name: 'Reporting',
-  //   to: '/user-registraion',
-  //   icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
-  // },
+ 
   // {
   //   component: CNavTitle,
   //   name: 'Components',

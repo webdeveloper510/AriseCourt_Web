@@ -1,5 +1,4 @@
-@use "@coreui/coreui/scss/coreui" as * with ( 
-  $enable-deprecation-messages: false,
+@use "@coreui/coreui/scss/coreui" as * with ($enable-deprecation-messages: false,
 );
 @use "@coreui/chartjs/scss/coreui-chartjs";
 @use "vendors/simplebar";
@@ -11,39 +10,47 @@ body {
   font-style: normal !important;
   color: #182B4D;
 }
-.card-title{
+
+.card-title {
   color: #182B4D !important;
   font-weight: 600 !important;
 }
+
 .wrapper {
   width: 100%;
   padding-inline: var(--cui-sidebar-occupy-start, 0) var(--cui-sidebar-occupy-end, 0);
   will-change: auto;
   @include transition(padding .15s);
 }
-.sidebar{
-   background: #0860FB !important;
+
+.sidebar {
+  background: #0860FB !important;
 }
+
 .sidebar-nav .nav-link.active {
   color: #0860FB;
   background: white;
 }
+
 .sidebar-nav .nav-link.active .nav-icon {
   color: #0860FB;
 }
+
 .sidebar-nav .nav-link:hover {
   color: #0860FB;
   background: white;
   text-decoration: none;
 }
+
 .sidebar-nav .nav-link:hover .nav-icon {
   color: #0860FB;
 }
+
 .sidebar-nav .nav-link .nav-icon {
   color: white;
 }
 
-.header > .container-fluid,
+.header>.container-fluid,
 .sidebar-header {
   min-height: calc(4rem + 1px); // stylelint-disable-line function-disallowed-list
 }
@@ -76,7 +83,7 @@ body {
   }
 }
 
-.header > .container-fluid + .container-fluid {
+.header>.container-fluid+.container-fluid {
   min-height: 3rem;
 }
 
@@ -95,7 +102,7 @@ body {
 }
 
 
-.registration_form{
+.registration_form {
   width: 100%;
   height: calc(100vh - 160px);
   display: flex;
@@ -106,28 +113,159 @@ body {
   padding: 0px 20px;
 }
 
-.register_input{
+.register_input {
   height: 50px;
   border-radius: 15px;
 }
-.sidebar_outer{
+
+.sidebar_outer {
   border-radius: 15px !important;
 }
-.add_new_butn{
+
+.add_new_butn {
   background: #0860FB;
   color: white;
 }
 
+.custom-date-range-picker .coreui-date-picker {
+  background-color: #f8f9fa;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
 
+.custom-date-range-picker .coreui-input {
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  padding: 8px 12px;
+}
 
+.custom-date-range-picker .coreui-input:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+}
 
+.rdrDefinedRangesWrapper {
+  display: none !important;
+}
 
+.date-picker-trigger {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  cursor: pointer;
+  display: inline-block;
+}
 
+.date-picker-trigger span {
+  font-size: 14px;
+  color: #333;
+}
 
+.input_icons {
+  background: white !important;
+  border-top-left-radius: 12px !important;
+  border-bottom-left-radius: 12px !important;
+}
+
+.seacrh_input {
+  border-left: none !important;
+  border-top-right-radius: 12px !important;
+  border-bottom-right-radius: 12px !important;
+}
+
+.seacrh_input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: 1px solid #ccc !important;
+}
+
+.search_input_group {
+  width: 60% !important;
+}
+
+.date_filter_section {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter_butn {
+  border: 1px solid #ccc !important;
+  border-radius: 12px;
+  height: 45px;
+  font-weight: 600;
+  color: #182B4D;
+}
+
+.location_Details_section {
+  border-radius: 115px;
+  padding: 15px;
+  width: 100%;
+  background: #182B4D;
+}
+
+.badminton_bg img {
+  width: 75%;
+  background: white;
+  border-radius: 100px;
+  padding: 10px;
+}
+
+.detail_title {
+  color: #0860fb;
+  margin-bottom: 0px;
+  font-size: 14px;
+}
+
+.details_description {
+  color: white;
+  margin-bottom: 0px;
+  font-size: 14px;
+}
+
+.address_Section {
+  background: #F2F2FA;
+  border: 1px solid #EBEBEB;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.modal_body_court {
+  padding: 0px !important;
+  background: #E7F0FF;
+  border-radius: 10px !important;
+}
+
+.add_court_modal {
+  border-radius: 10px;
+  border: 0.85px solid #D9D9D9;
+  background: #E7F0FF;
+  padding: 40px 20px;
+}
+
+.form-control:focus {
+  background-color: white !important;
+  border-color: 0.85px solid #D9D9D9 !important;
+  border: 0.85px solid #D9D9D9 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+.form-control::placeholder {
+  color: #B3B5B6 !important;
+}
+
+.add_court_label {
+  font-size: 14px;
+  color: #182b4d;
+}
 
 
 @media screen and (max-width: 580px) {
-  .registration_form{
+  .registration_form {
     height: 100%;
   }
 }
