@@ -16,9 +16,6 @@ import {
   CTableRow,
 } from "@coreui/react";
 import { Link, useNavigate } from "react-router-dom";
-import { CDateRangePicker } from "@coreui/react-pro";
-// import "react-date-range/dist/styles.css"; // main style file
-// import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRangePicker } from "react-date-range";
 import CIcon, { CIconSvg } from "@coreui/icons-react";
 import {
