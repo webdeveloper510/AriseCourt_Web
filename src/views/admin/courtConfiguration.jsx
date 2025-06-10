@@ -17,7 +17,7 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from "@coreui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DateRangePicker } from "react-date-range";
 import CIcon, { CIconSvg } from "@coreui/icons-react";
 import {
@@ -29,6 +29,7 @@ import {
 } from "@coreui/icons";
 
 const CourtConfiguration = () => {
+  const navigate = useNavigate();
   const [selectionRange, setSelectionRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -52,6 +53,10 @@ const CourtConfiguration = () => {
     if (selectionRange.startDate && selectionRange.endDate) {
       setIsCalendarOpen(!isCalendarOpen);
     }
+  };
+
+  const handleEditCourt = () => {
+    navigate(`/update-registraion/12`);
   };
 
   return (
@@ -150,8 +155,17 @@ const CourtConfiguration = () => {
               <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
+                <div className="d-flex">
+                  {" "}
+                  <CIcon
+                    icon={cilPencil}
+                    onClick={() => {
+                      handleEditCourt();
+                    }}
+                    className="mx-2 edit_icon"
+                  ></CIcon>
+                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+                </div>
               </CTableDataCell>
             </CTableRow>
             <CTableRow>
@@ -163,8 +177,17 @@ const CourtConfiguration = () => {
               <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
+                <div className="d-flex">
+                  {" "}
+                  <CIcon
+                    icon={cilPencil}
+                    onClick={() => {
+                      handleEditCourt();
+                    }}
+                    className="mx-2 edit_icon"
+                  ></CIcon>
+                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+                </div>
               </CTableDataCell>
             </CTableRow>
             <CTableRow>
@@ -176,8 +199,17 @@ const CourtConfiguration = () => {
               <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
+                <div className="d-flex">
+                  {" "}
+                  <CIcon
+                    icon={cilPencil}
+                    onClick={() => {
+                      handleEditCourt();
+                    }}
+                    className="mx-2 edit_icon"
+                  ></CIcon>
+                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+                </div>
               </CTableDataCell>
             </CTableRow>
             <CTableRow>
@@ -189,8 +221,17 @@ const CourtConfiguration = () => {
               <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
+                <div className="d-flex">
+                  {" "}
+                  <CIcon
+                    icon={cilPencil}
+                    onClick={() => {
+                      handleEditCourt();
+                    }}
+                    className="mx-2 edit_icon"
+                  ></CIcon>
+                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+                </div>
               </CTableDataCell>
             </CTableRow>
             <CTableRow>
@@ -202,8 +243,17 @@ const CourtConfiguration = () => {
               <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
+                <div className="d-flex">
+                  {" "}
+                  <CIcon
+                    icon={cilPencil}
+                    onClick={() => {
+                      handleEditCourt();
+                    }}
+                    className="mx-2 edit_icon"
+                  ></CIcon>
+                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+                </div>
               </CTableDataCell>
             </CTableRow>
             <CTableRow>
@@ -215,8 +265,17 @@ const CourtConfiguration = () => {
               <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
+                <div className="d-flex">
+                  {" "}
+                  <CIcon
+                    icon={cilPencil}
+                    onClick={() => {
+                      handleEditCourt();
+                    }}
+                    className="mx-2 edit_icon"
+                  ></CIcon>
+                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+                </div>
               </CTableDataCell>
             </CTableRow>
             <CTableRow>
@@ -228,8 +287,17 @@ const CourtConfiguration = () => {
               <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
+                <div className="d-flex">
+                  {" "}
+                  <CIcon
+                    icon={cilPencil}
+                    onClick={() => {
+                      handleEditCourt();
+                    }}
+                    className="mx-2 edit_icon"
+                  ></CIcon>
+                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+                </div>
               </CTableDataCell>
             </CTableRow>
             <CTableRow>
@@ -241,8 +309,17 @@ const CourtConfiguration = () => {
               <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
+                <div className="d-flex">
+                  {" "}
+                  <CIcon
+                    icon={cilPencil}
+                    onClick={() => {
+                      handleEditCourt();
+                    }}
+                    className="mx-2 edit_icon"
+                  ></CIcon>
+                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+                </div>
               </CTableDataCell>
             </CTableRow>
           </CTableBody>
