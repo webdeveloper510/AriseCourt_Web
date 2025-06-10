@@ -66,21 +66,22 @@ const Login = () => {
       setLoading(false);
       return;
     }
+    navigate("/dashboard");
 
-    loginUser(formData)
-      .then((res) => {
-        console.log("loginUser", res);
-        setLoading(false);
-        if (res.status === 200) {
-          navigate("/dashboard");
-          toast.success(res?.data?.msg, { theme: "colored" });
-          localStorage.setItem("user_access_valid_token", res?.data?.token?.access);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
+    // loginUser(formData)
+    //   .then((res) => {
+    //     console.log("loginUser", res);
+    //     setLoading(false);
+    //     if (res.status === 200) {
+    //       navigate("/dashboard");
+    //       toast.success(res?.data?.msg, { theme: "colored" });
+    //       localStorage.setItem("user_access_valid_token", res?.data?.token?.access);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     setLoading(false);
+    //   });
   };
 
   const handleKeyDown = (e) => {
