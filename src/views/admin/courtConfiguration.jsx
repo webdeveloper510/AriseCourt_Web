@@ -152,7 +152,7 @@ const CourtConfiguration = () => {
               <CTableDataCell>August 29, 2026</CTableDataCell>
               <CTableDataCell>08</CTableDataCell>
               <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
+              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
                 <div className="d-flex">
@@ -174,7 +174,7 @@ const CourtConfiguration = () => {
               <CTableDataCell>August 29, 2026</CTableDataCell>
               <CTableDataCell>08</CTableDataCell>
               <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
+              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
                 <div className="d-flex">
@@ -196,7 +196,7 @@ const CourtConfiguration = () => {
               <CTableDataCell>August 29, 2026</CTableDataCell>
               <CTableDataCell>08</CTableDataCell>
               <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
+              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
                 <div className="d-flex">
@@ -218,7 +218,7 @@ const CourtConfiguration = () => {
               <CTableDataCell>August 29, 2026</CTableDataCell>
               <CTableDataCell>08</CTableDataCell>
               <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
+              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
                 <div className="d-flex">
@@ -240,7 +240,7 @@ const CourtConfiguration = () => {
               <CTableDataCell>August 29, 2026</CTableDataCell>
               <CTableDataCell>08</CTableDataCell>
               <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
+              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
                 <div className="d-flex">
@@ -262,7 +262,7 @@ const CourtConfiguration = () => {
               <CTableDataCell>August 29, 2026</CTableDataCell>
               <CTableDataCell>08</CTableDataCell>
               <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
+              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
                 <div className="d-flex">
@@ -284,7 +284,7 @@ const CourtConfiguration = () => {
               <CTableDataCell>August 29, 2026</CTableDataCell>
               <CTableDataCell>08</CTableDataCell>
               <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
+              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
                 <div className="d-flex">
@@ -306,7 +306,7 @@ const CourtConfiguration = () => {
               <CTableDataCell>August 29, 2026</CTableDataCell>
               <CTableDataCell>08</CTableDataCell>
               <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221email.@gmail.com</CTableDataCell>
+              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>$57.00</CTableDataCell>
               <CTableDataCell>
                 <div className="d-flex">
