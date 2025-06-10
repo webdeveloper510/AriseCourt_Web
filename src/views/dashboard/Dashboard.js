@@ -15,15 +15,16 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from "@coreui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CDateRangePicker } from "@coreui/react-pro";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRangePicker } from "react-date-range";
 import CIcon, { CIconSvg } from "@coreui/icons-react";
-import { cilFilter, cilSearch } from "@coreui/icons";
+import { cilDelete, cilFilter, cilPencil, cilSearch } from "@coreui/icons";
 
 const Dashboard = () => {
+  const navigate = useNavigate()
   const [selectionRange, setSelectionRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -49,6 +50,10 @@ const Dashboard = () => {
     }
   };
 
+  const handleEditAdmin = () => {
+    navigate(`/update-registraion/12`);
+  };
+
   return (
     <>
       {/* <WidgetsDropdown className="mb-4" /> */}
@@ -69,8 +74,13 @@ const Dashboard = () => {
             </Link>
           </CCol>
           <CCol sm={12} md={6} className="mt-3">
-            <CInputGroup className="search_input_group" style={{height:"45px"}}>
-              <CInputGroupText className="input_icons"><CIcon icon={cilSearch}></CIcon></CInputGroupText>
+            <CInputGroup
+              className="search_input_group"
+              style={{ height: "45px" }}
+            >
+              <CInputGroupText className="input_icons">
+                <CIcon icon={cilSearch}></CIcon>
+              </CInputGroupText>
               <CFormInput
                 placeholder="Search..."
                 aria-label="Username"
@@ -83,34 +93,36 @@ const Dashboard = () => {
           <CCol sm={6} className="mt-3">
             <div className="text-end date_filter_section">
               {/* Calendar area */}
-             <div>
-             <div
-                onClick={handleCalendarClick}
-                style={{
-                  padding: "10px",
-                  border: "1px solid #ddd",
-                  display: "inline-block",
-                  cursor: "pointer",
-                  borderRadius:"12px"
-                }}
-              >
-                <span>{`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}</span>
+              <div>
+                <div
+                  onClick={handleCalendarClick}
+                  style={{
+                    padding: "10px",
+                    border: "1px solid #ddd",
+                    display: "inline-block",
+                    cursor: "pointer",
+                    borderRadius: "12px",
+                  }}
+                >
+                  <span>{`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}</span>
+                </div>
+
+                {/* Display DateRangePicker when calendar is open */}
+                {isCalendarOpen && (
+                  <div style={{ position: "absolute", zIndex: 10 }}>
+                    <DateRangePicker
+                      ranges={[selectionRange]}
+                      onChange={handleSelect}
+                    />
+                  </div>
+                )}
               </div>
 
-              {/* Display DateRangePicker when calendar is open */}
-              {isCalendarOpen && (
-                <div style={{ position: "absolute", zIndex: 10 }}>
-                  <DateRangePicker
-                    ranges={[selectionRange]}
-                    onChange={handleSelect}
-                  />
-                </div>
-              )}
-             </div>
-
-             <div>
-              <CButton className="filter_butn"><CIcon icon={cilFilter}></CIcon> FILTERS</CButton>
-             </div>
+              <div>
+                <CButton className="filter_butn">
+                  <CIcon icon={cilFilter}></CIcon> FILTERS
+                </CButton>
+              </div>
             </div>
           </CCol>
         </CRow>
@@ -139,7 +151,16 @@ const Dashboard = () => {
               <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>01796-329869</CTableDataCell>
               <CTableDataCell>California</CTableDataCell>
-              <CTableDataCell>Edit</CTableDataCell>
+              <CTableDataCell>
+                <CIcon
+                  icon={cilPencil}
+                  onClick={() => {
+                    handleEditAdmin();
+                  }}
+                  className="mx-2 edit_icon"
+                ></CIcon>
+                <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell>#123</CTableDataCell>
@@ -150,7 +171,16 @@ const Dashboard = () => {
               <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>01796-329869</CTableDataCell>
               <CTableDataCell>California</CTableDataCell>
-              <CTableDataCell>Edit</CTableDataCell>
+              <CTableDataCell>
+                <CIcon
+                  icon={cilPencil}
+                  onClick={() => {
+                    handleEditAdmin();
+                  }}
+                  className="mx-2 edit_icon"
+                ></CIcon>
+                <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell>#123</CTableDataCell>
@@ -161,7 +191,16 @@ const Dashboard = () => {
               <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>01796-329869</CTableDataCell>
               <CTableDataCell>California</CTableDataCell>
-              <CTableDataCell>Edit</CTableDataCell>
+              <CTableDataCell>
+                <CIcon
+                  icon={cilPencil}
+                  onClick={() => {
+                    handleEditAdmin();
+                  }}
+                  className="mx-2 edit_icon"
+                ></CIcon>
+                <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell>#123</CTableDataCell>
@@ -172,7 +211,16 @@ const Dashboard = () => {
               <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>01796-329869</CTableDataCell>
               <CTableDataCell>California</CTableDataCell>
-              <CTableDataCell>Edit</CTableDataCell>
+              <CTableDataCell>
+                <CIcon
+                  icon={cilPencil}
+                  onClick={() => {
+                    handleEditAdmin();
+                  }}
+                  className="mx-2 edit_icon"
+                ></CIcon>
+                <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell>#123</CTableDataCell>
@@ -183,7 +231,16 @@ const Dashboard = () => {
               <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>01796-329869</CTableDataCell>
               <CTableDataCell>California</CTableDataCell>
-              <CTableDataCell>Edit</CTableDataCell>
+              <CTableDataCell>
+                <CIcon
+                  icon={cilPencil}
+                  onClick={() => {
+                    handleEditAdmin();
+                  }}
+                  className="mx-2 edit_icon"
+                ></CIcon>
+                <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell>#123</CTableDataCell>
@@ -194,7 +251,16 @@ const Dashboard = () => {
               <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>01796-329869</CTableDataCell>
               <CTableDataCell>California</CTableDataCell>
-              <CTableDataCell>Edit</CTableDataCell>
+              <CTableDataCell>
+                <CIcon
+                  icon={cilPencil}
+                  onClick={() => {
+                    handleEditAdmin();
+                  }}
+                  className="mx-2 edit_icon"
+                ></CIcon>
+                <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell>#123</CTableDataCell>
@@ -205,7 +271,16 @@ const Dashboard = () => {
               <CTableDataCell>dummy221@gmail.com</CTableDataCell>
               <CTableDataCell>01796-329869</CTableDataCell>
               <CTableDataCell>California</CTableDataCell>
-              <CTableDataCell>Edit</CTableDataCell>
+              <CTableDataCell>
+                <CIcon
+                  icon={cilPencil}
+                  onClick={() => {
+                    handleEditAdmin();
+                  }}
+                  className="mx-2 edit_icon"
+                ></CIcon>
+                <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+              </CTableDataCell>
             </CTableRow>
           </CTableBody>
         </CTable>

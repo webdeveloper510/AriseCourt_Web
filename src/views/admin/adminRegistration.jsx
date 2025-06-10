@@ -1,7 +1,9 @@
 import React from "react";
 import { CButton, CCardBody, CCol, CFormInput, CRow } from "@coreui/react";
+import { useParams } from "react-router-dom";
 
 const AdminRegistration = () => {
+  const {id} = useParams();
   return (
     <>
       <CCardBody className="p-2">
@@ -10,7 +12,7 @@ const AdminRegistration = () => {
             <h4 id="traffic" className="card-title mb-0">
               Admin Registration
             </h4>
-            <div className="small text-body-secondary">Add new Users</div>
+            <div className="small text-body-secondary">{id ? "Edit" : "Add"} new Users</div>
           </CCol>
         </CRow>
 
