@@ -10,7 +10,7 @@ const UserRegistration = () => {
             <h4 id="traffic" className="card-title mb-0">
               User Registration
             </h4>
-            <div className="small text-body-secondary">User Registered for each Location</div>
+            <div className="card_description">User Registered for each Location</div>
           </CCol>
         </CRow>
 

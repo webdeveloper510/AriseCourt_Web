@@ -21,7 +21,7 @@ import CIcon, { CIconSvg } from "@coreui/icons-react";
 import { cilDelete, cilFilter, cilPencil, cilSearch } from "@coreui/icons";
 
 const Dashboard = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [selectionRange, setSelectionRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -61,8 +61,8 @@ const Dashboard = () => {
             <h4 id="traffic" className="card-title mb-0">
               Admin
             </h4>
-            <div className="small text-body-secondary">
-              View all of your Admin information.
+            <div className="card_description">
+              View All Of Your Admin Information.
             </div>
           </CCol>
           <CCol sm={12} md={6} className="text-end">
@@ -124,7 +124,7 @@ const Dashboard = () => {
           </CCol>
         </CRow>
 
-        <CTable className="mt-4" striped>
+        <CTable className="mt-4 main_table" striped>
           <CTableHead>
             <CTableRow>
               <CTableHeaderCell scope="col">Location Id</CTableHeaderCell>

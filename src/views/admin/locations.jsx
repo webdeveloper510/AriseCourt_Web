@@ -72,7 +72,7 @@ const Locations = () => {
             <h4 id="traffic" className="card-title mb-0">
               Locations
             </h4>
-            <div className="small text-body-secondary">
+            <div className="card_description">
               List of Locations configured for Court Bookings.
             </div>
           </CCol>
@@ -135,7 +135,7 @@ const Locations = () => {
           </CCol>
         </CRow>
 
-        <CTable className="mt-4" striped>
+        <CTable className="mt-4 main_table" striped>
           <CTableHead>
             <CTableRow>
               <CTableHeaderCell scope="col">ID KEY</CTableHeaderCell>

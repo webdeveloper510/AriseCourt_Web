@@ -20,3 +20,5 @@ export const loginUser = async (data) => {
     return error.response;
   }
 };
+
+// locations

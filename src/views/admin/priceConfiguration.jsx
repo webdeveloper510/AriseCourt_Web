@@ -10,7 +10,7 @@ const PriceConfiguration = () => {
             <h4 id="traffic" className="card-title mb-0">
             Price Configuration
             </h4>
-            <div className="small text-body-secondary">Court Reservation Pricing
+            <div className="card_description">Court Reservation Pricing
             Fields</div>
           </CCol>
         </CRow>

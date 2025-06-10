@@ -62,7 +62,7 @@ const CourtConfiguration = () => {
               <h4 id="traffic" className="card-title mb-0">
               Court Bookings
               </h4>
-              <div className="small text-body-secondary">
+              <div className="card_description">
               Court Bookings
               </div>
             </CCol>
@@ -125,7 +125,7 @@ const CourtConfiguration = () => {
             </CCol>
           </CRow>
   
-          <CTable className="mt-4" striped>
+          <CTable className="mt-4 main_table" striped>
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell scope="col">Booking Id</CTableHeaderCell>

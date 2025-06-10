@@ -50,7 +50,7 @@ const AddLocations = () => {
       handleFormSubmit(e);
     }
   };
-  
+
   return (
     <>
       <CCardBody className="p-2">
@@ -70,7 +70,7 @@ const AddLocations = () => {
                 <h4 id="traffic" className="card-title mb-0">
                   {id ? "Edit" : "Add"} Location Details
                 </h4>
-                <div className="small text-body-secondary">
+                <div className="card_description">
                   {`List of Locations > Beach Badminton Club`}
                 </div>
               </div>

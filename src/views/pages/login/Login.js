@@ -91,7 +91,7 @@ const Login = () => {
   };
 
   return (
-    <div className=" min-vh-100 d-flex flex-row align-items-center">
+    <div className=" min-vh-100 d-flex flex-row align-items-center" style={{ height: "100vh" }}>
       <CRow className="justify-content-center" style={{ width: "100%" }}>
         <CCol md={12}>
           <CRow
@@ -100,7 +100,7 @@ const Login = () => {
           >
             <CCol md={6}>
               <CCard className="p-2">
-                <img src={HomeBg} alt="login_bg" style={{ height: "100vh" }} />
+                <img src={HomeBg} alt="login_bg" style={{ height: "96vh" }} />
               </CCard>
             </CCol>
             <CCol md={6}>

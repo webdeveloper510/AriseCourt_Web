@@ -5,7 +5,7 @@
 
 body {
   background-color: var(--cui-tertiary-bg);
-  font-family: "DM Sans", sans-serif !important;
+  font-family: "DM Sans", sans-serif;
   font-optical-sizing: auto !important;
   font-style: normal !important;
   color: #182B4D;
@@ -14,6 +14,15 @@ body {
 .card-title {
   color: #182B4D !important;
   font-weight: 600 !important;
+  font-family: "Roboto", sans-serif !important;
+  font-size: 30px !important;
+}
+
+.card_description {
+  font-weight: 400 !important;
+  font-family: "Roboto", sans-serif !important;
+  font-size: 15px;
+  color: #182b4d87;
 }
 
 .wrapper {
@@ -26,9 +35,37 @@ body {
 .sidebar {
   background: #0860FB !important;
 }
-.text_color{
+
+.text_color {
   color: #0860FB;
 }
+
+.sidebar-nav {
+  padding-right: 0 !important;
+}
+
+.sidebar-nav .nav-link,
+.sidebar-footer {
+  border-bottom-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-left-radius: 30px !important;
+  border-top-left-radius: 30px !important;
+  padding: 18px 0 18px 18px !important;
+  color: white;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.219);
+}
+
+.sidebar-footer {
+  justify-content: flex-start !important;
+  gap: 11px;
+  cursor: pointer;
+}
+
+.sidebar-toggler::before {
+  background-color: white !important;
+}
+
 .sidebar-nav .nav-link.active {
   color: #0860FB;
   background: white;
@@ -74,9 +111,9 @@ body {
   }
 }
 
-.sidebar-toggler {
-  margin-inline-start: auto;
-}
+// .sidebar-toggler {
+//   margin-inline-start: auto;
+// }
 
 .sidebar-narrow,
 .sidebar-narrow-unfoldable:not(:hover) {
@@ -93,7 +130,7 @@ body {
   min-height: calc(3rem + 1px); // stylelint-disable-line function-disallowed-list
 }
 
-.back_icon{
+.back_icon {
   color: #0860FB;
   cursor: pointer;
 }
@@ -127,13 +164,17 @@ body {
 
 .sidebar_outer {
   border-radius: 15px !important;
+  padding-right: 0px !important;
+  padding-left: 1rem !important;
 }
 
 .add_new_butn {
   background: #0860FB;
   color: white;
+  height: 40px;
 }
-.add_new_butn:hover{
+
+.add_new_butn:hover {
   background: white !important;
   color: #0860FB !important;
   border: 1px solid #0860FB !important;
@@ -191,6 +232,26 @@ body {
   outline: none !important;
   box-shadow: none !important;
   border: 1px solid #ccc !important;
+}
+
+.seacrh_input::placeholder {
+  color: #182B4D !important;
+}
+
+.main_table th {
+  color: #182B4D !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  font-family: "DM Sans", sans-serif !important;
+  padding: 14px 10px;
+  background: #F2F2FA;
+}
+
+.main_table td {
+  color: #182B4D !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  font-family: "DM Sans", sans-serif !important;
 }
 
 .search_input_group {
@@ -274,69 +335,84 @@ body {
   font-size: 14px;
   color: #182b4d;
 }
-.input_section{
+
+.input_section {
   background: white !important;
   border: 1px solid #e7e7e7;
   padding: 5px;
   width: 100%;
   border-radius: 10px;
 }
-.form_outer_section{
+
+.form_outer_section {
   width: 60%;
   margin: auto;
 }
-.form_inner_section{
+
+.form_inner_section {
   width: 100%;
 }
-.input_section label{
+
+.input_section label {
   color: #2e5bff;
   font-size: 13px;
 }
-.error_message{
+
+.error_message {
   color: red;
   font-size: 14px;
 }
+
 .input_section input {
   border: none !important;
   width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
 }
-.input_section input:focus{
+
+.input_section input:focus {
   border: none !important;
   width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
 }
-.input_section input::placeholder{
+
+.input_section input::placeholder {
   font-size: 14px !important;
 }
+
 input:-webkit-autofill {
   background-color: transparent !important;
-  background:transparent !important;
+  background: transparent !important;
 }
-.add_location_form{
+
+.add_location_form {
   background: #E7F0FF;
   border-radius: 15px;
   padding: 50px;
   margin: 15px 0px;
 }
-.add_location_form label{
+
+.add_location_form label {
   font-size: 14px;
   color: #182B4D;
 }
-.add_location_form input::placeholder{
+
+.add_location_form input::placeholder {
   font-size: 15px;
 }
-.edit_icon{
+
+.edit_icon {
   color: #007bff;
   cursor: pointer;
 }
-.delete_icon{
+
+.delete_icon {
   color: red;
   cursor: pointer;
 }
-.view_icon{
+
+.view_icon {
   color: #182B4D;
   cursor: pointer;
 }

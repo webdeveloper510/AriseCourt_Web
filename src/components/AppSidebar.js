@@ -53,6 +53,7 @@ const AppSidebar = () => {
         <CSidebarToggler
           onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
         />
+        <span>Logout</span>
       </CSidebarFooter>
     </CSidebar>
   )
