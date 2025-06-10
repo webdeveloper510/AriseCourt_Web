@@ -7,6 +7,8 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
+  CPagination,
+  CPaginationItem,
   CRow,
   CTable,
   CTableBody,
@@ -359,6 +361,25 @@ const Locations = () => {
             </CTableRow>
           </CTableBody>
         </CTable>
+
+         <div className="pagination_outer">
+                <div className="pagination_section">
+                  <CRow className="align-items-center">
+                    <CCol md={6}>
+                      <p className="showing_page">{`Showing 1 to 6 of 6 entries`}</p>
+                    </CCol>
+                    <CCol md={6}>
+                      <CPagination align="end" aria-label="Page navigation example">
+                        <CPaginationItem disabled className="prev_next">{`<<`}</CPaginationItem>
+                        <CPaginationItem>1</CPaginationItem>
+                        <CPaginationItem>2</CPaginationItem>
+                        <CPaginationItem>3</CPaginationItem>
+                        <CPaginationItem className="prev_next">{`>>`}</CPaginationItem>
+                      </CPagination>
+                    </CCol>
+                  </CRow>
+                </div>
+                </div>
       </CCardBody>
       {/* </CCard> */}
     </>
