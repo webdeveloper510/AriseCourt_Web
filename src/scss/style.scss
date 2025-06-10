@@ -26,7 +26,9 @@ body {
 .sidebar {
   background: #0860FB !important;
 }
-
+.text_color{
+  color: #0860FB;
+}
 .sidebar-nav .nav-link.active {
   color: #0860FB;
   background: white;
@@ -91,6 +93,11 @@ body {
   min-height: calc(3rem + 1px); // stylelint-disable-line function-disallowed-list
 }
 
+.back_icon{
+  color: #0860FB;
+  cursor: pointer;
+}
+
 @include color-mode(dark) {
   body {
     background-color: var(--cui-dark-bg-subtle);
@@ -125,6 +132,11 @@ body {
 .add_new_butn {
   background: #0860FB;
   color: white;
+}
+.add_new_butn:hover{
+  background: white !important;
+  color: #0860FB !important;
+  border: 1px solid #0860FB !important;
 }
 
 .custom-date-range-picker .coreui-date-picker {
@@ -262,6 +274,79 @@ body {
   font-size: 14px;
   color: #182b4d;
 }
+.input_section{
+  background: white !important;
+  border: 1px solid #e7e7e7;
+  padding: 5px;
+  width: 100%;
+  border-radius: 10px;
+}
+.form_outer_section{
+  width: 60%;
+  margin: auto;
+}
+.form_inner_section{
+  width: 100%;
+}
+.input_section label{
+  color: #2e5bff;
+  font-size: 13px;
+}
+.error_message{
+  color: red;
+  font-size: 14px;
+}
+.input_section input {
+  border: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.input_section input:focus{
+  border: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.input_section input::placeholder{
+  font-size: 14px !important;
+}
+input:-webkit-autofill {
+  background-color: transparent !important;
+  background:transparent !important;
+}
+.add_location_form{
+  background: #E7F0FF;
+  border-radius: 15px;
+  padding: 50px;
+  margin: 15px 0px;
+}
+.add_location_form label{
+  font-size: 14px;
+  color: #182B4D;
+}
+.add_location_form input::placeholder{
+  font-size: 15px;
+}
+.edit_icon{
+  color: #007bff;
+  cursor: pointer;
+}
+.delete_icon{
+  color: red;
+  cursor: pointer;
+}
+.view_icon{
+  color: #182B4D;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
 
 
 @media screen and (max-width: 580px) {

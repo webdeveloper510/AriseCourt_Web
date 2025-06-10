@@ -13,8 +13,8 @@ import {
   CTableRow,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import { cilPencil, cilPenNib, cilDelete } from "@coreui/icons";
-import { Link } from "react-router-dom";
+import { cilPencil, cilPenNib, cilDelete, cilArrowLeft } from "@coreui/icons";
+import { Link, useNavigate } from "react-router-dom";
 import badminton from "../../assets/images/badminton.png";
 import {
   CModal,
@@ -27,24 +27,48 @@ import {
 const LocationDetails = () => {
   const [visible, setVisible] = useState(false);
 
+  const navigate = useNavigate();
+  const handleBackNavigate = () => {
+    navigate(-1);
+  };
+  const handleEditLocation = () => {
+    navigate(`/update-locations/12`);
+  };
+
   return (
     <>
       <CCardBody className="p-2">
         <CRow>
           <CCol sm={12} md={6}>
-            <h4 id="traffic" className="card-title mb-0">
-              Location Details
-            </h4>
-            <div className="small text-body-secondary">
-              {`List of Locations > Beach Badminton Club`}
+            <div className="d-flex gap-3 align-items-center">
+              <div>
+                <span>
+                  <CIcon
+                    onClick={() => handleBackNavigate()}
+                    icon={cilArrowLeft}
+                    className="back_icon"
+                  ></CIcon>
+                </span>{" "}
+              </div>
+              <div>
+                <h4 id="traffic" className="card-title mb-0">
+                  Location Details
+                </h4>
+                <div className="small text-body-secondary">
+                  {`List of Locations > Beach Badminton Club`}
+                </div>
+              </div>
             </div>
           </CCol>
           <CCol sm={12} md={6} className="text-end">
-            <Link to="/add-locations">
-              <CButton className="add_new_butn">
-                <CIcon icon={cilPenNib}></CIcon> Edit
-              </CButton>
-            </Link>
+            <CButton
+              onClick={() => {
+                handleEditLocation();
+              }}
+              className="add_new_butn"
+            >
+              <CIcon icon={cilPenNib}></CIcon> Edit
+            </CButton>
           </CCol>
         </CRow>
 
@@ -246,7 +270,7 @@ const LocationDetails = () => {
               <h4 className="card-title mb-0">Add Court</h4>
             </div>
             <CRow className="d-flex mt-4 justify-content-center">
-              <CCol sm={12} md={6} lg={6} className="my-1"> 
+              <CCol sm={12} md={6} lg={6} className="my-1">
                 <label className="add_court_label">Location ID</label>
                 <CFormInput
                   type="text"
@@ -255,7 +279,7 @@ const LocationDetails = () => {
                   aria-label="default input example"
                 />
               </CCol>
-              <CCol sm={12} md={6} lg={6} className="my-1"> 
+              <CCol sm={12} md={6} lg={6} className="my-1">
                 <label className="add_court_label">Court Number</label>
                 <CFormInput
                   type="text"
@@ -264,7 +288,7 @@ const LocationDetails = () => {
                   aria-label="default input example"
                 />
               </CCol>
-              <CCol sm={12} md={6} lg={6} className="my-1"> 
+              <CCol sm={12} md={6} lg={6} className="my-1">
                 <label className="add_court_label">Court Fee by Hour</label>
 
                 <CFormInput
@@ -274,7 +298,7 @@ const LocationDetails = () => {
                   aria-label="default input example"
                 />
               </CCol>
-              <CCol sm={12} md={6} lg={6} className="my-1"> 
+              <CCol sm={12} md={6} lg={6} className="my-1">
                 <label className="add_court_label">Taxes percentage</label>
 
                 <CFormInput
@@ -284,7 +308,7 @@ const LocationDetails = () => {
                   aria-label="default input example"
                 />
               </CCol>
-              <CCol sm={12} md={6} lg={6} className="my-1"> 
+              <CCol sm={12} md={6} lg={6} className="my-1">
                 <label className="add_court_label">cc fees%</label>
 
                 <CFormInput
@@ -294,7 +318,7 @@ const LocationDetails = () => {
                   aria-label="default input example"
                 />
               </CCol>
-              <CCol sm={12} md={6} lg={6} className="my-1"> 
+              <CCol sm={12} md={6} lg={6} className="my-1">
                 <label className="add_court_label">User Type</label>
 
                 <CFormInput

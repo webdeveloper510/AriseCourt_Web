@@ -21,11 +21,16 @@ import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRangePicker } from "react-date-range";
 import CIcon, { CIconSvg } from "@coreui/icons-react";
-import { cilCloudUpload, cilDelete, cilFilter, cilPencil, cilSearch } from "@coreui/icons";
+import {
+  cilCloudUpload,
+  cilDelete,
+  cilFilter,
+  cilPencil,
+  cilSearch,
+} from "@coreui/icons";
 
 const Locations = () => {
-
-    const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [selectionRange, setSelectionRange] = useState({
     startDate: new Date(),
@@ -53,8 +58,12 @@ const Locations = () => {
   };
 
   const handleEditLocation = () => {
-    navigate("/location-details")
-  }
+    navigate(`/update-locations/12`);
+  };
+
+  const handleViewDetails = () => {
+    navigate(`/location-details/12`);
+  };
 
   return (
     <>
@@ -64,10 +73,10 @@ const Locations = () => {
         <CRow>
           <CCol sm={12} md={6}>
             <h4 id="traffic" className="card-title mb-0">
-            Locations
+              Locations
             </h4>
             <div className="small text-body-secondary">
-            List of Locations configured for Court Bookings.
+              List of Locations configured for Court Bookings.
             </div>
           </CCol>
           <CCol sm={12} md={6} className="text-end">
@@ -76,8 +85,13 @@ const Locations = () => {
             </Link>
           </CCol>
           <CCol sm={12} md={6} className="mt-3">
-            <CInputGroup className="search_input_group" style={{height:"45px"}}>
-              <CInputGroupText className="input_icons"><CIcon icon={cilSearch}></CIcon></CInputGroupText>
+            <CInputGroup
+              className="search_input_group"
+              style={{ height: "45px" }}
+            >
+              <CInputGroupText className="input_icons">
+                <CIcon icon={cilSearch}></CIcon>
+              </CInputGroupText>
               <CFormInput
                 placeholder="Search..."
                 aria-label="Username"
@@ -90,34 +104,36 @@ const Locations = () => {
           <CCol sm={6} className="mt-3">
             <div className="text-end date_filter_section">
               {/* Calendar area */}
-             <div>
-             <div
-                onClick={handleCalendarClick}
-                style={{
-                  padding: "10px",
-                  border: "1px solid #ddd",
-                  display: "inline-block",
-                  cursor: "pointer",
-                  borderRadius:"12px"
-                }}
-              >
-                <span>{`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}</span>
+              <div>
+                <div
+                  onClick={handleCalendarClick}
+                  style={{
+                    padding: "10px",
+                    border: "1px solid #ddd",
+                    display: "inline-block",
+                    cursor: "pointer",
+                    borderRadius: "12px",
+                  }}
+                >
+                  <span>{`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}</span>
+                </div>
+
+                {/* Display DateRangePicker when calendar is open */}
+                {isCalendarOpen && (
+                  <div style={{ position: "absolute", zIndex: 10 }}>
+                    <DateRangePicker
+                      ranges={[selectionRange]}
+                      onChange={handleSelect}
+                    />
+                  </div>
+                )}
               </div>
 
-              {/* Display DateRangePicker when calendar is open */}
-              {isCalendarOpen && (
-                <div style={{ position: "absolute", zIndex: 10 }}>
-                  <DateRangePicker
-                    ranges={[selectionRange]}
-                    onChange={handleSelect}
-                  />
-                </div>
-              )}
-             </div>
-
-             <div>
-              <CButton className="filter_butn"><CIcon icon={cilFilter}></CIcon> FILTERS</CButton>
-             </div>
+              <div>
+                <CButton className="filter_butn">
+                  <CIcon icon={cilFilter}></CIcon> FILTERS
+                </CButton>
+              </div>
             </div>
           </CCol>
         </CRow>
@@ -144,7 +160,23 @@ const Locations = () => {
               <CTableDataCell>California</CTableDataCell>
               <CTableDataCell>USA</CTableDataCell>
               <CTableDataCell>19</CTableDataCell>
-              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
+              <CTableDataCell>
+                <CIcon
+                  icon={cilSearch}
+                  onClick={() => {
+                    handleViewDetails();
+                  }}
+                  className="view_icon"
+                ></CIcon>
+                <CIcon
+                  icon={cilPencil}
+                  onClick={() => {
+                    handleEditLocation();
+                  }}
+                  className="mx-2 edit_icon"
+                ></CIcon>
+                <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell>#3214</CTableDataCell>
@@ -154,7 +186,23 @@ const Locations = () => {
               <CTableDataCell>California</CTableDataCell>
               <CTableDataCell>USA</CTableDataCell>
               <CTableDataCell>19</CTableDataCell>
-              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
+               <CTableDataCell>
+                <CIcon
+                  icon={cilSearch}
+                  onClick={() => {
+                    handleViewDetails();
+                  }}
+                  className="view_icon"
+                ></CIcon>
+                <CIcon
+                  icon={cilPencil}
+                  onClick={() => {
+                    handleEditLocation();
+                  }}
+                  className="mx-2 edit_icon"
+                ></CIcon>
+                <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell>#3214</CTableDataCell>
@@ -164,7 +212,23 @@ const Locations = () => {
               <CTableDataCell>California</CTableDataCell>
               <CTableDataCell>USA</CTableDataCell>
               <CTableDataCell>19</CTableDataCell>
-              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
+               <CTableDataCell>
+                <CIcon
+                  icon={cilSearch}
+                  onClick={() => {
+                    handleViewDetails();
+                  }}
+                  className="view_icon"
+                ></CIcon>
+                <CIcon
+                  icon={cilPencil}
+                  onClick={() => {
+                    handleEditLocation();
+                  }}
+                  className="mx-2 edit_icon"
+                ></CIcon>
+                <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell>#3214</CTableDataCell>
@@ -174,7 +238,23 @@ const Locations = () => {
               <CTableDataCell>California</CTableDataCell>
               <CTableDataCell>USA</CTableDataCell>
               <CTableDataCell>19</CTableDataCell>
-              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
+               <CTableDataCell>
+                <CIcon
+                  icon={cilSearch}
+                  onClick={() => {
+                    handleViewDetails();
+                  }}
+                  className="view_icon"
+                ></CIcon>
+                <CIcon
+                  icon={cilPencil}
+                  onClick={() => {
+                    handleEditLocation();
+                  }}
+                  className="mx-2 edit_icon"
+                ></CIcon>
+                <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell>#3214</CTableDataCell>
@@ -184,7 +264,23 @@ const Locations = () => {
               <CTableDataCell>California</CTableDataCell>
               <CTableDataCell>USA</CTableDataCell>
               <CTableDataCell>19</CTableDataCell>
-              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
+               <CTableDataCell>
+                <CIcon
+                  icon={cilSearch}
+                  onClick={() => {
+                    handleViewDetails();
+                  }}
+                  className="view_icon"
+                ></CIcon>
+                <CIcon
+                  icon={cilPencil}
+                  onClick={() => {
+                    handleEditLocation();
+                  }}
+                  className="mx-2 edit_icon"
+                ></CIcon>
+                <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell>#3214</CTableDataCell>
@@ -194,7 +290,23 @@ const Locations = () => {
               <CTableDataCell>California</CTableDataCell>
               <CTableDataCell>USA</CTableDataCell>
               <CTableDataCell>19</CTableDataCell>
-              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
+               <CTableDataCell>
+                <CIcon
+                  icon={cilSearch}
+                  onClick={() => {
+                    handleViewDetails();
+                  }}
+                  className="view_icon"
+                ></CIcon>
+                <CIcon
+                  icon={cilPencil}
+                  onClick={() => {
+                    handleEditLocation();
+                  }}
+                  className="mx-2 edit_icon"
+                ></CIcon>
+                <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell>#3214</CTableDataCell>
@@ -204,7 +316,23 @@ const Locations = () => {
               <CTableDataCell>California</CTableDataCell>
               <CTableDataCell>USA</CTableDataCell>
               <CTableDataCell>19</CTableDataCell>
-              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
+               <CTableDataCell>
+                <CIcon
+                  icon={cilSearch}
+                  onClick={() => {
+                    handleViewDetails();
+                  }}
+                  className="view_icon"
+                ></CIcon>
+                <CIcon
+                  icon={cilPencil}
+                  onClick={() => {
+                    handleEditLocation();
+                  }}
+                  className="mx-2 edit_icon"
+                ></CIcon>
+                <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+              </CTableDataCell>
             </CTableRow>
             <CTableRow>
               <CTableDataCell>#3214</CTableDataCell>
@@ -214,7 +342,23 @@ const Locations = () => {
               <CTableDataCell>California</CTableDataCell>
               <CTableDataCell>USA</CTableDataCell>
               <CTableDataCell>19</CTableDataCell>
-              <CTableDataCell><CIcon icon={cilPencil} onClick={()=>{handleEditLocation()}}></CIcon><CIcon icon={cilDelete}></CIcon></CTableDataCell>
+               <CTableDataCell>
+                <CIcon
+                  icon={cilSearch}
+                  onClick={() => {
+                    handleViewDetails();
+                  }}
+                  className="view_icon"
+                ></CIcon>
+                <CIcon
+                  icon={cilPencil}
+                  onClick={() => {
+                    handleEditLocation();
+                  }}
+                  className="mx-2 edit_icon"
+                ></CIcon>
+                <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+              </CTableDataCell>
             </CTableRow>
           </CTableBody>
         </CTable>

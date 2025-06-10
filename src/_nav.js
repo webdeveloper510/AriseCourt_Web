@@ -23,7 +23,7 @@ import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 const _nav = [
   {
     component: CNavItem,
-    name: 'Dashboard',
+    name: 'Admin',
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
   },
@@ -43,24 +43,24 @@ const _nav = [
     to: '/reporting',
     icon: <CIcon icon={cilFile} customClassName="nav-icon" />,
   },
+  // {
+  //   component: CNavItem,
+  //   name: 'Price Configuration',
+  //   to: '/price-configuration',
+  //   icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+  // },
   {
     component: CNavItem,
-    name: 'Price Configuration',
-    to: '/price-configuration',
+    name: 'Court Booking',
+    to: '/court-bookings',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'Court Configuration',
-    to: '/court-configuration',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'User Registration',
-    to: '/user-registraion',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'User Registration',
+  //   to: '/user-registraion',
+  //   icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+  // },
  
   // {
   //   component: CNavTitle,

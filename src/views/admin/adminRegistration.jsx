@@ -1,5 +1,5 @@
 import React from "react";
-import { CCardBody, CCol, CFormInput, CRow } from "@coreui/react";
+import { CButton, CCardBody, CCol, CFormInput, CRow } from "@coreui/react";
 
 const AdminRegistration = () => {
   return (
@@ -16,7 +16,7 @@ const AdminRegistration = () => {
 
         <div className="registration_form">
           <CRow className="d-flex justify-content-center">
-            <CCol sm={12} md={6} lg={4}>
+            <CCol sm={12} md={6} lg={4} className="my-2" >
               <label>First Name</label>
               <CFormInput
                 type="text"
@@ -25,7 +25,7 @@ const AdminRegistration = () => {
                 aria-label="default input example"
               />
             </CCol>
-            <CCol sm={12} md={6} lg={4}>
+            <CCol sm={12} md={6} lg={4} className="my-2" >
               <label>Last Name</label>
               <CFormInput
                 type="text"
@@ -34,7 +34,7 @@ const AdminRegistration = () => {
                 aria-label="default input example"
               />
             </CCol>
-            <CCol sm={12} md={6} lg={4}>
+            <CCol sm={12} md={6} lg={4} className="my-2" >
               <label>Email Address</label>
 
               <CFormInput
@@ -44,7 +44,7 @@ const AdminRegistration = () => {
                 aria-label="default input example"
               />
             </CCol>
-            <CCol sm={12} md={6} lg={4}>
+            <CCol sm={12} md={6} lg={4} className="my-2" >
               <label>User Type</label>
 
               <CFormInput
@@ -54,7 +54,7 @@ const AdminRegistration = () => {
                 aria-label="default input example"
               />
             </CCol>
-            <CCol sm={12} md={6} lg={4}>
+            <CCol sm={12} md={6} lg={4} className="my-2" >
               <label>Phone Number</label>
 
               <CFormInput
@@ -64,7 +64,7 @@ const AdminRegistration = () => {
                 aria-label="default input example"
               />
             </CCol>
-            <CCol sm={12} md={6} lg={4}>
+            <CCol sm={12} md={6} lg={4} className="my-2" >
               <label>Password</label>
 
               <CFormInput
@@ -73,6 +73,9 @@ const AdminRegistration = () => {
                 placeholder="Enter Password"
                 aria-label="default input example"
               />
+            </CCol>
+            <CCol md={12} className="mt-4">
+              <CButton className="add_new_butn">Save</CButton>
             </CCol>
           </CRow>
         </div>
