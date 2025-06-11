@@ -63,7 +63,7 @@ const CourtConfiguration = () => {
     <>
       {/* <WidgetsDropdown className="mb-4" /> */}
       {/* <CCard className="mb-4"> */}
-      <CCardBody className="p-2">
+      <CCardBody className="p-2 position-relative">
         <CRow>
           <CCol sm={12} md={6}>
             <h4 id="traffic" className="card-title mb-0">

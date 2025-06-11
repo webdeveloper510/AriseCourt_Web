@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CButton,
   CCardBody,
@@ -11,28 +11,184 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
+  CFormSwitch,
+  CForm,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilPencil, cilPenNib, cilDelete, cilArrowLeft } from "@coreui/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import badminton from "../../assets/images/badminton.png";
+import { CModal, CModalBody } from "@coreui/react";
+import deleteImage from "../../assets/images/delete_image.png";
 import {
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
-  CModalTitle,
-} from "@coreui/react";
+  addCourtData,
+  deleteCourtbyId,
+  getCourts,
+  getLocationbyId,
+  updateCourt,
+} from "../../utils/api";
+import { toast } from "react-toastify";
 
 const LocationDetails = () => {
-  const [visible, setVisible] = useState(false);
-
+  const { id } = useParams();
   const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
+  const [deletCourt, setDeletCourt] = useState(false);
+  const [deletCourtId, setDeletCourtId] = useState("");
+  const [formData, setFormData] = useState(null);
+  const [courtData, setCourtData] = useState([]);
+  const [addCourt, setAddCourt] = useState({
+    location_id: id,
+    court_number: "",
+    court_fee_hrs: "",
+    tax: "",
+    cc_fees: "",
+    availability: true,
+  });
+  const [courtId, setCourtId] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const handleCourtInput = (e) => {
+    const { name, value } = e.target;
+    const updatedData = { ...addCourt, [name]: value };
+
+    setAddCourt(updatedData);
+
+    const fieldErrors = validateCourtData(updatedData);
+    setErrors((prev) => ({ ...prev, [name]: fieldErrors[name] || "" }));
+  };
+
+  const validateCourtData = (data) => {
+    const errors = {};
+
+    if (!data.court_number.trim()) {
+      errors.court_number = "Court number is required.";
+    }
+
+    if (!data.court_fee_hrs || isNaN(data.court_fee_hrs)) {
+      errors.court_fee_hrs = "Court fee per hour must be a number.";
+    }
+
+    if (!data.tax || isNaN(data.tax)) {
+      errors.tax = "Tax must be a number.";
+    }
+
+    if (!data.cc_fees || isNaN(data.cc_fees)) {
+      errors.cc_fees = "CC fees must be a number.";
+    }
+
+    return errors;
+  };
+
+  useEffect(() => {
+    getLocationDatabyId();
+    getCourtsData();
+  }, [id]);
+
+  const getLocationDatabyId = () => {
+    getLocationbyId(id)
+      .then((res) => {
+        if (res?.status == 200) {
+          setFormData(res?.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getCourtsData = () => {
+    getCourts(id)
+      .then((res) => {
+        if (res.status == 200) {
+          setCourtData(res?.data?.results);
+        } else {
+          setCourtData([]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setCourtData([]);
+      });
+  };
+
   const handleBackNavigate = () => {
     navigate(-1);
   };
   const handleEditLocation = () => {
     navigate(`/update-locations/12`);
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    const validationErrors = validateCourtData(addCourt);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    if (courtId) {
+      updateCourt(courtId, addCourt)
+        .then((res) => {
+          if (res?.status == 200 || res?.status == 201) {
+            setVisible(false);
+            toast.success(res?.data?.message, {
+              theme: "colored",
+            });
+            getCourtsData();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      addCourtData(addCourt)
+        .then((res) => {
+          if (res?.status == 200 || res?.status == 201) {
+            setVisible(false);
+            toast.success(res?.data?.message, {
+              theme: "colored",
+            });
+            getCourtsData();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleFormSubmit(e);
+    }
+  };
+
+  const handleEditCourtModal = (id, data) => {
+    setVisible(true);
+    setCourtId(id);
+    setAddCourt(data);
+  };
+
+  const handleDeletCourtModal = (id) => {
+    setDeletCourt(true);
+    setDeletCourtId(id);
+  };
+
+  const handleDeleteCourt = () => {
+    deleteCourtbyId(deletCourtId)
+      .then((res) => {
+        if (res.status == 200 || res?.status == 204) {
+          toast.success(res?.data?.message, {
+            theme: "colored",
+          });
+          getCourtsData();
+          setDeletCourt(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -83,46 +239,39 @@ const LocationDetails = () => {
               <CRow>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">ID KEY</h6>
-                  <p className="details_description">#3214</p>
+                  <p className="details_description">{formData?.id}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">City</h6>
-                  <p className="details_description">California</p>
+                  <p className="details_description">{formData?.city}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Email</h6>
-                  <p className="details_description">dummy221@gmail.com</p>
+                  <p className="details_description">{formData?.email}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Phone</h6>
-                  <p className="details_description">01796-329869</p>
+                  <p className="details_description">{formData?.phone}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Name</h6>
-                  <p className="details_description">Beach Badminton Club</p>
+                  <p className="details_description">{formData?.name}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">State</h6>
-                  <p className="details_description">west coast</p>
+                  <p className="details_description">{formData?.state}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Website</h6>
-                  <p className="details_description">
-                    www.dummywebsitelink.com
-                  </p>
+                  <p className="details_description">{formData?.website}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Country</h6>
-                  <p className="details_description">USA</p>
+                  <p className="details_description">{formData?.country}</p>
                 </CCol>
                 <CCol sm={12} md={12} className="my-1">
                   <h6 className="detail_title">Description</h6>
-                  <p className="details_description">
-                    Reference site about Lorem Ipsum, giving information n its
-                    origins, as well as a random Lipsum generator. Reference
-                    site about Lorem Ipsum, giving information on its origins,
-                    as well as a random Lipsum generator.
-                  </p>
+                  <p className="details_description">{formData?.description}</p>
                 </CCol>
               </CRow>
             </CCol>
@@ -133,17 +282,11 @@ const LocationDetails = () => {
           <CRow>
             <CCol sm={12} md={6}>
               <label className="add_court_label">Address 1</label>
-              <p>
-                f-298, 8B, Industrial Area, Sector 74, S.A.S. Nagar, North
-                160055
-              </p>
+              <p>{formData?.address_1}</p>
             </CCol>
             <CCol sm={12} md={6}>
               <label className="add_court_label">Address 1</label>
-              <p>
-                f-298, 8B, Industrial Area, Sector 74, S.A.S. Nagar, North
-                160055
-              </p>
+              <p>{formData?.address_2}</p>
             </CCol>
           </CRow>
         </div>
@@ -164,6 +307,7 @@ const LocationDetails = () => {
               </CButton>
             </CCol>
           </CRow>
+
           <CTable className="mt-4 main_table" striped>
             <CTableHead>
               <CTableRow>
@@ -181,7 +325,36 @@ const LocationDetails = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              <CTableRow>
+              {courtData?.length > 0 ? (
+                courtData?.map((item, i) => {
+                  return (
+                    <CTableRow key={i}>
+                      <CTableDataCell>{item?.court_number}</CTableDataCell>
+                      <CTableDataCell>{item?.location_id}</CTableDataCell>
+                      <CTableDataCell>{`$${item?.court_fee_hrs}/hr`}</CTableDataCell>
+                      <CTableDataCell>{`${item?.tax}%`}</CTableDataCell>
+                      <CTableDataCell>{`${item?.cc_fees}%`}</CTableDataCell>
+                      <CTableDataCell>{`${item?.availability}`}</CTableDataCell>
+                      <CTableDataCell>
+                        <CIcon
+                          className="edit_icon me-2"
+                          onClick={() => handleEditCourtModal(item?.id, item)}
+                          icon={cilPencil}
+                        ></CIcon>
+                        <CIcon
+                          className="delete_icon"
+                          onClick={() => handleDeletCourtModal(item?.id, item)}
+                          icon={cilDelete}
+                        ></CIcon>
+                      </CTableDataCell>
+                    </CTableRow>
+                  );
+                })
+              ) : (
+                <></>
+              )}
+
+              {/* <CTableRow>
                 <CTableDataCell>01</CTableDataCell>
                 <CTableDataCell>#3214</CTableDataCell>
                 <CTableDataCell>$8.00/hr</CTableDataCell>
@@ -240,19 +413,7 @@ const LocationDetails = () => {
                   <CIcon icon={cilPencil}></CIcon>
                   <CIcon icon={cilDelete}></CIcon>
                 </CTableDataCell>
-              </CTableRow>
-              <CTableRow>
-                <CTableDataCell>01</CTableDataCell>
-                <CTableDataCell>#3214</CTableDataCell>
-                <CTableDataCell>$8.00/hr</CTableDataCell>
-                <CTableDataCell>2%</CTableDataCell>
-                <CTableDataCell>2%</CTableDataCell>
-                <CTableDataCell>$57.00</CTableDataCell>
-                <CTableDataCell>
-                  <CIcon icon={cilPencil}></CIcon>
-                  <CIcon icon={cilDelete}></CIcon>
-                </CTableDataCell>
-              </CTableRow>
+              </CTableRow> */}
             </CTableBody>
           </CTable>
         </div>
@@ -267,58 +428,72 @@ const LocationDetails = () => {
         <CModalBody className="modal_body_court">
           <div className="add_court_modal">
             <div className="text-center">
-              <h4 className="card-title mb-0">Add Court</h4>
+              <h4 className="card-title mb-0">
+                {courtId ? "Edit" : "Add"} Court
+              </h4>
             </div>
-            <CRow className="d-flex mt-4 justify-content-center">
-              <CCol sm={12} md={6} lg={6} className="my-1">
-                <label className="add_court_label">Location ID</label>
-                <CFormInput
-                  type="text"
-                  className="register_input"
-                  placeholder="Enter Location ID"
-                  aria-label="default input example"
-                />
-              </CCol>
-              <CCol sm={12} md={6} lg={6} className="my-1">
-                <label className="add_court_label">Court Number</label>
-                <CFormInput
-                  type="text"
-                  className="register_input"
-                  placeholder="Enter Court Number"
-                  aria-label="default input example"
-                />
-              </CCol>
-              <CCol sm={12} md={6} lg={6} className="my-1">
-                <label className="add_court_label">Court Fee by Hour</label>
+            <CForm onSubmit={handleFormSubmit} onKeyDown={handleKeyDown}>
+              <CRow className="d-flex mt-4 justify-content-center">
+                <CCol sm={12} md={6} lg={6} className="my-1">
+                  <label className="add_court_label">Court Number</label>
+                  <CFormInput
+                    type="text"
+                    className="register_input"
+                    placeholder="Enter Court Number"
+                    aria-label="default input example"
+                    value={addCourt?.court_number}
+                    name="court_number"
+                    onChange={(e) => handleCourtInput(e)}
+                  />
+                  {errors.court_number && <div className="text-danger">{errors.court_number}</div>}
 
-                <CFormInput
-                  type="text"
-                  className="register_input"
-                  placeholder="Enter Court Fee by Hour"
-                  aria-label="default input example"
-                />
-              </CCol>
-              <CCol sm={12} md={6} lg={6} className="my-1">
-                <label className="add_court_label">Taxes percentage</label>
+                </CCol>
+                <CCol sm={12} md={6} lg={6} className="my-1">
+                  <label className="add_court_label">Court Fee by Hour</label>
 
-                <CFormInput
-                  type="text"
-                  className="register_input"
-                  placeholder="Enter Taxes percentage"
-                  aria-label="default input example"
-                />
-              </CCol>
-              <CCol sm={12} md={6} lg={6} className="my-1">
-                <label className="add_court_label">cc fees%</label>
+                  <CFormInput
+                    type="text"
+                    className="register_input"
+                    placeholder="Enter Court Fee by Hour"
+                    aria-label="default input example"
+                    value={addCourt?.court_fee_hrs}
+                    name="court_fee_hrs"
+                    onChange={(e) => handleCourtInput(e)}
+                  />
+                  {errors.court_fee_hrs && <div className="text-danger">{errors.court_fee_hrs}</div>}
 
-                <CFormInput
-                  type="text"
-                  className="register_input"
-                  placeholder="Enter cc fees%"
-                  aria-label="default input example"
-                />
-              </CCol>
-              <CCol sm={12} md={6} lg={6} className="my-1">
+                </CCol>
+                <CCol sm={12} md={6} lg={6} className="my-1">
+                  <label className="add_court_label">Taxes percentage</label>
+
+                  <CFormInput
+                    type="text"
+                    className="register_input"
+                    placeholder="Enter Taxes percentage"
+                    aria-label="default input example"
+                    value={addCourt?.tax}
+                    name="tax"
+                    onChange={(e) => handleCourtInput(e)}
+                  />
+                  {errors.tax && <div className="text-danger">{errors.tax}</div>}
+
+                </CCol>
+                <CCol sm={12} md={6} lg={6} className="my-1">
+                  <label className="add_court_label">cc fees%</label>
+
+                  <CFormInput
+                    type="text"
+                    className="register_input"
+                    placeholder="Enter cc fees%"
+                    aria-label="default input example"
+                    value={addCourt?.cc_fees}
+                    name="cc_fees"
+                    onChange={(e) => handleCourtInput(e)}
+                  />
+                  {errors.cc_fees && <div className="text-danger">{errors.cc_fees}</div>}
+
+                </CCol>
+                {/* <CCol sm={12} md={6} lg={6} className="my-1">
                 <label className="add_court_label">User Type</label>
 
                 <CFormInput
@@ -326,14 +501,66 @@ const LocationDetails = () => {
                   className="register_input"
                   placeholder="Enter User Type"
                   aria-label="default input example"
+                  value={addCourt?.u}
+                  name="u"
+                  onChange={(e)=>handleCourtInput(e)}
                 />
-              </CCol>
-            </CRow>
-            <div className="d-flex gap-2 mt-4 justify-content-end">
-              <CButton color="secondary" onClick={() => setVisible(false)}>
-                Close
+              </CCol> */}
+                <CCol sm={12} md={6} lg={6} className="my-1">
+                  <label className="add_court_label">Availability</label>
+                  <CFormSwitch
+                    id="formSwitchCheckDefault"
+                    checked={addCourt.availability}
+                    onChange={(e) =>
+                      setAddCourt({
+                        ...addCourt,
+                        availability: e.target.checked,
+                      })
+                    }
+                  />
+                </CCol>
+                <CCol sm={12} md={6} lg={6}></CCol>
+              </CRow>
+              <div className="d-flex gap-2 mt-4 justify-content-end">
+                <CButton color="secondary" onClick={() => setVisible(false)}>
+                  Close
+                </CButton>
+                <CButton type="submit" className="add_new_butn">
+                  Save
+                </CButton>
+              </div>
+            </CForm>
+          </div>
+        </CModalBody>
+      </CModal>
+
+      <CModal
+        alignment="center"
+        visible={deletCourt}
+        onClose={() => setDeletCourt(false)}
+        aria-labelledby="LiveDemoExampleLabel"
+      >
+        <CModalBody className="modal_body_court">
+          <div className="add_court_modal text-center">
+            <img src={deleteImage} alt="deleteImage" />
+            <h1 className="card-title my-4">
+              Are You really Want <br /> To Delete?
+            </h1>
+            <div className="d-flex gap-2 mt-4 justify-content-center">
+              <CButton
+                type="button"
+                onClick={() => handleDeleteCourt()}
+                className="add_new_butn"
+              >
+                Yes
               </CButton>
-              <CButton className="add_new_butn">Save</CButton>
+              <CButton
+                type="button"
+                color="secondary"
+                onClick={() => setDeletCourt(false)}
+              >
+                No
+              </CButton>
             </div>
           </div>
         </CModalBody>

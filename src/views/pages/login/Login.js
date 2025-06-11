@@ -66,7 +66,7 @@ const Login = () => {
       setLoading(false);
       return;
     }
-    navigate("/dashboard");
+    // navigate("/dashboard");
 
     // loginUser(formData)
     //   .then((res) => {
@@ -76,6 +76,11 @@ const Login = () => {
     //       navigate("/dashboard");
     //       toast.success(res?.data?.msg, { theme: "colored" });
     //       localStorage.setItem("user_access_valid_token", res?.data?.token?.access);
+    //       localStorage.setItem("logged_user_data", JSON.stringify(res?.data?.data))
+    //     }else{
+    //       toast.error(res?.data?.errors, {
+    //         theme:"colored"
+    //       })
     //     }
     //   })
     //   .catch((error) => {

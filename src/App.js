@@ -29,7 +29,7 @@ const App = () => {
     <BrowserRouter>
       <Suspense
         fallback={
-          <div className="pt-3 text-center">
+          <div className="pt-3 text-center w-100 d-flex justify-content-center">
             <CSpinner color="primary" variant="grow" />
           </div>
         }

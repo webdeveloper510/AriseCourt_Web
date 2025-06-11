@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CButton,
   CCardBody,
@@ -11,13 +11,16 @@ import {
 import CIcon from "@coreui/icons-react";
 import { cilArrowLeft } from "@coreui/icons";
 import { useNavigate, useParams } from "react-router-dom";
+import { addLocation, getLocationbyId, updateLocation } from "../../utils/api";
+import { toast } from "react-toastify";
+import PhoneInput from "react-phone-input-2";
 
 const AddLocations = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const userData = JSON.parse(localStorage.getItem("logged_user_data"));
 
   const [formData, setFormData] = useState({
-    user: "",
     email: "",
     address_1: "",
     address_2: "",
@@ -28,22 +31,143 @@ const AddLocations = () => {
     website: "",
     state: "",
     country: "",
-    id: "",
     description: "",
+    user: userData?.id,
   });
+
+  const [errors, setErrors] = useState({});
+
+  const validateFormData = (data, fieldToValidate = null) => {
+    const errors = {};
+
+    const validateField = (field) => {
+      switch (field) {
+        case "email":
+          if (!data.email.trim()) {
+            errors.email = "Email is required.";
+          } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+            errors.email = "Enter a valid email address.";
+          }
+          break;
+        case "address_1":
+          if (!data.address_1.trim())
+            errors.address_1 = "Address 1 is required.";
+          break;
+        case "city":
+          if (!data.city.trim()) errors.city = "City is required.";
+          break;
+        case "phone":
+          if (!data.phone.trim()) errors.phone = "Phone number is required.";
+          break;
+        case "state":
+          if (!data.state.trim()) errors.state = "State is required.";
+          break;
+        case "country":
+          if (!data.country.trim()) errors.country = "Country is required.";
+          break;
+        case "website":
+          if (
+            data.website &&
+            !/^https?:\/\/[^\s/$.?#].[^\s]*$/.test(data.website)
+          ) {
+            errors.website = "Enter a valid website URL.";
+          }
+          break;
+        default:
+          break;
+      }
+    };
+
+    if (fieldToValidate) {
+      validateField(fieldToValidate);
+    } else {
+      Object.keys(data).forEach(validateField);
+    }
+
+    return errors;
+  };
+
+  useEffect(() => {
+    getLocationbyId(id)
+      .then((res) => {
+        if (res?.status == 200) {
+          setFormData(res?.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [id]);
 
   const handleBackNavigate = () => {
     navigate(-1);
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const updatedData = { ...formData, [name]: value };
+
+    setFormData(updatedData);
+
+    const fieldErrors = validateFormData(updatedData, name);
+    setErrors((prev) => ({ ...prev, [name]: fieldErrors[name] || "" }));
+  };
+
+  const handlePhoneChange = (value, data) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      phone: value, // full phone number
+      // country: data.countryCode.toUpperCase(), // e.g., "US"
+    }));
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("formData",formData)
-  }
+
+    const validationErrors = validateFormData(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    if (id) {
+      updateLocation(id, formData)
+        .then((res) => {
+          if (res?.status == 200 || res?.status == 201) {
+            toast.success(res?.data?.message, {
+              theme: "colored",
+            });
+            navigate("/locations");
+          } else {
+            Object.keys(res?.data).forEach((key) => {
+              res?.data[key].forEach((msg) => {
+                toast.error(msg, { theme: "colored" });
+              });
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      addLocation(formData)
+        .then((res) => {
+          if (res?.status == 200 || res?.status == 201) {
+            toast.success(res?.data?.message, {
+              theme: "colored",
+            });
+            navigate("/locations");
+          } else {
+            Object.keys(res?.data).forEach((key) => {
+              res?.data[key].forEach((msg) => {
+                toast.error(msg, { theme: "colored" });
+              });
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -81,12 +205,12 @@ const AddLocations = () => {
         <div className=" add_location_form">
           <CForm onSubmit={handleFormSubmit} onKeyDown={handleKeyDown}>
             <CRow className="d-flex justify-content-center">
-              <CCol sm={12} md={6} lg={3} className="my-1">
-                <label>ID KEY</label>
+              {/* <CCol sm={12} md={6} lg={3} className="my-1">
+                <label>Id Key</label>
                 <CFormInput
                   type="text"
                   className="register_input"
-                  placeholder="Enter ID KEY"
+                  placeholder="Enter Id Key"
                   aria-label="default input example"
                   name="id"
                   value={formData.id}
@@ -108,8 +232,8 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
-              </CCol>
-              <CCol sm={12} md={6} lg={3} className="my-1">
+              </CCol> */}
+              <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>Email Address</label>
 
                 <CFormInput
@@ -123,11 +247,17 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
+                {errors.email && <div className="text-danger">{errors.email}</div>}
               </CCol>
-              <CCol sm={12} md={6} lg={3} className="my-1">
+              <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>Phone</label>
-
-                <CFormInput
+                <PhoneInput
+                  country={"us"}
+                  value={formData.phone}
+                  className="form-control"
+                  onChange={handlePhoneChange}
+                />
+                {/* <CFormInput
                   type="text"
                   className="register_input"
                   placeholder="Enter Phone"
@@ -137,9 +267,10 @@ const AddLocations = () => {
                   onChange={(e) => {
                     handleInputChange(e);
                   }}
-                />
+                /> */}
+                {errors.phone && <div className="text-danger">{errors.phone}</div>}
               </CCol>
-              <CCol sm={12} md={6} lg={3} className="my-1">
+              <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>City</label>
 
                 <CFormInput
@@ -153,12 +284,14 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
+                {errors.city && <div className="text-danger">{errors.city}</div>}
+
               </CCol>
-              <CCol sm={12} md={6} lg={3} className="my-1">
+              <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>State</label>
 
                 <CFormInput
-                  type="password"
+                  type="text"
                   className="register_input"
                   placeholder="Enter State"
                   aria-label="default input example"
@@ -168,8 +301,10 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
+                {errors.state && <div className="text-danger">{errors.state}</div>}
+
               </CCol>
-              <CCol sm={12} md={6} lg={3} className="my-1">
+              <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>Country</label>
                 <CFormInput
                   type="text"
@@ -182,8 +317,9 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
+                {errors.country && <div className="text-danger">{errors.country}</div>}
               </CCol>
-              <CCol sm={12} md={6} lg={3} className="my-1">
+              <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>Website</label>
                 <CFormInput
                   type="text"
@@ -196,6 +332,8 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
+                {errors.website && <div className="text-danger">{errors.website}</div>}
+
               </CCol>
               <CCol sm={12} md={6} lg={6} className="my-1">
                 <label>Address 1</label>
@@ -211,6 +349,8 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
+                {errors.address_1 && <div className="text-danger">{errors.address_1}</div>}
+
               </CCol>
               <CCol sm={12} md={6} lg={6} className="my-1">
                 <label>Address 2</label>
@@ -275,7 +415,9 @@ const AddLocations = () => {
               </CCol>
 
               <CCol sm={12} md={12} lg={12} className="mt-5">
-                <CButton className="add_new_butn">Save</CButton>
+                <CButton type="submit" className="add_new_butn">
+                  Save
+                </CButton>
               </CCol>
             </CRow>
           </CForm>

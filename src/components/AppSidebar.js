@@ -18,11 +18,21 @@ import sygnet from 'src/assets/images/logo.png'
 
 // sidebar nav config
 import navigation from '../_nav'
+import { useNavigate } from 'react-router-dom'
 
 const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
+
+  const navigate = useNavigate()
+
+  const handleLogOut = () => {
+    // dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })
+    localStorage.removeItem("logged_user_data")
+    localStorage.removeItem("user_access_valid_token")
+    navigate("/login")
+  }
 
   return (
     <CSidebar
@@ -49,9 +59,8 @@ const AppSidebar = () => {
         />
       </CSidebarHeader>
       <AppSidebarNav items={navigation} />
-      <CSidebarFooter className="d-none d-lg-flex">
-        <CSidebarToggler
-          onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
+      <CSidebarFooter className="d-none d-lg-flex" onClick={() => handleLogOut()}>
+        <CSidebarToggler          
         />
         <span>Logout</span>
       </CSidebarFooter>

@@ -261,11 +261,11 @@ body {
   background: #182b4d;
   padding: 8px 20px;
   border-radius: 10px;
-  // position: absolute;
-  // left: 0;
-  // right: 0;
-  // bottom: 10px;
-  // z-index: 99999;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  z-index: 99999;
   width: 100%;
 }
 
@@ -279,7 +279,15 @@ body {
   font-size: 13px;
   margin-bottom: 0px;
 }
-
+.action_icons{
+  cursor: pointer;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: rgb(24, 43, 77);
+  font-weight: 600;
+}
 .pagination .page-item .page-link {
   background: #272B42;
   color: white;
@@ -353,7 +361,7 @@ body {
 
 .add_court_modal {
   border-radius: 10px;
-  border: 0.85px solid #D9D9D9;
+  border: none;
   background: #E7F0FF;
   padding: 40px 20px;
 }
@@ -456,9 +464,23 @@ input:-webkit-autofill {
   cursor: pointer;
 }
 
-
-
-
+.form-check-input:checked {
+  background-color: #0860fb !important;
+  border-color: #39f !important;
+}
+.form-check-input{
+  height: 22px !important;
+  width: 50px !important;
+} 
+.react-tel-input .form-control {
+  border: none !important;
+}
+.react-tel-input .flag-dropdown{
+  border-right: 1px solid #cacaca !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-bottom: none !important;
+}
 
 
 
