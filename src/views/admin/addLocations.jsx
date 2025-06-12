@@ -19,7 +19,7 @@ const AddLocations = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const userData = JSON.parse(localStorage.getItem("logged_user_data"));
-
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     address_1: "",
@@ -128,9 +128,12 @@ const AddLocations = () => {
       setErrors(validationErrors);
       return;
     }
+    setLoading(true);
     if (id) {
       updateLocation(id, formData)
         .then((res) => {
+          setLoading(false);
+
           if (res?.status == 200 || res?.status == 201) {
             toast.success(res?.data?.message, {
               theme: "colored",
@@ -146,10 +149,13 @@ const AddLocations = () => {
         })
         .catch((error) => {
           console.log(error);
+          setLoading(false);
         });
     } else {
       addLocation(formData)
         .then((res) => {
+          setLoading(false);
+
           if (res?.status == 200 || res?.status == 201) {
             toast.success(res?.data?.message, {
               theme: "colored",
@@ -165,6 +171,7 @@ const AddLocations = () => {
         })
         .catch((error) => {
           console.log(error);
+          setLoading(false);
         });
     }
   };
@@ -177,6 +184,11 @@ const AddLocations = () => {
 
   return (
     <>
+      {loading && (
+        <div className="loader_outer">
+          <span className="loader"></span>
+        </div>
+      )}
       <CCardBody className="p-2">
         <CRow>
           <CCol sm={12}>
@@ -247,7 +259,9 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
-                {errors.email && <div className="text-danger">{errors.email}</div>}
+                {errors.email && (
+                  <div className="text-danger">{errors.email}</div>
+                )}
               </CCol>
               <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>Phone</label>
@@ -268,7 +282,9 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 /> */}
-                {errors.phone && <div className="text-danger">{errors.phone}</div>}
+                {errors.phone && (
+                  <div className="text-danger">{errors.phone}</div>
+                )}
               </CCol>
               <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>City</label>
@@ -284,8 +300,9 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
-                {errors.city && <div className="text-danger">{errors.city}</div>}
-
+                {errors.city && (
+                  <div className="text-danger">{errors.city}</div>
+                )}
               </CCol>
               <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>State</label>
@@ -301,8 +318,9 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
-                {errors.state && <div className="text-danger">{errors.state}</div>}
-
+                {errors.state && (
+                  <div className="text-danger">{errors.state}</div>
+                )}
               </CCol>
               <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>Country</label>
@@ -317,7 +335,9 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
-                {errors.country && <div className="text-danger">{errors.country}</div>}
+                {errors.country && (
+                  <div className="text-danger">{errors.country}</div>
+                )}
               </CCol>
               <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>Website</label>
@@ -332,8 +352,9 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
-                {errors.website && <div className="text-danger">{errors.website}</div>}
-
+                {errors.website && (
+                  <div className="text-danger">{errors.website}</div>
+                )}
               </CCol>
               <CCol sm={12} md={6} lg={6} className="my-1">
                 <label>Address 1</label>
@@ -349,8 +370,9 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
-                {errors.address_1 && <div className="text-danger">{errors.address_1}</div>}
-
+                {errors.address_1 && (
+                  <div className="text-danger">{errors.address_1}</div>
+                )}
               </CCol>
               <CCol sm={12} md={6} lg={6} className="my-1">
                 <label>Address 2</label>

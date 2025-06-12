@@ -39,6 +39,7 @@ const LocationDetails = () => {
   const [deletCourtId, setDeletCourtId] = useState("");
   const [formData, setFormData] = useState(null);
   const [courtData, setCourtData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [addCourt, setAddCourt] = useState({
     location_id: id,
     court_number: "",
@@ -109,17 +110,18 @@ const LocationDetails = () => {
   }, [id]);
 
   const getLocationDatabyId = () => {
+    setLoading(true)
     getLocationbyId(id)
       .then((res) => {
+        setLoading(false)
         if (res?.status == 200) {
           setFormData(res?.data);
-          setCourtData(res?.data?.courts)
-          // setTotalCounts(res?.data?.courts?.length); // Total count of admin data
-          // setTotalPages(Math.ceil(res?.data?.courts?.length / itemsPerPage));
+          setCourtData(res?.data?.courts);
         }
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false)
       });
   };
 
@@ -153,9 +155,11 @@ const LocationDetails = () => {
       setErrors(validationErrors);
       return;
     }
+    setLoading(true)
     if (courtId) {
       updateCourt(courtId, addCourt)
         .then((res) => {
+          setLoading(false)
           if (res?.status == 200 || res?.status == 201) {
             setVisible(false);
             toast.success(res?.data?.message, {
@@ -166,10 +170,12 @@ const LocationDetails = () => {
         })
         .catch((error) => {
           console.log(error);
+          setLoading(false)
         });
     } else {
       addCourtData(addCourt)
         .then((res) => {
+          setLoading(false)
           if (res?.status == 200 || res?.status == 201) {
             setVisible(false);
             toast.success(res?.data?.message, {
@@ -180,6 +186,7 @@ const LocationDetails = () => {
         })
         .catch((error) => {
           console.log(error);
+          setLoading(false)
         });
     }
   };
@@ -202,8 +209,10 @@ const LocationDetails = () => {
   };
 
   const handleDeleteCourt = () => {
+    setLoading(true)
     deleteCourtbyId(deletCourtId)
       .then((res) => {
+        setLoading(false)
         if (res.status == 200 || res?.status == 204) {
           toast.success(res?.data?.message, {
             theme: "colored",
@@ -213,12 +222,18 @@ const LocationDetails = () => {
         }
       })
       .catch((error) => {
+        setLoading(false)
         console.log(error);
       });
   };
 
   return (
     <>
+      {loading && (
+        <div className="loader_outer">
+          <span className="loader"></span>
+        </div>
+      )}
       <CCardBody className="p-2 position-relative">
         <CRow>
           <CCol sm={12} md={6}>

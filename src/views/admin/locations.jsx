@@ -45,6 +45,7 @@ const Locations = () => {
   const filterButtonRef = useRef(null);
   const [locationData, setLocationData] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [locationId, setLocationId] = useState("");
   const [selectionRange, setSelectionRange] = useState({
     startDate: new Date(),
@@ -92,9 +93,11 @@ const Locations = () => {
     getLocationData(currentPage, searchQuery);
   }, [currentPage, searchQuery]);
 
-  const getLocationData = (page = 1, query = "", startDate = "", endDate = "") => {
+  const getLocationData = (page = 1, query = "", startDate = "", endDate = "",loader) => {
+    setLoading(loader ? true : false)
     getLocation(page, query, startDate, endDate)
       .then((res) => {
+        setLoading(false)
         if (res.status == 200) {
           setLocationData(res?.data?.results);
           setTotalCounts(res?.data?.count); // Total count of admin data
@@ -104,13 +107,14 @@ const Locations = () => {
         }
       })
       .catch((error) => {
+        setLoading(false)
         console.log(error);
         setLocationData([]);
       });
   };
 
   const handleFilterClick = () => {
-    getLocationData(currentPage, searchQuery, startDate, endDate);
+    getLocationData(currentPage, searchQuery, startDate, endDate, "loader");
   };
 
   const handleSelect = (ranges) => {
@@ -141,8 +145,10 @@ const Locations = () => {
   };
 
   const handleDeleteLocation = () => {
+    setLoading(true)
     deleteLocationbyId(locationId)
       .then((res) => {
+        setLoading(false)
         if (res.status == 200 || res?.status == 204) {
           toast.success(res?.data?.message, {
             theme: "colored",
@@ -153,11 +159,17 @@ const Locations = () => {
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false)
       });
   };
 
   return (
     <>
+     {loading && (
+        <div className="loader_outer">
+          <span className="loader"></span>
+        </div>
+      )}
       {/* <WidgetsDropdown className="mb-4" /> */}
       {/* <CCard className="mb-4"> */}
       <CCardBody className="p-2 position-relative">

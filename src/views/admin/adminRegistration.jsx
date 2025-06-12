@@ -146,13 +146,14 @@ const AdminRegistration = () => {
       setErrors(validationErrors); // Set field-wise errors
       return; // Stop submission
     }
-
+    setLoading(true)
     const apiCall = isEditMode
       ? updateAdmin(id, formData)
       : addAdmintData(formData);
 
     apiCall
       .then((res) => {
+        setLoading(false)
         if (res.status === 200 || res.status === 201) {
           navigate(-1);
           toast.success(res?.data?.msg, { theme: "colored" });
@@ -166,6 +167,7 @@ const AdminRegistration = () => {
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false)
       });
   };
 
@@ -177,6 +179,11 @@ const AdminRegistration = () => {
 
   return (
     <>
+     {loading && (
+        <div className="loader_outer">
+          <span className="loader"></span>
+        </div>
+      )}
       <CCardBody className="p-2">
         <CRow>
           <CCol sm={12}>

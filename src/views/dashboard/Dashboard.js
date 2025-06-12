@@ -20,7 +20,13 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { DateRangePicker } from "react-date-range";
 import CIcon, { CIconSvg } from "@coreui/icons-react";
-import { cilCalendar, cilDelete, cilFilter, cilPencil, cilSearch } from "@coreui/icons";
+import {
+  cilCalendar,
+  cilDelete,
+  cilFilter,
+  cilPencil,
+  cilSearch,
+} from "@coreui/icons";
 import { CPagination, CPaginationItem } from "@coreui/react";
 import { deleteAdminbyId, getAdmin } from "../../utils/api";
 import deleteImage from "../../assets/images/delete_image.png";
@@ -56,6 +62,7 @@ const Dashboard = () => {
   const [totalPages, setTotalPages] = useState(0); // Total pages
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -68,15 +75,15 @@ const Dashboard = () => {
     pageNumbers.push(i);
   }
 
-
-
   const toggleMenu = (id) => {
     setOpenMenuId((prevId) => (prevId === id ? null : id)); // Toggle
   };
 
-  const getAdminData = (page = 1, query = "", startDate = "", endDate = "") => {
+  const getAdminData = (page = 1, query = "", startDate = "", endDate = "", loader) => {
+    setLoading(loader ? true : false)
     getAdmin(page, query, startDate, endDate)
       .then((res) => {
+        setLoading(false)
         if (res.status === 200) {
           setAdminData(res?.data?.results);
           setTotalCounts(res?.data?.count);
@@ -88,11 +95,12 @@ const Dashboard = () => {
       .catch((error) => {
         console.error(error);
         setAdminData([]);
+        setLoading(false);
       });
   };
 
   const handleFilterClick = () => {
-    getAdminData(currentPage, searchQuery, startDate, endDate);
+    getAdminData(currentPage, searchQuery, startDate, endDate, "loader");
   };
 
   useEffect(() => {
@@ -105,7 +113,6 @@ const Dashboard = () => {
   };
 
   const handleSelect = (ranges) => {
-    console.log("rangesranges",ranges)
     setSelectionRange(ranges.selection); // Update selection range with the new dates
     setIsCalendarOpen(false); // Close the calendar after selecting the date range
     const formattedStartDate = formatDate(ranges.selection.startDate);
@@ -129,8 +136,10 @@ const Dashboard = () => {
   };
 
   const handleDeleteAdmin = () => {
+    setLoading(true);
     deleteAdminbyId(adminId)
       .then((res) => {
+        setLoading(false);
         if (res.status == 200 || res?.status == 204) {
           toast.success(res?.data?.message, {
             theme: "colored",
@@ -141,13 +150,16 @@ const Dashboard = () => {
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
   };
 
   const handleClickOutside = (event) => {
     if (
-      calendarRef.current && !calendarRef.current.contains(event.target) &&
-      filterButtonRef.current && !filterButtonRef.current.contains(event.target)
+      calendarRef.current &&
+      !calendarRef.current.contains(event.target) &&
+      filterButtonRef.current &&
+      !filterButtonRef.current.contains(event.target)
     ) {
       setIsCalendarOpen(false); // Close calendar if clicked outside
     }
@@ -161,11 +173,15 @@ const Dashboard = () => {
     };
   }, []);
 
-
   return (
     <>
       {/* <WidgetsDropdown className="mb-4" /> */}
       {/* <CCard className="mb-4"> */}
+      {loading && (
+        <div className="loader_outer">
+          <span className="loader"></span>
+        </div>
+      )}
       <CCardBody className="p-2 position-relative">
         <CRow>
           <CCol sm={12} md={6}>
@@ -214,13 +230,17 @@ const Dashboard = () => {
                 }}
               >
                 <span>
-                 <CIcon icon={cilCalendar}></CIcon> {`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}
+                  <CIcon icon={cilCalendar}></CIcon>{" "}
+                  {`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}
                 </span>
               </div>
 
               {/* Display DateRangePicker when calendar is open */}
               {isCalendarOpen && (
-                <div ref={calendarRef} style={{ position: "absolute", zIndex: 10, top : "130px" }}>
+                <div
+                  ref={calendarRef}
+                  style={{ position: "absolute", zIndex: 10, top: "130px" }}
+                >
                   <DateRangePicker
                     ranges={[selectionRange]}
                     onChange={handleSelect} // Update the selection when a date is selected
@@ -229,7 +249,11 @@ const Dashboard = () => {
               )}
 
               {/* Filter Button */}
-              <CButton ref={filterButtonRef} className="filter_butn" onClick={handleFilterClick}>
+              <CButton
+                ref={filterButtonRef}
+                className="filter_butn"
+                onClick={handleFilterClick}
+              >
                 <CIcon icon={cilFilter}></CIcon> FILTERS
               </CButton>
 
