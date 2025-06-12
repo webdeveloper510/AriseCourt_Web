@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   CButton,
   CCard,
@@ -26,6 +26,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { DateRangePicker } from "react-date-range";
 import CIcon, { CIconSvg } from "@coreui/icons-react";
 import {
+  cilCalendar,
   cilCloudUpload,
   cilDelete,
   cilFilter,
@@ -35,9 +36,13 @@ import {
 import { deleteLocationbyId, getLocation } from "../../utils/api";
 import deleteImage from "../../assets/images/delete_image.png";
 import { toast } from "react-toastify";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
 
 const Locations = () => {
   const navigate = useNavigate();
+  const calendarRef = useRef(null);
+  const filterButtonRef = useRef(null);
   const [locationData, setLocationData] = useState([]);
   const [visible, setVisible] = useState(false);
   const [locationId, setLocationId] = useState("");
@@ -46,23 +51,54 @@ const Locations = () => {
     endDate: new Date(),
     key: "selection",
   });
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  };
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [startDate, setStartDate] = useState(formatDate(new Date())); // Start date for API
+  const [endDate, setEndDate] = useState(formatDate(new Date()));
   const [openMenuId, setOpenMenuId] = useState(null);
+  const itemsPerPage = 10;
+  const [totalCounts, setTotalCounts] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
 
   const toggleMenu = (id) => {
     setOpenMenuId((prevId) => (prevId === id ? null : id)); // Toggle
   };
 
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value); // Update search query
+    setCurrentPage(1); // Reset to the first page when a new search is made
+  };
 
   useEffect(() => {
-    getLocationData();
-  }, []);
+    getLocationData(currentPage, searchQuery);
+  }, [currentPage, searchQuery]);
 
-  const getLocationData = () => {
-    getLocation()
+  const getLocationData = (page = 1, query = "", startDate = "", endDate = "") => {
+    getLocation(page, query, startDate, endDate)
       .then((res) => {
         if (res.status == 200) {
           setLocationData(res?.data?.results);
+          setTotalCounts(res?.data?.count); // Total count of admin data
+          setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
         } else {
           setLocationData([]);
         }
@@ -73,20 +109,22 @@ const Locations = () => {
       });
   };
 
+  const handleFilterClick = () => {
+    getLocationData(currentPage, searchQuery, startDate, endDate);
+  };
+
   const handleSelect = (ranges) => {
-    const selectedRange = ranges.selection;
-    setSelectionRange(selectedRange);
-    if (selectedRange.startDate && selectedRange.endDate) {
-      setIsCalendarOpen(true);
-    } else {
-      setIsCalendarOpen(false);
-    }
+    setSelectionRange(ranges.selection); // Update selection range with the new dates
+    setIsCalendarOpen(false); // Close the calendar after selecting the date range
+    const formattedStartDate = formatDate(ranges.selection.startDate);
+    const formattedEndDate = formatDate(ranges.selection.endDate);
+
+    setStartDate(formattedStartDate);
+    setEndDate(formattedEndDate);
   };
 
   const handleCalendarClick = () => {
-    if (selectionRange.startDate && selectionRange.endDate) {
-      setIsCalendarOpen(!isCalendarOpen);
-    }
+    setIsCalendarOpen(!isCalendarOpen); // Toggle calendar visibility
   };
 
   const handleEditLocation = (id) => {
@@ -146,47 +184,86 @@ const Locations = () => {
                 <CIcon icon={cilSearch}></CIcon>
               </CInputGroupText>
               <CFormInput
+                type="text"
                 placeholder="Search..."
                 aria-label="Username"
                 aria-describedby="basic-addon1"
                 className="seacrh_input"
+                value={searchQuery}
+                onChange={handleSearchChange}
               />
             </CInputGroup>
           </CCol>
 
           <CCol sm={6} className="mt-3">
             <div className="text-end date_filter_section">
-              {/* Calendar area */}
-              <div>
+              <div
+                onClick={handleCalendarClick}
+                style={{
+                  padding: "10px",
+                  border: "1px solid #ddd",
+                  display: "inline-block",
+                  cursor: "pointer",
+                  borderRadius: "12px",
+                }}
+              >
+                <span>
+                  <CIcon icon={cilCalendar}></CIcon>{" "}
+                  {`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}
+                </span>
+              </div>
+
+              {/* Display DateRangePicker when calendar is open */}
+              {isCalendarOpen && (
                 <div
-                  onClick={handleCalendarClick}
-                  style={{
-                    padding: "10px",
-                    border: "1px solid #ddd",
-                    display: "inline-block",
-                    cursor: "pointer",
-                    borderRadius: "12px",
-                  }}
+                  ref={calendarRef}
+                  style={{ position: "absolute", zIndex: 10, top: "130px" }}
                 >
-                  <span>{`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}</span>
+                  <DateRangePicker
+                    ranges={[selectionRange]}
+                    onChange={handleSelect} // Update the selection when a date is selected
+                  />
                 </div>
+              )}
 
-                {/* Display DateRangePicker when calendar is open */}
-                {isCalendarOpen && (
-                  <div style={{ position: "absolute", zIndex: 10 }}>
-                    <DateRangePicker
-                      ranges={[selectionRange]}
-                      onChange={handleSelect}
-                    />
-                  </div>
-                )}
-              </div>
+              {/* Filter Button */}
+              <CButton
+                ref={filterButtonRef}
+                className="filter_butn"
+                onClick={handleFilterClick}
+              >
+                <CIcon icon={cilFilter}></CIcon> FILTERS
+              </CButton>
 
-              <div>
-                <CButton className="filter_butn">
-                  <CIcon icon={cilFilter}></CIcon> FILTERS
-                </CButton>
-              </div>
+              {/* <div>
+                            <div
+                              onClick={handleCalendarClick}
+                              style={{
+                                padding: "10px",
+                                border: "1px solid #ddd",
+                                display: "inline-block",
+                                cursor: "pointer",
+                                borderRadius: "12px",
+                              }}
+                            >
+                              <span>{`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}</span>
+                            </div>
+            
+                            {isCalendarOpen && (
+                              <div style={{ position: "absolute", zIndex: 10 }}>
+                                <DateRangePicker
+                                  ranges={[selectionRange]}
+                                  onChange={handleSelect}
+                                />
+                              </div>
+                            )}
+                          </div>
+            
+                          <div>
+                            <CButton className="filter_butn" onClick={()=>handleFilterDate()}>
+                              <CIcon icon={cilFilter}></CIcon> FILTERS
+                            </CButton>
+                          </div> */}
             </div>
           </CCol>
         </CRow>
@@ -248,7 +325,6 @@ const Locations = () => {
                                 setOpenMenuId(null);
                               }}
                               className="action_icons"
-                              
                             >
                               <CIcon icon={cilSearch} className="view_icon" />{" "}
                               View
@@ -260,10 +336,7 @@ const Locations = () => {
                               }}
                               className="action_icons"
                             >
-                              <CIcon
-                                icon={cilPencil}
-                                className="edit_icon"
-                              />{" "}
+                              <CIcon icon={cilPencil} className="edit_icon" />{" "}
                               Edit
                             </div>
                             <div
@@ -310,27 +383,46 @@ const Locations = () => {
           ""
         )}
 
-        <div className="pagination_outer mt-5 pt-2">
-          <div className="pagination_section">
-            <CRow className="align-items-center">
-              <CCol md={6}>
-                <p className="showing_page">{`Showing 1 to 6 of 6 entries`}</p>
-              </CCol>
-              <CCol md={6}>
-                <CPagination align="end" aria-label="Page navigation example">
-                  <CPaginationItem
-                    disabled
-                    className="prev_next"
-                  >{`<<`}</CPaginationItem>
-                  <CPaginationItem>1</CPaginationItem>
-                  <CPaginationItem>2</CPaginationItem>
-                  <CPaginationItem>3</CPaginationItem>
-                  <CPaginationItem className="prev_next">{`>>`}</CPaginationItem>
-                </CPagination>
-              </CCol>
-            </CRow>
+        {locationData?.length > 0 && (
+          <div className="pagination_outer mt-5">
+            <div className="pagination_section">
+              <CRow className="align-items-center">
+                <CCol md={6}>
+                  <p className="showing_page">
+                    {`Showing ${(currentPage - 1) * itemsPerPage + 1} to ${Math.min(currentPage * itemsPerPage, totalCounts)} of ${totalCounts} entries`}
+                  </p>
+                </CCol>
+                <CCol md={6}>
+                  <CPagination align="end" aria-label="Page navigation example">
+                    <CPaginationItem
+                      disabled={currentPage === 1}
+                      className="prev_next"
+                      onClick={() => handlePageChange(currentPage - 1)}
+                    >
+                      {"<<"}
+                    </CPaginationItem>
+                    {pageNumbers.map((page) => (
+                      <CPaginationItem
+                        key={page}
+                        active={currentPage === page}
+                        onClick={() => handlePageChange(page)}
+                      >
+                        {page}
+                      </CPaginationItem>
+                    ))}
+                    <CPaginationItem
+                      disabled={currentPage === totalPages}
+                      className="prev_next"
+                      onClick={() => handlePageChange(currentPage + 1)}
+                    >
+                      {">>"}
+                    </CPaginationItem>
+                  </CPagination>
+                </CCol>
+              </CRow>
+            </div>
           </div>
-        </div>
+        )}
       </CCardBody>
 
       <CModal

@@ -13,6 +13,8 @@ import {
   CTableRow,
   CFormSwitch,
   CForm,
+  CPagination,
+  CPaginationItem,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilPencil, cilPenNib, cilDelete, cilArrowLeft } from "@coreui/icons";
@@ -47,6 +49,27 @@ const LocationDetails = () => {
   });
   const [courtId, setCourtId] = useState("");
   const [errors, setErrors] = useState({});
+  const itemsPerPage = 5; // Number of items to show per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalCounts = courtData.length;
+  const totalPages = Math.ceil(totalCounts / itemsPerPage);
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page); // Set the new page
+    }
+  };
+
+  // Get data for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = courtData.slice(indexOfFirstItem, indexOfLastItem); // Slice the data to display on current page
+
+  // Create page numbers dynamically
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
 
   const handleCourtInput = (e) => {
     const { name, value } = e.target;
@@ -82,7 +105,7 @@ const LocationDetails = () => {
 
   useEffect(() => {
     getLocationDatabyId();
-    getCourtsData();
+    // getCourtsData(currentPage);
   }, [id]);
 
   const getLocationDatabyId = () => {
@@ -90,6 +113,9 @@ const LocationDetails = () => {
       .then((res) => {
         if (res?.status == 200) {
           setFormData(res?.data);
+          setCourtData(res?.data?.courts)
+          // setTotalCounts(res?.data?.courts?.length); // Total count of admin data
+          // setTotalPages(Math.ceil(res?.data?.courts?.length / itemsPerPage));
         }
       })
       .catch((error) => {
@@ -97,20 +123,20 @@ const LocationDetails = () => {
       });
   };
 
-  const getCourtsData = () => {
-    getCourts(id)
-      .then((res) => {
-        if (res.status == 200) {
-          setCourtData(res?.data?.results);
-        } else {
-          setCourtData([]);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setCourtData([]);
-      });
-  };
+  // const getCourtsData = (page = 1) => {
+  //   getCourts(id, page)
+  //     .then((res) => {
+  //       if (res.status == 200) {
+  //         setCourtData(res?.data?.results);
+  //       } else {
+  //         setCourtData([]);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       setCourtData([]);
+  //     });
+  // };
 
   const handleBackNavigate = () => {
     navigate(-1);
@@ -135,7 +161,7 @@ const LocationDetails = () => {
             toast.success(res?.data?.message, {
               theme: "colored",
             });
-            getCourtsData();
+            getLocationDatabyId();
           }
         })
         .catch((error) => {
@@ -149,7 +175,7 @@ const LocationDetails = () => {
             toast.success(res?.data?.message, {
               theme: "colored",
             });
-            getCourtsData();
+            getLocationDatabyId();
           }
         })
         .catch((error) => {
@@ -182,7 +208,7 @@ const LocationDetails = () => {
           toast.success(res?.data?.message, {
             theme: "colored",
           });
-          getCourtsData();
+          getLocationDatabyId();
           setDeletCourt(false);
         }
       })
@@ -193,7 +219,7 @@ const LocationDetails = () => {
 
   return (
     <>
-      <CCardBody className="p-2">
+      <CCardBody className="p-2 position-relative">
         <CRow>
           <CCol sm={12} md={6}>
             <div className="d-flex gap-3 align-items-center">
@@ -326,7 +352,7 @@ const LocationDetails = () => {
             </CTableHead>
             <CTableBody>
               {courtData?.length > 0 ? (
-                courtData?.map((item, i) => {
+                currentItems?.map((item, i) => {
                   return (
                     <CTableRow key={i}>
                       <CTableDataCell>{item?.court_number}</CTableDataCell>
@@ -353,69 +379,52 @@ const LocationDetails = () => {
               ) : (
                 <></>
               )}
-
-              {/* <CTableRow>
-                <CTableDataCell>01</CTableDataCell>
-                <CTableDataCell>#3214</CTableDataCell>
-                <CTableDataCell>$8.00/hr</CTableDataCell>
-                <CTableDataCell>2%</CTableDataCell>
-                <CTableDataCell>2%</CTableDataCell>
-                <CTableDataCell>$57.00</CTableDataCell>
-                <CTableDataCell>
-                  <CIcon icon={cilPencil}></CIcon>
-                  <CIcon icon={cilDelete}></CIcon>
-                </CTableDataCell>
-              </CTableRow>
-              <CTableRow>
-                <CTableDataCell>01</CTableDataCell>
-                <CTableDataCell>#3214</CTableDataCell>
-                <CTableDataCell>$8.00/hr</CTableDataCell>
-                <CTableDataCell>2%</CTableDataCell>
-                <CTableDataCell>2%</CTableDataCell>
-                <CTableDataCell>$57.00</CTableDataCell>
-                <CTableDataCell>
-                  <CIcon icon={cilPencil}></CIcon>
-                  <CIcon icon={cilDelete}></CIcon>
-                </CTableDataCell>
-              </CTableRow>
-              <CTableRow>
-                <CTableDataCell>01</CTableDataCell>
-                <CTableDataCell>#3214</CTableDataCell>
-                <CTableDataCell>$8.00/hr</CTableDataCell>
-                <CTableDataCell>2%</CTableDataCell>
-                <CTableDataCell>2%</CTableDataCell>
-                <CTableDataCell>$57.00</CTableDataCell>
-                <CTableDataCell>
-                  <CIcon icon={cilPencil}></CIcon>
-                  <CIcon icon={cilDelete}></CIcon>
-                </CTableDataCell>
-              </CTableRow>
-              <CTableRow>
-                <CTableDataCell>01</CTableDataCell>
-                <CTableDataCell>#3214</CTableDataCell>
-                <CTableDataCell>$8.00/hr</CTableDataCell>
-                <CTableDataCell>2%</CTableDataCell>
-                <CTableDataCell>2%</CTableDataCell>
-                <CTableDataCell>$57.00</CTableDataCell>
-                <CTableDataCell>
-                  <CIcon icon={cilPencil}></CIcon>
-                  <CIcon icon={cilDelete}></CIcon>
-                </CTableDataCell>
-              </CTableRow>
-              <CTableRow>
-                <CTableDataCell>01</CTableDataCell>
-                <CTableDataCell>#3214</CTableDataCell>
-                <CTableDataCell>$8.00/hr</CTableDataCell>
-                <CTableDataCell>2%</CTableDataCell>
-                <CTableDataCell>2%</CTableDataCell>
-                <CTableDataCell>$57.00</CTableDataCell>
-                <CTableDataCell>
-                  <CIcon icon={cilPencil}></CIcon>
-                  <CIcon icon={cilDelete}></CIcon>
-                </CTableDataCell>
-              </CTableRow> */}
             </CTableBody>
           </CTable>
+
+          {courtData?.length > 0 && (
+            <div className="pagination_outer mt-5">
+              <div className="pagination_section">
+                <CRow className="align-items-center">
+                  <CCol md={6}>
+                    <p className="showing_page">
+                      {`Showing ${(currentPage - 1) * itemsPerPage + 1} to ${Math.min(currentPage * itemsPerPage, totalCounts)} of ${totalCounts} entries`}
+                    </p>
+                  </CCol>
+                  <CCol md={6}>
+                    <CPagination
+                      align="end"
+                      aria-label="Page navigation example"
+                    >
+                      <CPaginationItem
+                        disabled={currentPage === 1}
+                        className="prev_next"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                      >
+                        {"<<"}
+                      </CPaginationItem>
+                      {pageNumbers.map((page) => (
+                        <CPaginationItem
+                          key={page}
+                          active={currentPage === page}
+                          onClick={() => handlePageChange(page)}
+                        >
+                          {page}
+                        </CPaginationItem>
+                      ))}
+                      <CPaginationItem
+                        disabled={currentPage === totalPages}
+                        className="prev_next"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                      >
+                        {">>"}
+                      </CPaginationItem>
+                    </CPagination>
+                  </CCol>
+                </CRow>
+              </div>
+            </div>
+          )}
         </div>
       </CCardBody>
 
@@ -445,8 +454,9 @@ const LocationDetails = () => {
                     name="court_number"
                     onChange={(e) => handleCourtInput(e)}
                   />
-                  {errors.court_number && <div className="text-danger">{errors.court_number}</div>}
-
+                  {errors.court_number && (
+                    <div className="text-danger">{errors.court_number}</div>
+                  )}
                 </CCol>
                 <CCol sm={12} md={6} lg={6} className="my-1">
                   <label className="add_court_label">Court Fee by Hour</label>
@@ -460,8 +470,9 @@ const LocationDetails = () => {
                     name="court_fee_hrs"
                     onChange={(e) => handleCourtInput(e)}
                   />
-                  {errors.court_fee_hrs && <div className="text-danger">{errors.court_fee_hrs}</div>}
-
+                  {errors.court_fee_hrs && (
+                    <div className="text-danger">{errors.court_fee_hrs}</div>
+                  )}
                 </CCol>
                 <CCol sm={12} md={6} lg={6} className="my-1">
                   <label className="add_court_label">Taxes percentage</label>
@@ -475,8 +486,9 @@ const LocationDetails = () => {
                     name="tax"
                     onChange={(e) => handleCourtInput(e)}
                   />
-                  {errors.tax && <div className="text-danger">{errors.tax}</div>}
-
+                  {errors.tax && (
+                    <div className="text-danger">{errors.tax}</div>
+                  )}
                 </CCol>
                 <CCol sm={12} md={6} lg={6} className="my-1">
                   <label className="add_court_label">cc fees%</label>
@@ -490,8 +502,9 @@ const LocationDetails = () => {
                     name="cc_fees"
                     onChange={(e) => handleCourtInput(e)}
                   />
-                  {errors.cc_fees && <div className="text-danger">{errors.cc_fees}</div>}
-
+                  {errors.cc_fees && (
+                    <div className="text-danger">{errors.cc_fees}</div>
+                  )}
                 </CCol>
                 {/* <CCol sm={12} md={6} lg={6} className="my-1">
                 <label className="add_court_label">User Type</label>

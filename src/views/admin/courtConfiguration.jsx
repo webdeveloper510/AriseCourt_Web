@@ -19,6 +19,8 @@ import {
 } from "@coreui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { DateRangePicker } from "react-date-range";
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 import CIcon, { CIconSvg } from "@coreui/icons-react";
 import {
   cilCloudUpload,

@@ -68,25 +68,25 @@ const Login = () => {
     }
     // navigate("/dashboard");
 
-    // loginUser(formData)
-    //   .then((res) => {
-    //     console.log("loginUser", res);
-    //     setLoading(false);
-    //     if (res.status === 200) {
-    //       navigate("/dashboard");
-    //       toast.success(res?.data?.msg, { theme: "colored" });
-    //       localStorage.setItem("user_access_valid_token", res?.data?.token?.access);
-    //       localStorage.setItem("logged_user_data", JSON.stringify(res?.data?.data))
-    //     }else{
-    //       toast.error(res?.data?.errors, {
-    //         theme:"colored"
-    //       })
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     setLoading(false);
-    //   });
+    loginUser(formData)
+      .then((res) => {
+        console.log("loginUser", res);
+        setLoading(false);
+        if (res.status === 200) {
+          navigate("/dashboard");
+          toast.success(res?.data?.msg, { theme: "colored" });
+          localStorage.setItem("user_access_valid_token", res?.data?.token?.access);
+          localStorage.setItem("logged_user_data", JSON.stringify(res?.data?.data))
+        }else{
+          toast.error(res?.data?.errors, {
+            theme:"colored"
+          })
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
   };
 
   const handleKeyDown = (e) => {

@@ -1,7 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL =  "http://127.0.0.1:8000";
-
+axios.defaults.baseURL = "http://127.0.0.1:8000";
 
 export const registerUser = async (data) => {
   try {
@@ -34,9 +33,11 @@ export const addLocation = async (data) => {
   }
 };
 
-export const getLocation = async () => {
+export const getLocation = async (page, search, startDate, endDate) => {
+  const searchVal = search ? `&search=${search}` : "";
+  const start_date = startDate ? `&start_date=${startDate}&end_date=${endDate}` : ""
   try {
-    const response = await axios.get("/locations/", {
+    const response = await axios.get(`/locations/?page=${page}${searchVal}${start_date}`, {
       headers: {
         Authorization: `${localStorage.getItem("user_access_valid_token")}`,
       },
@@ -99,9 +100,9 @@ export const addCourtData = async (data) => {
   }
 };
 
-export const getCourts = async () => {
+export const getCourts = async (id, page) => {
   try {
-    const response = await axios.get("/courts/", {
+    const response = await axios.get(`/courts/${id}/?page=${page}`, {
       headers: {
         Authorization: `${localStorage.getItem("user_access_valid_token")}`,
       },
@@ -151,13 +152,18 @@ export const deleteCourtbyId = async (id) => {
   }
 };
 
-export const getAdmin = async () => {
+export const getAdmin = async (page, search, startDate, endDate) => {
+  const searchVal = search ? `&search=${search}` : "";
+  const start_date = startDate ? `&start_date=${startDate}&end_date=${endDate}` : ""
   try {
-    const response = await axios.get("/create_admin/", {
-      headers: {
-        Authorization: `${localStorage.getItem("user_access_valid_token")}`,
-      },
-    });
+    const response = await axios.get(
+      `/create_admin/?page=${page}${searchVal}${start_date}`,
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("user_access_valid_token")}`,
+        },
+      }
+    );
     return response;
   } catch (error) {
     return error.response;
