@@ -244,7 +244,7 @@ body {
   font-weight: 500 !important;
   font-family: "DM Sans", sans-serif !important;
   padding: 15px 10px;
-  background: #F2F2FA;
+  background: #E7F0FF;
 }
 
 .main_table td {
@@ -610,8 +610,38 @@ input:-webkit-autofill {
       -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
   }
 }
+.otp-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
 
+.otp-input {
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  text-align: center;
+  color: #0860FB;
+  font-weight: 600;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
 
+.otp-input:focus {
+  border-color: #007bff;
+}
+.forgot_email{
+  color: #0860FB;
+}
+.resend_otp{
+  color: #0860FB;
+  cursor: pointer;
+}
+.user_phone{
+  color: #0860FB;
+  font-size: 14px;
+}
 
 
 

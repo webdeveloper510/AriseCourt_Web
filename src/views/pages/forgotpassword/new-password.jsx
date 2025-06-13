@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   CButton,
   CCard,
@@ -13,35 +13,41 @@ import Logo from "../../../assets/images/login_logo.png";
 import HomeBg from "../../../assets/images/login_bg_image.png";
 import CIcon from "@coreui/icons-react";
 import { cilLockLocked, cilLockUnlocked } from "@coreui/icons";
-import { loginUser } from "../../../utils/api";
+import { loginUser, resetNewPassword } from "../../../utils/api";
 import { toast } from "react-toastify";
-// import cilEye from "@coreui/icons";
-// import cilEyeSlash from "@coreui/icons";
 
-const Login = () => {
+const NewPassword = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log("location", location);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    new_password: "",
+    confirm_password: "",
   });
   const [errors, setErrors] = useState({});
-
   const [loading, setLoading] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPass(!showConfirmPass);
+  };
 
   const validateFormData = (formData) => {
     let errors = {};
 
-    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = "Email is required and must be valid.";
+    if (!formData.new_password || formData.new_password.length < 6) {
+      errors.new_password =
+        "Password is required and must be at least 6 characters long.";
     }
 
-    if (!formData.password || formData.password.length < 6) {
-      errors.password = "Password is required and must be at least 6 characters long.";
+    if (!formData.confirm_password) {
+      errors.confirm_password = "Please confirm your password.";
+    } else if (formData.new_password !== formData.confirm_password) {
+      errors.confirm_password = "Passwords do not match.";
     }
 
     return errors;
@@ -66,20 +72,23 @@ const Login = () => {
       setLoading(false);
       return;
     }
-    // navigate("/dashboard");
 
-    loginUser(formData)
+    const data = {
+      email: location?.state,
+      new_password: formData?.new_password,
+      confirm_password: formData?.confirm_password,
+    };
+
+    resetNewPassword(data)
       .then((res) => {
         setLoading(false);
         if (res.status === 200) {
-          navigate("/dashboard");
-          toast.success(res?.data?.msg, { theme: "colored" });
-          localStorage.setItem("user_access_valid_token", res?.data?.token?.access);
-          localStorage.setItem("logged_user_data", JSON.stringify(res?.data?.data))
-        }else{
+          navigate("/login");
+          toast.success(res?.data?.message, { theme: "colored" });
+        } else {
           toast.error(res?.data?.errors, {
-            theme:"colored"
-          })
+            theme: "colored",
+          });
         }
       })
       .catch((error) => {
@@ -95,7 +104,10 @@ const Login = () => {
   };
 
   return (
-    <div className=" min-vh-100 d-flex flex-row align-items-center" style={{ height: "100vh" }}>
+    <div
+      className=" min-vh-100 d-flex flex-row align-items-center"
+      style={{ height: "100vh" }}
+    >
       <CRow className="justify-content-center" style={{ width: "100%" }}>
         <CCol md={12}>
           <CRow
@@ -108,43 +120,29 @@ const Login = () => {
               </CCard>
             </CCol>
             <CCol md={6}>
-              <div className="d-flex justify-content-center form_outer_section" >
+              <div className="d-flex justify-content-center form_outer_section">
                 <div className="form_inner_section">
                   <CForm onSubmit={handleFormSubmit} onKeyDown={handleKeyDown}>
                     <img src={Logo} alt="login-logo" />
-                    <h2 id="traffic" className="card-title mt-3 mb-0">
-                      Login
+                    <h2 id="traffic" className="card-title mt-3 mb-3">
+                      Set new password
                     </h2>
-                    <p className="text-body-secondary">Welcome Back</p>
-                    <CInputGroup className="mb-3">
+                    {/* <p className="text-body-secondary">Your password must be at strong</p> */}
+
+                    <CInputGroup className="mb-2">
                       <div className="input_section">
-                        <label>Email Address</label>
-                        <CFormInput
-                          placeholder="Enter Email"
-                          autoComplete="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={(e) => {
-                            handleInputChange(e);
-                          }}
-                        />
-                      </div>
-                         {errors.email && <span className="error_message">{errors.email}</span>}
-                    </CInputGroup>
-                    <CInputGroup className="mb-4">
-                      <div className="input_section">
-                        <label>Password</label>
+                        <label>New Password</label>
                         <CFormInput
                           type={showPassword ? "text" : "password"}
                           placeholder="Password"
                           autoComplete="password"
-                          name="password"
-                          value={formData.password}
+                          name="new_password"
+                          value={formData.new_password}
                           onChange={(e) => {
                             handleInputChange(e);
                           }}
                         />
-                        
+
                         <CIcon
                           icon={showPassword ? cilLockUnlocked : cilLockLocked} // Change icon based on state
                           onClick={() => togglePasswordVisibility()} // Toggle visibility on click
@@ -156,15 +154,53 @@ const Login = () => {
                             color: "#0860FB",
                             zIndex: "99",
                           }} // Add pointer cursor to indicate clickability
-                          />
+                        />
                       </div>
-                        {errors.password && <span className="error_message">{errors.password}</span>}
+                      {errors.new_password && (
+                        <span className="error_message">
+                          {errors.new_password}
+                        </span>
+                      )}
+                    </CInputGroup>
+                    <CInputGroup className="mb-4">
+                      <div className="input_section">
+                        <label>Confirm Password</label>
+                        <CFormInput
+                          type={showConfirmPass ? "text" : "password"}
+                          placeholder="Confirm Password"
+                          autoComplete="confirm_password"
+                          name="confirm_password"
+                          value={formData.confirm_password}
+                          onChange={(e) => {
+                            handleInputChange(e);
+                          }}
+                        />
+
+                        <CIcon
+                          icon={
+                            showConfirmPass ? cilLockUnlocked : cilLockLocked
+                          } // Change icon based on state
+                          onClick={() => toggleConfirmPasswordVisibility()} // Toggle visibility on click
+                          style={{
+                            cursor: "pointer",
+                            position: "absolute",
+                            right: "10px",
+                            top: "33px",
+                            color: "#0860FB",
+                            zIndex: "99",
+                          }} // Add pointer cursor to indicate clickability
+                        />
+                      </div>
+                      {errors.confirm_password && (
+                        <span className="error_message">
+                          {errors.confirm_password}
+                        </span>
+                      )}
                     </CInputGroup>
                     <CRow>
                       <CCol xs={12} className="">
                         <CButton type="button" className="text_color px-0">
-                          <Link to="/forgot-password">Forgot password?</Link>
-                          
+                          <Link to="/login">Back to Login</Link>
                         </CButton>
                       </CCol>
                       <CCol xs={12}>
@@ -172,7 +208,7 @@ const Login = () => {
                           type="submit"
                           className="px-4 add_new_butn w-100"
                         >
-                          {loading ? "Loading..." : "Login"}
+                          {loading ? "Loading..." : "Set Password"}
                         </CButton>
                       </CCol>
                     </CRow>
@@ -187,4 +223,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default NewPassword;

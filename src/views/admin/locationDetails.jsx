@@ -110,10 +110,10 @@ const LocationDetails = () => {
   }, [id]);
 
   const getLocationDatabyId = () => {
-    setLoading(true)
+    setLoading(true);
     getLocationbyId(id)
       .then((res) => {
-        setLoading(false)
+        setLoading(false);
         if (res?.status == 200) {
           setFormData(res?.data);
           setCourtData(res?.data?.courts);
@@ -121,7 +121,7 @@ const LocationDetails = () => {
       })
       .catch((error) => {
         console.log(error);
-        setLoading(false)
+        setLoading(false);
       });
   };
 
@@ -155,11 +155,11 @@ const LocationDetails = () => {
       setErrors(validationErrors);
       return;
     }
-    setLoading(true)
+    setLoading(true);
     if (courtId) {
       updateCourt(courtId, addCourt)
         .then((res) => {
-          setLoading(false)
+          setLoading(false);
           if (res?.status == 200 || res?.status == 201) {
             setVisible(false);
             toast.success(res?.data?.message, {
@@ -170,12 +170,12 @@ const LocationDetails = () => {
         })
         .catch((error) => {
           console.log(error);
-          setLoading(false)
+          setLoading(false);
         });
     } else {
       addCourtData(addCourt)
         .then((res) => {
-          setLoading(false)
+          setLoading(false);
           if (res?.status == 200 || res?.status == 201) {
             setVisible(false);
             toast.success(res?.data?.message, {
@@ -186,7 +186,7 @@ const LocationDetails = () => {
         })
         .catch((error) => {
           console.log(error);
-          setLoading(false)
+          setLoading(false);
         });
     }
   };
@@ -209,10 +209,10 @@ const LocationDetails = () => {
   };
 
   const handleDeleteCourt = () => {
-    setLoading(true)
+    setLoading(true);
     deleteCourtbyId(deletCourtId)
       .then((res) => {
-        setLoading(false)
+        setLoading(false);
         if (res.status == 200 || res?.status == 204) {
           toast.success(res?.data?.message, {
             theme: "colored",
@@ -222,7 +222,7 @@ const LocationDetails = () => {
         }
       })
       .catch((error) => {
-        setLoading(false)
+        setLoading(false);
         console.log(error);
       });
   };
@@ -349,25 +349,25 @@ const LocationDetails = () => {
             </CCol>
           </CRow>
 
-          <CTable className="mt-4 main_table" striped>
-            <CTableHead>
-              <CTableRow>
-                <CTableHeaderCell scope="col">Court Number</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Location ID</CTableHeaderCell>
-                <CTableHeaderCell scope="col">
-                  Court Fee by Hour
-                </CTableHeaderCell>
-                <CTableHeaderCell scope="col">
-                  Taxes percentage
-                </CTableHeaderCell>
-                <CTableHeaderCell scope="col">cc fees%</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Availability</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Action</CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              {courtData?.length > 0 ? (
-                currentItems?.map((item, i) => {
+          {courtData?.length > 0 ? (
+            <CTable className="mt-4 main_table" striped>
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell scope="col">Court Number</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Location ID</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">
+                    Court Fee by Hour
+                  </CTableHeaderCell>
+                  <CTableHeaderCell scope="col">
+                    Taxes percentage
+                  </CTableHeaderCell>
+                  <CTableHeaderCell scope="col">cc fees%</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Availability</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+                {currentItems?.map((item, i) => {
                   return (
                     <CTableRow key={i}>
                       <CTableDataCell>{item?.court_number}</CTableDataCell>
@@ -390,12 +390,14 @@ const LocationDetails = () => {
                       </CTableDataCell>
                     </CTableRow>
                   );
-                })
-              ) : (
-                <></>
-              )}
-            </CTableBody>
-          </CTable>
+                })}
+              </CTableBody>
+            </CTable>
+          ) : (
+            <div className="my-5 d-flex justify-content-center">
+              <h1 className="card-title">Data Not Found</h1>
+            </div>
+          )}
 
           {courtData?.length > 0 && (
             <div className="pagination_outer mt-5">

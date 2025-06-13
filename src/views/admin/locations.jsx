@@ -93,11 +93,17 @@ const Locations = () => {
     getLocationData(currentPage, searchQuery);
   }, [currentPage, searchQuery]);
 
-  const getLocationData = (page = 1, query = "", startDate = "", endDate = "",loader) => {
-    setLoading(loader ? true : false)
+  const getLocationData = (
+    page = 1,
+    query = "",
+    startDate = "",
+    endDate = "",
+    loader
+  ) => {
+    setLoading(loader ? true : false);
     getLocation(page, query, startDate, endDate)
       .then((res) => {
-        setLoading(false)
+        setLoading(false);
         if (res.status == 200) {
           setLocationData(res?.data?.results);
           setTotalCounts(res?.data?.count); // Total count of admin data
@@ -107,7 +113,7 @@ const Locations = () => {
         }
       })
       .catch((error) => {
-        setLoading(false)
+        setLoading(false);
         console.log(error);
         setLocationData([]);
       });
@@ -145,10 +151,10 @@ const Locations = () => {
   };
 
   const handleDeleteLocation = () => {
-    setLoading(true)
+    setLoading(true);
     deleteLocationbyId(locationId)
       .then((res) => {
-        setLoading(false)
+        setLoading(false);
         if (res.status == 200 || res?.status == 204) {
           toast.success(res?.data?.message, {
             theme: "colored",
@@ -159,13 +165,13 @@ const Locations = () => {
       })
       .catch((error) => {
         console.log(error);
-        setLoading(false)
+        setLoading(false);
       });
   };
 
   return (
     <>
-     {loading && (
+      {loading && (
         <div className="loader_outer">
           <span className="loader"></span>
         </div>
@@ -246,36 +252,6 @@ const Locations = () => {
               >
                 <CIcon icon={cilFilter}></CIcon> FILTERS
               </CButton>
-
-              {/* <div>
-                            <div
-                              onClick={handleCalendarClick}
-                              style={{
-                                padding: "10px",
-                                border: "1px solid #ddd",
-                                display: "inline-block",
-                                cursor: "pointer",
-                                borderRadius: "12px",
-                              }}
-                            >
-                              <span>{`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}</span>
-                            </div>
-            
-                            {isCalendarOpen && (
-                              <div style={{ position: "absolute", zIndex: 10 }}>
-                                <DateRangePicker
-                                  ranges={[selectionRange]}
-                                  onChange={handleSelect}
-                                />
-                              </div>
-                            )}
-                          </div>
-            
-                          <div>
-                            <CButton className="filter_butn" onClick={()=>handleFilterDate()}>
-                              <CIcon icon={cilFilter}></CIcon> FILTERS
-                            </CButton>
-                          </div> */}
             </div>
           </CCol>
         </CRow>
@@ -392,7 +368,9 @@ const Locations = () => {
             </CTableBody>
           </CTable>
         ) : (
-          ""
+          <div className="my-5 d-flex justify-content-center">
+            <h1 className="card-title">Data Not Found</h1>
+          </div>
         )}
 
         {locationData?.length > 0 && (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   CButton,
   CCard,
@@ -19,8 +19,8 @@ import {
 } from "@coreui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { DateRangePicker } from "react-date-range";
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
 import CIcon, { CIconSvg } from "@coreui/icons-react";
 import {
   cilCloudUpload,
@@ -29,36 +29,178 @@ import {
   cilPencil,
   cilSearch,
 } from "@coreui/icons";
+import { getCourtBooking } from "../../utils/api";
 
 const CourtConfiguration = () => {
   const navigate = useNavigate();
+  const calendarRef = useRef(null);
+  const filterButtonRef = useRef(null);
   const [selectionRange, setSelectionRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
     key: "selection",
   });
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
 
+    return `${year}-${month}-${day}`;
+  };
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [startDate, setStartDate] = useState(formatDate(new Date())); // Start date for API
+  const [endDate, setEndDate] = useState(formatDate(new Date()));
+  const [visible, setVisible] = useState(false);
+  const [adminId, setAdminId] = useState("");
+  const [adminData, setAdminData] = useState([]);
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const itemsPerPage = 10;
+  const [totalCounts, setTotalCounts] = useState(0); // Total number of items
+  const [totalPages, setTotalPages] = useState(0); // Total pages
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page); // Update current page
+    }
+  };
+
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
+  const toggleMenu = (id) => {
+    setOpenMenuId((prevId) => (prevId === id ? null : id)); // Toggle
+  };
+
+  const getCourtBookingData = () => {
+    getCourtBooking()
+      .then((res) => {
+        console.log("getCourtBookingData", res);
+        if (res?.status == 200) {
+          setAdminData(res?.data?.future_bookings);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  // const getCourtBookingData = (
+  //   page = 1,
+  //   query = "",
+  //   startDate = "",
+  //   endDate = "",
+  //   loader
+  // ) => {
+  //   setLoading(loader ? true : false);
+  //   getCourtBooking()
+  //     .then((res) => {
+  //       console.log("getCourtBookingData", res)
+  //       setLoading(false);
+  //       if (res.status === 200) {
+  //         setAdminData(res?.data?.results);
+  //         setTotalCounts(res?.data?.count);
+  //         setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
+  //       } else {
+  //         setAdminData([]);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //       setAdminData([]);
+  //       setLoading(false);
+  //     });
+  // };
+
+  const handleFilterClick = () => {
+    getCourtBookingData(currentPage, searchQuery, startDate, endDate, "loader");
+  };
+
+  useEffect(() => {
+    getCourtBookingData();
+  }, []);
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+    setCurrentPage(1);
+  };
 
   const handleSelect = (ranges) => {
-    console.log(ranges);
-    const selectedRange = ranges.selection;
-    setSelectionRange(selectedRange);
-    if (selectedRange.startDate && selectedRange.endDate) {
-      setIsCalendarOpen(true);
-    } else {
-      setIsCalendarOpen(false);
-    }
+    setSelectionRange(ranges.selection); // Update selection range with the new dates
+    setIsCalendarOpen(false); // Close the calendar after selecting the date range
+    const formattedStartDate = formatDate(ranges.selection.startDate);
+    const formattedEndDate = formatDate(ranges.selection.endDate);
+
+    setStartDate(formattedStartDate);
+    setEndDate(formattedEndDate);
   };
 
   const handleCalendarClick = () => {
-    if (selectionRange.startDate && selectionRange.endDate) {
-      setIsCalendarOpen(!isCalendarOpen);
+    setIsCalendarOpen(!isCalendarOpen); // Toggle calendar visibility
+  };
+
+  const handleEditAdmin = (id) => {
+    navigate(`/update-registraion/${id}`);
+  };
+
+  const handleDeleteModal = (id) => {
+    setVisible(true);
+    setAdminId(id);
+  };
+
+  const handleDeleteAdmin = () => {
+    setLoading(true);
+    deleteAdminbyId(adminId)
+      .then((res) => {
+        setLoading(false);
+        if (res.status == 200 || res?.status == 204) {
+          toast.success(res?.data?.message, {
+            theme: "colored",
+          });
+          getCourtBookingData();
+          setVisible(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+  };
+
+  const handleClickOutside = (event) => {
+    if (
+      calendarRef.current &&
+      !calendarRef.current.contains(event.target) &&
+      filterButtonRef.current &&
+      !filterButtonRef.current.contains(event.target)
+    ) {
+      setIsCalendarOpen(false); // Close calendar if clicked outside
     }
   };
 
-  const handleEditCourt = () => {
-    navigate(`/update-registraion/12`);
+  // Add event listener for detecting outside clicks
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const convertToAmPm = (timeString) => {
+    const [hours, minutes] = timeString.split(":");
+    const hourNum = parseInt(hours, 10);
+    const ampm = hourNum >= 12 ? "PM" : "AM";
+    const adjustedHour = hourNum % 12 || 12; // Convert 0 to 12
+    return `${adjustedHour}:${minutes} ${ampm}`;
+  };
+
+  const convertToHoursOnly = (timeString) => {
+    const [hours, minutes, seconds] = timeString.split(":");
+    const hourNum = parseInt(hours, 10);
+    return `${hourNum} Hour${hourNum !== 1 ? "s" : ""}`;
   };
 
   return (
@@ -131,223 +273,180 @@ const CourtConfiguration = () => {
             </div>
           </CCol>
         </CRow>
+        {adminData?.length > 0 ? (
+          <CTable className="mt-4 main_table" striped>
+            <CTableHead>
+              <CTableRow>
+                {/* <CTableHeaderCell scope="col">Location Id</CTableHeaderCell> */}
+                <CTableHeaderCell scope="col">Admin Id</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Location</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Date & Time</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Court No.</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Booked By</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Type</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Contact Details</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {adminData?.map((item, i) => {
+                return (
+                  <CTableRow key={i}>
+                    <CTableDataCell>{item?.id}</CTableDataCell>
+                    <CTableDataCell>{item?.user?.first_name}</CTableDataCell>
+                    <CTableDataCell>
+                      <div>
+                        <p className="mb-0 user_phone">
+                          {item?.start_time
+                            ? `${convertToAmPm(item?.start_time)} - ${convertToHoursOnly(item?.duration_time)}`
+                            : ""}
+                        </p>
+                        <p className="mb-0">{item?.booking_date}</p>
+                      </div>
+                    </CTableDataCell>
+                      <CTableDataCell>0</CTableDataCell>
+                    <CTableDataCell>{`${item?.user?.first_name} ${item?.user?.last_name}`}</CTableDataCell>
+                    <CTableDataCell>
+                      {item?.user?.user_type == 1
+                        ? "Admin"
+                        : item?.user?.user_type == 3
+                          ? "Player"
+                          : ""}
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <div>
+                        <p className="mb-0 user_phone">{item?.user?.phone}</p>
+                        <p className="mb-0">{item?.user?.email}</p>
+                      </div>
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <div
+                        style={{ position: "relative", marginBottom: "16px" }}
+                      >
+                        {/* Three-dot icon */}
+                        <span
+                          style={{ fontSize: "24px", cursor: "pointer" }}
+                          onClick={() => toggleMenu(item.id)}
+                        >
+                          ⋮
+                        </span>
 
-        <CTable className="mt-4 main_table" striped>
-          <CTableHead>
-            <CTableRow>
-              <CTableHeaderCell scope="col">Booking Id</CTableHeaderCell>
-              <CTableHeaderCell scope="col">
-                Location Name & ID
-              </CTableHeaderCell>
-              <CTableHeaderCell scope="col">Date & Time</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Court No.</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Booked By</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Contact Details</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Price & Status</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Action</CTableHeaderCell>
-            </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <div className="d-flex">
-                  {" "}
+                        {/* Dropdown menu only for selected item */}
+                        {openMenuId === item.id && (
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: "30px",
+                              right: 0,
+                              backgroundColor: "#fff",
+                              borderRadius: "10px",
+                              padding: "12px",
+                              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+                              zIndex: 999999,
+                            }}
+                          >
+                            <div
+                              onClick={() => {
+                                handleEditAdmin(item?.id);
+                              }}
+                              className="action_icons"
+                            >
+                              <CIcon icon={cilPencil} className="edit_icon" />{" "}
+                              Edit
+                            </div>
+                            <div
+                              onClick={() => {
+                                handleDeleteModal(item.id);
+                                setOpenMenuId(null);
+                              }}
+                              className="action_icons"
+                            >
+                              <CIcon icon={cilDelete} className="delete_icon" />{" "}
+                              Delete
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      {/* <CIcon
+                      icon={cilPencil}
+                      onClick={() => {
+                        handleEditAdmin(item?.id);
+                      }}
+                      className="mx-2 edit_icon"
+                    ></CIcon>
+                    <CIcon icon={cilDelete} className="delete_icon"></CIcon> */}
+                    </CTableDataCell>
+                  </CTableRow>
+                );
+              })}
+              {/* <CTableRow>
+                <CTableDataCell>#123</CTableDataCell>
+                <CTableDataCell>#123</CTableDataCell>
+                <CTableDataCell>8987464kkdfet</CTableDataCell>
+                <CTableDataCell>Admin</CTableDataCell>
+                <CTableDataCell>3</CTableDataCell>
+                <CTableDataCell>dummy221@gmail.com</CTableDataCell>
+                <CTableDataCell>01796-329869</CTableDataCell>
+                <CTableDataCell>California</CTableDataCell>
+                <CTableDataCell>
                   <CIcon
                     icon={cilPencil}
                     onClick={() => {
-                      handleEditCourt();
+                      handleEditAdmin();
                     }}
                     className="mx-2 edit_icon"
                   ></CIcon>
                   <CIcon icon={cilDelete} className="delete_icon"></CIcon>
-                </div>
-              </CTableDataCell>
-            </CTableRow>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <div className="d-flex">
-                  {" "}
-                  <CIcon
-                    icon={cilPencil}
-                    onClick={() => {
-                      handleEditCourt();
-                    }}
-                    className="mx-2 edit_icon"
-                  ></CIcon>
-                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
-                </div>
-              </CTableDataCell>
-            </CTableRow>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <div className="d-flex">
-                  {" "}
-                  <CIcon
-                    icon={cilPencil}
-                    onClick={() => {
-                      handleEditCourt();
-                    }}
-                    className="mx-2 edit_icon"
-                  ></CIcon>
-                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
-                </div>
-              </CTableDataCell>
-            </CTableRow>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <div className="d-flex">
-                  {" "}
-                  <CIcon
-                    icon={cilPencil}
-                    onClick={() => {
-                      handleEditCourt();
-                    }}
-                    className="mx-2 edit_icon"
-                  ></CIcon>
-                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
-                </div>
-              </CTableDataCell>
-            </CTableRow>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <div className="d-flex">
-                  {" "}
-                  <CIcon
-                    icon={cilPencil}
-                    onClick={() => {
-                      handleEditCourt();
-                    }}
-                    className="mx-2 edit_icon"
-                  ></CIcon>
-                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
-                </div>
-              </CTableDataCell>
-            </CTableRow>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <div className="d-flex">
-                  {" "}
-                  <CIcon
-                    icon={cilPencil}
-                    onClick={() => {
-                      handleEditCourt();
-                    }}
-                    className="mx-2 edit_icon"
-                  ></CIcon>
-                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
-                </div>
-              </CTableDataCell>
-            </CTableRow>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <div className="d-flex">
-                  {" "}
-                  <CIcon
-                    icon={cilPencil}
-                    onClick={() => {
-                      handleEditCourt();
-                    }}
-                    className="mx-2 edit_icon"
-                  ></CIcon>
-                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
-                </div>
-              </CTableDataCell>
-            </CTableRow>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy221@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <div className="d-flex">
-                  {" "}
-                  <CIcon
-                    icon={cilPencil}
-                    onClick={() => {
-                      handleEditCourt();
-                    }}
-                    className="mx-2 edit_icon"
-                  ></CIcon>
-                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
-                </div>
-              </CTableDataCell>
-            </CTableRow>
-          </CTableBody>
-        </CTable>
-
-        <div className="pagination_outer">
-          <div className="pagination_section">
-            <CRow className="align-items-center">
-              <CCol md={6}>
-                <p className="showing_page">{`Showing 1 to 6 of 6 entries`}</p>
-              </CCol>
-              <CCol md={6}>
-                <CPagination align="end" aria-label="Page navigation example">
-                  <CPaginationItem
-                    disabled
-                    className="prev_next"
-                  >{`<<`}</CPaginationItem>
-                  <CPaginationItem>1</CPaginationItem>
-                  <CPaginationItem>2</CPaginationItem>
-                  <CPaginationItem>3</CPaginationItem>
-                  <CPaginationItem className="prev_next">{`>>`}</CPaginationItem>
-                </CPagination>
-              </CCol>
-            </CRow>
+                </CTableDataCell>
+              </CTableRow> */}
+            </CTableBody>
+          </CTable>
+        ) : (
+          <div className="my-5 d-flex justify-content-center">
+            <h1 className="card-title">Data Not Found</h1>
           </div>
-        </div>
+        )}
+
+        {adminData?.length > 0 && (
+          <div className="pagination_outer mt-5">
+            <div className="pagination_section">
+              <CRow className="align-items-center">
+                <CCol md={6}>
+                  <p className="showing_page">
+                    {`Showing ${(currentPage - 1) * itemsPerPage + 1} to ${Math.min(currentPage * itemsPerPage, totalCounts)} of ${totalCounts} entries`}
+                  </p>
+                </CCol>
+                <CCol md={6}>
+                  <CPagination align="end" aria-label="Page navigation example">
+                    <CPaginationItem
+                      disabled={currentPage === 1}
+                      className="prev_next"
+                      onClick={() => handlePageChange(currentPage - 1)}
+                    >
+                      {"<<"}
+                    </CPaginationItem>
+                    {pageNumbers.map((page) => (
+                      <CPaginationItem
+                        key={page}
+                        active={currentPage === page}
+                        onClick={() => handlePageChange(page)}
+                      >
+                        {page}
+                      </CPaginationItem>
+                    ))}
+                    <CPaginationItem
+                      disabled={currentPage === totalPages}
+                      className="prev_next"
+                      onClick={() => handlePageChange(currentPage + 1)}
+                    >
+                      {">>"}
+                    </CPaginationItem>
+                  </CPagination>
+                </CCol>
+              </CRow>
+            </div>
+          </div>
+        )}
       </CCardBody>
       {/* </CCard> */}
     </>

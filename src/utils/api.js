@@ -20,11 +20,47 @@ export const loginUser = async (data) => {
   }
 };
 
+export const forgotEmail = async (data) => {
+  try {
+    const response = await axios.post("/send-reset-email/", data);
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const verifyOtp = async (data) => {
+  try {
+    const response = await axios.post("/verify-otp/", data);
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const resendOtp = async (data) => {
+  try {
+    const response = await axios.post("/resend-otp/", data);
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const resetNewPassword = async (data) => {
+  try {
+    const response = await axios.post("/reset-password/", data);
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
 export const addLocation = async (data) => {
   try {
     const response = await axios.post("/locations/", data, {
       headers: {
-        Authorization: `${localStorage.getItem("user_access_valid_token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
     });
     return response;
@@ -35,13 +71,18 @@ export const addLocation = async (data) => {
 
 export const getLocation = async (page, search, startDate, endDate) => {
   const searchVal = search ? `&search=${search}` : "";
-  const start_date = startDate ? `&start_date=${startDate}&end_date=${endDate}` : ""
+  const start_date = startDate
+    ? `&start_date=${startDate}&end_date=${endDate}`
+    : "";
   try {
-    const response = await axios.get(`/locations/?page=${page}${searchVal}${start_date}`, {
-      headers: {
-        Authorization: `${localStorage.getItem("user_access_valid_token")}`,
-      },
-    });
+    const response = await axios.get(
+      `/locations/?page=${page}${searchVal}${start_date}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+        },
+      }
+    );
     return response;
   } catch (error) {
     return error.response;
@@ -52,7 +93,7 @@ export const updateLocation = async (id, data) => {
   try {
     const response = await axios.put(`/locations/${id}/`, data, {
       headers: {
-        Authorization: `${localStorage.getItem("user_access_valid_token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
     });
     return response;
@@ -65,7 +106,7 @@ export const getLocationbyId = async (id) => {
   try {
     const response = await axios.get(`/locations/${id}/`, {
       headers: {
-        Authorization: `${localStorage.getItem("user_access_valid_token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
     });
     return response;
@@ -78,7 +119,7 @@ export const deleteLocationbyId = async (id) => {
   try {
     const response = await axios.delete(`/locations/${id}/`, {
       headers: {
-        Authorization: `${localStorage.getItem("user_access_valid_token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
     });
     return response;
@@ -91,7 +132,7 @@ export const addCourtData = async (data) => {
   try {
     const response = await axios.post("/courts/", data, {
       headers: {
-        Authorization: `${localStorage.getItem("user_access_valid_token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
     });
     return response;
@@ -104,7 +145,7 @@ export const getCourts = async (id, page) => {
   try {
     const response = await axios.get(`/courts/${id}/?page=${page}`, {
       headers: {
-        Authorization: `${localStorage.getItem("user_access_valid_token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
     });
     return response;
@@ -117,7 +158,7 @@ export const updateCourt = async (id, data) => {
   try {
     const response = await axios.put(`/courts/${id}/`, data, {
       headers: {
-        Authorization: `${localStorage.getItem("user_access_valid_token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
     });
     return response;
@@ -130,7 +171,7 @@ export const getCourtbyId = async (id) => {
   try {
     const response = await axios.get(`/courts/${id}/`, {
       headers: {
-        Authorization: `${localStorage.getItem("user_access_valid_token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
     });
     return response;
@@ -143,7 +184,7 @@ export const deleteCourtbyId = async (id) => {
   try {
     const response = await axios.delete(`/courts/${id}/`, {
       headers: {
-        Authorization: `${localStorage.getItem("user_access_valid_token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
     });
     return response;
@@ -154,13 +195,15 @@ export const deleteCourtbyId = async (id) => {
 
 export const getAdmin = async (page, search, startDate, endDate) => {
   const searchVal = search ? `&search=${search}` : "";
-  const start_date = startDate ? `&start_date=${startDate}&end_date=${endDate}` : ""
+  const start_date = startDate
+    ? `&start_date=${startDate}&end_date=${endDate}`
+    : "";
   try {
     const response = await axios.get(
       `/create_admin/?page=${page}${searchVal}${start_date}`,
       {
         headers: {
-          Authorization: `${localStorage.getItem("user_access_valid_token")}`,
+          Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
         },
       }
     );
@@ -174,7 +217,7 @@ export const addAdmintData = async (data) => {
   try {
     const response = await axios.post("/create_admin/", data, {
       headers: {
-        Authorization: `${localStorage.getItem("user_access_valid_token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
     });
     return response;
@@ -187,7 +230,7 @@ export const updateAdmin = async (id, data) => {
   try {
     const response = await axios.put(`/create_admin/${id}/`, data, {
       headers: {
-        Authorization: `${localStorage.getItem("user_access_valid_token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
     });
     return response;
@@ -200,7 +243,7 @@ export const getAdminbyId = async (id) => {
   try {
     const response = await axios.get(`/create_admin/${id}/`, {
       headers: {
-        Authorization: `${localStorage.getItem("user_access_valid_token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
     });
     return response;
@@ -213,7 +256,39 @@ export const deleteAdminbyId = async (id) => {
   try {
     const response = await axios.delete(`/create_admin/${id}/`, {
       headers: {
-        Authorization: `${localStorage.getItem("user_access_valid_token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+// export const getCourtBooking = async () => {
+// const searchVal = search ? `&search=${search}` : "";
+// const start_date = startDate ? `&start_date=${startDate}&end_date=${endDate}` : ""
+// ?page=${page}${searchVal}${start_date}
+//   try {
+//     const response = await axios.get(
+//       `/court-bookings/`,
+//       {
+//         headers: {
+//           Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+//         },
+//       }
+//     );
+//     return response;
+//   } catch (error) {
+//     return error.response;
+//   }
+// };
+
+export const getCourtBooking = async () => {
+  try {
+    const response = await axios.get(`/court-bookings/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
     });
     return response;

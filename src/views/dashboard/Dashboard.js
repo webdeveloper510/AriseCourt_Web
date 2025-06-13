@@ -301,7 +301,7 @@ const Dashboard = () => {
                 <CTableHeaderCell scope="col">Access</CTableHeaderCell>
                 <CTableHeaderCell scope="col">E-mail Address</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Phone Number</CTableHeaderCell>
-                <CTableHeaderCell scope="col">City</CTableHeaderCell>
+                {/* <CTableHeaderCell scope="col">City</CTableHeaderCell> */}
                 <CTableHeaderCell scope="col">Action</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
@@ -319,7 +319,7 @@ const Dashboard = () => {
                     <CTableDataCell>0</CTableDataCell>
                     <CTableDataCell>{item?.email}</CTableDataCell>
                     <CTableDataCell>{item?.phone}</CTableDataCell>
-                    <CTableDataCell>{item?.city}</CTableDataCell>
+                    {/* <CTableDataCell>{item?.city}</CTableDataCell> */}
                     <CTableDataCell>
                       <div
                         style={{ position: "relative", marginBottom: "16px" }}
@@ -403,7 +403,9 @@ const Dashboard = () => {
             </CTableBody>
           </CTable>
         ) : (
-          ""
+          <div className="my-5 d-flex justify-content-center">
+            <h1 className="card-title">Data Not Found</h1>
+          </div>
         )}
 
         {adminData?.length > 0 && (
