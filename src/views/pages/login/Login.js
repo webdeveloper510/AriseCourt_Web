@@ -95,7 +95,7 @@ const Login = () => {
   };
 
   return (
-    <div className=" min-vh-100 d-flex flex-row align-items-center" style={{ height: "100vh" }}>
+    <div className=" min-vh-100 d-flex flex-row align-items-center login_outer">
       <CRow className="justify-content-center" style={{ width: "100%" }}>
         <CCol md={12}>
           <CRow

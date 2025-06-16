@@ -79,16 +79,27 @@ const Dashboard = () => {
     setOpenMenuId((prevId) => (prevId === id ? null : id)); // Toggle
   };
 
-  const getAdminData = (page = 1, query = "", startDate = "", endDate = "", loader) => {
-    setLoading(loader ? true : false)
+  const getAdminData = (
+    page = 1,
+    query = "",
+    startDate = "",
+    endDate = "",
+    loader
+  ) => {
+    setLoading(loader ? true : false);
     getAdmin(page, query, startDate, endDate)
       .then((res) => {
-        setLoading(false)
+        setLoading(false);
         if (res.status === 200) {
           setAdminData(res?.data?.results);
           setTotalCounts(res?.data?.count);
           setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
-        } else {
+        } else if (res?.data?.code == "token_not_valid") {
+          localStorage.removeItem("user_access_valid_token");
+          localStorage.removeItem("logged_user_data");
+          navigate("/login");
+          setAdminData([]);
+        }else{
           setAdminData([]);
         }
       })
@@ -184,7 +195,7 @@ const Dashboard = () => {
       )}
       <CCardBody className="p-2 position-relative">
         <CRow>
-          <CCol sm={12} md={6}>
+          <CCol sm={6} md={6} xs={6}>
             <h4 id="traffic" className="card-title mb-0">
               Admin
             </h4>
@@ -192,7 +203,7 @@ const Dashboard = () => {
               View All Of Your Admin Information.
             </div>
           </CCol>
-          <CCol sm={12} md={6} className="text-end">
+          <CCol xs={6} sm={6} md={6} className="text-end">
             <Link to="/admin-registraion">
               <CButton className="add_new_butn">+ Add New</CButton>
             </Link>
@@ -256,91 +267,95 @@ const Dashboard = () => {
               >
                 <CIcon icon={cilFilter}></CIcon> FILTERS
               </CButton>
-
             </div>
           </CCol>
         </CRow>
         {adminData?.length > 0 ? (
           <div style={{ overflowX: "auto" }}>
-          <CTable className="mt-4 main_table" striped>
-            <CTableHead>
-              <CTableRow>
-                {/* <CTableHeaderCell scope="col">Location Id</CTableHeaderCell> */}
-                <CTableHeaderCell scope="col">Admin Id</CTableHeaderCell>
-                <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Type</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Access</CTableHeaderCell>
-                <CTableHeaderCell scope="col">E-mail Address</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Phone Number</CTableHeaderCell>
-                {/* <CTableHeaderCell scope="col">City</CTableHeaderCell> */}
-                <CTableHeaderCell scope="col">Action</CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              {adminData?.map((item, i) => {
-                return (
-                  <CTableRow key={i}>
-                    {/* <CTableDataCell>#123</CTableDataCell> */}
-                    <CTableDataCell>{item?.id}</CTableDataCell>
-                    <CTableDataCell>{item?.first_name}</CTableDataCell>
-                    <CTableDataCell>{item?.last_name}</CTableDataCell>
-                    <CTableDataCell>
-                      {item?.user_type == 1 ? "Admin" : ""}
-                    </CTableDataCell>
-                    <CTableDataCell>0</CTableDataCell>
-                    <CTableDataCell>{item?.email}</CTableDataCell>
-                    <CTableDataCell>{item?.phone}</CTableDataCell>
-                    {/* <CTableDataCell>{item?.city}</CTableDataCell> */}
-                    <CTableDataCell>
-                      <div
-                        style={{ position: "relative", marginBottom: "16px" }}
-                      >
-                        {/* Three-dot icon */}
-                        <span
-                          style={{ fontSize: "24px", cursor: "pointer" }}
-                          onClick={() => toggleMenu(item.id)}
+            <CTable className="mt-4 main_table" striped>
+              <CTableHead>
+                <CTableRow>
+                  {/* <CTableHeaderCell scope="col">Location Id</CTableHeaderCell> */}
+                  <CTableHeaderCell scope="col">Admin Id</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Type</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Access</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">
+                    E-mail Address
+                  </CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Phone Number</CTableHeaderCell>
+                  {/* <CTableHeaderCell scope="col">City</CTableHeaderCell> */}
+                  <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+                {adminData?.map((item, i) => {
+                  return (
+                    <CTableRow key={i}>
+                      {/* <CTableDataCell>#123</CTableDataCell> */}
+                      <CTableDataCell>{item?.id}</CTableDataCell>
+                      <CTableDataCell>{item?.first_name}</CTableDataCell>
+                      <CTableDataCell>{item?.last_name}</CTableDataCell>
+                      <CTableDataCell>
+                        {item?.user_type == 1 ? "Admin" : ""}
+                      </CTableDataCell>
+                      <CTableDataCell>0</CTableDataCell>
+                      <CTableDataCell>{item?.email}</CTableDataCell>
+                      <CTableDataCell>{item?.phone}</CTableDataCell>
+                      {/* <CTableDataCell>{item?.city}</CTableDataCell> */}
+                      <CTableDataCell>
+                        <div
+                          style={{ position: "relative", marginBottom: "16px" }}
                         >
-                          ⋮
-                        </span>
-
-                        {/* Dropdown menu only for selected item */}
-                        {openMenuId === item.id && (
-                          <div
-                            style={{
-                              position: "absolute",
-                              top: "30px",
-                              right: 0,
-                              backgroundColor: "#fff",
-                              borderRadius: "10px",
-                              padding: "12px",
-                              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-                              zIndex: 999999,
-                            }}
+                          {/* Three-dot icon */}
+                          <span
+                            style={{ fontSize: "24px", cursor: "pointer" }}
+                            onClick={() => toggleMenu(item.id)}
                           >
+                            ⋮
+                          </span>
+
+                          {/* Dropdown menu only for selected item */}
+                          {openMenuId === item.id && (
                             <div
-                              onClick={() => {
-                                handleEditAdmin(item?.id);
+                              style={{
+                                position: "absolute",
+                                top: "30px",
+                                right: 0,
+                                backgroundColor: "#fff",
+                                borderRadius: "10px",
+                                padding: "12px",
+                                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+                                zIndex: 999999,
                               }}
-                              className="action_icons"
                             >
-                              <CIcon icon={cilPencil} className="edit_icon" />{" "}
-                              Edit
+                              <div
+                                onClick={() => {
+                                  handleEditAdmin(item?.id);
+                                }}
+                                className="action_icons"
+                              >
+                                <CIcon icon={cilPencil} className="edit_icon" />{" "}
+                                Edit
+                              </div>
+                              <div
+                                onClick={() => {
+                                  handleDeleteModal(item.id);
+                                  setOpenMenuId(null);
+                                }}
+                                className="action_icons"
+                              >
+                                <CIcon
+                                  icon={cilDelete}
+                                  className="delete_icon"
+                                />{" "}
+                                Delete
+                              </div>
                             </div>
-                            <div
-                              onClick={() => {
-                                handleDeleteModal(item.id);
-                                setOpenMenuId(null);
-                              }}
-                              className="action_icons"
-                            >
-                              <CIcon icon={cilDelete} className="delete_icon" />{" "}
-                              Delete
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      {/* <CIcon
+                          )}
+                        </div>
+                        {/* <CIcon
                       icon={cilPencil}
                       onClick={() => {
                         handleEditAdmin(item?.id);
@@ -348,11 +363,11 @@ const Dashboard = () => {
                       className="mx-2 edit_icon"
                     ></CIcon>
                     <CIcon icon={cilDelete} className="delete_icon"></CIcon> */}
-                    </CTableDataCell>
-                  </CTableRow>
-                );
-              })}
-              {/* <CTableRow>
+                      </CTableDataCell>
+                    </CTableRow>
+                  );
+                })}
+                {/* <CTableRow>
                 <CTableDataCell>#123</CTableDataCell>
                 <CTableDataCell>#123</CTableDataCell>
                 <CTableDataCell>8987464kkdfet</CTableDataCell>
@@ -372,8 +387,8 @@ const Dashboard = () => {
                   <CIcon icon={cilDelete} className="delete_icon"></CIcon>
                 </CTableDataCell>
               </CTableRow> */}
-            </CTableBody>
-          </CTable>
+              </CTableBody>
+            </CTable>
           </div>
         ) : (
           <div className="my-5 d-flex justify-content-center">

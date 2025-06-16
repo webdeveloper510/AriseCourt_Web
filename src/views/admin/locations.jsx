@@ -108,6 +108,13 @@ const Locations = () => {
           setLocationData(res?.data?.results);
           setTotalCounts(res?.data?.count); // Total count of admin data
           setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
+        } else if (res?.data?.code == "token_not_valid") {
+          toast.error(res?.data?.detail, {
+            theme: "colored",
+          });
+          localStorage.removeItem("user_access_valid_token");
+          localStorage.removeItem("logged_user_data");
+          navigate("/login");
         } else {
           setLocationData([]);
         }
@@ -258,90 +265,93 @@ const Locations = () => {
 
         {locationData?.length > 0 ? (
           <div style={{ overflowX: "auto" }}>
-          <CTable className="mt-4 main_table" striped>
-            <CTableHead>
-              <CTableRow>
-                <CTableHeaderCell scope="col">Id Key</CTableHeaderCell>
-                {/* <CTableHeaderCell scope="col">Logo & Name</CTableHeaderCell> */}
-                <CTableHeaderCell scope="col">Email</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
-                <CTableHeaderCell scope="col">City</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Country</CTableHeaderCell>
-                <CTableHeaderCell scope="col">No. of Courts</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Action</CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              {locationData?.map((item, i) => {
-                return (
-                  <CTableRow key={i}>
-                    <CTableDataCell>{item?.id}</CTableDataCell>
-                    {/* <CTableDataCell>Beach Badminton Club</CTableDataCell> */}
-                    <CTableDataCell>{item?.email}</CTableDataCell>
-                    <CTableDataCell>{item?.phone}</CTableDataCell>
-                    <CTableDataCell>{item?.city}</CTableDataCell>
-                    <CTableDataCell>{item?.country}</CTableDataCell>
-                    <CTableDataCell>19</CTableDataCell>
-                    <CTableDataCell>
-                      <div
-                        style={{ position: "relative", marginBottom: "16px" }}
-                      >
-                        {/* Three-dot icon */}
-                        <span
-                          style={{ fontSize: "24px", cursor: "pointer" }}
-                          onClick={() => toggleMenu(item.id)}
+            <CTable className="mt-4 main_table" striped>
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell scope="col">Id Key</CTableHeaderCell>
+                  {/* <CTableHeaderCell scope="col">Logo & Name</CTableHeaderCell> */}
+                  <CTableHeaderCell scope="col">Email</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">City</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Country</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">No. of Courts</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+                {locationData?.map((item, i) => {
+                  return (
+                    <CTableRow key={i}>
+                      <CTableDataCell>{item?.id}</CTableDataCell>
+                      {/* <CTableDataCell>Beach Badminton Club</CTableDataCell> */}
+                      <CTableDataCell>{item?.email}</CTableDataCell>
+                      <CTableDataCell>{item?.phone}</CTableDataCell>
+                      <CTableDataCell>{item?.city}</CTableDataCell>
+                      <CTableDataCell>{item?.country}</CTableDataCell>
+                      <CTableDataCell>19</CTableDataCell>
+                      <CTableDataCell>
+                        <div
+                          style={{ position: "relative", marginBottom: "16px" }}
                         >
-                          ⋮
-                        </span>
-
-                        {/* Dropdown menu only for selected item */}
-                        {openMenuId === item.id && (
-                          <div
-                            style={{
-                              position: "absolute",
-                              top: "30px",
-                              right: 0,
-                              backgroundColor: "#fff",
-                              borderRadius: "10px",
-                              padding: "12px",
-                              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-                              zIndex: 999999,
-                            }}
+                          {/* Three-dot icon */}
+                          <span
+                            style={{ fontSize: "24px", cursor: "pointer" }}
+                            onClick={() => toggleMenu(item.id)}
                           >
+                            ⋮
+                          </span>
+
+                          {/* Dropdown menu only for selected item */}
+                          {openMenuId === item.id && (
                             <div
-                              onClick={() => {
-                                handleViewDetails(item.id);
-                                setOpenMenuId(null);
+                              style={{
+                                position: "absolute",
+                                top: "30px",
+                                right: 0,
+                                backgroundColor: "#fff",
+                                borderRadius: "10px",
+                                padding: "12px",
+                                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+                                zIndex: 999999,
                               }}
-                              className="action_icons"
                             >
-                              <CIcon icon={cilSearch} className="view_icon" />{" "}
-                              View
+                              <div
+                                onClick={() => {
+                                  handleViewDetails(item.id);
+                                  setOpenMenuId(null);
+                                }}
+                                className="action_icons"
+                              >
+                                <CIcon icon={cilSearch} className="view_icon" />{" "}
+                                View
+                              </div>
+                              <div
+                                onClick={() => {
+                                  handleEditLocation(item.id);
+                                  setOpenMenuId(null);
+                                }}
+                                className="action_icons"
+                              >
+                                <CIcon icon={cilPencil} className="edit_icon" />{" "}
+                                Edit
+                              </div>
+                              <div
+                                onClick={() => {
+                                  handleDeleteModal(item.id);
+                                  setOpenMenuId(null);
+                                }}
+                                className="action_icons"
+                              >
+                                <CIcon
+                                  icon={cilDelete}
+                                  className="delete_icon"
+                                />{" "}
+                                Delete
+                              </div>
                             </div>
-                            <div
-                              onClick={() => {
-                                handleEditLocation(item.id);
-                                setOpenMenuId(null);
-                              }}
-                              className="action_icons"
-                            >
-                              <CIcon icon={cilPencil} className="edit_icon" />{" "}
-                              Edit
-                            </div>
-                            <div
-                              onClick={() => {
-                                handleDeleteModal(item.id);
-                                setOpenMenuId(null);
-                              }}
-                              className="action_icons"
-                            >
-                              <CIcon icon={cilDelete} className="delete_icon" />{" "}
-                              Delete
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      {/* <CIcon
+                          )}
+                        </div>
+                        {/* <CIcon
                         icon={cilSearch}
                         onClick={() => {
                           handleViewDetails();
@@ -362,12 +372,12 @@ const Locations = () => {
                         icon={cilDelete}
                         className="delete_icon"
                       ></CIcon> */}
-                    </CTableDataCell>
-                  </CTableRow>
-                );
-              })}
-            </CTableBody>
-          </CTable>
+                      </CTableDataCell>
+                    </CTableRow>
+                  );
+                })}
+              </CTableBody>
+            </CTable>
           </div>
         ) : (
           <div className="my-5 d-flex justify-content-center">

@@ -117,28 +117,25 @@ const LocationDetails = () => {
         if (res?.status == 200) {
           setFormData(res?.data);
           setCourtData(res?.data?.courts);
+        } else if (res?.data?.code == "token_not_valid") {
+          toast.error(res?.data?.detail, {
+            theme: "colored",
+          });
+          localStorage.removeItem("user_access_valid_token");
+          localStorage.removeItem("logged_user_data");
+          navigate("/login");
+        } else {
+          setFormData(null);
+          setCourtData([]);
         }
       })
       .catch((error) => {
         console.log(error);
         setLoading(false);
+        setFormData(null);
+        setCourtData([]);
       });
   };
-
-  // const getCourtsData = (page = 1) => {
-  //   getCourts(id, page)
-  //     .then((res) => {
-  //       if (res.status == 200) {
-  //         setCourtData(res?.data?.results);
-  //       } else {
-  //         setCourtData([]);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       setCourtData([]);
-  //     });
-  // };
 
   const handleBackNavigate = () => {
     navigate(-1);
@@ -351,49 +348,55 @@ const LocationDetails = () => {
 
           {courtData?.length > 0 ? (
             <div style={{ overflowX: "auto" }}>
-            <CTable className="mt-4 main_table" striped>
-              <CTableHead>
-                <CTableRow>
-                  <CTableHeaderCell scope="col">Court Number</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Location ID</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">
-                    Court Fee by Hour
-                  </CTableHeaderCell>
-                  <CTableHeaderCell scope="col">
-                    Taxes percentage
-                  </CTableHeaderCell>
-                  <CTableHeaderCell scope="col">cc fees%</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Availability</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Action</CTableHeaderCell>
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                {currentItems?.map((item, i) => {
-                  return (
-                    <CTableRow key={i}>
-                      <CTableDataCell>{item?.court_number}</CTableDataCell>
-                      <CTableDataCell>{item?.location_id}</CTableDataCell>
-                      <CTableDataCell>{`$${item?.court_fee_hrs}/hr`}</CTableDataCell>
-                      <CTableDataCell>{`${item?.tax}%`}</CTableDataCell>
-                      <CTableDataCell>{`${item?.cc_fees}%`}</CTableDataCell>
-                      <CTableDataCell>{`${item?.availability}`}</CTableDataCell>
-                      <CTableDataCell>
-                        <CIcon
-                          className="edit_icon me-2"
-                          onClick={() => handleEditCourtModal(item?.id, item)}
-                          icon={cilPencil}
-                        ></CIcon>
-                        <CIcon
-                          className="delete_icon"
-                          onClick={() => handleDeletCourtModal(item?.id, item)}
-                          icon={cilDelete}
-                        ></CIcon>
-                      </CTableDataCell>
-                    </CTableRow>
-                  );
-                })}
-              </CTableBody>
-            </CTable>
+              <CTable className="mt-4 main_table" striped>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell scope="col">
+                      Court Number
+                    </CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Location ID</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">
+                      Court Fee by Hour
+                    </CTableHeaderCell>
+                    <CTableHeaderCell scope="col">
+                      Taxes percentage
+                    </CTableHeaderCell>
+                    <CTableHeaderCell scope="col">cc fees%</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">
+                      Availability
+                    </CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {currentItems?.map((item, i) => {
+                    return (
+                      <CTableRow key={i}>
+                        <CTableDataCell>{item?.court_number}</CTableDataCell>
+                        <CTableDataCell>{item?.location_id}</CTableDataCell>
+                        <CTableDataCell>{`$${item?.court_fee_hrs}/hr`}</CTableDataCell>
+                        <CTableDataCell>{`${item?.tax}%`}</CTableDataCell>
+                        <CTableDataCell>{`${item?.cc_fees}%`}</CTableDataCell>
+                        <CTableDataCell>{`${item?.availability}`}</CTableDataCell>
+                        <CTableDataCell>
+                          <CIcon
+                            className="edit_icon me-2"
+                            onClick={() => handleEditCourtModal(item?.id, item)}
+                            icon={cilPencil}
+                          ></CIcon>
+                          <CIcon
+                            className="delete_icon"
+                            onClick={() =>
+                              handleDeletCourtModal(item?.id, item)
+                            }
+                            icon={cilDelete}
+                          ></CIcon>
+                        </CTableDataCell>
+                      </CTableRow>
+                    );
+                  })}
+                </CTableBody>
+              </CTable>
             </div>
           ) : (
             <div className="my-5 d-flex justify-content-center">

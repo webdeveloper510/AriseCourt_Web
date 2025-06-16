@@ -24,7 +24,9 @@ body {
   font-size: 15px;
   color: #182b4d87;
 }
-
+// *, *::before, *::after {
+//   box-sizing: initial !important;
+// }
 .wrapper {
   width: 100%;
   padding-inline: var(--cui-sidebar-occupy-start, 0) var(--cui-sidebar-occupy-end, 0);
@@ -319,6 +321,7 @@ body {
   justify-content: end;
   align-items: center;
   gap: 10px;
+  white-space: nowrap;
 }
 
 .filter_butn {
@@ -326,6 +329,7 @@ body {
   border-radius: 12px;
   height: 45px;
   font-weight: 600;
+  white-space: nowrap;
   color: #182B4D;
 }
 
@@ -656,10 +660,18 @@ input:-webkit-autofill {
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
 }
-
+.login_outer{
+  height: 100vh;
+}
 
 @media screen and (max-width: 580px) {
   .registration_form {
     height: 100%;
+  }
+  .date_filter_section{
+    justify-content: left;
+  }
+  .login_outer{
+    height: auto;
   }
 }

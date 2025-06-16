@@ -46,6 +46,13 @@ const AdminRegistration = () => {
       .then((res) => {
         if (res?.status == 200 || res?.status == 201) {
           setFormData(res?.data);
+        } else if (res?.data?.code == "token_not_valid") {
+          toast.error(res?.data?.detail, {
+            theme : "colored"
+          })
+          localStorage.removeItem("user_access_valid_token");
+          localStorage.removeItem("logged_user_data");
+          navigate("/login");
         }
       })
       .catch((error) => {
@@ -141,19 +148,19 @@ const AdminRegistration = () => {
 
     const isEditMode = Boolean(id);
     const validationErrors = validateFormData(formData, isEditMode);
-  
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors); // Set field-wise errors
       return; // Stop submission
     }
-    setLoading(true)
+    setLoading(true);
     const apiCall = isEditMode
       ? updateAdmin(id, formData)
       : addAdmintData(formData);
 
     apiCall
       .then((res) => {
-        setLoading(false)
+        setLoading(false);
         if (res.status === 200 || res.status === 201) {
           navigate(-1);
           toast.success(res?.data?.msg, { theme: "colored" });
@@ -167,7 +174,7 @@ const AdminRegistration = () => {
       })
       .catch((error) => {
         console.log(error);
-        setLoading(false)
+        setLoading(false);
       });
   };
 
@@ -179,7 +186,7 @@ const AdminRegistration = () => {
 
   return (
     <>
-     {loading && (
+      {loading && (
         <div className="loader_outer">
           <span className="loader"></span>
         </div>
@@ -223,7 +230,9 @@ const AdminRegistration = () => {
                   name="first_name"
                   onChange={(e) => handleInputChange(e)}
                 />
-                {errors.first_name && <div className="text-danger">{errors.first_name}</div>}
+                {errors.first_name && (
+                  <div className="text-danger">{errors.first_name}</div>
+                )}
               </CCol>
               <CCol sm={12} md={6} lg={4} className="my-2">
                 <label>Last Name</label>
@@ -236,8 +245,9 @@ const AdminRegistration = () => {
                   name="last_name"
                   onChange={(e) => handleInputChange(e)}
                 />
-                {errors.last_name && <div className="text-danger">{errors.last_name}</div>}
-
+                {errors.last_name && (
+                  <div className="text-danger">{errors.last_name}</div>
+                )}
               </CCol>
               <CCol sm={12} md={6} lg={4} className="my-2">
                 <label>Email Address</label>
@@ -251,8 +261,9 @@ const AdminRegistration = () => {
                   name="email"
                   onChange={(e) => handleInputChange(e)}
                 />
-                {errors.email && <div className="text-danger">{errors.email}</div>}
-
+                {errors.email && (
+                  <div className="text-danger">{errors.email}</div>
+                )}
               </CCol>
               {/* <CCol sm={12} md={6} lg={4} className="my-2">
                 <label>User Type</label>
@@ -285,8 +296,9 @@ const AdminRegistration = () => {
                   name="phone"
                   onChange={(e) => handleInputChange(e)}
                 /> */}
-                {errors.phone && <div className="text-danger">{errors.phone}</div>}
-
+                {errors.phone && (
+                  <div className="text-danger">{errors.phone}</div>
+                )}
               </CCol>
               <CCol sm={12} md={6} lg={4} className="my-2">
                 <label>Password</label>
@@ -300,8 +312,9 @@ const AdminRegistration = () => {
                   name="password"
                   onChange={(e) => handleInputChange(e)}
                 />
-                {errors.password && <div className="text-danger">{errors.password}</div>}
-
+                {errors.password && (
+                  <div className="text-danger">{errors.password}</div>
+                )}
               </CCol>
 
               <CCol sm={12} md={6} lg={4} className="my-2">
@@ -316,8 +329,9 @@ const AdminRegistration = () => {
                   name="confirm_password"
                   onChange={(e) => handleInputChange(e)}
                 />
-                {errors.confirm_password && <div className="text-danger">{errors.confirm_password}</div>}
-
+                {errors.confirm_password && (
+                  <div className="text-danger">{errors.confirm_password}</div>
+                )}
               </CCol>
 
               <CCol md={12} className="mt-4">

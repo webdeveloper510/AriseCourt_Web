@@ -116,7 +116,7 @@ const AddLocations = () => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       phone: value, // full phone number
-      // country: data.countryCode.toUpperCase(), // e.g., "US"
+      country: data.countryCode.toUpperCase(), // e.g., "US"
     }));
   };
 
@@ -245,7 +245,7 @@ const AddLocations = () => {
                   }}
                 />
               </CCol> */}
-              <CCol sm={12} md={6} lg={4} className="my-1">
+              <CCol sm={12} md={6} lg={6} className="my-1">
                 <label>Email Address</label>
 
                 <CFormInput
@@ -263,7 +263,7 @@ const AddLocations = () => {
                   <div className="text-danger">{errors.email}</div>
                 )}
               </CCol>
-              <CCol sm={12} md={6} lg={4} className="my-1">
+              <CCol sm={12} md={6} lg={6} className="my-1">
                 <label>Phone</label>
                 <PhoneInput
                   country={"us"}
@@ -322,7 +322,7 @@ const AddLocations = () => {
                   <div className="text-danger">{errors.state}</div>
                 )}
               </CCol>
-              <CCol sm={12} md={6} lg={4} className="my-1">
+              {/* <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>Country</label>
                 <CFormInput
                   type="text"
@@ -338,7 +338,7 @@ const AddLocations = () => {
                 {errors.country && (
                   <div className="text-danger">{errors.country}</div>
                 )}
-              </CCol>
+              </CCol> */}
               <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>Website</label>
                 <CFormInput

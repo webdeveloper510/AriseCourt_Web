@@ -31,6 +31,7 @@ import {
   cilSearch,
 } from "@coreui/icons";
 import { getCourtBooking } from "../../utils/api";
+import { toast } from "react-toastify";
 
 const CourtConfiguration = () => {
   const navigate = useNavigate();
@@ -103,12 +104,18 @@ const CourtConfiguration = () => {
     setLoading(loader ? true : false);
     getCourtBooking(bookingType, page, query, startDate, endDate)
       .then((res) => {
-        console.log("getCourtBookingData", res);
         setLoading(false);
         if (res?.status === 200) {
           setAdminData(res?.data?.results);
           setTotalCounts(res?.data?.count);
           setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
+        } else if (res?.data?.code == "token_not_valid") {
+          toast.error(res?.data?.detail, {
+            theme: "colored",
+          });
+          localStorage.removeItem("user_access_valid_token");
+          localStorage.removeItem("logged_user_data");
+          navigate("/login");
         } else {
           setAdminData([]);
         }
@@ -317,7 +324,7 @@ const CourtConfiguration = () => {
                   <CButton
                     ref={filterButtonRef}
                     className="filter_butn"
-                    style={{whiteSpace: "nowrap"}}
+                    style={{ whiteSpace: "nowrap" }}
                     onClick={handleFilterClick}
                   >
                     <CIcon icon={cilFilter}></CIcon> FILTERS
@@ -329,112 +336,107 @@ const CourtConfiguration = () => {
         </CRow>
         {adminData?.length > 0 ? (
           <div style={{ overflowX: "auto" }}>
-          <CTable className="mt-4 main_table" striped>
-            <CTableHead>
-              <CTableRow>
-                {/* <CTableHeaderCell scope="col">Location Id</CTableHeaderCell> */}
-                <CTableHeaderCell scope="col">Admin Id</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Location</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Date & Time</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Court No.</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Booked By</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Type</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Contact Details</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Action</CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              {adminData?.map((item, i) => {
-                return (
-                  <CTableRow key={i}>
-                    <CTableDataCell>{item?.id}</CTableDataCell>
-                    <CTableDataCell>{item?.user?.first_name}</CTableDataCell>
-                    <CTableDataCell>
-                      <div>
-                        <p className="mb-0 user_phone">
-                          {item?.start_time
-                            ? `${convertToAmPm(item?.start_time)} - ${convertToHoursOnly(item?.duration_time)}`
+            <CTable className="mt-4 main_table" striped>
+              <CTableHead>
+                <CTableRow>
+                  {/* <CTableHeaderCell scope="col">Location Id</CTableHeaderCell> */}
+                  <CTableHeaderCell scope="col">Admin Id</CTableHeaderCell>
+                  {/* <CTableHeaderCell scope="col">Location</CTableHeaderCell> */}
+                  <CTableHeaderCell scope="col">Date & Time</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Court No.</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Booked By</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Type</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">
+                    Contact Details
+                  </CTableHeaderCell>
+                  {/* <CTableHeaderCell scope="col">Action</CTableHeaderCell> */}
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+                {adminData?.map((item, i) => {
+                  return (
+                    <CTableRow key={i}>
+                      <CTableDataCell>{item?.id}</CTableDataCell>
+                      {/* <CTableDataCell>{item?.user?.first_name}</CTableDataCell> */}
+                      <CTableDataCell>
+                        <div>
+                          <p className="mb-0 user_phone">
+                            {item?.start_time
+                              ? `${convertToAmPm(item?.start_time)} - ${convertToHoursOnly(item?.duration_time)}`
+                              : ""}
+                          </p>
+                          <p className="mb-0">{item?.booking_date}</p>
+                        </div>
+                      </CTableDataCell>
+                      <CTableDataCell>0</CTableDataCell>
+                      <CTableDataCell>{`${item?.user?.first_name} ${item?.user?.last_name}`}</CTableDataCell>
+                      <CTableDataCell>
+                        {item?.user?.user_type == 1
+                          ? "Admin"
+                          : item?.user?.user_type == 3
+                            ? "Player"
                             : ""}
-                        </p>
-                        <p className="mb-0">{item?.booking_date}</p>
-                      </div>
-                    </CTableDataCell>
-                    <CTableDataCell>0</CTableDataCell>
-                    <CTableDataCell>{`${item?.user?.first_name} ${item?.user?.last_name}`}</CTableDataCell>
-                    <CTableDataCell>
-                      {item?.user?.user_type == 1
-                        ? "Admin"
-                        : item?.user?.user_type == 3
-                          ? "Player"
-                          : ""}
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <div>
-                        <p className="mb-0 user_phone">{item?.user?.phone}</p>
-                        <p className="mb-0">{item?.user?.email}</p>
-                      </div>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <div
-                        style={{ position: "relative", marginBottom: "16px" }}
-                      >
-                        {/* Three-dot icon */}
-                        <span
-                          style={{ fontSize: "24px", cursor: "pointer" }}
-                          onClick={() => toggleMenu(item.id)}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <div>
+                          <p className="mb-0 user_phone">{item?.user?.phone}</p>
+                          <p className="mb-0">{item?.user?.email}</p>
+                        </div>
+                      </CTableDataCell>
+                      {/* <CTableDataCell>
+                        <div
+                          style={{ position: "relative", marginBottom: "16px" }}
                         >
-                          ⋮
-                        </span>
-
-                        {/* Dropdown menu only for selected item */}
-                        {openMenuId === item.id && (
-                          <div
-                            style={{
-                              position: "absolute",
-                              top: "30px",
-                              right: 0,
-                              backgroundColor: "#fff",
-                              borderRadius: "10px",
-                              padding: "12px",
-                              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-                              zIndex: 999999,
-                            }}
+                          <span
+                            style={{ fontSize: "24px", cursor: "pointer" }}
+                            onClick={() => toggleMenu(item.id)}
                           >
+                            ⋮
+                          </span>
+                          {openMenuId === item.id && (
                             <div
-                              onClick={() => {
-                                handleEditAdmin(item?.id);
+                              style={{
+                                position: "absolute",
+                                top: "30px",
+                                right: 0,
+                                backgroundColor: "#fff",
+                                borderRadius: "10px",
+                                padding: "12px",
+                                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+                                zIndex: 999999,
                               }}
-                              className="action_icons"
                             >
-                              <CIcon icon={cilPencil} className="edit_icon" />{" "}
-                              Edit
+                              <div
+                                onClick={() => {
+                                  handleEditAdmin(item?.id);
+                                }}
+                                className="action_icons"
+                              >
+                                <CIcon icon={cilPencil} className="edit_icon" />{" "}
+                                Edit
+                              </div>
+                              <div
+                                onClick={() => {
+                                  handleDeleteModal(item.id);
+                                  setOpenMenuId(null);
+                                }}
+                                className="action_icons"
+                              >
+                                <CIcon
+                                  icon={cilDelete}
+                                  className="delete_icon"
+                                />{" "}
+                                Delete
+                              </div>
                             </div>
-                            <div
-                              onClick={() => {
-                                handleDeleteModal(item.id);
-                                setOpenMenuId(null);
-                              }}
-                              className="action_icons"
-                            >
-                              <CIcon icon={cilDelete} className="delete_icon" />{" "}
-                              Delete
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      {/* <CIcon
-                      icon={cilPencil}
-                      onClick={() => {
-                        handleEditAdmin(item?.id);
-                      }}
-                      className="mx-2 edit_icon"
-                    ></CIcon>
-                    <CIcon icon={cilDelete} className="delete_icon"></CIcon> */}
-                    </CTableDataCell>
-                  </CTableRow>
-                );
-              })}
-              {/* <CTableRow>
+                          )}
+                        </div>
+                       
+                      </CTableDataCell> */}
+                    </CTableRow>
+                  );
+                })}
+                {/* <CTableRow>
                 <CTableDataCell>#123</CTableDataCell>
                 <CTableDataCell>#123</CTableDataCell>
                 <CTableDataCell>8987464kkdfet</CTableDataCell>
@@ -454,8 +456,8 @@ const CourtConfiguration = () => {
                   <CIcon icon={cilDelete} className="delete_icon"></CIcon>
                 </CTableDataCell>
               </CTableRow> */}
-            </CTableBody>
-          </CTable>
+              </CTableBody>
+            </CTable>
           </div>
         ) : (
           <div className="my-5 d-flex justify-content-center">
