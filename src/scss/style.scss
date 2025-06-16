@@ -642,8 +642,20 @@ input:-webkit-autofill {
   color: #0860FB;
   font-size: 14px;
 }
-
-
+.upcoming_booking{
+  border: 1px solid #3d99f5;
+  background: #E7F0FF;
+  font-size: 14px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+.upcoming_booking:hover{
+  border: 1px solid #3d99f5;
+  background: #E7F0FF;
+  font-size: 14px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
 
 
 @media screen and (max-width: 580px) {

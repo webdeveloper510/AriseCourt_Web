@@ -23,6 +23,7 @@ import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import CIcon, { CIconSvg } from "@coreui/icons-react";
 import {
+  cilCalendar,
   cilCloudUpload,
   cilDelete,
   cilFilter,
@@ -60,6 +61,7 @@ const CourtConfiguration = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const [bookingType, setBookingType] = useState("");
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -76,52 +78,62 @@ const CourtConfiguration = () => {
     setOpenMenuId((prevId) => (prevId === id ? null : id)); // Toggle
   };
 
-  const getCourtBookingData = () => {
-    getCourtBooking()
-      .then((res) => {
-        console.log("getCourtBookingData", res);
-        if (res?.status == 200) {
-          setAdminData(res?.data?.future_bookings);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  // const getCourtBookingData = (
-  //   page = 1,
-  //   query = "",
-  //   startDate = "",
-  //   endDate = "",
-  //   loader
-  // ) => {
-  //   setLoading(loader ? true : false);
+  // const getCourtBookingData = () => {
   //   getCourtBooking()
   //     .then((res) => {
   //       console.log("getCourtBookingData", res)
-  //       setLoading(false);
-  //       if (res.status === 200) {
+  //       if (res?.status == 200) {
   //         setAdminData(res?.data?.results);
   //         setTotalCounts(res?.data?.count);
   //         setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
-  //       } else {
-  //         setAdminData([]);
   //       }
   //     })
   //     .catch((error) => {
-  //       console.error(error);
-  //       setAdminData([]);
-  //       setLoading(false);
+  //       console.log(error);
   //     });
   // };
+  const getCourtBookingData = (
+    bookingType = "",
+    page = 1,
+    query = "",
+    startDate = "",
+    endDate = "",
+    loader
+  ) => {
+    setLoading(loader ? true : false);
+    getCourtBooking(bookingType, page, query, startDate, endDate)
+      .then((res) => {
+        console.log("getCourtBookingData", res);
+        setLoading(false);
+        if (res?.status === 200) {
+          setAdminData(res?.data?.results);
+          setTotalCounts(res?.data?.count);
+          setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
+        } else {
+          setAdminData([]);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        setAdminData([]);
+        setLoading(false);
+      });
+  };
 
   const handleFilterClick = () => {
-    getCourtBookingData(currentPage, searchQuery, startDate, endDate, "loader");
+    getCourtBookingData(
+      bookingType,
+      currentPage,
+      searchQuery,
+      startDate,
+      endDate,
+      "loader"
+    );
   };
 
   useEffect(() => {
-    getCourtBookingData();
-  }, []);
+    getCourtBookingData(bookingType, currentPage, searchQuery);
+  }, [bookingType, currentPage, searchQuery]);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -143,7 +155,7 @@ const CourtConfiguration = () => {
   };
 
   const handleEditAdmin = (id) => {
-    navigate(`/update-registraion/${id}`);
+    // navigate(`/update-registraion/${id}`);
   };
 
   const handleDeleteModal = (id) => {
@@ -215,65 +227,108 @@ const CourtConfiguration = () => {
             </h4>
             <div className="card_description">Court Bookings</div>
           </CCol>
-          <CCol sm={12} md={6} className="text-end">
+          {/* <CCol sm={12} md={6} className="text-end">
             <Link to="/add-locations">
               <CButton className="add_new_butn">+ Add New</CButton>
             </Link>
-          </CCol>
-          <CCol sm={12} md={6} className="mt-3">
-            <CInputGroup
-              className="search_input_group"
-              style={{ height: "45px" }}
+          </CCol> */}
+        </CRow>
+
+        <CRow className="mt-5">
+          <CCol sm={12} md={5}>
+            <CButton
+              onClick={() => setBookingType("")}
+              style={{
+                color: bookingType === "past" ? "" : "#0860FB",
+                fontWeight: bookingType === "500" ? "" : "600",
+              }}
+              className="upcoming_booking"
             >
-              <CInputGroupText className="input_icons">
-                <CIcon icon={cilSearch}></CIcon>
-              </CInputGroupText>
-              <CFormInput
-                placeholder="Search..."
-                aria-label="Username"
-                aria-describedby="basic-addon1"
-                className="seacrh_input"
-              />
-            </CInputGroup>
+              Upcoming Bookings
+            </CButton>
+
+            <CButton
+              onClick={() => setBookingType("past")}
+              style={{
+                color: bookingType === "past" ? "#0860FB" : "",
+                fontWeight: bookingType === "600" ? "" : "500",
+              }}
+              className="upcoming_booking mx-1"
+            >
+              Past Bookings
+            </CButton>
           </CCol>
 
-          <CCol sm={6} className="mt-3">
-            <div className="text-end date_filter_section">
-              {/* Calendar area */}
-              <div>
-                <div
-                  onClick={handleCalendarClick}
-                  style={{
-                    padding: "10px",
-                    border: "1px solid #ddd",
-                    display: "inline-block",
-                    cursor: "pointer",
-                    borderRadius: "12px",
-                  }}
+          <CCol sm={12} md={7}>
+            <CRow>
+              <CCol md={5}>
+                <CInputGroup
+                  className="search_input_group_reports"
+                  style={{ height: "45px" }}
                 >
-                  <span>{`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}</span>
-                </div>
+                  <CInputGroupText className="input_icons">
+                    <CIcon icon={cilSearch}></CIcon>
+                  </CInputGroupText>
+                  <CFormInput
+                    type="text"
+                    placeholder="Search..."
+                    aria-label="Username"
+                    aria-describedby="basic-addon1"
+                    className="seacrh_input"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                  />
+                </CInputGroup>
+              </CCol>
 
-                {/* Display DateRangePicker when calendar is open */}
-                {isCalendarOpen && (
-                  <div style={{ position: "absolute", zIndex: 10 }}>
-                    <DateRangePicker
-                      ranges={[selectionRange]}
-                      onChange={handleSelect}
-                    />
+              <CCol md={7}>
+                <div className="text-end date_filter_section">
+                  <div
+                    onClick={handleCalendarClick}
+                    style={{
+                      padding: "10px",
+                      border: "1px solid #ddd",
+                      display: "inline-block",
+                      cursor: "pointer",
+                      borderRadius: "12px",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <span>
+                      <CIcon icon={cilCalendar}></CIcon>{" "}
+                      {`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}
+                    </span>
                   </div>
-                )}
-              </div>
 
-              <div>
-                <CButton className="filter_butn">
-                  <CIcon icon={cilFilter}></CIcon> FILTERS
-                </CButton>
-              </div>
-            </div>
+                  {/* Display DateRangePicker when calendar is open */}
+                  {isCalendarOpen && (
+                    <div
+                      ref={calendarRef}
+                      style={{ position: "absolute", zIndex: 10, top: "130px" }}
+                    >
+                      <DateRangePicker
+                        ranges={[selectionRange]}
+                        onChange={handleSelect} // Update the selection when a date is selected
+                      />
+                    </div>
+                  )}
+
+                  {/* Filter Button */}
+                  <CButton
+                    ref={filterButtonRef}
+                    className="filter_butn"
+                    style={{whiteSpace: "nowrap"}}
+                    onClick={handleFilterClick}
+                  >
+                    <CIcon icon={cilFilter}></CIcon> FILTERS
+                  </CButton>
+                </div>
+              </CCol>
+            </CRow>
           </CCol>
         </CRow>
         {adminData?.length > 0 ? (
+          <div style={{ overflowX: "auto" }}>
           <CTable className="mt-4 main_table" striped>
             <CTableHead>
               <CTableRow>
@@ -304,7 +359,7 @@ const CourtConfiguration = () => {
                         <p className="mb-0">{item?.booking_date}</p>
                       </div>
                     </CTableDataCell>
-                      <CTableDataCell>0</CTableDataCell>
+                    <CTableDataCell>0</CTableDataCell>
                     <CTableDataCell>{`${item?.user?.first_name} ${item?.user?.last_name}`}</CTableDataCell>
                     <CTableDataCell>
                       {item?.user?.user_type == 1
@@ -401,6 +456,7 @@ const CourtConfiguration = () => {
               </CTableRow> */}
             </CTableBody>
           </CTable>
+          </div>
         ) : (
           <div className="my-5 d-flex justify-content-center">
             <h1 className="card-title">Data Not Found</h1>

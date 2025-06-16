@@ -257,6 +257,7 @@ const Locations = () => {
         </CRow>
 
         {locationData?.length > 0 ? (
+          <div style={{ overflowX: "auto" }}>
           <CTable className="mt-4 main_table" striped>
             <CTableHead>
               <CTableRow>
@@ -367,6 +368,7 @@ const Locations = () => {
               })}
             </CTableBody>
           </CTable>
+          </div>
         ) : (
           <div className="my-5 d-flex justify-content-center">
             <h1 className="card-title">Data Not Found</h1>

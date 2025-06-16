@@ -257,39 +257,11 @@ const Dashboard = () => {
                 <CIcon icon={cilFilter}></CIcon> FILTERS
               </CButton>
 
-              {/* <div>
-                <div
-                  onClick={handleCalendarClick}
-                  style={{
-                    padding: "10px",
-                    border: "1px solid #ddd",
-                    display: "inline-block",
-                    cursor: "pointer",
-                    borderRadius: "12px",
-                  }}
-                >
-                  <span>{`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}</span>
-                </div>
-
-                {isCalendarOpen && (
-                  <div style={{ position: "absolute", zIndex: 10 }}>
-                    <DateRangePicker
-                      ranges={[selectionRange]}
-                      onChange={handleSelect}
-                    />
-                  </div>
-                )}
-              </div>
-
-              <div>
-                <CButton className="filter_butn" onClick={()=>handleFilterDate()}>
-                  <CIcon icon={cilFilter}></CIcon> FILTERS
-                </CButton>
-              </div> */}
             </div>
           </CCol>
         </CRow>
         {adminData?.length > 0 ? (
+          <div style={{ overflowX: "auto" }}>
           <CTable className="mt-4 main_table" striped>
             <CTableHead>
               <CTableRow>
@@ -402,6 +374,7 @@ const Dashboard = () => {
               </CTableRow> */}
             </CTableBody>
           </CTable>
+          </div>
         ) : (
           <div className="my-5 d-flex justify-content-center">
             <h1 className="card-title">Data Not Found</h1>

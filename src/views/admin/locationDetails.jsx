@@ -350,6 +350,7 @@ const LocationDetails = () => {
           </CRow>
 
           {courtData?.length > 0 ? (
+            <div style={{ overflowX: "auto" }}>
             <CTable className="mt-4 main_table" striped>
               <CTableHead>
                 <CTableRow>
@@ -393,6 +394,7 @@ const LocationDetails = () => {
                 })}
               </CTableBody>
             </CTable>
+            </div>
           ) : (
             <div className="my-5 d-flex justify-content-center">
               <h1 className="card-title">Data Not Found</h1>
@@ -523,19 +525,6 @@ const LocationDetails = () => {
                     <div className="text-danger">{errors.cc_fees}</div>
                   )}
                 </CCol>
-                {/* <CCol sm={12} md={6} lg={6} className="my-1">
-                <label className="add_court_label">User Type</label>
-
-                <CFormInput
-                  type="password"
-                  className="register_input"
-                  placeholder="Enter User Type"
-                  aria-label="default input example"
-                  value={addCourt?.u}
-                  name="u"
-                  onChange={(e)=>handleCourtInput(e)}
-                />
-              </CCol> */}
                 <CCol sm={12} md={6} lg={6} className="my-1">
                   <label className="add_court_label">Availability</label>
                   <CFormSwitch

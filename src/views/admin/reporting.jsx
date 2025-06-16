@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CButton,
   CCard,
@@ -17,8 +17,8 @@ import {
 } from "@coreui/react";
 import { DateRangePicker } from "react-date-range";
 import CIcon, { CIconSvg } from "@coreui/icons-react";
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
 import {
   cilCloudUpload,
   cilDelete,
@@ -30,6 +30,7 @@ import UserIcon from "../../assets/images/report_user_icon.png";
 import BookingIcon from "../../assets/images/report_booking_icon.png";
 import CourtsIcon from "../../assets/images/report_court_icon.png";
 import ProfitIcon from "../../assets/images/report_profit_icon.png";
+import { getReportData } from "../../utils/api";
 
 const Reporting = () => {
   const [selectionRange, setSelectionRange] = useState({
@@ -39,6 +40,8 @@ const Reporting = () => {
   });
 
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+  const [reportData, setReportData] = useState({});
 
   const handleSelect = (ranges) => {
     console.log(ranges);
@@ -57,6 +60,24 @@ const Reporting = () => {
     }
   };
 
+  useEffect(() => {
+    getReportAllData();
+  }, []);
+
+  const getReportAllData = () => {
+    getReportData()
+      .then((res) => {
+        if (res?.status == 200) {
+          setReportData(res?.data);
+        } else {
+          setReportData({});
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       {/* <WidgetsDropdown className="mb-4" /> */}
@@ -73,49 +94,59 @@ const Reporting = () => {
 
         <div className="my-3">
           <CRow>
-            <CCol md={3}>
+            <CCol md={3} className="my-1">
               <div className="report_cards">
                 <div className="report_card_image">
                   <img src={UserIcon} alt="UserIcon" />
                 </div>
                 <div>
-                  <h6 className="report_card_title">800</h6>
+                  <h6 className="report_card_title">
+                    {reportData?.total_users}
+                  </h6>
                   <p className="report_card_Desc">Total users</p>
                 </div>
               </div>
             </CCol>
 
-            <CCol md={3}>
+            <CCol md={3} className="my-1">
               <div className="report_cards">
                 <div className="report_card_image">
                   <img src={BookingIcon} alt="UserIcon" />
                 </div>
                 <div>
-                  <h6 className="report_card_title">5869851+</h6>
+                  <h6 className="report_card_title">
+                    {reportData?.total_bookings}
+                  </h6>
                   <p className="report_card_Desc">Bookings</p>
                 </div>
               </div>
             </CCol>
 
-            <CCol md={3}>
+            <CCol md={3} className="my-1">
               <div className="report_cards">
                 <div className="report_card_image">
                   <img src={CourtsIcon} alt="UserIcon" />
                 </div>
                 <div>
-                  <h6 className="report_card_title">369851+</h6>
+                  <h6 className="report_card_title">
+                    {reportData?.total_courts}
+                  </h6>
                   <p className="report_card_Desc">Total courts</p>
                 </div>
               </div>
             </CCol>
 
-            <CCol md={3}>
+            <CCol md={3} className="my-1">
               <div className="report_cards">
                 <div className="report_card_image">
                   <img src={ProfitIcon} alt="UserIcon" />
                 </div>
                 <div>
-                  <h6 className="report_card_title">$986545.00</h6>
+                  <h6 className="report_card_title">
+                    {reportData?.total_profit
+                      ? `$${reportData?.total_profit}`
+                      : "0"}
+                  </h6>
                   <p className="report_card_Desc">Total profit</p>
                 </div>
               </div>
@@ -187,129 +218,130 @@ const Reporting = () => {
             </CRow>
           </CCol>
         </CRow>
-
-        <CTable className="mt-4 main_table" striped>
-          <CTableHead>
-            <CTableRow>
-              <CTableHeaderCell scope="col">Booking Id</CTableHeaderCell>
-              <CTableHeaderCell scope="col">
-                Location Name & ID
-              </CTableHeaderCell>
-              <CTableHeaderCell scope="col">Date & Time</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Court No.</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Booked By</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Contact Details</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Price & Status</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Action</CTableHeaderCell>
-            </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy22@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
-              </CTableDataCell>
-            </CTableRow>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy22@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
-              </CTableDataCell>
-            </CTableRow>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy22@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
-              </CTableDataCell>
-            </CTableRow>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy22@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
-              </CTableDataCell>
-            </CTableRow>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy22@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
-              </CTableDataCell>
-            </CTableRow>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy22@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
-              </CTableDataCell>
-            </CTableRow>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy22@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
-              </CTableDataCell>
-            </CTableRow>
-            <CTableRow>
-              <CTableDataCell>#32144569870</CTableDataCell>
-              <CTableDataCell>Beach Badminton Club</CTableDataCell>
-              <CTableDataCell>August 29, 2026</CTableDataCell>
-              <CTableDataCell>08</CTableDataCell>
-              <CTableDataCell>Dummy Name</CTableDataCell>
-              <CTableDataCell>dummy22@gmail.com</CTableDataCell>
-              <CTableDataCell>$57.00</CTableDataCell>
-              <CTableDataCell>
-                <CIcon icon={cilPencil}></CIcon>
-                <CIcon icon={cilDelete}></CIcon>
-              </CTableDataCell>
-            </CTableRow>
-          </CTableBody>
-        </CTable>
+        <div style={{ overflowX: "auto" }}>
+          <CTable className="mt-4 main_table" striped>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell scope="col">Booking Id</CTableHeaderCell>
+                <CTableHeaderCell scope="col">
+                  Location Name & ID
+                </CTableHeaderCell>
+                <CTableHeaderCell scope="col">Date & Time</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Court No.</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Booked By</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Contact Details</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Price & Status</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              <CTableRow>
+                <CTableDataCell>#32144569870</CTableDataCell>
+                <CTableDataCell>Beach Badminton Club</CTableDataCell>
+                <CTableDataCell>August 29, 2026</CTableDataCell>
+                <CTableDataCell>08</CTableDataCell>
+                <CTableDataCell>Dummy Name</CTableDataCell>
+                <CTableDataCell>dummy22@gmail.com</CTableDataCell>
+                <CTableDataCell>$57.00</CTableDataCell>
+                <CTableDataCell>
+                  <CIcon icon={cilPencil}></CIcon>
+                  <CIcon icon={cilDelete}></CIcon>
+                </CTableDataCell>
+              </CTableRow>
+              <CTableRow>
+                <CTableDataCell>#32144569870</CTableDataCell>
+                <CTableDataCell>Beach Badminton Club</CTableDataCell>
+                <CTableDataCell>August 29, 2026</CTableDataCell>
+                <CTableDataCell>08</CTableDataCell>
+                <CTableDataCell>Dummy Name</CTableDataCell>
+                <CTableDataCell>dummy22@gmail.com</CTableDataCell>
+                <CTableDataCell>$57.00</CTableDataCell>
+                <CTableDataCell>
+                  <CIcon icon={cilPencil}></CIcon>
+                  <CIcon icon={cilDelete}></CIcon>
+                </CTableDataCell>
+              </CTableRow>
+              <CTableRow>
+                <CTableDataCell>#32144569870</CTableDataCell>
+                <CTableDataCell>Beach Badminton Club</CTableDataCell>
+                <CTableDataCell>August 29, 2026</CTableDataCell>
+                <CTableDataCell>08</CTableDataCell>
+                <CTableDataCell>Dummy Name</CTableDataCell>
+                <CTableDataCell>dummy22@gmail.com</CTableDataCell>
+                <CTableDataCell>$57.00</CTableDataCell>
+                <CTableDataCell>
+                  <CIcon icon={cilPencil}></CIcon>
+                  <CIcon icon={cilDelete}></CIcon>
+                </CTableDataCell>
+              </CTableRow>
+              <CTableRow>
+                <CTableDataCell>#32144569870</CTableDataCell>
+                <CTableDataCell>Beach Badminton Club</CTableDataCell>
+                <CTableDataCell>August 29, 2026</CTableDataCell>
+                <CTableDataCell>08</CTableDataCell>
+                <CTableDataCell>Dummy Name</CTableDataCell>
+                <CTableDataCell>dummy22@gmail.com</CTableDataCell>
+                <CTableDataCell>$57.00</CTableDataCell>
+                <CTableDataCell>
+                  <CIcon icon={cilPencil}></CIcon>
+                  <CIcon icon={cilDelete}></CIcon>
+                </CTableDataCell>
+              </CTableRow>
+              <CTableRow>
+                <CTableDataCell>#32144569870</CTableDataCell>
+                <CTableDataCell>Beach Badminton Club</CTableDataCell>
+                <CTableDataCell>August 29, 2026</CTableDataCell>
+                <CTableDataCell>08</CTableDataCell>
+                <CTableDataCell>Dummy Name</CTableDataCell>
+                <CTableDataCell>dummy22@gmail.com</CTableDataCell>
+                <CTableDataCell>$57.00</CTableDataCell>
+                <CTableDataCell>
+                  <CIcon icon={cilPencil}></CIcon>
+                  <CIcon icon={cilDelete}></CIcon>
+                </CTableDataCell>
+              </CTableRow>
+              <CTableRow>
+                <CTableDataCell>#32144569870</CTableDataCell>
+                <CTableDataCell>Beach Badminton Club</CTableDataCell>
+                <CTableDataCell>August 29, 2026</CTableDataCell>
+                <CTableDataCell>08</CTableDataCell>
+                <CTableDataCell>Dummy Name</CTableDataCell>
+                <CTableDataCell>dummy22@gmail.com</CTableDataCell>
+                <CTableDataCell>$57.00</CTableDataCell>
+                <CTableDataCell>
+                  <CIcon icon={cilPencil}></CIcon>
+                  <CIcon icon={cilDelete}></CIcon>
+                </CTableDataCell>
+              </CTableRow>
+              <CTableRow>
+                <CTableDataCell>#32144569870</CTableDataCell>
+                <CTableDataCell>Beach Badminton Club</CTableDataCell>
+                <CTableDataCell>August 29, 2026</CTableDataCell>
+                <CTableDataCell>08</CTableDataCell>
+                <CTableDataCell>Dummy Name</CTableDataCell>
+                <CTableDataCell>dummy22@gmail.com</CTableDataCell>
+                <CTableDataCell>$57.00</CTableDataCell>
+                <CTableDataCell>
+                  <CIcon icon={cilPencil}></CIcon>
+                  <CIcon icon={cilDelete}></CIcon>
+                </CTableDataCell>
+              </CTableRow>
+              <CTableRow>
+                <CTableDataCell>#32144569870</CTableDataCell>
+                <CTableDataCell>Beach Badminton Club</CTableDataCell>
+                <CTableDataCell>August 29, 2026</CTableDataCell>
+                <CTableDataCell>08</CTableDataCell>
+                <CTableDataCell>Dummy Name</CTableDataCell>
+                <CTableDataCell>dummy22@gmail.com</CTableDataCell>
+                <CTableDataCell>$57.00</CTableDataCell>
+                <CTableDataCell>
+                  <CIcon icon={cilPencil}></CIcon>
+                  <CIcon icon={cilDelete}></CIcon>
+                </CTableDataCell>
+              </CTableRow>
+            </CTableBody>
+          </CTable>
+        </div>
       </CCardBody>
       {/* </CCard> */}
     </>
