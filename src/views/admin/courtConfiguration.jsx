@@ -101,7 +101,7 @@ const CourtConfiguration = () => {
     endDate = "",
     loader
   ) => {
-    setLoading(loader ? true : false);
+    setLoading(query ? false : true);
     getCourtBooking(bookingType, page, query, startDate, endDate)
       .then((res) => {
         setLoading(false);
@@ -226,6 +226,11 @@ const CourtConfiguration = () => {
     <>
       {/* <WidgetsDropdown className="mb-4" /> */}
       {/* <CCard className="mb-4"> */}
+      {loading && (
+        <div className="loader_outer">
+          <span className="loader"></span>
+        </div>
+      )}
       <CCardBody className="p-2 position-relative">
         <CRow>
           <CCol sm={12} md={6}>
@@ -459,7 +464,7 @@ const CourtConfiguration = () => {
               </CTableBody>
             </CTable>
           </div>
-        ) : (
+        ) : !loading &&  (
           <div className="my-5 d-flex justify-content-center">
             <h1 className="card-title">Data Not Found</h1>
           </div>

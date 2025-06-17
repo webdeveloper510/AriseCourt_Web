@@ -100,7 +100,7 @@ const Locations = () => {
     endDate = "",
     loader
   ) => {
-    setLoading(loader ? true : false);
+    setLoading(query ? false : true);
     getLocation(page, query, startDate, endDate)
       .then((res) => {
         setLoading(false);
@@ -379,7 +379,7 @@ const Locations = () => {
               </CTableBody>
             </CTable>
           </div>
-        ) : (
+        ) : !loading && (
           <div className="my-5 d-flex justify-content-center">
             <h1 className="card-title">Data Not Found</h1>
           </div>

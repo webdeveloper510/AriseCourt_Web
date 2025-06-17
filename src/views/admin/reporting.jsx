@@ -102,10 +102,9 @@ const Reporting = () => {
     endDate = "",
     loader
   ) => {
-    setLoading(loader ? true : false);
+    setLoading(query ? false : true);
     getReportBooking(bookingType, page, query, startDate, endDate)
       .then((res) => {
-        console.log("bookingType", res)
         setLoading(false);
         if (res.status == 200) {
           setReportTable(res?.data?.results);
@@ -156,6 +155,11 @@ const Reporting = () => {
     <>
       {/* <WidgetsDropdown className="mb-4" /> */}
       {/* <CCard className="mb-4"> */}
+      {loading && (
+        <div className="loader_outer">
+          <span className="loader"></span>
+        </div>
+      )}
       <CCardBody className="p-2 position-relative">
         <CRow>
           <CCol sm={12} md={6}>
@@ -318,9 +322,9 @@ const Reporting = () => {
                       <CTableDataCell>{`${item?.first_name} ${item?.last_name}`}</CTableDataCell>
                       <CTableDataCell>{item?.email}</CTableDataCell>
                       <CTableDataCell>{item?.phone}</CTableDataCell>
-                      <CTableDataCell> {item?.user?.user_type == 2
+                      <CTableDataCell> {item?.user_type == 2
                           ? "Coach"
-                          : item?.user?.user_type == 3
+                          : item?.user_type == 3
                             ? "Player"
                             : item?.user_type == 4 ? "Court" : ""}</CTableDataCell>
                       <CTableDataCell>{item?.country}</CTableDataCell>
@@ -392,7 +396,7 @@ const Reporting = () => {
               </CTableBody>
             </CTable>
           </div>
-        ) : (
+        ) : !loading && (
           <div className="my-5 d-flex justify-content-center">
             <h1 className="card-title">Data Not Found</h1>
           </div>

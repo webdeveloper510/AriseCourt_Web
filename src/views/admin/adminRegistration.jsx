@@ -32,7 +32,6 @@ const AdminRegistration = () => {
     { name: "Court Bookings Tab only", id: 2 },
     { name: "Reporting Only", id: 3 },
   ]);
-  const [selectedValue, setSelectedValue] = useState([]);
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -43,8 +42,11 @@ const AdminRegistration = () => {
     password: "",
     confirm_password: "",
     user_type: 1,
-    permission: [],
+    access_flag: [],
   });
+  const selectedOptions = options.filter((option) =>
+    formData?.access_flag?.includes(option.id)
+  );
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -72,26 +74,39 @@ const AdminRegistration = () => {
   };
 
   // onSelect handler
-  const onSelect = (selectedList, selectedItem) => {
-    setSelectedValue(selectedList);
-    const selectedIds = selectedList.map(item => item.id); 
-    setFormData(prevState => ({
+  const onSelect = (selectedList) => {
+    const selectedIds = selectedList.map((item) => item.id); // [0,1,2]
+    const formatted = selectedIds.join(","); // "0,1,2"
+
+    setFormData((prevState) => ({
       ...prevState,
-      permission: selectedIds, 
+      access_flag: formatted, // Store "0,1,2" as string
+    }));
+
+    const isEditMode = Boolean(id);
+    const fieldErrors = validateFormData({ ...formData, access_flag: selectedIds }, isEditMode, "access_flag");
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      access_flag: fieldErrors.access_flag || "",
     }));
   };
 
- 
-  const onRemove = (selectedList, removedItem) => {
-    setSelectedValue(selectedList);
-    const selectedIds = selectedList.map(item => item.id); 
-    setFormData(prevState => ({
+  const onRemove = (selectedList) => {
+    const selectedIds = selectedList.map((item) => item.id); // e.g., [0,2]
+    const formatted = selectedIds.join(","); // "0,2"
+
+    setFormData((prevState) => ({
       ...prevState,
-      permission: selectedIds,
+      access_flag: formatted,
+    }));
+
+    const isEditMode = Boolean(id);
+    const fieldErrors = validateFormData({ ...formData, access_flag: selectedIds }, isEditMode, "access_flag");
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      access_flag: fieldErrors.access_flag || "",
     }));
   };
-
-
 
   const validateFormData = (
     data,
@@ -135,6 +150,12 @@ const AdminRegistration = () => {
             errors.confirm_password = "Passwords do not match.";
           }
           break;
+        case "access_flag":
+          // Make sure access_flag is not empty
+          if (!data.access_flag || data.access_flag.length === 0) {
+            errors.access_flag = "Permission is required.";
+          }
+          break;
         default:
           break;
       }
@@ -154,7 +175,14 @@ const AdminRegistration = () => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       phone: value,
-      country: data.countryCode.toUpperCase(), 
+      country: data.countryCode.toUpperCase(),
+    }));
+
+    const isEditMode = Boolean(id);
+    const fieldErrors = validateFormData({ ...formData, phone: value, country: data.countryCode }, isEditMode, "phone");
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      phone: fieldErrors.phone || "",
     }));
   };
 
@@ -333,21 +361,7 @@ const AdminRegistration = () => {
                   <div className="text-danger">{errors.phone}</div>
                 )}
               </CCol>
-              <CCol sm={12} md={6} lg={4} className="my-2">
-                <label>Permission</label>
-                <Multiselect
-                  options={options}
-                  selectedValues={selectedValue}
-                  onSelect={onSelect}
-                  onRemove={onRemove}
-                  displayValue="name"
-                  className={
-                    selectedValue?.length > 0
-                      ? "permission_multi_select"
-                      : "fix_height"
-                  }
-                />
-              </CCol>
+
               <CCol sm={12} md={6} lg={4} className="my-2">
                 <label>Password</label>
 
@@ -381,6 +395,25 @@ const AdminRegistration = () => {
                   <div className="text-danger">{errors.confirm_password}</div>
                 )}
               </CCol>
+
+              <CCol sm={12} md={6} lg={4} className="my-2">
+                <label>Permission</label>
+                <Multiselect
+                  options={options}
+                  selectedValues={selectedOptions}
+                  onSelect={onSelect}
+                  onRemove={onRemove}
+                  displayValue="name"
+                  className={
+                    formData?.access_flag?.length > 0
+                      ? "permission_multi_select"
+                      : "fix_height"
+                  }
+                />
+              </CCol>
+              {errors.access_flag && (
+                <div className="text-danger">{errors.access_flag}</div>
+              )}
 
               <CCol md={12} className="mt-4">
                 <CButton type="submit" className="add_new_butn">

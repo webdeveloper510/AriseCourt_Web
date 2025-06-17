@@ -41,7 +41,8 @@ const Login = () => {
     }
 
     if (!formData.password || formData.password.length < 6) {
-      errors.password = "Password is required and must be at least 6 characters long.";
+      errors.password =
+        "Password is required and must be at least 6 characters long.";
     }
 
     return errors;
@@ -71,15 +72,28 @@ const Login = () => {
     loginUser(formData)
       .then((res) => {
         setLoading(false);
+
         if (res.status === 200) {
-          navigate("/dashboard");
+          const userData = res?.data?.data;
+          const accessToken = res?.data?.token?.access;
+          localStorage.setItem("user_access_valid_token", accessToken);
+          localStorage.setItem("logged_user_data", JSON.stringify(userData));
           toast.success(res?.data?.msg, { theme: "colored" });
-          localStorage.setItem("user_access_valid_token", res?.data?.token?.access);
-          localStorage.setItem("logged_user_data", JSON.stringify(res?.data?.data))
-        }else{
+          if (userData?.user_type === 0 || userData?.access_flag?.includes("0")) {
+            navigate("/dashboard");
+          } else if (userData?.access_flag?.includes("1")) {
+            navigate("/locations");
+          } else if (userData?.access_flag?.includes("2")) {
+            navigate("/court-bookings");
+          } else if (userData?.access_flag?.includes("3")) {
+            navigate("/reporting");
+          } else {
+            toast.error("No valid access permissions found.", { theme: "colored" });
+          }          
+        } else {
           toast.error(res?.data?.errors, {
-            theme:"colored"
-          })
+            theme: "colored",
+          });
         }
       })
       .catch((error) => {
@@ -108,7 +122,7 @@ const Login = () => {
               </CCard>
             </CCol>
             <CCol md={6}>
-              <div className="d-flex justify-content-center form_outer_section" >
+              <div className="d-flex justify-content-center form_outer_section">
                 <div className="form_inner_section">
                   <CForm onSubmit={handleFormSubmit} onKeyDown={handleKeyDown}>
                     <img src={Logo} alt="login-logo" />
@@ -129,7 +143,9 @@ const Login = () => {
                           }}
                         />
                       </div>
-                         {errors.email && <span className="error_message">{errors.email}</span>}
+                      {errors.email && (
+                        <span className="error_message">{errors.email}</span>
+                      )}
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <div className="input_section">
@@ -144,7 +160,7 @@ const Login = () => {
                             handleInputChange(e);
                           }}
                         />
-                        
+
                         <CIcon
                           icon={showPassword ? cilLockUnlocked : cilLockLocked} // Change icon based on state
                           onClick={() => togglePasswordVisibility()} // Toggle visibility on click
@@ -156,15 +172,16 @@ const Login = () => {
                             color: "#0860FB",
                             zIndex: "99",
                           }} // Add pointer cursor to indicate clickability
-                          />
+                        />
                       </div>
-                        {errors.password && <span className="error_message">{errors.password}</span>}
+                      {errors.password && (
+                        <span className="error_message">{errors.password}</span>
+                      )}
                     </CInputGroup>
                     <CRow>
                       <CCol xs={12} className="">
                         <CButton type="button" className="text_color px-0">
                           <Link to="/forgot-password">Forgot password?</Link>
-                          
                         </CButton>
                       </CCol>
                       <CCol xs={12}>

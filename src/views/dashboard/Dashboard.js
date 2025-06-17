@@ -62,7 +62,7 @@ const Dashboard = () => {
   const [totalPages, setTotalPages] = useState(0); // Total pages
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -79,6 +79,8 @@ const Dashboard = () => {
     setOpenMenuId((prevId) => (prevId === id ? null : id)); // Toggle
   };
 
+  
+
   const getAdminData = (
     page = 1,
     query = "",
@@ -86,7 +88,7 @@ const Dashboard = () => {
     endDate = "",
     loader
   ) => {
-    setLoading(loader ? true : false);
+    setLoading(query ? false : true);
     getAdmin(page, query, startDate, endDate)
       .then((res) => {
         setLoading(false);
@@ -390,7 +392,7 @@ const Dashboard = () => {
               </CTableBody>
             </CTable>
           </div>
-        ) : (
+        ) : !loading && (
           <div className="my-5 d-flex justify-content-center">
             <h1 className="card-title">Data Not Found</h1>
           </div>
