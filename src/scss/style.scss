@@ -27,6 +27,26 @@ body {
 // *, *::before, *::after {
 //   box-sizing: initial !important;
 // }
+.fix_height{
+  height: 48px !important;
+}
+.permission_multi_select{
+  height: auto !important;
+}
+.multiSelectContainer {
+  background: white;
+  // height: 48px;
+  border: 1px solid #dbdfe6;
+  border-radius: 15px;
+}
+.searchWrapper {
+  border: none !important;
+  border-radius: 4px;
+  min-height: 22px;
+  padding: 5px;
+  position: relative;
+}
+
 .wrapper {
   width: 100%;
   padding-inline: var(--cui-sidebar-occupy-start, 0) var(--cui-sidebar-occupy-end, 0);

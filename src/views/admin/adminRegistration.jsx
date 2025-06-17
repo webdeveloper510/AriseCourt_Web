@@ -19,10 +19,20 @@ import {
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { toast } from "react-toastify";
+import { CMultiSelect } from "@coreui/react-pro";
+import Multiselect from "multiselect-react-dropdown";
 
 const AdminRegistration = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const [options] = useState([
+    { name: "Full Access", id: 0 },
+    { name: "Location Tab only", id: 1 },
+    { name: "Court Bookings Tab only", id: 2 },
+    { name: "Reporting Only", id: 3 },
+  ]);
+  const [selectedValue, setSelectedValue] = useState([]);
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -33,6 +43,7 @@ const AdminRegistration = () => {
     password: "",
     confirm_password: "",
     user_type: 1,
+    permission: [],
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -48,8 +59,8 @@ const AdminRegistration = () => {
           setFormData(res?.data);
         } else if (res?.data?.code == "token_not_valid") {
           toast.error(res?.data?.detail, {
-            theme : "colored"
-          })
+            theme: "colored",
+          });
           localStorage.removeItem("user_access_valid_token");
           localStorage.removeItem("logged_user_data");
           navigate("/login");
@@ -59,6 +70,28 @@ const AdminRegistration = () => {
         console.log(error);
       });
   };
+
+  // onSelect handler
+  const onSelect = (selectedList, selectedItem) => {
+    setSelectedValue(selectedList);
+    const selectedIds = selectedList.map(item => item.id); 
+    setFormData(prevState => ({
+      ...prevState,
+      permission: selectedIds, 
+    }));
+  };
+
+ 
+  const onRemove = (selectedList, removedItem) => {
+    setSelectedValue(selectedList);
+    const selectedIds = selectedList.map(item => item.id); 
+    setFormData(prevState => ({
+      ...prevState,
+      permission: selectedIds,
+    }));
+  };
+
+
 
   const validateFormData = (
     data,
@@ -120,8 +153,8 @@ const AdminRegistration = () => {
   const handlePhoneChange = (value, data) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      phone: value, // full phone number
-      country: data.countryCode.toUpperCase(), // e.g., "US"
+      phone: value,
+      country: data.countryCode.toUpperCase(), 
     }));
   };
 
@@ -218,7 +251,7 @@ const AdminRegistration = () => {
 
         <div className="registration_form">
           <CForm onSubmit={handleFormSubmit} onKeyDown={handleKeyDown}>
-            <CRow className="d-flex justify-content-center">
+            <CRow className="d-flex ">
               <CCol sm={12} md={6} lg={4} className="my-2">
                 <label>First Name</label>
                 <CFormInput
@@ -299,6 +332,21 @@ const AdminRegistration = () => {
                 {errors.phone && (
                   <div className="text-danger">{errors.phone}</div>
                 )}
+              </CCol>
+              <CCol sm={12} md={6} lg={4} className="my-2">
+                <label>Permission</label>
+                <Multiselect
+                  options={options}
+                  selectedValues={selectedValue}
+                  onSelect={onSelect}
+                  onRemove={onRemove}
+                  displayValue="name"
+                  className={
+                    selectedValue?.length > 0
+                      ? "permission_multi_select"
+                      : "fix_height"
+                  }
+                />
               </CCol>
               <CCol sm={12} md={6} lg={4} className="my-2">
                 <label>Password</label>
