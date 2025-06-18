@@ -33,6 +33,7 @@ import deleteImage from "../../assets/images/delete_image.png";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { toast } from "react-toastify";
+import moment from "moment/moment";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -79,8 +80,6 @@ const Dashboard = () => {
     setOpenMenuId((prevId) => (prevId === id ? null : id)); // Toggle
   };
 
-  
-
   const getAdminData = (
     page = 1,
     query = "",
@@ -101,7 +100,7 @@ const Dashboard = () => {
           localStorage.removeItem("logged_user_data");
           navigate("/login");
           setAdminData([]);
-        }else{
+        } else {
           setAdminData([]);
         }
       })
@@ -244,7 +243,13 @@ const Dashboard = () => {
               >
                 <span>
                   <CIcon icon={cilCalendar}></CIcon>{" "}
-                  {`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}
+                  {`${
+                    selectionRange.startDate
+                      ? moment(
+                          selectionRange.startDate
+                        ).format("ll")
+                      : "Start Date"
+                  } - ${selectionRange.endDate ? moment(selectionRange.endDate).format("ll") : "End Date"}`}
                 </span>
               </div>
 
@@ -392,10 +397,12 @@ const Dashboard = () => {
               </CTableBody>
             </CTable>
           </div>
-        ) : !loading && (
-          <div className="my-5 d-flex justify-content-center">
-            <h1 className="card-title">Data Not Found</h1>
-          </div>
+        ) : (
+          !loading && (
+            <div className="my-5 d-flex justify-content-center">
+              <h1 className="card-title">Data Not Found</h1>
+            </div>
+          )
         )}
 
         {adminData?.length > 0 && (
@@ -448,21 +455,21 @@ const Dashboard = () => {
       >
         <CModalBody className="modal_body_court">
           <div className="add_court_modal text-center">
-            <img src={deleteImage} alt="deleteImage" />
+            <img src={deleteImage} alt="deleteImage" width={100} />
             <h1 className="card-title my-4">
-              Are You really Want <br /> To Delete?
+              Are you really want <br /> to delete?
             </h1>
             <div className="d-flex gap-2 mt-4 justify-content-center">
               <CButton
                 type="button"
                 onClick={() => handleDeleteAdmin()}
-                className="add_new_butn"
+                className="delet_yes"
               >
                 Yes
               </CButton>
               <CButton
                 type="button"
-                color="secondary"
+                className="delet_cancel"
                 onClick={() => setVisible(false)}
               >
                 No

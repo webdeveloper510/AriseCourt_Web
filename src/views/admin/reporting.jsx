@@ -35,6 +35,7 @@ import ProfitIcon from "../../assets/images/report_profit_icon.png";
 import { getLocation, getReportBooking, getReportData } from "../../utils/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const Reporting = () => {
   const navigate = useNavigate();
@@ -275,7 +276,11 @@ const Reporting = () => {
                         borderRadius: "12px",
                       }}
                     >
-                      <span>{`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}</span>
+                      <span>{`${
+                        selectionRange.startDate
+                          ? moment(selectionRange.startDate).format("ll")
+                          : "Start Date"
+                      } - ${selectionRange.endDate ? moment(selectionRange.endDate).format("ll") : "End Date"}`}</span>
                     </div>
 
                     {/* Display DateRangePicker when calendar is open */}
@@ -322,11 +327,16 @@ const Reporting = () => {
                       <CTableDataCell>{`${item?.first_name} ${item?.last_name}`}</CTableDataCell>
                       <CTableDataCell>{item?.email}</CTableDataCell>
                       <CTableDataCell>{item?.phone}</CTableDataCell>
-                      <CTableDataCell> {item?.user_type == 2
+                      <CTableDataCell>
+                        {" "}
+                        {item?.user_type == 2
                           ? "Coach"
                           : item?.user_type == 3
                             ? "Player"
-                            : item?.user_type == 4 ? "Court" : ""}</CTableDataCell>
+                            : item?.user_type == 4
+                              ? "Court"
+                              : ""}
+                      </CTableDataCell>
                       <CTableDataCell>{item?.country}</CTableDataCell>
                       {/* <CTableDataCell>19</CTableDataCell> */}
                       {/* <CTableDataCell>
@@ -396,10 +406,12 @@ const Reporting = () => {
               </CTableBody>
             </CTable>
           </div>
-        ) : !loading && (
-          <div className="my-5 d-flex justify-content-center">
-            <h1 className="card-title">Data Not Found</h1>
-          </div>
+        ) : (
+          !loading && (
+            <div className="my-5 d-flex justify-content-center">
+              <h1 className="card-title">Data Not Found</h1>
+            </div>
+          )
         )}
 
         {reportTable?.length > 0 && (

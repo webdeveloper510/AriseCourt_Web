@@ -84,7 +84,11 @@ const AdminRegistration = () => {
     }));
 
     const isEditMode = Boolean(id);
-    const fieldErrors = validateFormData({ ...formData, access_flag: selectedIds }, isEditMode, "access_flag");
+    const fieldErrors = validateFormData(
+      { ...formData, access_flag: selectedIds },
+      isEditMode,
+      "access_flag"
+    );
     setErrors((prevErrors) => ({
       ...prevErrors,
       access_flag: fieldErrors.access_flag || "",
@@ -101,7 +105,11 @@ const AdminRegistration = () => {
     }));
 
     const isEditMode = Boolean(id);
-    const fieldErrors = validateFormData({ ...formData, access_flag: selectedIds }, isEditMode, "access_flag");
+    const fieldErrors = validateFormData(
+      { ...formData, access_flag: selectedIds },
+      isEditMode,
+      "access_flag"
+    );
     setErrors((prevErrors) => ({
       ...prevErrors,
       access_flag: fieldErrors.access_flag || "",
@@ -118,26 +126,49 @@ const AdminRegistration = () => {
     const validateField = (field) => {
       switch (field) {
         case "first_name":
-          if (!data.first_name.trim())
+          if (!data.first_name.trim()) {
             errors.first_name = "First name is required.";
+          } else if (data.first_name.length < 2) {
+            errors.first_name = "First name must be at least 2 characters.";
+          } else if (data.first_name.length > 100) {
+            errors.first_name =
+              "First name must be no more than 100 characters.";
+          }
           break;
         case "last_name":
-          if (!data.last_name.trim())
+          if (!data.last_name.trim()) {
             errors.last_name = "Last name is required.";
+          } else if (data.last_name.length < 2) {
+            errors.last_name = "Last name must be at least 2 characters.";
+          } else if (data.last_name.length > 100) {
+            errors.last_name = "Last name must be no more than 100 characters.";
+          }
           break;
         case "email":
-          if (!data.email.trim()) errors.email = "Email is required.";
+          if (!data.email.trim()) {
+            errors.email = "Email is required.";
+          } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+            errors.email = "Email is not valid.";
+          }
           break;
         case "phone":
-          if (!data.phone.trim()) errors.phone = "Phone number is required.";
+          if (!data.phone.trim()) {
+            errors.phone = "Phone number is required.";
+          } else if (data.phone.length < 7) {
+            errors.phone = "Phone number must be at least 7 characters.";
+          }
           break;
         case "country":
-          if (!data.country.trim())
+          if (!data.country.trim()) {
             errors.country = "Country code is required.";
+          }
           break;
         case "password":
-          if (!isEditMode && !data.password)
+          if (!isEditMode && !data.password) {
             errors.password = "Password is required.";
+          } else if (data.password && data.password.length <= 6) {
+            errors.password = "Password must be greater than 6 characters.";
+          }
           break;
         case "confirm_password":
           if (!isEditMode && !data.confirm_password) {
@@ -179,7 +210,11 @@ const AdminRegistration = () => {
     }));
 
     const isEditMode = Boolean(id);
-    const fieldErrors = validateFormData({ ...formData, phone: value, country: data.countryCode }, isEditMode, "phone");
+    const fieldErrors = validateFormData(
+      { ...formData, phone: value, country: data.countryCode },
+      isEditMode,
+      "phone"
+    );
     setErrors((prevErrors) => ({
       ...prevErrors,
       phone: fieldErrors.phone || "",

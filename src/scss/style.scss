@@ -196,11 +196,28 @@ body {
   height: 40px;
 }
 
-.add_new_butn:hover {
+.add_new_butn:hover , .delet_yes:hover {
   background: white !important;
   color: #0860FB !important;
   border: 1px solid #0860FB !important;
 }
+.delet_yes{
+  background: #0860FB;
+  color: white;
+  height: 45px;
+  width: 100px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.delet_cancel{
+  background: white;
+  color: #0860FB;
+  height: 45px;
+  width: 100px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
 
 .custom-date-range-picker .coreui-date-picker {
   background-color: #f8f9fa;
@@ -263,7 +280,7 @@ body {
 .main_table th {
   color: #182B4D !important;
   font-size: 15px !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   font-family: "DM Sans", sans-serif !important;
   padding: 15px 10px;
   background: #E7F0FF;
@@ -434,7 +451,7 @@ body {
 }
 
 .input_section label {
-  color: #2e5bff;
+  color: #0860fb;
   font-size: 13px;
 }
 
@@ -474,8 +491,9 @@ input:-webkit-autofill {
 }
 
 .add_location_form label {
-  font-size: 14px;
+  font-size: 15px;
   color: #182B4D;
+  font-weight: 500;
 }
 
 .add_location_form input::placeholder {
@@ -506,7 +524,10 @@ input:-webkit-autofill {
   height: 22px !important;
   width: 50px !important;
 }
-
+.text_color a {
+  color: #0860fb ;
+  text-decoration: none;
+}
 .react-tel-input .form-control {
   border: none !important;
   width: auto !important;

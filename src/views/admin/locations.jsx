@@ -38,6 +38,7 @@ import deleteImage from "../../assets/images/delete_image.png";
 import { toast } from "react-toastify";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import moment from "moment";
 
 const Locations = () => {
   const navigate = useNavigate();
@@ -234,7 +235,11 @@ const Locations = () => {
               >
                 <span>
                   <CIcon icon={cilCalendar}></CIcon>{" "}
-                  {`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}
+                  {`${
+                    selectionRange.startDate
+                      ? moment(selectionRange.startDate).format("ll")
+                      : "Start Date"
+                  } - ${selectionRange.endDate ? moment(selectionRange.endDate).format("ll") : "End Date"}`}
                 </span>
               </div>
 
@@ -379,10 +384,12 @@ const Locations = () => {
               </CTableBody>
             </CTable>
           </div>
-        ) : !loading && (
-          <div className="my-5 d-flex justify-content-center">
-            <h1 className="card-title">Data Not Found</h1>
-          </div>
+        ) : (
+          !loading && (
+            <div className="my-5 d-flex justify-content-center">
+              <h1 className="card-title">Data Not Found</h1>
+            </div>
+          )
         )}
 
         {locationData?.length > 0 && (
@@ -435,7 +442,7 @@ const Locations = () => {
       >
         <CModalBody className="modal_body_court">
           <div className="add_court_modal text-center">
-            <img src={deleteImage} alt="deleteImage" />
+            <img src={deleteImage} alt="deleteImage" width={100} />
             <h1 className="card-title my-4">
               Are You really Want <br /> To Delete?
             </h1>
@@ -443,13 +450,13 @@ const Locations = () => {
               <CButton
                 type="button"
                 onClick={() => handleDeleteLocation()}
-                className="add_new_butn"
+                className="delet_yes"
               >
                 Yes
               </CButton>
               <CButton
                 type="button"
-                color="secondary"
+                className="delet_cancel"
                 onClick={() => setVisible(false)}
               >
                 No

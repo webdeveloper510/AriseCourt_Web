@@ -564,7 +564,7 @@ const LocationDetails = () => {
       >
         <CModalBody className="modal_body_court">
           <div className="add_court_modal text-center">
-            <img src={deleteImage} alt="deleteImage" />
+            <img src={deleteImage} alt="deleteImage" width={100} />
             <h1 className="card-title my-4">
               Are You really Want <br /> To Delete?
             </h1>
@@ -572,13 +572,13 @@ const LocationDetails = () => {
               <CButton
                 type="button"
                 onClick={() => handleDeleteCourt()}
-                className="add_new_butn"
+                className="delet_yes"
               >
                 Yes
               </CButton>
               <CButton
                 type="button"
-                color="secondary"
+                className="delet_cancel"
                 onClick={() => setDeletCourt(false)}
               >
                 No

@@ -117,13 +117,14 @@ const ForgotEmail = () => {
     forgotEmail(formData)
       .then((res) => {
         setLoading(false);
+        console.log("forgotEmail", res)
         if (res.status === 200) {
           toast.success(res?.data?.message, { theme: "colored" });
           setVisible(true);
           setCanResend(false);
           setTimer(59);
         } else {
-          toast.error(res?.data?.errors, {
+          toast.error(res?.data?.error, {
             theme: "colored",
           });
         }

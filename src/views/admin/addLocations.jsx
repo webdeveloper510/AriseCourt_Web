@@ -14,6 +14,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { addLocation, getLocationbyId, updateLocation } from "../../utils/api";
 import { toast } from "react-toastify";
 import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const AddLocations = () => {
   const navigate = useNavigate();

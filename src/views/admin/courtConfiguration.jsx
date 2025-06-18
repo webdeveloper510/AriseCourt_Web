@@ -32,6 +32,7 @@ import {
 } from "@coreui/icons";
 import { getCourtBooking } from "../../utils/api";
 import { toast } from "react-toastify";
+import moment from "moment";
 
 const CourtConfiguration = () => {
   const navigate = useNavigate();
@@ -308,7 +309,11 @@ const CourtConfiguration = () => {
                   >
                     <span>
                       <CIcon icon={cilCalendar}></CIcon>{" "}
-                      {`${selectionRange.startDate ? selectionRange.startDate.toLocaleDateString() : "Start Date"} - ${selectionRange.endDate ? selectionRange.endDate.toLocaleDateString() : "End Date"}`}
+                      {`${
+                        selectionRange.startDate
+                          ? moment(selectionRange.startDate).format("ll")
+                          : "Start Date"
+                      } - ${selectionRange.endDate ? moment(selectionRange.endDate).format("ll") : "End Date"}`}
                     </span>
                   </div>
 
@@ -464,10 +469,12 @@ const CourtConfiguration = () => {
               </CTableBody>
             </CTable>
           </div>
-        ) : !loading &&  (
-          <div className="my-5 d-flex justify-content-center">
-            <h1 className="card-title">Data Not Found</h1>
-          </div>
+        ) : (
+          !loading && (
+            <div className="my-5 d-flex justify-content-center">
+              <h1 className="card-title">Data Not Found</h1>
+            </div>
+          )
         )}
 
         {adminData?.length > 0 && (

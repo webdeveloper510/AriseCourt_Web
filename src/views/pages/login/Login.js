@@ -72,14 +72,17 @@ const Login = () => {
     loginUser(formData)
       .then((res) => {
         setLoading(false);
-
+        console.log("loginUser",res)
         if (res.status === 200) {
           const userData = res?.data?.data;
-          const accessToken = res?.data?.token?.access;
+          const accessToken = res?.data?.data?.token?.access;
           localStorage.setItem("user_access_valid_token", accessToken);
           localStorage.setItem("logged_user_data", JSON.stringify(userData));
           toast.success(res?.data?.msg, { theme: "colored" });
-          if (userData?.user_type === 0 || userData?.access_flag?.includes("0")) {
+          if (
+            userData?.user_type === 0 ||
+            userData?.access_flag?.includes("0")
+          ) {
             navigate("/dashboard");
           } else if (userData?.access_flag?.includes("1")) {
             navigate("/locations");
@@ -88,8 +91,10 @@ const Login = () => {
           } else if (userData?.access_flag?.includes("3")) {
             navigate("/reporting");
           } else {
-            toast.error("No valid access permissions found.", { theme: "colored" });
-          }          
+            toast.error("No valid access permissions found.", {
+              theme: "colored",
+            });
+          }
         } else {
           toast.error(res?.data?.errors, {
             theme: "colored",
@@ -116,12 +121,12 @@ const Login = () => {
             className="align-items-center"
             style={{ background: "#E7F0FF" }}
           >
-            <CCol md={6}>
-              <CCard className="p-2">
-                <img src={HomeBg} alt="login_bg" style={{ height: "96vh" }} />
+            <CCol md={5}>
+              <CCard className="p-3">
+                <img src={HomeBg} alt="login_bg" style={{ height: "92vh" }} />
               </CCard>
             </CCol>
-            <CCol md={6}>
+            <CCol md={7}>
               <div className="d-flex justify-content-center form_outer_section">
                 <div className="form_inner_section">
                   <CForm onSubmit={handleFormSubmit} onKeyDown={handleKeyDown}>
@@ -160,9 +165,11 @@ const Login = () => {
                             handleInputChange(e);
                           }}
                         />
-
-                        <CIcon
-                          icon={showPassword ? cilLockUnlocked : cilLockLocked} // Change icon based on state
+                        {/* <i class="bi bi-eye-fill"></i> */}
+                        <i
+                          className={
+                            showPassword ? "bi bi-eye-slash" : "bi bi-eye-fill"
+                          } // Change icon based on state
                           onClick={() => togglePasswordVisibility()} // Toggle visibility on click
                           style={{
                             cursor: "pointer",
