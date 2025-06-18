@@ -25,7 +25,6 @@ const AppSidebar = () => {
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("logged_user_data"));
-    console.log("User Data:", data);
 
     if (data) {
       // Check if the user has full access (access_flag = "0" and user_type = 0)

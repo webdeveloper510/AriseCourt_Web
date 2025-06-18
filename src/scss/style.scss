@@ -170,13 +170,13 @@ body {
 
 .registration_form {
   width: 100%;
-  height: calc(100vh - 160px);
+  // height: calc(100vh - 160px);
   display: flex;
   align-items: center;
   justify-content: center;
   background: #E7F0FF;
   margin-top: 20px;
-  padding: 0px 20px;
+  padding: 50px;
 }
 
 .register_input {
@@ -509,6 +509,7 @@ input:-webkit-autofill {
 
 .react-tel-input .form-control {
   border: none !important;
+  width: auto !important;
 }
 
 .react-tel-input .flag-dropdown {

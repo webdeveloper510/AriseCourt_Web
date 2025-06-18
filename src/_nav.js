@@ -2,6 +2,7 @@ import React from "react";
 import CIcon from "@coreui/icons-react";
 import {
   cilFile,
+  cilList,
   cilLocationPin,
   cilSpeedometer,
   cilUser,
@@ -34,9 +35,16 @@ const _nav = [
     component: CNavItem,
     name: 'Court Booking',
     to: '/court-bookings',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilList} customClassName="nav-icon" />,
     permissionId: 3, // Reporting Only (id = 3)
   },
+  // {
+  //   component: CNavItem,
+  //   name: 'Profile',
+  //   to: '/profile',
+  //   icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+  //   permissionId: 0, // Full Access (id = 0)
+  // },
 ]
 
 export default _nav
