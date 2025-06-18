@@ -40,7 +40,7 @@ const AddLocations = () => {
 
   const validateFormData = (data, fieldToValidate = null) => {
     const errors = {};
-
+  
     const validateField = (field) => {
       switch (field) {
         case "email":
@@ -51,42 +51,66 @@ const AddLocations = () => {
           }
           break;
         case "address_1":
-          if (!data.address_1.trim())
+          if (!data.address_1.trim()) {
             errors.address_1 = "Address 1 is required.";
+          } else if (data.address_1.length > 150) {
+            errors.address_1 = "Address 1 must be less than 150 characters.";
+          }
           break;
         case "city":
-          if (!data.city.trim()) errors.city = "City is required.";
+          if (!data.city.trim()) {
+            errors.city = "City is required.";
+          } else if (data.city.length > 100) {
+            errors.city = "City must be less than 100 characters.";
+          }
           break;
         case "phone":
-          if (!data.phone.trim()) errors.phone = "Phone number is required.";
+          if (!data.phone.trim()) {
+            errors.phone = "Phone number is required.";
+          } else if (data.phone.length < 7) {
+            errors.phone = "Phone number must be at least 7 digits.";
+          }
           break;
         case "state":
-          if (!data.state.trim()) errors.state = "State is required.";
+          if (!data.state.trim()) {
+            errors.state = "State is required.";
+          } else if (data.state.length > 100) {
+            errors.state = "State must be less than 100 characters.";
+          }
           break;
         case "country":
-          if (!data.country.trim()) errors.country = "Country is required.";
+          if (!data.country.trim()) {
+            errors.country = "Country is required.";
+          }
           break;
         case "website":
-          if (
-            data.website &&
-            !/^https?:\/\/[^\s/$.?#].[^\s]*$/.test(data.website)
-          ) {
+          if (!data.website.trim()) {
+            errors.website = "Website is required.";
+          } else if (data.website && !/^https?:\/\/[^\s/$.?#].[^\s]*$/.test(data.website)) {
             errors.website = "Enter a valid website URL.";
+          }
+          break;
+        case "description":
+          if (!data.description.trim()) {
+            errors.description = "Description is required.";
+          } else if (data.description && data.description.length > 150) {
+            errors.description = "Description must be less than 150 characters.";
           }
           break;
         default:
           break;
       }
     };
-
+  
     if (fieldToValidate) {
       validateField(fieldToValidate);
     } else {
       Object.keys(data).forEach(validateField);
     }
-
+  
     return errors;
   };
+  
 
   useEffect(() => {
     getLocationbyId(id)
@@ -435,6 +459,9 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
+                {errors.description && (
+                  <div className="text-danger">{errors.description}</div>
+                )}
               </CCol>
 
               <CCol sm={12} md={12} lg={12} className="mt-5">
