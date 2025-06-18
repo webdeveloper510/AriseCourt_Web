@@ -247,7 +247,7 @@ const CourtConfiguration = () => {
           </CCol> */}
         </CRow>
 
-        <CRow className="mt-5">
+        <CRow className="mt-2">
           <CCol sm={12} md={5}>
             <CButton
               onClick={() => setBookingType("")}
@@ -345,7 +345,7 @@ const CourtConfiguration = () => {
           </CCol>
         </CRow>
         {adminData?.length > 0 ? (
-          <div style={{ overflowX: "auto" }}>
+          <div style={{ overflowX: "auto" }} className="table_flow">
             <CTable className="mt-4 main_table" striped>
               <CTableHead>
                 <CTableRow>
@@ -478,7 +478,7 @@ const CourtConfiguration = () => {
         )}
 
         {adminData?.length > 0 && (
-          <div className="pagination_outer mt-5">
+          <div className="pagination_outer mt-5 pt-4">
             <div className="pagination_section">
               <CRow className="align-items-center">
                 <CCol md={6}>

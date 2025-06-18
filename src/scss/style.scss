@@ -294,9 +294,9 @@ body {
   padding: 15px 10px;
 }
 
-.pagination_outer {
-  width: 100%;
-}
+// .pagination_outer {
+//   width: 100%;
+// }
 
 .pagination_section {
   background: #182b4d;
@@ -718,4 +718,49 @@ input:-webkit-autofill {
   .login_outer{
     height: auto;
   }
+}
+
+.table_flow {
+  min-height: 337px;
+  height: 337px;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+/* Scrollbar track (background) */
+.table_flow::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 10px;
+}
+
+/* Scrollbar handle (thumb) */
+.table_flow::-webkit-scrollbar-thumb {
+  background: #0860fb; 
+  border-radius: 10px;
+}
+.table_flow:hover::-webkit-scrollbar-thumb {
+  background: #0860fb; 
+}
+.table_flow::-webkit-scrollbar {
+  height: 6px; /* Decrease height for horizontal scrollbar */
+  width: 6px; /* Keep width slim for vertical scrollbar */
+}
+.action_icons {
+  cursor: pointer;
+  margin-bottom: 0px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: rgb(24, 43, 77);
+  font-weight: 600;
+  font-size: 14px;
+}
+.outer_action_icons {
+   position: absolute;
+    top: -4px;
+    right: 60px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+    z-index: 999999;
 }

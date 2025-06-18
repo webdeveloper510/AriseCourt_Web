@@ -278,7 +278,7 @@ const Dashboard = () => {
           </CCol>
         </CRow>
         {adminData?.length > 0 ? (
-          <div style={{ overflowX: "auto" }}>
+          <div style={{ overflowX: "auto" }} className="table_flow">
             <CTable className="mt-4 main_table" striped>
               <CTableHead>
                 <CTableRow>
@@ -327,15 +327,15 @@ const Dashboard = () => {
                           {openMenuId === item.id && (
                             <div
                               style={{
-                                position: "absolute",
-                                top: "30px",
-                                right: 0,
-                                backgroundColor: "#fff",
-                                borderRadius: "10px",
-                                padding: "12px",
-                                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-                                zIndex: 999999,
-                              }}
+                                // position: "absolute",
+                                // top: "30px",
+                                // right: 0,
+                                // backgroundColor: "#fff",
+                                // borderRadius: "10px",
+                                // padding: "12px",
+                                // boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+                                // zIndex: 999999,
+                              }} className="outer_action_icons"
                             >
                               <div
                                 onClick={() => {

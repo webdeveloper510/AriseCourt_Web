@@ -76,45 +76,60 @@ const AdminRegistration = () => {
   // onSelect handler
   const onSelect = (selectedList) => {
     const selectedIds = selectedList.map((item) => item.id); // [0,1,2]
-    const formatted = selectedIds.join(","); // "0,1,2"
-
-    setFormData((prevState) => ({
-      ...prevState,
-      access_flag: formatted, // Store "0,1,2" as string
-    }));
-
+    
+    // If "Full Access" (id: 0) is selected, clear all other selections
+    if (selectedIds.includes(0)) {
+      setFormData((prevState) => ({
+        ...prevState,
+        access_flag: [0], // Only set "Full Access" (id: 0)
+      }));
+    } else {
+      // Otherwise, store the selected options normally
+      const formatted = selectedIds.join(","); // "0,1,2"
+      setFormData((prevState) => ({
+        ...prevState,
+        access_flag: formatted, // Store "0,1,2" as a string
+      }));
+    }
+  
     const isEditMode = Boolean(id);
     const fieldErrors = validateFormData(
       { ...formData, access_flag: selectedIds },
       isEditMode,
       "access_flag"
     );
+  
     setErrors((prevErrors) => ({
       ...prevErrors,
       access_flag: fieldErrors.access_flag || "",
     }));
   };
-
+  
   const onRemove = (selectedList) => {
     const selectedIds = selectedList.map((item) => item.id); // e.g., [0,2]
-    const formatted = selectedIds.join(","); // "0,2"
-
-    setFormData((prevState) => ({
-      ...prevState,
-      access_flag: formatted,
-    }));
-
+    
+    // If "Full Access" (id: 0) is removed, allow other selections
+    if (!selectedIds.includes(0)) {
+      const formatted = selectedIds.join(","); // "0,2"
+      setFormData((prevState) => ({
+        ...prevState,
+        access_flag: formatted,
+      }));
+    }
+  
     const isEditMode = Boolean(id);
     const fieldErrors = validateFormData(
       { ...formData, access_flag: selectedIds },
       isEditMode,
       "access_flag"
     );
+    
     setErrors((prevErrors) => ({
       ...prevErrors,
       access_flag: fieldErrors.access_flag || "",
     }));
   };
+  
 
   const validateFormData = (
     data,

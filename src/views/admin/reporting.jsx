@@ -415,7 +415,7 @@ const Reporting = () => {
         )}
 
         {reportTable?.length > 0 && (
-          <div className="pagination_outer mt-5">
+          <div className="pagination_outer mt-5 pt-4">
             <div className="pagination_section">
               <CRow className="align-items-center">
                 <CCol md={6}>
