@@ -224,6 +224,19 @@ const LocationDetails = () => {
       });
   };
 
+  const handleCloseCourt = () => {
+    setVisible(false);
+    setErrors({});
+    setAddCourt({
+      location_id: id,
+      court_number: "",
+      court_fee_hrs: "",
+      tax: "",
+      cc_fees: "",
+      availability: true,
+    });
+  };
+
   return (
     <>
       {loading && (
@@ -377,7 +390,10 @@ const LocationDetails = () => {
                         <CTableDataCell>{`$${item?.court_fee_hrs}/hr`}</CTableDataCell>
                         <CTableDataCell>{`${item?.tax}%`}</CTableDataCell>
                         <CTableDataCell>{`${item?.cc_fees}%`}</CTableDataCell>
-                        <CTableDataCell>{`${item?.availability}`}</CTableDataCell>
+                        <CTableDataCell>
+                          {/* {`${item?.availability}`} */}
+                          <CFormSwitch checked={item?.availability} />
+                        </CTableDataCell>
                         <CTableDataCell>
                           <CIcon
                             className="edit_icon me-2"
@@ -452,7 +468,7 @@ const LocationDetails = () => {
 
       <CModal
         visible={visible}
-        onClose={() => setVisible(false)}
+        onClose={() => handleCloseCourt()}
         aria-labelledby="LiveDemoExampleLabel"
         alignment="center"
       >
@@ -544,7 +560,7 @@ const LocationDetails = () => {
                 <CCol sm={12} md={6} lg={6}></CCol>
               </CRow>
               <div className="d-flex gap-2 mt-4 justify-content-end">
-                <CButton color="secondary" onClick={() => setVisible(false)}>
+                <CButton color="secondary" onClick={() => handleCloseCourt()}>
                   Close
                 </CButton>
                 <CButton type="submit" className="add_new_butn">
