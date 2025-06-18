@@ -511,7 +511,9 @@ input:-webkit-autofill {
   border: none !important;
   width: auto !important;
 }
-
+.simplebar-mask {
+  margin-top: 80px !important;
+}
 .react-tel-input .flag-dropdown {
   border-right: 1px solid #cacaca !important;
   border-top: none !important;

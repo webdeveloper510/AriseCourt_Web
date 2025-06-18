@@ -50,7 +50,6 @@ const AdminRegistration = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  console.log("formDataformData",formData)
   useEffect(() => {
     getAdminData();
   }, [id]);
