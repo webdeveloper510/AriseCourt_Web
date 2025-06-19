@@ -185,7 +185,7 @@ const AdminRegistration = () => {
         case "password":
           if (!isEditMode && !data.password) {
             errors.password = "Password is required.";
-          } else if (data.password && data.password.length <= 6) {
+          } else if (data.password && data.password.length < 6) {
             errors.password = "Password must be greater than 6 characters.";
           }
           break;

@@ -41,6 +41,13 @@ const Profile = () => {
         if (res?.data.code == "200") {
           setUserData(res?.data?.data);
           setFormData(res?.data?.data);
+        } else if (res?.data?.code == "token_not_valid") {
+          toast.error(res?.data?.detail, {
+            theme: "colored",
+          });
+          localStorage.removeItem("user_access_valid_token");
+          localStorage.removeItem("logged_user_data");
+          navigate("/login");
         }
       })
       .catch((error) => {
@@ -48,57 +55,54 @@ const Profile = () => {
       });
   };
 
-  const validateFormData = (
-    data,
-    fieldToValidate = null
-  ) => {
+  const validateFormData = (data, fieldToValidate = null) => {
     const errors = {};
 
     const validateField = (field) => {
-        const value = data[field] ?? ""; // ensures null/undefined become empty string
-      
-        switch (field) {
-          case "first_name":
-            if (!value.trim()) {
-              errors.first_name = "First name is required.";
-            } else if (value.length < 2) {
-              errors.first_name = "First name must be at least 2 characters.";
-            } else if (value.length > 100) {
-              errors.first_name = "First name must be no more than 100 characters.";
-            }
-            break;
-      
-          case "last_name":
-            if (!value.trim()) {
-              errors.last_name = "Last name is required.";
-            } else if (value.length < 2) {
-              errors.last_name = "Last name must be at least 2 characters.";
-            } else if (value.length > 100) {
-              errors.last_name = "Last name must be no more than 100 characters.";
-            }
-            break;
-      
-          case "email":
-            if (!value.trim()) {
-              errors.email = "Email is required.";
-            } else if (!/\S+@\S+\.\S+/.test(value)) {
-              errors.email = "Email is not valid.";
-            }
-            break;
-      
-          case "phone":
-            if (!value.trim()) {
-              errors.phone = "Phone number is required.";
-            } else if (value.length < 7) {
-              errors.phone = "Phone number must be at least 7 characters.";
-            }
-            break;
-      
-          default:
-            break;
-        }
-      };
-      
+      const value = data[field] ?? ""; // ensures null/undefined become empty string
+
+      switch (field) {
+        case "first_name":
+          if (!value.trim()) {
+            errors.first_name = "First name is required.";
+          } else if (value.length < 2) {
+            errors.first_name = "First name must be at least 2 characters.";
+          } else if (value.length > 100) {
+            errors.first_name =
+              "First name must be no more than 100 characters.";
+          }
+          break;
+
+        case "last_name":
+          if (!value.trim()) {
+            errors.last_name = "Last name is required.";
+          } else if (value.length < 2) {
+            errors.last_name = "Last name must be at least 2 characters.";
+          } else if (value.length > 100) {
+            errors.last_name = "Last name must be no more than 100 characters.";
+          }
+          break;
+
+        case "email":
+          if (!value.trim()) {
+            errors.email = "Email is required.";
+          } else if (!/\S+@\S+\.\S+/.test(value)) {
+            errors.email = "Email is not valid.";
+          }
+          break;
+
+        case "phone":
+          if (!value.trim()) {
+            errors.phone = "Phone number is required.";
+          } else if (value.length < 7) {
+            errors.phone = "Phone number must be at least 7 characters.";
+          }
+          break;
+
+        default:
+          break;
+      }
+    };
 
     if (fieldToValidate) {
       validateField(fieldToValidate);
@@ -156,7 +160,7 @@ const Profile = () => {
         setLoading(false);
         if (res?.data.code == 200) {
           toast.success(res?.data?.message, { theme: "colored" });
-          getProfileData()
+          getProfileData();
         } else {
           toast.error(res?.data?.message, { theme: "colored" });
         }
