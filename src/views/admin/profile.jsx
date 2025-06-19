@@ -21,6 +21,9 @@ const Profile = () => {
   const getProfileData = () => {
     getProfile().then((res)=>{
         console.log("getProfile", res)
+        if(res?.data.code == "200"){
+            setFormData(res?.data?.data)
+        }
     }).catch((error)=>{
         console.log(error)
     })
@@ -45,7 +48,7 @@ const Profile = () => {
               </div>
             </div>
           </CCol>
-          <CCol sm={12} md={6} className="text-end">
+          {/* <CCol sm={12} md={6} className="text-end">
             <CButton
               onClick={() => {
                 handleEditLocation();
@@ -54,7 +57,7 @@ const Profile = () => {
             >
               <CIcon icon={cilPenNib}></CIcon> Edit
             </CButton>
-          </CCol>
+          </CCol> */}
         </CRow>
 
         <div className="mt-4 location_Details_section">
@@ -66,13 +69,9 @@ const Profile = () => {
             </CCol>
             <CCol sm={12} md={9}>
               <CRow>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">ID KEY</h6>
-                  <p className="details_description">{formData?.id}</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">City</h6>
-                  <p className="details_description">{formData?.city}</p>
+              <CCol sm={12} md={4} className="my-1">
+                  <h6 className="detail_title">Name</h6>
+                  <p className="details_description">{`${formData?.first_name} ${formData?.last_name}`}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Email</h6>
@@ -81,27 +80,8 @@ const Profile = () => {
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Phone</h6>
                   <p className="details_description">{formData?.phone}</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Name</h6>
-                  <p className="details_description">{formData?.name}</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">State</h6>
-                  <p className="details_description">{formData?.state}</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Website</h6>
-                  <p className="details_description">{formData?.website}</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Country</h6>
-                  <p className="details_description">{formData?.country}</p>
-                </CCol>
-                <CCol sm={12} md={12} className="my-1">
-                  <h6 className="detail_title">Description</h6>
-                  <p className="details_description">{formData?.description}</p>
-                </CCol>
+                </CCol>              
+              
               </CRow>
             </CCol>
           </CRow>

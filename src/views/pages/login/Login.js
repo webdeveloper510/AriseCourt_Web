@@ -77,7 +77,9 @@ const Login = () => {
           const accessToken = res?.data?.data?.access_token;
           localStorage.setItem("user_access_valid_token", accessToken);
           localStorage.setItem("logged_user_data", JSON.stringify(userData));
-          toast.success(res?.data?.message, { theme: "colored" });
+          if(userData?.user_type === 0 || userData?.user_type === 1){
+            toast.success(res?.data?.message, { theme: "colored" });
+          }
           if (
             userData?.user_type === 0 ||
             userData?.access_flag?.includes("0")
