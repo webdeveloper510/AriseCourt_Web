@@ -75,7 +75,7 @@ const Login = () => {
         console.log("loginUser",res)
         if (res.status === 200) {
           const userData = res?.data?.data;
-          const accessToken = res?.data?.data?.token?.access;
+          const accessToken = res?.data?.data?.access_token;
           localStorage.setItem("user_access_valid_token", accessToken);
           localStorage.setItem("logged_user_data", JSON.stringify(userData));
           toast.success(res?.data?.msg, { theme: "colored" });
