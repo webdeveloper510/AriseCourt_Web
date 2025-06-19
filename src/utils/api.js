@@ -330,3 +330,16 @@ export const getProfile = async () => {
     return error.response;
   }
 };
+
+export const updateProfile = async (data) => {
+  try {
+    const response = await axios.put(`/profile/`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};

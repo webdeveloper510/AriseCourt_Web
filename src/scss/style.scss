@@ -170,7 +170,7 @@ body {
 
 .registration_form {
   width: 100%;
-  // height: calc(100vh - 160px);
+  border-radius: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -385,7 +385,7 @@ body {
   height: 180px;
 }
 .profile_image img{
-  width: 70%;
+  width: 100px;
   background: white;
   border-radius: 100px;
 }

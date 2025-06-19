@@ -1,33 +1,177 @@
 import React, { useEffect, useState } from "react";
-import { CButton, CCardBody, CCol, CRow } from "@coreui/react";
+import {
+  CButton,
+  CCardBody,
+  CCol,
+  CForm,
+  CFormInput,
+  CRow,
+} from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilPenNib } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
 import badminton from "../../assets/images/badminton.png";
 import UserImage from "../../assets/images/user_image.avif";
-import { getProfile } from "../../utils/api";
+import { getProfile, updateProfile } from "../../utils/api";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  useEffect(()=>{
-    getProfileData()
-  },[])
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: "",
+  });
+
+  useEffect(() => {
+    getProfileData();
+  }, []);
 
   const getProfileData = () => {
-    getProfile().then((res)=>{
-        console.log("getProfile", res)
-        if(res?.data.code == "200"){
-            setFormData(res?.data?.data)
+    getProfile()
+      .then((res) => {
+        if (res?.data.code == "200") {
+          setUserData(res?.data?.data);
+          setFormData(res?.data?.data);
         }
-    }).catch((error)=>{
-        console.log(error)
-    })
-  }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const validateFormData = (
+    data,
+    fieldToValidate = null
+  ) => {
+    const errors = {};
+
+    const validateField = (field) => {
+        const value = data[field] ?? ""; // ensures null/undefined become empty string
+      
+        switch (field) {
+          case "first_name":
+            if (!value.trim()) {
+              errors.first_name = "First name is required.";
+            } else if (value.length < 2) {
+              errors.first_name = "First name must be at least 2 characters.";
+            } else if (value.length > 100) {
+              errors.first_name = "First name must be no more than 100 characters.";
+            }
+            break;
+      
+          case "last_name":
+            if (!value.trim()) {
+              errors.last_name = "Last name is required.";
+            } else if (value.length < 2) {
+              errors.last_name = "Last name must be at least 2 characters.";
+            } else if (value.length > 100) {
+              errors.last_name = "Last name must be no more than 100 characters.";
+            }
+            break;
+      
+          case "email":
+            if (!value.trim()) {
+              errors.email = "Email is required.";
+            } else if (!/\S+@\S+\.\S+/.test(value)) {
+              errors.email = "Email is not valid.";
+            }
+            break;
+      
+          case "phone":
+            if (!value.trim()) {
+              errors.phone = "Phone number is required.";
+            } else if (value.length < 7) {
+              errors.phone = "Phone number must be at least 7 characters.";
+            }
+            break;
+      
+          default:
+            break;
+        }
+      };
+      
+
+    if (fieldToValidate) {
+      validateField(fieldToValidate);
+    } else {
+      // full validation
+      Object.keys(data).forEach((field) => validateField(field));
+    }
+
+    return errors;
+  };
+
+  const handlePhoneChange = (value, data) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      phone: value,
+      country: data.countryCode.toUpperCase(),
+    }));
+
+    const fieldErrors = validateFormData(
+      { ...formData, phone: value, country: data.countryCode },
+      "phone"
+    );
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      phone: fieldErrors.phone || "",
+    }));
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const updatedFormData = { ...formData, [name]: value };
+
+    setFormData(updatedFormData);
+
+    const fieldErrors = validateFormData(updatedFormData, name);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: fieldErrors[name] || "",
+    }));
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    const validationErrors = validateFormData(formData);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors); // Set field-wise errors
+      return; // Stop submission
+    }
+    setLoading(true);
+
+    updateProfile(formData)
+      .then((res) => {
+        setLoading(false);
+        if (res?.data.code == 200) {
+          toast.success(res?.data?.message, { theme: "colored" });
+          getProfileData()
+        } else {
+          toast.error(res?.data?.message, { theme: "colored" });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleFormSubmit(e);
+    }
+  };
 
   return (
     <>
@@ -69,22 +213,96 @@ const Profile = () => {
             </CCol>
             <CCol sm={12} md={9}>
               <CRow>
-              <CCol sm={12} md={4} className="my-1">
+                <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Name</h6>
-                  <p className="details_description">{`${formData?.first_name} ${formData?.last_name}`}</p>
+                  <p className="details_description">{`${userData?.first_name} ${userData?.last_name}`}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Email</h6>
-                  <p className="details_description">{formData?.email}</p>
+                  <p className="details_description">{userData?.email}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Phone</h6>
-                  <p className="details_description">{formData?.phone}</p>
-                </CCol>              
-              
+                  <p className="details_description">{userData?.phone}</p>
+                </CCol>
               </CRow>
             </CCol>
           </CRow>
+        </div>
+
+        <div className="registration_form">
+          <CForm onSubmit={handleFormSubmit} onKeyDown={handleKeyDown}>
+            <CRow className="d-flex ">
+              <CCol sm={12} md={6} lg={4} className="my-2">
+                <label>First Name</label>
+                <CFormInput
+                  type="text"
+                  className="register_input"
+                  placeholder="Enter First Name"
+                  aria-label="default input example"
+                  value={formData.first_name}
+                  name="first_name"
+                  onChange={(e) => handleInputChange(e)}
+                />
+                {errors.first_name && (
+                  <div className="text-danger">{errors.first_name}</div>
+                )}
+              </CCol>
+              <CCol sm={12} md={6} lg={4} className="my-2">
+                <label>Last Name</label>
+                <CFormInput
+                  type="text"
+                  className="register_input"
+                  placeholder="Enter Last Name"
+                  aria-label="default input example"
+                  value={formData.last_name}
+                  name="last_name"
+                  onChange={(e) => handleInputChange(e)}
+                />
+                {errors.last_name && (
+                  <div className="text-danger">{errors.last_name}</div>
+                )}
+              </CCol>
+              <CCol sm={12} md={6} lg={4} className="my-2">
+                <label>Email Address</label>
+
+                <CFormInput
+                  type="text"
+                  className="register_input"
+                  placeholder="Enter Email Address"
+                  aria-label="default input example"
+                  value={formData.email}
+                  readOnly
+                  name="email"
+                  onChange={(e) => handleInputChange(e)}
+                />
+                {errors.email && (
+                  <div className="text-danger">{errors.email}</div>
+                )}
+              </CCol>
+
+              <CCol sm={12} md={6} lg={4} className="my-2">
+                <label>Phone Number</label>
+
+                <PhoneInput
+                  country={"us"}
+                  value={formData.phone}
+                  className="form-control"
+                  onChange={handlePhoneChange}
+                />
+
+                {errors.phone && (
+                  <div className="text-danger">{errors.phone}</div>
+                )}
+              </CCol>
+
+              <CCol md={12} className="mt-4">
+                <CButton type="submit" className="add_new_butn">
+                  Save
+                </CButton>
+              </CCol>
+            </CRow>
+          </CForm>
         </div>
       </CCardBody>
     </>
