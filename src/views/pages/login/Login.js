@@ -72,13 +72,12 @@ const Login = () => {
     loginUser(formData)
       .then((res) => {
         setLoading(false);
-        console.log("loginUser",res)
-        if (res.status === 200) {
+        if (res.data.code == 200) {
           const userData = res?.data?.data;
           const accessToken = res?.data?.data?.access_token;
           localStorage.setItem("user_access_valid_token", accessToken);
           localStorage.setItem("logged_user_data", JSON.stringify(userData));
-          toast.success(res?.data?.msg, { theme: "colored" });
+          toast.success(res?.data?.message, { theme: "colored" });
           if (
             userData?.user_type === 0 ||
             userData?.access_flag?.includes("0")
@@ -91,12 +90,12 @@ const Login = () => {
           } else if (userData?.access_flag?.includes("3")) {
             navigate("/reporting");
           } else {
-            toast.error("No valid access permissions found.", {
+            toast.error("Incorrect Username and Password", {
               theme: "colored",
             });
           }
         } else {
-          toast.error(res?.data?.errors, {
+          toast.error(res?.data?.message, {
             theme: "colored",
           });
         }

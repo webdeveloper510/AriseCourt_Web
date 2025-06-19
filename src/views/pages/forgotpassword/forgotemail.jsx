@@ -74,10 +74,14 @@ const ForgotEmail = () => {
 
   const handleResendOtp = () => {
     resendOtp(formData).then((res) => {
-      if (res.status == 200) {
+      if (res.data?.code == 200) {
         setCanResend(false);
         setTimer(59);
         toast.success(res?.data?.message, {
+          theme: "colored",
+        });
+      }else{
+        toast.error(res?.data?.message, {
           theme: "colored",
         });
       }
@@ -117,14 +121,13 @@ const ForgotEmail = () => {
     forgotEmail(formData)
       .then((res) => {
         setLoading(false);
-        console.log("forgotEmail", res)
-        if (res.status === 200) {
+        if (res?.data?.code === "200") {
           toast.success(res?.data?.message, { theme: "colored" });
           setVisible(true);
           setCanResend(false);
           setTimer(59);
         } else {
-          toast.error(res?.data?.error, {
+          toast.error(res?.data?.message, {
             theme: "colored",
           });
         }
@@ -148,13 +151,17 @@ const ForgotEmail = () => {
       otp: otpCode,
     })
       .then((res) => {
-        if (res?.status == 200) {
+        if (res?.data?.code == 200) {
           navigate("/new-password", {state : formData.email});
           toast.success(res?.data?.message, {
             theme: "colored",
           });
           setVisible(false);
           setOtp(Array(6).fill(""));
+        }else{
+          toast.error(res?.data?.message, {
+            theme: "colored",
+          });
         }
       })
       .catch((error) => {

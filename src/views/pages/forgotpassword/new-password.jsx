@@ -82,11 +82,11 @@ const NewPassword = () => {
     resetNewPassword(data)
       .then((res) => {
         setLoading(false);
-        if (res.status === 200) {
+        if (res.data?.code == 200) {
           navigate("/login");
           toast.success(res?.data?.message, { theme: "colored" });
         } else {
-          toast.error(res?.data?.errors, {
+          toast.error(res?.data?.message, {
             theme: "colored",
           });
         }
