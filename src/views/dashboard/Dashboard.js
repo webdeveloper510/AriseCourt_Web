@@ -302,8 +302,8 @@ const Dashboard = () => {
                     <CTableRow key={i}>
                       {/* <CTableDataCell>#123</CTableDataCell> */}
                       <CTableDataCell>{item?.id}</CTableDataCell>
-                      <CTableDataCell>{item?.first_name}</CTableDataCell>
-                      <CTableDataCell>{item?.last_name}</CTableDataCell>
+                      <CTableDataCell>{item?.first_name?.length > 10 ? `${item?.first_name?.slice(0,10)}...` : item?.first_name}</CTableDataCell>
+                      <CTableDataCell>{item?.last_name?.length > 10 ? `${item?.last_name?.slice(0,10)}...` : item?.last_name}</CTableDataCell>
                       <CTableDataCell>
                         {item?.user_type == 1 ? "Admin" : ""}
                       </CTableDataCell>

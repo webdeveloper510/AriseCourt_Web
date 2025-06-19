@@ -336,11 +336,19 @@ const LocationDetails = () => {
           <CRow>
             <CCol sm={12} md={6}>
               <label className="add_court_label">Address 1</label>
-              <p>{formData?.address_1}</p>
+              <p className="address_text">{formData?.address_1}</p>
             </CCol>
             <CCol sm={12} md={6}>
-              <label className="add_court_label">Address 1</label>
-              <p>{formData?.address_2}</p>
+              <label className="add_court_label">Address 2</label>
+              <p className="address_text">{formData?.address_2}</p>
+            </CCol>
+            <CCol sm={12} md={6}>
+              <label className="add_court_label">Address 3</label>
+              <p className="address_text">{formData?.address_3}</p>
+            </CCol>
+            <CCol sm={12} md={6}>
+              <label className="add_court_label">Address 4</label>
+              <p className="address_text">{formData?.address_4}</p>
             </CCol>
           </CRow>
         </div>
@@ -585,7 +593,7 @@ const LocationDetails = () => {
           <div className="add_court_modal text-center">
             <img src={deleteImage} alt="deleteImage" width={100} />
             <h1 className="card-title my-4">
-              Are You really Want <br /> To Delete?
+              Are you really want <br /> to delete?
             </h1>
             <div className="d-flex gap-2 mt-4 justify-content-center">
               <CButton

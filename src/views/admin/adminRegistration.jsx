@@ -129,7 +129,7 @@ const AdminRegistration = () => {
   };
 
   const renderedOptions = options.map((option) => {
-    if (formData.access_flag.includes(0) && option.id !== 0) {
+    if (formData?.access_flag?.includes(0) && option.id !== 0) {
       return { ...option, disabled: true };
     }
     return { ...option, disabled: false };
@@ -374,23 +374,12 @@ const AdminRegistration = () => {
                   value={formData.email}
                   name="email"
                   onChange={(e) => handleInputChange(e)}
+                  readOnly={!!id}
                 />
                 {errors.email && (
                   <div className="text-danger">{errors.email}</div>
                 )}
               </CCol>
-              {/* <CCol sm={12} md={6} lg={4} className="my-2">
-                <label>User Type</label>
-
-                <CFormInput
-                  type="text"
-                  className="register_input"
-                  placeholder="Enter User Type"
-                  aria-label="default input example"
-                  value={"Admin"}
-                  readOnly
-                />
-              </CCol> */}
               <CCol sm={12} md={6} lg={4} className="my-2">
                 <label>Phone Number</label>
 
@@ -401,53 +390,51 @@ const AdminRegistration = () => {
                   onChange={handlePhoneChange}
                 />
 
-                {/* <CFormInput
-                  type="text"
-                  className="register_input"
-                  placeholder="Enter Phone Number"
-                  aria-label="default input example"
-                  value={formData.phone}
-                  name="phone"
-                  onChange={(e) => handleInputChange(e)}
-                /> */}
+               
                 {errors.phone && (
                   <div className="text-danger">{errors.phone}</div>
                 )}
               </CCol>
 
-              <CCol sm={12} md={6} lg={4} className="my-2">
-                <label>Password</label>
+              {!id && (
+                <>
+                  <CCol sm={12} md={6} lg={4} className="my-2">
+                    <label>Password</label>
 
-                <CFormInput
-                  type="password"
-                  className="register_input"
-                  placeholder="Enter Password"
-                  aria-label="default input example"
-                  value={formData.password}
-                  name="password"
-                  onChange={(e) => handleInputChange(e)}
-                />
-                {errors.password && (
-                  <div className="text-danger">{errors.password}</div>
-                )}
-              </CCol>
+                    <CFormInput
+                      type="password"
+                      className="register_input"
+                      placeholder="Enter Password"
+                      aria-label="default input example"
+                      value={formData.password}
+                      name="password"
+                      onChange={(e) => handleInputChange(e)}
+                    />
+                    {errors.password && (
+                      <div className="text-danger">{errors.password}</div>
+                    )}
+                  </CCol>
 
-              <CCol sm={12} md={6} lg={4} className="my-2">
-                <label>Confirm Password</label>
+                  <CCol sm={12} md={6} lg={4} className="my-2">
+                    <label>Confirm Password</label>
 
-                <CFormInput
-                  type="password"
-                  className="register_input"
-                  placeholder="Enter Password"
-                  aria-label="default input example"
-                  value={formData.confirm_password}
-                  name="confirm_password"
-                  onChange={(e) => handleInputChange(e)}
-                />
-                {errors.confirm_password && (
-                  <div className="text-danger">{errors.confirm_password}</div>
-                )}
-              </CCol>
+                    <CFormInput
+                      type="password"
+                      className="register_input"
+                      placeholder="Enter Password"
+                      aria-label="default input example"
+                      value={formData.confirm_password}
+                      name="confirm_password"
+                      onChange={(e) => handleInputChange(e)}
+                    />
+                    {errors.confirm_password && (
+                      <div className="text-danger">
+                        {errors.confirm_password}
+                      </div>
+                    )}
+                  </CCol>
+                </>
+              )}
 
               <CCol sm={12} md={6} lg={4} className="my-2">
                 <label>Permission</label>

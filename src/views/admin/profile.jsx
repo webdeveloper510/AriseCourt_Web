@@ -29,6 +29,7 @@ const Profile = () => {
     last_name: "",
     email: "",
     phone: "",
+    image: null,
   });
 
   useEffect(() => {
@@ -98,7 +99,15 @@ const Profile = () => {
             errors.phone = "Phone number must be at least 7 characters.";
           }
           break;
-
+        case "image":
+          // If image is a string (existing URL), skip validation
+          if (
+            !data.image ||
+            (typeof data.image !== "string" && !(data.image instanceof File))
+          ) {
+            errors.image = "Image is required.";
+          }
+          break;
         default:
           break;
       }
@@ -132,16 +141,14 @@ const Profile = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    const updatedFormData = { ...formData, [name]: value };
+    const { name, value, files } = e.target;
+    const newValue = name === "image" ? files[0] : value;
 
-    setFormData(updatedFormData);
+    const updatedData = { ...formData, [name]: newValue };
+    setFormData(updatedData);
 
-    const fieldErrors = validateFormData(updatedFormData, name);
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: fieldErrors[name] || "",
-    }));
+    const fieldErrors = validateFormData(updatedData, name);
+    setErrors((prev) => ({ ...prev, [name]: fieldErrors[name] || "" }));
   };
 
   const handleFormSubmit = (e) => {
@@ -153,9 +160,22 @@ const Profile = () => {
       setErrors(validationErrors); // Set field-wise errors
       return; // Stop submission
     }
+
+    const dataToSubmit = new FormData();
+
+    Object.keys(formData).forEach((key) => {
+      if (key === "image") {
+        if (formData.image instanceof File) {
+          dataToSubmit.append("image", formData.image);
+        }
+      } else {
+        dataToSubmit.append(key, formData[key]);
+      }
+    });
+
     setLoading(true);
 
-    updateProfile(formData)
+    updateProfile(dataToSubmit)
       .then((res) => {
         setLoading(false);
         if (res?.data.code == 200) {
@@ -196,23 +216,24 @@ const Profile = () => {
               </div>
             </div>
           </CCol>
-          {/* <CCol sm={12} md={6} className="text-end">
-            <CButton
-              onClick={() => {
-                handleEditLocation();
-              }}
-              className="add_new_butn"
-            >
-              <CIcon icon={cilPenNib}></CIcon> Edit
-            </CButton>
-          </CCol> */}
         </CRow>
 
         <div className="mt-4 location_Details_section">
           <CRow className="align-items-center">
             <CCol sm={12} md={3}>
               <div className="profile_image">
-                <img src={UserImage} alt="logo" />
+                <img
+                  src={
+                    userData.image
+                      ? typeof userData.image === "string"
+                        ? `http://3.12.136.26:8000/${userData.image}`
+                        : URL.createObjectURL(userData.image)
+                      : UserImage
+                  }
+                  style={{
+                    objectFit: "cover",
+                  }}
+                />
               </div>
             </CCol>
             <CCol sm={12} md={9}>
@@ -297,6 +318,41 @@ const Profile = () => {
 
                 {errors.phone && (
                   <div className="text-danger">{errors.phone}</div>
+                )}
+              </CCol>
+
+              <CCol md={8} className="my-2">
+                <label className="d-flex">Image</label>
+                <div className="d-flex gap-4">
+                  <CFormInput
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    onChange={handleInputChange}
+                    className="form-control"
+                    style={{ height: "40px" }}
+                  />
+
+                  {formData.image && (
+                    <img
+                      src={
+                        typeof formData.image === "string"
+                          ? `http://3.12.136.26:8000/${formData.image}`
+                          : URL.createObjectURL(formData.image)
+                      }
+                      className=""
+                      style={{
+                        maxWidth: "150px",
+                        maxHeight: "100px",
+                        objectFit: "contain",
+                        borderRadius: "10px",
+                      }}
+                    />
+                  )}
+                </div>
+
+                {errors.image && (
+                  <div className="text-danger">{errors.image}</div>
                 )}
               </CCol>
 

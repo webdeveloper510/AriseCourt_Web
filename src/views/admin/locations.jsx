@@ -289,14 +289,20 @@ const Locations = () => {
                     <CTableRow key={i}>
                       <CTableDataCell>{item?.id}</CTableDataCell>
                       <CTableDataCell>
-                        {item?.logo && <img src={item?.logo} height={50} width={50} style={{borderRadius:"5px"}} />}
-                        
+                        {item?.logo && (
+                          <img
+                            src={item?.logo}
+                            height={50}
+                            width={50}
+                            style={{ borderRadius: "5px" }}
+                          />
+                        )}
                       </CTableDataCell>
                       <CTableDataCell>{item?.email}</CTableDataCell>
                       <CTableDataCell>{item?.phone}</CTableDataCell>
                       <CTableDataCell>{item?.city}</CTableDataCell>
                       <CTableDataCell>{item?.country}</CTableDataCell>
-                      <CTableDataCell>19</CTableDataCell>
+                      <CTableDataCell>{item?.courts?.length}</CTableDataCell>
                       <CTableDataCell>
                         <div
                           style={{ position: "relative", marginBottom: "16px" }}
@@ -311,7 +317,8 @@ const Locations = () => {
 
                           {/* Dropdown menu only for selected item */}
                           {openMenuId === item.id && (
-                            <div className="outer_action_icons"
+                            <div
+                              className="outer_action_icons"
                               // style={{
                               //   position: "absolute",
                               //   top: "30px",
@@ -447,7 +454,7 @@ const Locations = () => {
           <div className="add_court_modal text-center">
             <img src={deleteImage} alt="deleteImage" width={100} />
             <h1 className="card-title my-4">
-              Are You really Want <br /> To Delete?
+              Are you really want <br /> to delete?
             </h1>
             <div className="d-flex gap-2 mt-4 justify-content-center">
               <CButton

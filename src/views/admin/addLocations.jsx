@@ -37,8 +37,6 @@ const AddLocations = () => {
     logo: null,
   });
 
-  console.log("formData", formData);
-
   const [errors, setErrors] = useState({});
 
   const validateFormData = (data, fieldToValidate = null) => {
@@ -304,22 +302,6 @@ const AddLocations = () => {
               <CCol md={12} className="">
                 <label className="d-flex">Logo</label>
                 <div className="d-flex gap-4">
-                  {formData.logo && (
-                    <img
-                      src={
-                        typeof formData.logo === "string"
-                          ? formData.logo
-                          : URL.createObjectURL(formData.logo)
-                      }
-                      alt="Logo Preview"
-                      className=""
-                      style={{
-                        maxWidth: "100%",
-                        maxHeight: "100px",
-                        objectFit: "contain",
-                      }}
-                    />
-                  )}
                   <CFormInput
                     type="file"
                     name="logo"
@@ -328,6 +310,22 @@ const AddLocations = () => {
                     className="form-control"
                     style={{ height: "40px" }}
                   />
+
+                  {formData.logo && (
+                    <img
+                      src={
+                        typeof formData.logo === "string"
+                          ? formData.logo
+                          : URL.createObjectURL(formData.logo)
+                      }
+                      className=""
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100px",
+                        objectFit: "contain",
+                      }}
+                    />
+                  )}
                 </div>
 
                 {errors.logo && (
