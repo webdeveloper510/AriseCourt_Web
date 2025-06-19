@@ -34,13 +34,16 @@ const AddLocations = () => {
     country: "",
     description: "",
     user: userData?.id,
+    logo: null,
   });
+
+  console.log("formData", formData);
 
   const [errors, setErrors] = useState({});
 
   const validateFormData = (data, fieldToValidate = null) => {
     const errors = {};
-  
+
     const validateField = (field) => {
       switch (field) {
         case "email":
@@ -83,10 +86,23 @@ const AddLocations = () => {
             errors.country = "Country is required.";
           }
           break;
+        case "logo":
+          // If logo is a string (existing URL), skip validation
+          if (
+            !data.logo ||
+            (typeof data.logo !== "string" && !(data.logo instanceof File))
+          ) {
+            errors.logo = "Logo is required.";
+          }
+          break;
+
         case "website":
           if (!data.website.trim()) {
             errors.website = "Website is required.";
-          } else if (data.website && !/^https?:\/\/[^\s/$.?#].[^\s]*$/.test(data.website)) {
+          } else if (
+            data.website &&
+            !/^https?:\/\/[^\s/$.?#].[^\s]*$/.test(data.website)
+          ) {
             errors.website = "Enter a valid website URL.";
           }
           break;
@@ -94,23 +110,23 @@ const AddLocations = () => {
           if (!data.description.trim()) {
             errors.description = "Description is required.";
           } else if (data.description && data.description.length > 150) {
-            errors.description = "Description must be less than 150 characters.";
+            errors.description =
+              "Description must be less than 150 characters.";
           }
           break;
         default:
           break;
       }
     };
-  
+
     if (fieldToValidate) {
       validateField(fieldToValidate);
     } else {
       Object.keys(data).forEach(validateField);
     }
-  
+
     return errors;
   };
-  
 
   useEffect(() => {
     getLocationbyId(id)
@@ -128,9 +144,10 @@ const AddLocations = () => {
     navigate(-1);
   };
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    const updatedData = { ...formData, [name]: value };
+    const { name, value, files } = e.target;
+    const newValue = name === "logo" ? files[0] : value;
 
+    const updatedData = { ...formData, [name]: newValue };
     setFormData(updatedData);
 
     const fieldErrors = validateFormData(updatedData, name);
@@ -153,9 +170,22 @@ const AddLocations = () => {
       setErrors(validationErrors);
       return;
     }
+
+    const dataToSubmit = new FormData();
+
+    Object.keys(formData).forEach((key) => {
+      if (key === "logo") {
+        if (formData.logo instanceof File) {
+          dataToSubmit.append("logo", formData.logo);
+        }
+      } else {
+        dataToSubmit.append(key, formData[key]);
+      }
+    });
+
     setLoading(true);
     if (id) {
-      updateLocation(id, formData)
+      updateLocation(id, dataToSubmit)
         .then((res) => {
           setLoading(false);
 
@@ -177,7 +207,7 @@ const AddLocations = () => {
           setLoading(false);
         });
     } else {
-      addLocation(formData)
+      addLocation(dataToSubmit)
         .then((res) => {
           setLoading(false);
 
@@ -270,6 +300,43 @@ const AddLocations = () => {
                   }}
                 />
               </CCol> */}
+
+              <CCol md={12} className="">
+                <label className="d-flex">Logo</label>
+                <div className="d-flex gap-4">
+                  {formData.logo && (
+                    <img
+                      src={
+                        typeof formData.logo === "string"
+                          ? formData.logo
+                          : URL.createObjectURL(formData.logo)
+                      }
+                      alt="Logo Preview"
+                      className=""
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100px",
+                        objectFit: "contain",
+                      }}
+                    />
+                  )}
+                  <CFormInput
+                    type="file"
+                    name="logo"
+                    accept="image/*"
+                    onChange={handleInputChange}
+                    className="form-control"
+                    style={{ height: "40px" }}
+                  />
+                </div>
+
+                {errors.logo && (
+                  <div className="text-danger">{errors.logo}</div>
+                )}
+              </CCol>
+
+              {/* <CCol md={formData.logo ? 6 : 12} className="my-1"></CCol> */}
+
               <CCol sm={12} md={6} lg={6} className="my-1">
                 <label>Email Address</label>
 
@@ -296,21 +363,11 @@ const AddLocations = () => {
                   className="form-control"
                   onChange={handlePhoneChange}
                 />
-                {/* <CFormInput
-                  type="text"
-                  className="register_input"
-                  placeholder="Enter Phone"
-                  aria-label="default input example"
-                  value={formData.phone}
-                  name="phone"
-                  onChange={(e) => {
-                    handleInputChange(e);
-                  }}
-                /> */}
                 {errors.phone && (
                   <div className="text-danger">{errors.phone}</div>
                 )}
               </CCol>
+
               <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>City</label>
 
@@ -347,23 +404,7 @@ const AddLocations = () => {
                   <div className="text-danger">{errors.state}</div>
                 )}
               </CCol>
-              {/* <CCol sm={12} md={6} lg={4} className="my-1">
-                <label>Country</label>
-                <CFormInput
-                  type="text"
-                  className="register_input"
-                  placeholder="Enter Country"
-                  aria-label="default input example"
-                  value={formData.country}
-                  name="country"
-                  onChange={(e) => {
-                    handleInputChange(e);
-                  }}
-                />
-                {errors.country && (
-                  <div className="text-danger">{errors.country}</div>
-                )}
-              </CCol> */}
+
               <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>Website</label>
                 <CFormInput

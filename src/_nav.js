@@ -38,13 +38,13 @@ const _nav = [
     icon: <CIcon icon={cilList} customClassName="nav-icon" />,
     permissionId: 3, // Reporting Only (id = 3)
   },
-  // {
-  //   component: CNavItem,
-  //   name: 'Profile',
-  //   to: '/profile',
-  //   icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
-  //   permissionId: 0, // Full Access (id = 0)
-  // },
+  {
+    component: CNavItem,
+    name: 'Profile',
+    to: '/profile',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    permissionId: 0, // Full Access (id = 0)
+  },
 ]
 
 export default _nav

@@ -317,3 +317,16 @@ export const getReportData = async () => {
     return error.response;
   }
 };
+
+export const getProfile = async () => {
+  try {
+    const response = await axios.get(`/profile/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};

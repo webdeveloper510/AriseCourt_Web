@@ -73,63 +73,67 @@ const AdminRegistration = () => {
       });
   };
 
-  // onSelect handler
   const onSelect = (selectedList) => {
-    const selectedIds = selectedList.map((item) => item.id); // [0,1,2]
-    
-    // If "Full Access" (id: 0) is selected, clear all other selections
+    const selectedIds = selectedList.map((item) => item.id);
+
     if (selectedIds.includes(0)) {
+      // If Full Access selected, ignore all others
       setFormData((prevState) => ({
         ...prevState,
-        access_flag: [0], // Only set "Full Access" (id: 0)
+        access_flag: "0", // Store as string
       }));
     } else {
-      // Otherwise, store the selected options normally
-      const formatted = selectedIds.join(","); // "0,1,2"
-      setFormData((prevState) => ({
-        ...prevState,
-        access_flag: formatted, // Store "0,1,2" as a string
-      }));
-    }
-  
-    const isEditMode = Boolean(id);
-    const fieldErrors = validateFormData(
-      { ...formData, access_flag: selectedIds },
-      isEditMode,
-      "access_flag"
-    );
-  
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      access_flag: fieldErrors.access_flag || "",
-    }));
-  };
-  
-  const onRemove = (selectedList) => {
-    const selectedIds = selectedList.map((item) => item.id); // e.g., [0,2]
-    
-    // If "Full Access" (id: 0) is removed, allow other selections
-    if (!selectedIds.includes(0)) {
-      const formatted = selectedIds.join(","); // "0,2"
+      // If Full Access was already selected, don't allow adding others
+      if (formData.access_flag === "0") return;
+
+      const formatted = selectedIds.join(","); // Convert to string
       setFormData((prevState) => ({
         ...prevState,
         access_flag: formatted,
       }));
     }
-  
+
     const isEditMode = Boolean(id);
     const fieldErrors = validateFormData(
-      { ...formData, access_flag: selectedIds },
+      { ...formData, access_flag: selectedIds.join(",") },
       isEditMode,
       "access_flag"
     );
-    
+
     setErrors((prevErrors) => ({
       ...prevErrors,
       access_flag: fieldErrors.access_flag || "",
     }));
   };
-  
+
+  const onRemove = (selectedList) => {
+    const selectedIds = selectedList.map((item) => item.id);
+
+    const formatted = selectedIds.join(",");
+    setFormData((prevState) => ({
+      ...prevState,
+      access_flag: formatted,
+    }));
+
+    const isEditMode = Boolean(id);
+    const fieldErrors = validateFormData(
+      { ...formData, access_flag: formatted },
+      isEditMode,
+      "access_flag"
+    );
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      access_flag: fieldErrors.access_flag || "",
+    }));
+  };
+
+  const renderedOptions = options.map((option) => {
+    if (formData.access_flag.includes(0) && option.id !== 0) {
+      return { ...option, disabled: true };
+    }
+    return { ...option, disabled: false };
+  });
 
   const validateFormData = (
     data,
@@ -197,7 +201,6 @@ const AdminRegistration = () => {
           }
           break;
         case "access_flag":
-          // Make sure access_flag is not empty
           if (!data.access_flag || data.access_flag.length === 0) {
             errors.access_flag = "Permission is required.";
           }
@@ -449,7 +452,7 @@ const AdminRegistration = () => {
               <CCol sm={12} md={6} lg={4} className="my-2">
                 <label>Permission</label>
                 <Multiselect
-                  options={options}
+                  options={renderedOptions}
                   selectedValues={selectedOptions}
                   onSelect={onSelect}
                   onRemove={onRemove}

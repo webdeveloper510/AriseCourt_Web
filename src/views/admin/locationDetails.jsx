@@ -140,8 +140,8 @@ const LocationDetails = () => {
   const handleBackNavigate = () => {
     navigate(-1);
   };
-  const handleEditLocation = () => {
-    navigate(`/update-locations/12`);
+  const handleEditLocation = (id) => {
+    navigate(`/update-locations/${id}`);
   };
 
   const handleFormSubmit = (e) => {
@@ -270,7 +270,7 @@ const LocationDetails = () => {
           <CCol sm={12} md={6} className="text-end">
             <CButton
               onClick={() => {
-                handleEditLocation();
+                handleEditLocation(formData?.id);
               }}
               className="add_new_butn"
             >
@@ -283,7 +283,10 @@ const LocationDetails = () => {
           <CRow className="align-items-center">
             <CCol sm={12} md={3}>
               <div className="badminton_bg">
-                <img src={badminton} alt="logo" />
+                <img
+                  src={formData?.logo ? formData?.logo : badminton}
+                  alt="logo"
+                />
               </div>
             </CCol>
             <CCol sm={12} md={9}>
@@ -291,10 +294,6 @@ const LocationDetails = () => {
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">ID KEY</h6>
                   <p className="details_description">{formData?.id}</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">City</h6>
-                  <p className="details_description">{formData?.city}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Email</h6>
@@ -307,6 +306,10 @@ const LocationDetails = () => {
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Name</h6>
                   <p className="details_description">{formData?.name}</p>
+                </CCol>
+                <CCol sm={12} md={4} className="my-1">
+                  <h6 className="detail_title">City</h6>
+                  <p className="details_description">{formData?.city}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">State</h6>

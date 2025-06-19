@@ -27,23 +27,23 @@ const AppSidebar = () => {
     const data = JSON.parse(localStorage.getItem("logged_user_data"));
 
     if (data) {
-      // Check if the user has full access (access_flag = "0" and user_type = 0)
       if (data.access_flag === "0" || data.user_type === 0) {
-        setHasFullAccess(true); // User has full access
+        setHasFullAccess(true);
       } else {
-        // If access_flag exists and is not null or empty, split it into an array
         const permissions = data.access_flag
           ? data.access_flag.split(",").map(Number)
-          : []; // Default to an empty array if access_flag is invalid
-        setUserPermissions(permissions); // User has restricted access
+          : [];
+        setUserPermissions(permissions);
       }
     }
   }, []);
 
-  // Filter the navigation items based on user permissions
   const filteredNavigation = hasFullAccess
-    ? navigation // User has all access
-    : navigation.filter((item) => userPermissions.includes(item.permissionId));
+    ? navigation
+    : navigation.filter(
+        (item) =>
+          item.name === "Profile" || userPermissions.includes(item.permissionId)
+      );
 
   const handleLogOut = () => {
     localStorage.removeItem("logged_user_data");

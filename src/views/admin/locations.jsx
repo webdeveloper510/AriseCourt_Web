@@ -274,7 +274,7 @@ const Locations = () => {
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">Id Key</CTableHeaderCell>
-                  {/* <CTableHeaderCell scope="col">Logo & Name</CTableHeaderCell> */}
+                  <CTableHeaderCell scope="col">Logo</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Email</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
                   <CTableHeaderCell scope="col">City</CTableHeaderCell>
@@ -288,7 +288,10 @@ const Locations = () => {
                   return (
                     <CTableRow key={i}>
                       <CTableDataCell>{item?.id}</CTableDataCell>
-                      {/* <CTableDataCell>Beach Badminton Club</CTableDataCell> */}
+                      <CTableDataCell>
+                        {item?.logo && <img src={item?.logo} height={50} width={50} style={{borderRadius:"5px"}} />}
+                        
+                      </CTableDataCell>
                       <CTableDataCell>{item?.email}</CTableDataCell>
                       <CTableDataCell>{item?.phone}</CTableDataCell>
                       <CTableDataCell>{item?.city}</CTableDataCell>

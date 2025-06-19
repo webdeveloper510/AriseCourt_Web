@@ -8,6 +8,7 @@ const LocationDetails = React.lazy(() => import('./views/admin/locationDetails')
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const AdminRegistration = React.lazy(() => import('./views/admin/adminRegistration'))
 const UserRegistration = React.lazy(() => import('./views/admin/userRegistration'))
+const Profile = React.lazy(() => import('./views/admin/profile'))
 
 
 const routes = [
@@ -18,6 +19,7 @@ const routes = [
   { path: '/locations', name: 'Locations', element: Locations },
   { path: '/add-locations', name: 'AddLocations', element: AddLocations },
   { path: '/update-locations/:id', name: 'AddLocations', element: AddLocations },
+  { path: '/profile', name: 'Profile', element: Profile },
   { path: '/reporting', name: 'Reporting', element: Reporting },
   { path: '/location-details/:id', name: 'LocationDetails', element: LocationDetails },
   { path: '/user-registraion', name: 'UserRegistration', element: UserRegistration },

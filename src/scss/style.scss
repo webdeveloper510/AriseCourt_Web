@@ -378,12 +378,17 @@ body {
 }
 
 .badminton_bg img {
-  width: 75%;
+  width: 180px;
   background: white;
   border-radius: 100px;
   padding: 10px;
+  height: 180px;
 }
-
+.profile_image img{
+  width: 70%;
+  background: white;
+  border-radius: 100px;
+}
 .detail_title {
   color: #0860fb;
   margin-bottom: 0px;
