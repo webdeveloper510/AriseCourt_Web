@@ -263,7 +263,9 @@ body {
   font-size: 14px;
   color: #333;
 }
-
+.dropdown-item{
+  cursor: pointer;
+}
 .input_icons {
   background: white !important;
   border-top-left-radius: 12px !important;
