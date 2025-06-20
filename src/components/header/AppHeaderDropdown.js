@@ -34,6 +34,10 @@ const AppHeaderDropdown = () => {
     localStorage.removeItem("logged_user_data")
     navigate("/login")
   }
+
+  const handleProfile = () => {
+    navigate("/profile")
+  }
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
@@ -71,7 +75,7 @@ const AppHeaderDropdown = () => {
         </CDropdownItem> */}
         {/* <CDropdownHeader className="bg-body-secondary fw-semibold my-2">Settings</CDropdownHeader> */}
         <CDropdownItem href="#" className='mt-2'>
-          <CIcon icon={cilUser} className="me-2" />
+          <CIcon icon={cilUser} className="me-2" onClick={()=>handleProfile()} />
           Profile
         </CDropdownItem>
         {/* <CDropdownItem href="#">
@@ -95,7 +99,7 @@ const AppHeaderDropdown = () => {
         <CDropdownDivider />
         <CDropdownItem onClick={()=>handleLogOut()}>
           <CIcon icon={cilLockLocked} className="me-2" />
-          Lock Account
+          Logout
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

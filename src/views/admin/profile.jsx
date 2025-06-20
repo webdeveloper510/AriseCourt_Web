@@ -224,10 +224,10 @@ const Profile = () => {
               <div className="profile_image">
                 <img
                   src={
-                    userData.image
-                      ? typeof userData.image === "string"
-                        ? `http://3.12.136.26:8000/${userData.image}`
-                        : URL.createObjectURL(userData.image)
+                    userData?.image
+                      ? typeof userData?.image === "string"
+                        ? `http://3.12.136.26:8000/${userData?.image}`
+                        : URL.createObjectURL(userData?.image)
                       : UserImage
                   }
                   style={{
