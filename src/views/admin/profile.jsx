@@ -333,12 +333,12 @@ const Profile = () => {
                     style={{ height: "40px" }}
                   />
 
-                  {formData.image && (
+                  {formData?.image && (
                     <img
                       src={
-                        typeof formData.image === "string"
-                          ? `http://3.12.136.26:8000/${formData.image}`
-                          : URL.createObjectURL(formData.image)
+                        typeof formData?.image === "string"
+                          ? `http://3.12.136.26:8000/${formData?.image}`
+                          : URL.createObjectURL(formData?.image)
                       }
                       className=""
                       style={{
