@@ -74,8 +74,8 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem> */}
         {/* <CDropdownHeader className="bg-body-secondary fw-semibold my-2">Settings</CDropdownHeader> */}
-        <CDropdownItem href="#" className='mt-2'>
-          <CIcon icon={cilUser} className="me-2" onClick={()=>handleProfile()} />
+        <CDropdownItem href="#" className='mt-2' onClick={()=>handleProfile()}>
+          <CIcon icon={cilUser} className="me-2"  />
           Profile
         </CDropdownItem>
         {/* <CDropdownItem href="#">

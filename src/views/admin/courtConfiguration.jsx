@@ -305,6 +305,7 @@ const CourtConfiguration = () => {
                       cursor: "pointer",
                       borderRadius: "12px",
                       whiteSpace: "nowrap",
+                      height: "50px"
                     }}
                   >
                     <span>
