@@ -343,3 +343,16 @@ export const updateProfile = async (data) => {
     return error.response;
   }
 };
+
+export const getContactMessage = async () => {
+  try {
+    const response = await axios.get(`/contact-us/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};

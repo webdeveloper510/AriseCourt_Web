@@ -7,8 +7,8 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CPagination,
-  CPaginationItem,
+  CModal,
+  CModalBody,
   CRow,
   CTable,
   CTableBody,
@@ -16,38 +16,29 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
-  CModalTitle,
 } from "@coreui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { DateRangePicker } from "react-date-range";
 import CIcon, { CIconSvg } from "@coreui/icons-react";
 import {
   cilCalendar,
-  cilCloudUpload,
   cilDelete,
   cilFilter,
   cilPencil,
   cilSearch,
 } from "@coreui/icons";
-import { deleteLocationbyId, getLocation } from "../../utils/api";
+import { CPagination, CPaginationItem } from "@coreui/react";
+import { deleteAdminbyId, getAdmin, getContactMessage } from "../../utils/api";
 import deleteImage from "../../assets/images/delete_image.png";
-import { toast } from "react-toastify";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import moment from "moment";
+import { toast } from "react-toastify";
+import moment from "moment/moment";
 
-const Locations = () => {
+const Messages = () => {
   const navigate = useNavigate();
   const calendarRef = useRef(null);
   const filterButtonRef = useRef(null);
-  const [locationData, setLocationData] = useState([]);
-  const [visible, setVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [locationId, setLocationId] = useState("");
   const [selectionRange, setSelectionRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -63,16 +54,20 @@ const Locations = () => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [startDate, setStartDate] = useState(formatDate(new Date())); // Start date for API
   const [endDate, setEndDate] = useState(formatDate(new Date()));
+  const [visible, setVisible] = useState(false);
+  const [adminId, setAdminId] = useState("");
+  const [adminData, setAdminData] = useState([]);
   const [openMenuId, setOpenMenuId] = useState(null);
   const itemsPerPage = 10;
-  const [totalCounts, setTotalCounts] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalCounts, setTotalCounts] = useState(0); // Total number of items
+  const [totalPages, setTotalPages] = useState(0); // Total pages
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
+      setCurrentPage(page); // Update current page
     }
   };
 
@@ -85,16 +80,7 @@ const Locations = () => {
     setOpenMenuId((prevId) => (prevId === id ? null : id)); // Toggle
   };
 
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value); // Update search query
-    setCurrentPage(1); // Reset to the first page when a new search is made
-  };
-
-  useEffect(() => {
-    getLocationData(currentPage, searchQuery);
-  }, [currentPage, searchQuery]);
-
-  const getLocationData = (
+  const getAdminData = (
     page = 1,
     query = "",
     startDate = "",
@@ -102,33 +88,40 @@ const Locations = () => {
     loader
   ) => {
     setLoading(query ? false : true);
-    getLocation(page, query, startDate, endDate)
+    getContactMessage(page, query, startDate, endDate)
       .then((res) => {
         setLoading(false);
-        if (res.status == 200) {
-          setLocationData(res?.data?.results);
-          setTotalCounts(res?.data?.count); // Total count of admin data
+        if (res.status === 200) {
+          setAdminData(res?.data?.results);
+          setTotalCounts(res?.data?.count);
           setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
         } else if (res?.data?.code == "token_not_valid") {
-          toast.error(res?.data?.detail, {
-            theme: "colored",
-          });
           localStorage.removeItem("user_access_valid_token");
           localStorage.removeItem("logged_user_data");
           navigate("/login");
+          setAdminData([]);
         } else {
-          setLocationData([]);
+          setAdminData([]);
         }
       })
       .catch((error) => {
+        console.error(error);
+        setAdminData([]);
         setLoading(false);
-        console.log(error);
-        setLocationData([]);
       });
   };
 
   const handleFilterClick = () => {
-    getLocationData(currentPage, searchQuery, startDate, endDate, "loader");
+    getAdminData(currentPage, searchQuery, startDate, endDate, "loader");
+  };
+
+  useEffect(() => {
+    getAdminData(currentPage, searchQuery);
+  }, [currentPage, searchQuery]);
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+    setCurrentPage(1);
   };
 
   const handleSelect = (ranges) => {
@@ -145,29 +138,25 @@ const Locations = () => {
     setIsCalendarOpen(!isCalendarOpen); // Toggle calendar visibility
   };
 
-  const handleEditLocation = (id) => {
-    navigate(`/update-locations/${id}`);
-  };
-
-  const handleViewDetails = (id) => {
-    navigate(`/location-details/${id}`);
+  const handleEditAdmin = (id) => {
+    navigate(`/update-registraion/${id}`);
   };
 
   const handleDeleteModal = (id) => {
     setVisible(true);
-    setLocationId(id);
+    setAdminId(id);
   };
 
-  const handleDeleteLocation = () => {
+  const handleDeleteAdmin = () => {
     setLoading(true);
-    deleteLocationbyId(locationId)
+    deleteAdminbyId(adminId)
       .then((res) => {
         setLoading(false);
         if (res.status == 200 || res?.status == 204) {
           toast.success(res?.data?.message, {
             theme: "colored",
           });
-          getLocationData();
+          getAdminData();
           setVisible(false);
         }
       })
@@ -177,30 +166,45 @@ const Locations = () => {
       });
   };
 
+  const handleClickOutside = (event) => {
+    if (
+      calendarRef.current &&
+      !calendarRef.current.contains(event.target) &&
+      filterButtonRef.current &&
+      !filterButtonRef.current.contains(event.target)
+    ) {
+      setIsCalendarOpen(false); // Close calendar if clicked outside
+    }
+  };
+
+  // Add event listener for detecting outside clicks
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
+      {/* <WidgetsDropdown className="mb-4" /> */}
+      {/* <CCard className="mb-4"> */}
       {loading && (
         <div className="loader_outer">
           <span className="loader"></span>
         </div>
       )}
-      {/* <WidgetsDropdown className="mb-4" /> */}
-      {/* <CCard className="mb-4"> */}
       <CCardBody className="p-2 position-relative">
         <CRow>
-          <CCol sm={12} md={6}>
+          <CCol sm={12} md={12} xs={12}>
             <h4 id="traffic" className="card-title mb-0">
-              Locations
+              Messages
             </h4>
-            <div className="card_description">
-              List of locations configured for court bookings.
-            </div>
+            {/* <div className="card_description">
+              View all of your admin information.
+            </div> */}
           </CCol>
-          <CCol sm={12} md={6} className="text-end">
-            <Link to="/add-locations">
-              <CButton className="add_new_butn">+ Add New</CButton>
-            </Link>
-          </CCol>
+          
           <CCol sm={12} md={6} className="mt-3">
             <CInputGroup
               className="search_input_group"
@@ -221,7 +225,7 @@ const Locations = () => {
             </CInputGroup>
           </CCol>
 
-          {/* <CCol sm={6} className="mt-3">
+          <CCol sm={6} className="mt-3">
             <div className="text-end date_filter_section">
               <div
                 onClick={handleCalendarClick}
@@ -231,18 +235,22 @@ const Locations = () => {
                   display: "inline-block",
                   cursor: "pointer",
                   borderRadius: "12px",
-                  height: "50px",
+                  height: "50px"
                 }}
               >
                 <span>
                   <CIcon icon={cilCalendar}></CIcon>{" "}
                   {`${
                     selectionRange.startDate
-                      ? moment(selectionRange.startDate).format("ll")
+                      ? moment(
+                          selectionRange.startDate
+                        ).format("ll")
                       : "Start Date"
                   } - ${selectionRange.endDate ? moment(selectionRange.endDate).format("ll") : "End Date"}`}
                 </span>
               </div>
+
+              {/* Display DateRangePicker when calendar is open */}
               {isCalendarOpen && (
                 <div
                   ref={calendarRef}
@@ -250,11 +258,12 @@ const Locations = () => {
                 >
                   <DateRangePicker
                     ranges={[selectionRange]}
-                    onChange={handleSelect} 
+                    onChange={handleSelect} // Update the selection when a date is selected
                   />
                 </div>
               )}
 
+              {/* Filter Button */}
               <CButton
                 ref={filterButtonRef}
                 className="filter_butn"
@@ -263,60 +272,41 @@ const Locations = () => {
                 <CIcon icon={cilFilter}></CIcon> FILTERS
               </CButton>
             </div>
-          </CCol> */}
+          </CCol>
         </CRow>
-
-        {locationData?.length > 0 ? (
+        {adminData?.length > 0 ? (
           <div style={{ overflowX: "auto" }} className="table_flow">
             <CTable className="mt-4 main_table" striped>
               <CTableHead>
                 <CTableRow>
-                  <CTableHeaderCell scope="col">Id Key</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Logo</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Email</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">City</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Country</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">No. of Courts</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+                  {/* <CTableHeaderCell scope="col">Location Id</CTableHeaderCell> */}
+                  <CTableHeaderCell scope="col">Id</CTableHeaderCell>
+                  <CTableHeaderCell scope="col" style={{whiteSpace:"nowrap"}}>First Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col" style={{whiteSpace:"nowrap"}}>Last Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col" style={{whiteSpace:"nowrap"}}>
+                    E-mail Address
+                  </CTableHeaderCell>
+                  <CTableHeaderCell scope="col" style={{whiteSpace:"nowrap"}}>Phone Number</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Message</CTableHeaderCell>
+                  {/* <CTableHeaderCell scope="col">Action</CTableHeaderCell> */}
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {locationData?.sort((a,b)=> b?.id - a?.id)?.map((item, i) => {
+                {adminData?.sort((a,b)=> b?.id - a?.id)?.map((item, i) => {
                   return (
                     <CTableRow key={i}>
-                      <CTableDataCell>
-                        {item?.id}
-                        <div
-                          onClick={() => {
-                            handleViewDetails(item.id);
-                            setOpenMenuId(null);
-                          }}
-                          className="action_icons"
-                        >
-                          <i className="bi bi-eye-fill view_icon" style={{color : "#0860fb"}} />
-                        </div>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        {item?.logo && (
-                          <img
-                            src={item?.logo}
-                            height={50}
-                            width={50}
-                            style={{ borderRadius: "5px" }}
-                          />
-                        )}
-                      </CTableDataCell>
+                      {/* <CTableDataCell>#123</CTableDataCell> */}
+                      <CTableDataCell>{item?.id}</CTableDataCell>
+                      <CTableDataCell>{item?.first_name?.length > 10 ? `${item?.first_name?.slice(0,10)}...` : item?.first_name}</CTableDataCell>
+                      <CTableDataCell>{item?.last_name?.length > 10 ? `${item?.last_name?.slice(0,10)}...` : item?.last_name}</CTableDataCell>
+                     
                       <CTableDataCell>{item?.email}</CTableDataCell>
                       <CTableDataCell>{item?.phone}</CTableDataCell>
-                      <CTableDataCell>{item?.city}</CTableDataCell>
-                      <CTableDataCell>{item?.country}</CTableDataCell>
-                      <CTableDataCell>{item?.courts?.length}</CTableDataCell>
-                      <CTableDataCell>
+                      <CTableDataCell className="address_text">{item?.message}</CTableDataCell>
+                      {/* <CTableDataCell>
                         <div
                           style={{ position: "relative", marginBottom: "16px" }}
                         >
-                          {/* Three-dot icon */}
                           <span
                             style={{ fontSize: "24px", cursor: "pointer" }}
                             onClick={() => toggleMenu(item.id)}
@@ -324,34 +314,14 @@ const Locations = () => {
                             ⋮
                           </span>
 
-                          {/* Dropdown menu only for selected item */}
                           {openMenuId === item.id && (
                             <div
-                              className="outer_action_icons"
-                              // style={{
-                              //   position: "absolute",
-                              //   top: "30px",
-                              //   right: 0,
-                              //   backgroundColor: "#fff",
-                              //   borderRadius: "10px",
-                              //   padding: "12px",
-                              //   boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-                              //   zIndex: 999999,
-                              // }}
+                              style={{
+                              }} className="outer_action_icons"
                             >
                               <div
                                 onClick={() => {
-                                  handleViewDetails(item.id);
-                                  setOpenMenuId(null);
-                                }}
-                                className="action_icons"
-                              >
-                                <i className="bi bi-eye-fill view_icon" /> View
-                              </div>
-                              <div
-                                onClick={() => {
-                                  handleEditLocation(item.id);
-                                  setOpenMenuId(null);
+                                  handleEditAdmin(item?.id);
                                 }}
                                 className="action_icons"
                               >
@@ -374,31 +344,30 @@ const Locations = () => {
                             </div>
                           )}
                         </div>
-                        {/* <CIcon
-                        icon={cilSearch}
-                        onClick={() => {
-                          handleViewDetails();
-                        }}
-                        className="view_icon"
-                      ></CIcon>
-                      <CIcon
-                        icon={cilPencil}
-                        onClick={() => {
-                          handleEditLocation(item?.id);
-                        }}
-                        className="mx-2 edit_icon"
-                      ></CIcon>
-                      <CIcon
-                        onClick={() => {
-                          handleDeleteModal(item?.id);
-                        }}
-                        icon={cilDelete}
-                        className="delete_icon"
-                      ></CIcon> */}
-                      </CTableDataCell>
+                      </CTableDataCell> */}
                     </CTableRow>
                   );
                 })}
+                {/* <CTableRow>
+                <CTableDataCell>#123</CTableDataCell>
+                <CTableDataCell>#123</CTableDataCell>
+                <CTableDataCell>8987464kkdfet</CTableDataCell>
+                <CTableDataCell>Admin</CTableDataCell>
+                <CTableDataCell>3</CTableDataCell>
+                <CTableDataCell>dummy221@gmail.com</CTableDataCell>
+                <CTableDataCell>01796-329869</CTableDataCell>
+                <CTableDataCell>California</CTableDataCell>
+                <CTableDataCell>
+                  <CIcon
+                    icon={cilPencil}
+                    onClick={() => {
+                      handleEditAdmin();
+                    }}
+                    className="mx-2 edit_icon"
+                  ></CIcon>
+                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
+                </CTableDataCell>
+              </CTableRow> */}
               </CTableBody>
             </CTable>
           </div>
@@ -410,7 +379,7 @@ const Locations = () => {
           )
         )}
 
-        {locationData?.length > 0 && (
+        {adminData?.length > 0 && (
           <div className="pagination_outer mt-5">
             <div className="pagination_section">
               <CRow className="align-items-center">
@@ -467,7 +436,7 @@ const Locations = () => {
             <div className="d-flex gap-2 mt-4 justify-content-center">
               <CButton
                 type="button"
-                onClick={() => handleDeleteLocation()}
+                onClick={() => handleDeleteAdmin()}
                 className="delet_yes"
               >
                 Yes
@@ -483,9 +452,10 @@ const Locations = () => {
           </div>
         </CModalBody>
       </CModal>
+
       {/* </CCard> */}
     </>
   );
 };
 
-export default Locations;
+export default Messages;

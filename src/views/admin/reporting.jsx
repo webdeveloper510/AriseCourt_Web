@@ -167,7 +167,7 @@ const Reporting = () => {
             <h4 id="traffic" className="card-title mb-0">
               Reporting
             </h4>
-            <div className="card_description">Standard Reports</div>
+            <div className="card_description">Standard reports</div>
           </CCol>
         </CRow>
 
@@ -321,7 +321,7 @@ const Reporting = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {reportTable?.map((item, i) => {
+                {reportTable?.sort((a,b)=> b?.id - a?.id)?.map((item, i) => {
                   return (
                     <CTableRow key={i}>
                       <CTableDataCell>{item?.id}</CTableDataCell>

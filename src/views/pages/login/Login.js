@@ -84,7 +84,7 @@ const Login = () => {
             userData?.user_type === 0 ||
             userData?.access_flag?.includes("0")
           ) {
-            navigate("/dashboard");
+            navigate("/reporting");
           } else if (userData?.access_flag?.includes("1")) {
             navigate("/locations");
           } else if (userData?.access_flag?.includes("2")) {

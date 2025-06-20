@@ -238,7 +238,7 @@ const CourtConfiguration = () => {
             <h4 id="traffic" className="card-title mb-0">
               Court Bookings
             </h4>
-            <div className="card_description">Court Bookings</div>
+            <div className="card_description">Court bookings</div>
           </CCol>
           {/* <CCol sm={12} md={6} className="text-end">
             <Link to="/add-locations">
@@ -248,7 +248,7 @@ const CourtConfiguration = () => {
         </CRow>
 
         <CRow className="mt-2">
-          <CCol sm={12} md={5}>
+          <CCol sm={12} md={4}>
             <CButton
               onClick={() => setBookingType("")}
               style={{
@@ -272,7 +272,7 @@ const CourtConfiguration = () => {
             </CButton>
           </CCol>
 
-          <CCol sm={12} md={7}>
+          <CCol sm={12} md={8}>
             <CRow>
               <CCol md={5}>
                 <CInputGroup
@@ -351,7 +351,7 @@ const CourtConfiguration = () => {
               <CTableHead>
                 <CTableRow>
                   {/* <CTableHeaderCell scope="col">Location Id</CTableHeaderCell> */}
-                  <CTableHeaderCell scope="col">Admin Id</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Id</CTableHeaderCell>
                   {/* <CTableHeaderCell scope="col">Location</CTableHeaderCell> */}
                   <CTableHeaderCell scope="col">Date & Time</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Court No.</CTableHeaderCell>
@@ -360,11 +360,11 @@ const CourtConfiguration = () => {
                   <CTableHeaderCell scope="col">
                     Contact Details
                   </CTableHeaderCell>
-                  {/* <CTableHeaderCell scope="col">Action</CTableHeaderCell> */}
+                  <CTableHeaderCell scope="col">Price</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {adminData?.map((item, i) => {
+                {adminData?.sort((a,b)=> b?.id - a?.id)?.map((item, i) => {
                   return (
                     <CTableRow key={i}>
                       <CTableDataCell>{item?.id}</CTableDataCell>
@@ -379,7 +379,7 @@ const CourtConfiguration = () => {
                           <p className="mb-0">{item?.booking_date}</p>
                         </div>
                       </CTableDataCell>
-                      <CTableDataCell>0</CTableDataCell>
+                      <CTableDataCell>{item?.court?.court_number}</CTableDataCell>
                       <CTableDataCell>{`${item?.user?.first_name} ${item?.user?.last_name}`}</CTableDataCell>
                       <CTableDataCell>
                         {item?.user?.user_type == 1
@@ -394,6 +394,7 @@ const CourtConfiguration = () => {
                           <p className="mb-0">{item?.user?.email}</p>
                         </div>
                       </CTableDataCell>
+                      <CTableDataCell>{item?.court?.court_fee_hrs ? `$${item?.court?.court_fee_hrs}` : ""}</CTableDataCell>
                       {/* <CTableDataCell>
                         <div
                           style={{ position: "relative", marginBottom: "16px" }}

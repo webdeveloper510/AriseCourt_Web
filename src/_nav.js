@@ -1,15 +1,27 @@
 import React from "react";
 import CIcon from "@coreui/icons-react";
 import {
+  cilChatBubble,
+  cilCommentBubble,
+  cilEnvelopeClosed,
+  cilEnvelopeOpen,
   cilFile,
   cilList,
   cilLocationPin,
+  cilSpeech,
   cilSpeedometer,
   cilUser,
 } from "@coreui/icons";
 import { CNavItem } from "@coreui/react";
 
 const _nav = [
+  {
+    component: CNavItem,
+    name: 'Reporting',
+    to: '/reporting',
+    icon: <CIcon icon={cilFile} customClassName="nav-icon" />,
+    permissionId: 2, // Court Bookings Tab only (id = 2)
+  },
   {
     component: CNavItem,
     name: 'Admin',
@@ -24,13 +36,7 @@ const _nav = [
     icon: <CIcon icon={cilLocationPin} customClassName="nav-icon" />,
     permissionId: 1, // Location Tab only (id = 1)
   },
-  {
-    component: CNavItem,
-    name: 'Reporting',
-    to: '/reporting',
-    icon: <CIcon icon={cilFile} customClassName="nav-icon" />,
-    permissionId: 2, // Court Bookings Tab only (id = 2)
-  },
+ 
   {
     component: CNavItem,
     name: 'Court Booking',
@@ -40,9 +46,9 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Profile',
-    to: '/profile',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    name: 'Messages',
+    to: '/messages',
+    icon: <CIcon icon={cilSpeech} customClassName="nav-icon" />,
     permissionId: 0, // Full Access (id = 0)
   },
 ]

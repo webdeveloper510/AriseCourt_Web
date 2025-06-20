@@ -201,7 +201,7 @@ const Dashboard = () => {
               Admin
             </h4>
             <div className="card_description">
-              View All Of Your Admin Information.
+              View all of your admin information.
             </div>
           </CCol>
           <CCol xs={6} sm={6} md={6} className="text-end">
@@ -298,7 +298,7 @@ const Dashboard = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {adminData?.map((item, i) => {
+                {adminData?.sort((a,b)=> b?.id - a?.id)?.map((item, i) => {
                   return (
                     <CTableRow key={i}>
                       {/* <CTableDataCell>#123</CTableDataCell> */}
