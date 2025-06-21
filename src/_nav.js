@@ -20,7 +20,7 @@ const _nav = [
     name: 'Reporting',
     to: '/reporting',
     icon: <CIcon icon={cilFile} customClassName="nav-icon" />,
-    permissionId: 2, // Court Bookings Tab only (id = 2)
+    permissionId: 3, // Court Bookings Tab only (id = 2)
   },
   {
     component: CNavItem,
@@ -42,7 +42,7 @@ const _nav = [
     name: 'Court Booking',
     to: '/court-bookings',
     icon: <CIcon icon={cilList} customClassName="nav-icon" />,
-    permissionId: 3, // Reporting Only (id = 3)
+    permissionId: 2, // Reporting Only (id = 3)
   },
   {
     component: CNavItem,
