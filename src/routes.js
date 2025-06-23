@@ -10,6 +10,7 @@ const AdminRegistration = React.lazy(() => import('./views/admin/adminRegistrati
 const UserRegistration = React.lazy(() => import('./views/admin/userRegistration'))
 const Profile = React.lazy(() => import('./views/admin/profile'))
 const Messages = React.lazy(() => import('./views/admin/messages'))
+const CourtDetails = React.lazy(() => import('./views/admin/courtDetails'))
 
 
 const routes = [
@@ -23,10 +24,11 @@ const routes = [
   { path: '/update-locations/:id', name: 'AddLocations', element: AddLocations },
   { path: '/profile', name: 'Profile', element: Profile },
   { path: '/reporting', name: 'Reporting', element: Reporting },
-  { path: '/location-details/:id', name: 'LocationDetails', element: LocationDetails },
+  { path: '/location-details', name: 'LocationDetails', element: LocationDetails },
   { path: '/user-registraion', name: 'UserRegistration', element: UserRegistration },
   { path: '/price-configuration', name: 'PriceConfiguration', element: PriceConfiguration },
   { path: '/court-bookings', name: 'CourtConfiguration', element: CourtConfiguration },
+  { path: '/court-details/:id', name: 'CourtDetails', element: CourtDetails },
   
 ]
 

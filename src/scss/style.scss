@@ -419,6 +419,7 @@ body {
   color: white;
   margin-bottom: 0px;
   font-size: 14px;
+  text-transform: capitalize;
 }
 
 .address_Section {
@@ -598,7 +599,7 @@ input:-webkit-autofill {
 }
 
 .report_card_Desc {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: #182B4D;
   margin-bottom: 0px;
@@ -768,6 +769,9 @@ input:-webkit-autofill {
   .login_outer {
     height: auto;
   }
+  .location_Details_section {
+    border-radius: 30px;
+}
 }
 
 .table_flow {

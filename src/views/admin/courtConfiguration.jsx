@@ -223,6 +223,10 @@ const CourtConfiguration = () => {
     return `${hourNum} Hour${hourNum !== 1 ? "s" : ""}`;
   };
 
+  const handleViewDetails = (id) => {
+    navigate(`/court-details/${id}`);
+  };
+
   return (
     <>
       {/* <WidgetsDropdown className="mb-4" /> */}
@@ -305,7 +309,7 @@ const CourtConfiguration = () => {
                       cursor: "pointer",
                       borderRadius: "12px",
                       whiteSpace: "nowrap",
-                      height: "50px"
+                      height: "50px",
                     }}
                   >
                     <span>
@@ -361,113 +365,122 @@ const CourtConfiguration = () => {
                     Contact Details
                   </CTableHeaderCell>
                   <CTableHeaderCell scope="col">Price</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {adminData?.sort((a,b)=> b?.id - a?.id)?.map((item, i) => {
-                  return (
-                    <CTableRow key={i}>
-                      <CTableDataCell>{item?.id}</CTableDataCell>
-                      {/* <CTableDataCell>{item?.user?.first_name}</CTableDataCell> */}
-                      <CTableDataCell>
-                        <div>
-                          <p className="mb-0 user_phone">
-                            {item?.start_time
-                              ? `${convertToAmPm(item?.start_time)} - ${convertToHoursOnly(item?.duration_time)}`
-                              : ""}
-                          </p>
-                          <p className="mb-0">{item?.booking_date}</p>
-                        </div>
-                      </CTableDataCell>
-                      <CTableDataCell>{item?.court?.court_number}</CTableDataCell>
-                      <CTableDataCell>{`${item?.user?.first_name} ${item?.user?.last_name}`}</CTableDataCell>
-                      <CTableDataCell>
-                        {item?.user?.user_type == 1
-                          ? "Admin"
-                          : item?.user?.user_type == 3
-                            ? "Player"
-                            : ""}
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div>
-                          <p className="mb-0 user_phone">{item?.user?.phone}</p>
-                          <p className="mb-0">{item?.user?.email}</p>
-                        </div>
-                      </CTableDataCell>
-                      <CTableDataCell>{item?.court?.court_fee_hrs ? `$${item?.court?.court_fee_hrs}` : ""}</CTableDataCell>
-                      {/* <CTableDataCell>
-                        <div
-                          style={{ position: "relative", marginBottom: "16px" }}
-                        >
-                          <span
-                            style={{ fontSize: "24px", cursor: "pointer" }}
-                            onClick={() => toggleMenu(item.id)}
+                {adminData
+                  ?.sort((a, b) => b?.id - a?.id)
+                  ?.map((item, i) => {
+                    return (
+                      <CTableRow key={i}>
+                        <CTableDataCell>
+                          {item?.id}
+                          <div
+                            onClick={() => {
+                              handleViewDetails(item.id);
+                              setOpenMenuId(null);
+                            }}
+                            className="action_icons"
                           >
-                            ⋮
+                            <i
+                              className="bi bi-eye-fill view_icon"
+                              style={{ color: "#0860fb" }}
+                            />
+                          </div>
+                        </CTableDataCell>
+                        {/* <CTableDataCell>{item?.user?.first_name}</CTableDataCell> */}
+                        <CTableDataCell>
+                          <div>
+                            <p className="mb-0 user_phone">
+                              {item?.start_time
+                                ? `${convertToAmPm(item?.start_time)} - ${convertToHoursOnly(item?.duration_time)}`
+                                : ""}
+                            </p>
+                            <p className="mb-0">{item?.booking_date}</p>
+                          </div>
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {item?.court?.court_number}
+                        </CTableDataCell>
+                        <CTableDataCell>{`${item?.user?.first_name} ${item?.user?.last_name}`}</CTableDataCell>
+                        <CTableDataCell>
+                          {item?.user?.user_type == 1
+                            ? "Admin"
+                            : item?.user?.user_type == 3
+                              ? "Player"
+                              : item?.user?.user_type == 2
+                                ? "Coach"
+                                : item?.user?.user_type == 4
+                                  ? "Court"
+                                  : ""}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <div>
+                            <p className="mb-0 user_phone">
+                              {item?.user?.phone}
+                            </p>
+                            <p className="mb-0">{item?.user?.email}</p>
+                          </div>
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <span
+                            style={{
+                              textTransform: "capitalize",
+                              color:
+                                item?.status == "cancelled"
+                                  ? "#FA3B3B"
+                                  : item?.status == "completed"
+                                    ? "#05D005"
+                                    : item?.status == "confirmed"
+                                      ? "#0860fb"
+                                      : item?.status == "pending"
+                                        ? "#f99e15"
+                                        : "#182B4D",
+                            }}
+                          >
+                            {item?.status}
                           </span>
-                          {openMenuId === item.id && (
-                            <div
-                              style={{
-                                position: "absolute",
-                                top: "30px",
-                                right: 0,
-                                backgroundColor: "#fff",
-                                borderRadius: "10px",
-                                padding: "12px",
-                                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-                                zIndex: 999999,
-                              }}
+                          <br />
+                          {item?.court?.court_fee_hrs
+                            ? `$${item?.court?.court_fee_hrs}`
+                            : ""}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <div
+                            style={{
+                              position: "relative",
+                              marginBottom: "16px",
+                            }}
+                          >
+                            <span
+                              style={{ fontSize: "24px", cursor: "pointer" }}
+                              onClick={() => toggleMenu(item.id)}
                             >
+                              ⋮
+                            </span>
+                            {openMenuId === item.id && (
                               <div
-                                onClick={() => {
-                                  handleEditAdmin(item?.id);
-                                }}
-                                className="action_icons"
+                                className="outer_action_icons"
+                                style={{ right: "68px" }}
                               >
-                                <CIcon icon={cilPencil} className="edit_icon" />{" "}
-                                Edit
+                                <div
+                                  onClick={() => {
+                                    handleViewDetails(item.id);
+                                    setOpenMenuId(null);
+                                  }}
+                                  className="action_icons"
+                                >
+                                  <i className="bi bi-eye-fill view_icon" />{" "}
+                                  View
+                                </div>
                               </div>
-                              <div
-                                onClick={() => {
-                                  handleDeleteModal(item.id);
-                                  setOpenMenuId(null);
-                                }}
-                                className="action_icons"
-                              >
-                                <CIcon
-                                  icon={cilDelete}
-                                  className="delete_icon"
-                                />{" "}
-                                Delete
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                       
-                      </CTableDataCell> */}
-                    </CTableRow>
-                  );
-                })}
-                {/* <CTableRow>
-                <CTableDataCell>#123</CTableDataCell>
-                <CTableDataCell>#123</CTableDataCell>
-                <CTableDataCell>8987464kkdfet</CTableDataCell>
-                <CTableDataCell>Admin</CTableDataCell>
-                <CTableDataCell>3</CTableDataCell>
-                <CTableDataCell>dummy221@gmail.com</CTableDataCell>
-                <CTableDataCell>01796-329869</CTableDataCell>
-                <CTableDataCell>California</CTableDataCell>
-                <CTableDataCell>
-                  <CIcon
-                    icon={cilPencil}
-                    onClick={() => {
-                      handleEditAdmin();
-                    }}
-                    className="mx-2 edit_icon"
-                  ></CIcon>
-                  <CIcon icon={cilDelete} className="delete_icon"></CIcon>
-                </CTableDataCell>
-              </CTableRow> */}
+                            )}
+                          </div>
+                        </CTableDataCell>
+                      </CTableRow>
+                    );
+                  })}
               </CTableBody>
             </CTable>
           </div>

@@ -316,7 +316,6 @@ const Locations = () => {
                         <div
                           style={{ position: "relative", marginBottom: "16px" }}
                         >
-                          {/* Three-dot icon */}
                           <span
                             style={{ fontSize: "24px", cursor: "pointer" }}
                             onClick={() => toggleMenu(item.id)}
@@ -324,20 +323,9 @@ const Locations = () => {
                             ⋮
                           </span>
 
-                          {/* Dropdown menu only for selected item */}
                           {openMenuId === item.id && (
                             <div
                               className="outer_action_icons"
-                              // style={{
-                              //   position: "absolute",
-                              //   top: "30px",
-                              //   right: 0,
-                              //   backgroundColor: "#fff",
-                              //   borderRadius: "10px",
-                              //   padding: "12px",
-                              //   boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-                              //   zIndex: 999999,
-                              // }}
                             >
                               <div
                                 onClick={() => {

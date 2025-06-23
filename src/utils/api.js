@@ -154,6 +154,7 @@ export const getCourts = async (id, page) => {
   }
 };
 
+
 export const updateCourt = async (id, data) => {
   try {
     const response = await axios.put(`/courts/${id}/`, data, {
@@ -279,6 +280,19 @@ const start_date = startDate ? `&start_date=${startDate}&end_date=${endDate}` : 
         },
       }
     );
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const getCourtBookingbyId = async (id) => {
+  try {
+    const response = await axios.get(`/court-bookings/${id}/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
     return response;
   } catch (error) {
     return error.response;
