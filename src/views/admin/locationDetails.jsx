@@ -194,6 +194,28 @@ const LocationDetails = () => {
     }
   };
 
+  const handleAvailabilityToggle = (courtId, newAvailability) => {
+    const updatedCourt = { availability: newAvailability };
+
+    setLoading(true);
+
+    updateCourt(courtId, updatedCourt)
+      .then((res) => {
+        setLoading(false);
+        if (res?.status === 200 || res?.status === 201) {
+          toast.success("Availability updated successfully!", {
+            theme: "colored",
+          });
+          getLocationDatabyId();
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to update availability", error);
+        setLoading(false);
+        toast.error("Failed to update availability", { theme: "colored" });
+      });
+  };
+
   const handleEditCourtModal = (id, data) => {
     setVisible(true);
     setCourtId(id);
@@ -292,7 +314,7 @@ const LocationDetails = () => {
             <CCol sm={12} md={9}>
               <CRow>
                 <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">ID KEY</h6>
+                  <h6 className="detail_title">Id key</h6>
                   <p className="details_description">{formData?.id}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
@@ -403,7 +425,17 @@ const LocationDetails = () => {
                         <CTableDataCell>{`${item?.cc_fees}%`}</CTableDataCell>
                         <CTableDataCell>
                           {/* {`${item?.availability}`} */}
-                          <CFormSwitch checked={item?.availability} />
+                          <CFormSwitch
+                            key={item.id}
+                            checked={item.availability}
+                            onChange={(e) =>
+                              handleAvailabilityToggle(
+                                item.id,
+                                e.target.checked
+                              )
+                            }
+                            style={{cursor:"pointer"}}
+                          />
                         </CTableDataCell>
                         <CTableDataCell>
                           <CIcon
@@ -566,6 +598,7 @@ const LocationDetails = () => {
                         availability: e.target.checked,
                       })
                     }
+                    style={{cursor:"pointer"}}
                   />
                 </CCol>
                 <CCol sm={12} md={6} lg={6}></CCol>

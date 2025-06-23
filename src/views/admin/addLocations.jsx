@@ -51,6 +51,7 @@ const AddLocations = () => {
             errors.email = "Enter a valid email address.";
           }
           break;
+
         case "address_1":
           if (!data.address_1.trim()) {
             errors.address_1 = "Address 1 is required.";
@@ -58,6 +59,22 @@ const AddLocations = () => {
             errors.address_1 = "Address 1 must be less than 150 characters.";
           }
           break;
+
+        case "address_2":
+        case "address_3":
+        case "address_4":
+          if (data[field] && data[field].trim()) {
+            const length = data[field].trim().length;
+            if (length < 5) {
+              errors[field] =
+                `${field.replace("_", " ")} must be at least 5 characters.`;
+            } else if (length > 150) {
+              errors[field] =
+                `${field.replace("_", " ")} must be less than 150 characters.`;
+            }
+          }
+          break;
+
         case "city":
           if (!data.city.trim()) {
             errors.city = "City is required.";
@@ -65,6 +82,7 @@ const AddLocations = () => {
             errors.city = "City must be less than 100 characters.";
           }
           break;
+
         case "phone":
           if (!data.phone.trim()) {
             errors.phone = "Phone number is required.";
@@ -72,6 +90,7 @@ const AddLocations = () => {
             errors.phone = "Phone number must be at least 7 digits.";
           }
           break;
+
         case "state":
           if (!data.state.trim()) {
             errors.state = "State is required.";
@@ -79,13 +98,14 @@ const AddLocations = () => {
             errors.state = "State must be less than 100 characters.";
           }
           break;
+
         case "country":
           if (!data.country.trim()) {
             errors.country = "Country is required.";
           }
           break;
+
         case "logo":
-          // If logo is a string (existing URL), skip validation
           if (
             !data.logo ||
             (typeof data.logo !== "string" && !(data.logo instanceof File))
@@ -104,14 +124,16 @@ const AddLocations = () => {
             errors.website = "Enter a valid website URL.";
           }
           break;
+
         case "description":
           if (!data.description.trim()) {
             errors.description = "Description is required.";
-          } else if (data.description && data.description.length > 150) {
+          } else if (data.description.length > 150) {
             errors.description =
               "Description must be less than 150 characters.";
           }
           break;
+
         default:
           break;
       }
@@ -452,6 +474,9 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
+                {errors.address_2 && (
+                  <div className="text-danger">{errors.address_2}</div>
+                )}
               </CCol>
               <CCol sm={12} md={6} lg={6} className="my-1">
                 <label>Address 3</label>
@@ -467,6 +492,9 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
+                {errors.address_3 && (
+                  <div className="text-danger">{errors.address_3}</div>
+                )}
               </CCol>
               <CCol sm={12} md={6} lg={6} className="my-1">
                 <label>Address 4</label>
@@ -482,6 +510,9 @@ const AddLocations = () => {
                     handleInputChange(e);
                   }}
                 />
+                {errors.address_4 && (
+                  <div className="text-danger">{errors.address_4}</div>
+                )}
               </CCol>
               <CCol sm={12} md={12} lg={12} className="my-1">
                 <label>Description</label>

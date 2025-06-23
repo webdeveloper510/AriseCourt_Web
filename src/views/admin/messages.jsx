@@ -92,7 +92,7 @@ const Messages = () => {
       .then((res) => {
         setLoading(false);
         if (res.status === 200) {
-          setAdminData(res?.data?.results);
+          setAdminData(res?.data?.results?.data);
           setTotalCounts(res?.data?.count);
           setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
         } else if (res?.data?.code == "token_not_valid") {
