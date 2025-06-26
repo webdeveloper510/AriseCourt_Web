@@ -46,6 +46,8 @@ const LocationDetails = () => {
     court_fee_hrs: "",
     tax: "",
     cc_fees: "",
+    start_time:"",
+    end_time:"",
     availability: true,
   });
   const [courtId, setCourtId] = useState("");
@@ -95,11 +97,33 @@ const LocationDetails = () => {
 
     if (!data.tax || isNaN(data.tax)) {
       errors.tax = "Tax must be a number.";
+    } else if (Number(data.tax) > 100) {
+      errors.tax = "Tax cannot be greater than 100.";
     }
 
     if (!data.cc_fees || isNaN(data.cc_fees)) {
       errors.cc_fees = "CC fees must be a number.";
     }
+
+    if (!data.start_time || !data.start_time.trim()) {
+      errors.start_time = "Start time is required.";
+    }
+    
+    if (!data.end_time || !data.end_time.trim()) {
+      errors.end_time = "End time is required.";
+    }
+    
+    // Time format validation (24-hour HH:MM)
+    const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+    
+    if (data.start_time && !timeRegex.test(data.start_time.trim())) {
+      errors.start_time = "Start time must be in HH:MM format.";
+    }
+    
+    if (data.end_time && !timeRegex.test(data.end_time.trim())) {
+      errors.end_time = "End time must be in HH:MM format.";
+    }
+    
 
     return errors;
   };
@@ -259,6 +283,17 @@ const LocationDetails = () => {
     });
   };
 
+  const convertToAmPm = (time24) => {
+    if (!time24) return "";
+  
+    const [hours, minutes] = time24.split(":").map(Number);
+    const ampm = hours >= 12 ? "PM" : "AM";
+    const hours12 = hours % 12 || 12;
+  
+    return `${hours12}:${minutes.toString().padStart(2, "0")} ${ampm}`;
+  };
+  
+
   return (
     <>
       {loading && (
@@ -408,6 +443,8 @@ const LocationDetails = () => {
                       Taxes percentage
                     </CTableHeaderCell>
                     <CTableHeaderCell scope="col">cc fees%</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Start Time</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">End Time</CTableHeaderCell>
                     <CTableHeaderCell scope="col">
                       Availability
                     </CTableHeaderCell>
@@ -423,6 +460,8 @@ const LocationDetails = () => {
                         <CTableDataCell>{`$${item?.court_fee_hrs}/hr`}</CTableDataCell>
                         <CTableDataCell>{`${item?.tax}%`}</CTableDataCell>
                         <CTableDataCell>{`${item?.cc_fees}%`}</CTableDataCell>
+                        <CTableDataCell>{item?.start_time ? convertToAmPm(item?.start_time) : ""}</CTableDataCell>
+                        <CTableDataCell>{item?.end_time ? convertToAmPm(item?.end_time) : ""}</CTableDataCell>
                         <CTableDataCell>
                           {/* {`${item?.availability}`} */}
                           <CFormSwitch
@@ -585,6 +624,37 @@ const LocationDetails = () => {
                   />
                   {errors.cc_fees && (
                     <div className="text-danger">{errors.cc_fees}</div>
+                  )}
+                </CCol>
+                <CCol sm={12} md={6} lg={6} className="my-1">
+                  <label className="add_court_label">Start Time</label>
+
+                  <CFormInput
+                    type="time"
+                    className="register_input"
+                    aria-label="default input example"
+                    value={addCourt?.start_time}
+                    name="start_time"
+                    onChange={(e) => handleCourtInput(e)}
+                  />
+                  {errors.start_time && (
+                    <div className="text-danger">{errors.start_time}</div>
+                  )}
+                </CCol>
+                <CCol sm={12} md={6} lg={6} className="my-1">
+                  <label className="add_court_label">End Time</label>
+
+                  <CFormInput
+                    type="time"
+                    className="register_input"
+                    placeholder="Enter Taxes percentage"
+                    aria-label="default input example"
+                    value={addCourt?.end_time}
+                    name="end_time"
+                    onChange={(e) => handleCourtInput(e)}
+                  />
+                  {errors?.end_time && (
+                    <div className="text-danger">{errors?.end_time}</div>
                   )}
                 </CCol>
                 <CCol sm={12} md={6} lg={6} className="my-1">
