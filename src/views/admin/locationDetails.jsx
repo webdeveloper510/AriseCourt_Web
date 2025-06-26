@@ -46,8 +46,8 @@ const LocationDetails = () => {
     court_fee_hrs: "",
     tax: "",
     cc_fees: "",
-    start_time:"",
-    end_time:"",
+    start_time: "",
+    end_time: "",
     availability: true,
   });
   const [courtId, setCourtId] = useState("");
@@ -116,14 +116,29 @@ const LocationDetails = () => {
     // Time format validation (24-hour HH:MM)
     const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
     
-    if (data.start_time && !timeRegex.test(data.start_time.trim())) {
-      errors.start_time = "Start time must be in HH:MM format.";
-    }
+    // if (data.start_time && !timeRegex.test(data.start_time.trim())) {
+    //   errors.start_time = "Start time must be in HH:MM format.";
+    // }
     
-    if (data.end_time && !timeRegex.test(data.end_time.trim())) {
-      errors.end_time = "End time must be in HH:MM format.";
-    }
+    // if (data.end_time && !timeRegex.test(data.end_time.trim())) {
+    //   errors.end_time = "End time must be in HH:MM format.";
+    // }
     
+    // ✅ Check: end time must be greater than start time
+    if (
+      timeRegex.test(data.start_time) &&
+      timeRegex.test(data.end_time)
+    ) {
+      const [startH, startM] = data.start_time.split(':').map(Number);
+      const [endH, endM] = data.end_time.split(':').map(Number);
+    
+      const startTotal = startH * 60 + startM;
+      const endTotal = endH * 60 + endM;
+    
+      if (endTotal <= startTotal) {
+        errors.end_time = "End time must be after start time.";
+      }
+    }
 
     return errors;
   };
@@ -285,14 +300,13 @@ const LocationDetails = () => {
 
   const convertToAmPm = (time24) => {
     if (!time24) return "";
-  
+
     const [hours, minutes] = time24.split(":").map(Number);
     const ampm = hours >= 12 ? "PM" : "AM";
     const hours12 = hours % 12 || 12;
-  
+
     return `${hours12}:${minutes.toString().padStart(2, "0")} ${ampm}`;
   };
-  
 
   return (
     <>
@@ -354,7 +368,12 @@ const LocationDetails = () => {
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Email</h6>
-                  <p className="details_description" style={{ textTransform: "lowercase" }}>{formData?.email}</p>
+                  <p
+                    className="details_description"
+                    style={{ textTransform: "lowercase" }}
+                  >
+                    {formData?.email}
+                  </p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Phone</h6>
@@ -374,7 +393,12 @@ const LocationDetails = () => {
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Website</h6>
-                  <p className="details_description" style={{ textTransform: "lowercase" }}>{formData?.website}</p>
+                  <p
+                    className="details_description"
+                    style={{ textTransform: "lowercase" }}
+                  >
+                    {formData?.website}
+                  </p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Country</h6>
@@ -382,7 +406,12 @@ const LocationDetails = () => {
                 </CCol>
                 <CCol sm={12} md={12} className="my-1">
                   <h6 className="detail_title">Description</h6>
-                  <p className="details_description" style={{ textTransform: "lowercase" }}>{formData?.description}</p>
+                  <p
+                    className="details_description"
+                    style={{ textTransform: "lowercase" }}
+                  >
+                    {formData?.description}
+                  </p>
                 </CCol>
               </CRow>
             </CCol>
@@ -460,8 +489,14 @@ const LocationDetails = () => {
                         <CTableDataCell>{`$${item?.court_fee_hrs}/hr`}</CTableDataCell>
                         <CTableDataCell>{`${item?.tax}%`}</CTableDataCell>
                         <CTableDataCell>{`${item?.cc_fees}%`}</CTableDataCell>
-                        <CTableDataCell>{item?.start_time ? convertToAmPm(item?.start_time) : ""}</CTableDataCell>
-                        <CTableDataCell>{item?.end_time ? convertToAmPm(item?.end_time) : ""}</CTableDataCell>
+                        <CTableDataCell>
+                          {item?.start_time
+                            ? convertToAmPm(item?.start_time)
+                            : ""}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {item?.end_time ? convertToAmPm(item?.end_time) : ""}
+                        </CTableDataCell>
                         <CTableDataCell>
                           {/* {`${item?.availability}`} */}
                           <CFormSwitch
@@ -473,7 +508,7 @@ const LocationDetails = () => {
                                 e.target.checked
                               )
                             }
-                            style={{cursor:"pointer"}}
+                            style={{ cursor: "pointer" }}
                           />
                         </CTableDataCell>
                         <CTableDataCell>
@@ -668,7 +703,7 @@ const LocationDetails = () => {
                         availability: e.target.checked,
                       })
                     }
-                    style={{cursor:"pointer"}}
+                    style={{ cursor: "pointer" }}
                   />
                 </CCol>
                 <CCol sm={12} md={6} lg={6}></CCol>
