@@ -108,7 +108,7 @@ const CourtDetails = () => {
               <CRow>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Id key</h6>
-                  <p className="details_description">{formData?.id}</p>
+                  <p className="details_description">{formData?.booking_id}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Email</h6>

@@ -27,7 +27,7 @@ const AppSidebar = () => {
     const data = JSON.parse(localStorage.getItem("logged_user_data"));
 
     if (data) {
-      if (data.access_flag === "0" || data.user_type === 0) {
+      if (data?.access_flag === "0" || data?.user_type === 0) {
         setHasFullAccess(true);
       } else {
         const permissions = data.access_flag
@@ -40,9 +40,9 @@ const AppSidebar = () => {
 
   const filteredNavigation = hasFullAccess
     ? navigation
-    : navigation.filter(
+    : navigation?.filter(
         (item) =>
-          item.name === "Profile" || userPermissions.includes(item.permissionId)
+          item?.name === "Profile" || userPermissions.includes(item?.permissionId)
       );
 
   const handleLogOut = () => {

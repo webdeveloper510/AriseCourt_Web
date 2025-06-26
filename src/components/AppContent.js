@@ -5,7 +5,6 @@ import routes from "../routes";
 
 const AppContent = () => {
   const token = localStorage.getItem("user_access_valid_token");
-  console.log("user_access_valid_token", token);
   return (
     <CContainer className="px-4" lg>
       <Suspense>

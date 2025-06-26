@@ -217,10 +217,22 @@ const CourtConfiguration = () => {
     return `${adjustedHour}:${minutes} ${ampm}`;
   };
 
-  const convertToHoursOnly = (timeString) => {
-    const [hours, minutes, seconds] = timeString.split(":");
+  const convertToHoursAndMinutes = (timeString) => {
+    const [hours, minutes] = timeString.split(":");
     const hourNum = parseInt(hours, 10);
-    return `${hourNum} Hour${hourNum !== 1 ? "s" : ""}`;
+    const minuteNum = parseInt(minutes, 10);
+
+    let result = "";
+
+    if (hourNum > 0) {
+      result += `${hourNum}hr`;
+    }
+
+    if (minuteNum > 0) {
+      result += ` ${minuteNum}min`;
+    }
+
+    return result.trim();
   };
 
   const handleViewDetails = (id) => {
@@ -375,10 +387,10 @@ const CourtConfiguration = () => {
                     return (
                       <CTableRow key={i}>
                         <CTableDataCell>
-                          {item?.id}
+                          {item?.booking_id}
                           <div
                             onClick={() => {
-                              handleViewDetails(item.id);
+                              handleViewDetails(item.booking_id);
                               setOpenMenuId(null);
                             }}
                             className="action_icons"
@@ -394,7 +406,12 @@ const CourtConfiguration = () => {
                           <div>
                             <p className="mb-0 user_phone">
                               {item?.start_time
-                                ? `${convertToAmPm(item?.start_time)} - ${convertToHoursOnly(item?.duration_time)}`
+                                ? `${convertToAmPm(item?.start_time)} - ${convertToAmPm(item?.end_time)}`
+                                : ""}
+                            </p>
+                            <p className="mb-0 user_phone">
+                              {item?.duration_time
+                                ? convertToHoursAndMinutes(item?.duration_time)
                                 : ""}
                             </p>
                             <p className="mb-0">{item?.booking_date}</p>
@@ -455,18 +472,18 @@ const CourtConfiguration = () => {
                           >
                             <span
                               style={{ fontSize: "24px", cursor: "pointer" }}
-                              onClick={() => toggleMenu(item.id)}
+                              onClick={() => toggleMenu(item.booking_id)}
                             >
                               ⋮
                             </span>
-                            {openMenuId === item.id && (
+                            {openMenuId === item.booking_id && (
                               <div
                                 className="outer_action_icons"
                                 style={{ right: "68px" }}
                               >
                                 <div
                                   onClick={() => {
-                                    handleViewDetails(item.id);
+                                    handleViewDetails(item.booking_id);
                                     setOpenMenuId(null);
                                   }}
                                   className="action_icons"

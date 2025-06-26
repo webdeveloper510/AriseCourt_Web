@@ -244,7 +244,7 @@ const Profile = () => {
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Email</h6>
-                  <p className="details_description">{userData?.email}</p>
+                  <p className="details_description" style={{textTransform:"lowercase"}}>{userData?.email}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Phone</h6>

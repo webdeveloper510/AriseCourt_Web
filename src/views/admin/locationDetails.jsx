@@ -319,7 +319,7 @@ const LocationDetails = () => {
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Email</h6>
-                  <p className="details_description">{formData?.email}</p>
+                  <p className="details_description" style={{ textTransform: "lowercase" }}>{formData?.email}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Phone</h6>
@@ -339,7 +339,7 @@ const LocationDetails = () => {
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Website</h6>
-                  <p className="details_description">{formData?.website}</p>
+                  <p className="details_description" style={{ textTransform: "lowercase" }}>{formData?.website}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Country</h6>
@@ -347,7 +347,7 @@ const LocationDetails = () => {
                 </CCol>
                 <CCol sm={12} md={12} className="my-1">
                   <h6 className="detail_title">Description</h6>
-                  <p className="details_description">{formData?.description}</p>
+                  <p className="details_description" style={{ textTransform: "lowercase" }}>{formData?.description}</p>
                 </CCol>
               </CRow>
             </CCol>

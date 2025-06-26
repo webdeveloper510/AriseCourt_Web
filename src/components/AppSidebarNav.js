@@ -33,10 +33,10 @@ export const AppSidebarNav = ({ items }) => {
     const Component = component
     return (
       <Component as="div" key={index}>
-        {rest.to || rest.href ? (
+        {rest?.to || rest?.href ? (
           <CNavLink
-            {...(rest.to && { as: NavLink })}
-            {...(rest.href && { target: '_blank', rel: 'noopener noreferrer' })}
+            {...(rest?.to && { as: NavLink })}
+            {...(rest?.href && { target: '_blank', rel: 'noopener noreferrer' })}
             {...rest}
           >
             {navLink(name, icon, badge, indent)}
