@@ -32,6 +32,7 @@ const AddLocations = () => {
     website: "",
     state: "",
     country: "",
+    password: "",
     description: "",
     user: userData?.id,
     logo: null,
@@ -102,6 +103,13 @@ const AddLocations = () => {
         case "country":
           if (!data.country.trim()) {
             errors.country = "Country is required.";
+          }
+          break;
+        case "password":
+          if (!id && !data.password) {
+            errors.password = "Password is required.";
+          } else if (data.password && data.password.length < 6) {
+            errors.password = "Password must be greater than 6 characters.";
           }
           break;
 
@@ -357,7 +365,7 @@ const AddLocations = () => {
 
               {/* <CCol md={formData.logo ? 6 : 12} className="my-1"></CCol> */}
 
-              <CCol sm={12} md={6} lg={6} className="my-1">
+              <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>Email Address</label>
 
                 <CFormInput
@@ -375,7 +383,23 @@ const AddLocations = () => {
                   <div className="text-danger">{errors.email}</div>
                 )}
               </CCol>
-              <CCol sm={12} md={6} lg={6} className="my-1">
+              <CCol sm={12} md={6} lg={4} className="my-2">
+                <label>Password</label>
+
+                <CFormInput
+                  type="password"
+                  className="register_input"
+                  placeholder="Enter Password"
+                  aria-label="default input example"
+                  value={formData.password}
+                  name="password"
+                  onChange={(e) => handleInputChange(e)}
+                />
+                {errors.password && (
+                  <div className="text-danger">{errors.password}</div>
+                )}
+              </CCol>
+              <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>Phone</label>
                 <PhoneInput
                   country={"us"}
