@@ -108,33 +108,30 @@ const LocationDetails = () => {
     if (!data.start_time || !data.start_time.trim()) {
       errors.start_time = "Start time is required.";
     }
-    
+
     if (!data.end_time || !data.end_time.trim()) {
       errors.end_time = "End time is required.";
     }
-    
+
     // Time format validation (24-hour HH:MM)
     const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-    
+
     // if (data.start_time && !timeRegex.test(data.start_time.trim())) {
     //   errors.start_time = "Start time must be in HH:MM format.";
     // }
-    
+
     // if (data.end_time && !timeRegex.test(data.end_time.trim())) {
     //   errors.end_time = "End time must be in HH:MM format.";
     // }
-    
+
     // ✅ Check: end time must be greater than start time
-    if (
-      timeRegex.test(data.start_time) &&
-      timeRegex.test(data.end_time)
-    ) {
-      const [startH, startM] = data.start_time.split(':').map(Number);
-      const [endH, endM] = data.end_time.split(':').map(Number);
-    
+    if (timeRegex.test(data.start_time) && timeRegex.test(data.end_time)) {
+      const [startH, startM] = data.start_time.split(":").map(Number);
+      const [endH, endM] = data.end_time.split(":").map(Number);
+
       const startTotal = startH * 60 + startM;
       const endTotal = endH * 60 + endM;
-    
+
       if (endTotal <= startTotal) {
         errors.end_time = "End time must be after start time.";
       }
@@ -192,8 +189,18 @@ const LocationDetails = () => {
       return;
     }
     setLoading(true);
+    const body = {
+      location_id: id,
+      court_number: addCourt?.court_number,
+      court_fee_hrs: addCourt?.court_fee_hrs,
+      tax: addCourt?.tax,
+      cc_fees: addCourt?.cc_fees,
+      start_time: `${addCourt?.start_time}%`,
+      end_time: `${addCourt?.end_time}%`,
+      availability: true,
+    }
     if (courtId) {
-      updateCourt(courtId, addCourt)
+      updateCourt(courtId, body)
         .then((res) => {
           setLoading(false);
           if (res?.status == 200 || res?.status == 201) {
@@ -209,7 +216,7 @@ const LocationDetails = () => {
           setLoading(false);
         });
     } else {
-      addCourtData(addCourt)
+      addCourtData(body)
         .then((res) => {
           setLoading(false);
           if (res?.status == 200 || res?.status == 201) {
@@ -295,6 +302,8 @@ const LocationDetails = () => {
       tax: "",
       cc_fees: "",
       availability: true,
+      start_time: "",
+      end_time: "",
     });
   };
 
