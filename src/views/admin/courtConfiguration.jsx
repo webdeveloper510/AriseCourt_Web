@@ -29,6 +29,7 @@ import {
   cilFilter,
   cilPencil,
   cilSearch,
+  cilX,
 } from "@coreui/icons";
 import { getCourtBooking } from "../../utils/api";
 import { toast } from "react-toastify";
@@ -290,7 +291,7 @@ const CourtConfiguration = () => {
 
           <CCol sm={12} md={8}>
             <CRow>
-              <CCol md={5}>
+              <CCol md={5}  className="d-flex align-items-center gap-1">
                 <CInputGroup
                   className="search_input_group_reports"
                   style={{ height: "45px" }}
@@ -308,6 +309,14 @@ const CourtConfiguration = () => {
                     onChange={handleSearchChange}
                   />
                 </CInputGroup>
+                <CButton
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="add_new_butn"
+                  style={{ height: "50px !important" }}
+                >
+                  <CIcon icon={cilX} />
+                </CButton>
               </CCol>
 
               <CCol md={7}>
@@ -459,8 +468,8 @@ const CourtConfiguration = () => {
                             {item?.status}
                           </span>
                           <br />
-                          {item?.court?.court_fee_hrs
-                            ? `$${item?.court?.court_fee_hrs}`
+                          {item?.summary
+                            ? `$${item?.summary}`
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>

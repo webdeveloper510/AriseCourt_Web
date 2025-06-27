@@ -26,6 +26,7 @@ import {
   cilFilter,
   cilPencil,
   cilSearch,
+  cilX,
 } from "@coreui/icons";
 import { CPagination, CPaginationItem } from "@coreui/react";
 import { deleteAdminbyId, getAdmin, getContactMessage } from "../../utils/api";
@@ -204,8 +205,8 @@ const Messages = () => {
               View all of your admin information.
             </div> */}
           </CCol>
-          
-          <CCol sm={12} md={6} className="mt-3">
+
+          <CCol sm={12} md={6} className="mt-3 d-flex align-items-center gap-1">
             <CInputGroup
               className="search_input_group"
               style={{ height: "45px" }}
@@ -223,6 +224,14 @@ const Messages = () => {
                 onChange={handleSearchChange}
               />
             </CInputGroup>
+            <CButton
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="add_new_butn"
+              style={{ height: "50px !important" }}
+            >
+              <CIcon icon={cilX} />
+            </CButton>
           </CCol>
 
           <CCol sm={6} className="mt-3">
@@ -235,16 +244,14 @@ const Messages = () => {
                   display: "inline-block",
                   cursor: "pointer",
                   borderRadius: "12px",
-                  height: "50px"
+                  height: "50px",
                 }}
               >
                 <span>
                   <CIcon icon={cilCalendar}></CIcon>{" "}
                   {`${
                     selectionRange.startDate
-                      ? moment(
-                          selectionRange.startDate
-                        ).format("ll")
+                      ? moment(selectionRange.startDate).format("ll")
                       : "Start Date"
                   } - ${selectionRange.endDate ? moment(selectionRange.endDate).format("ll") : "End Date"}`}
                 </span>
@@ -281,29 +288,59 @@ const Messages = () => {
                 <CTableRow>
                   {/* <CTableHeaderCell scope="col">Location Id</CTableHeaderCell> */}
                   <CTableHeaderCell scope="col">Id</CTableHeaderCell>
-                  <CTableHeaderCell scope="col" style={{whiteSpace:"nowrap"}}>First Name</CTableHeaderCell>
-                  <CTableHeaderCell scope="col" style={{whiteSpace:"nowrap"}}>Last Name</CTableHeaderCell>
-                  <CTableHeaderCell scope="col" style={{whiteSpace:"nowrap"}}>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    First Name
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    Last Name
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
                     E-mail Address
                   </CTableHeaderCell>
-                  <CTableHeaderCell scope="col" style={{whiteSpace:"nowrap"}}>Phone Number</CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    Phone Number
+                  </CTableHeaderCell>
                   <CTableHeaderCell scope="col">Message</CTableHeaderCell>
                   {/* <CTableHeaderCell scope="col">Action</CTableHeaderCell> */}
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {adminData?.sort((a,b)=> b?.id - a?.id)?.map((item, i) => {
-                  return (
-                    <CTableRow key={i}>
-                      {/* <CTableDataCell>#123</CTableDataCell> */}
-                      <CTableDataCell>{item?.id}</CTableDataCell>
-                      <CTableDataCell>{item?.first_name?.length > 10 ? `${item?.first_name?.slice(0,10)}...` : item?.first_name}</CTableDataCell>
-                      <CTableDataCell>{item?.last_name?.length > 10 ? `${item?.last_name?.slice(0,10)}...` : item?.last_name}</CTableDataCell>
-                     
-                      <CTableDataCell>{item?.email}</CTableDataCell>
-                      <CTableDataCell>{item?.phone}</CTableDataCell>
-                      <CTableDataCell className="address_text">{item?.message}</CTableDataCell>
-                      {/* <CTableDataCell>
+                {adminData
+                  ?.sort((a, b) => b?.id - a?.id)
+                  ?.map((item, i) => {
+                    return (
+                      <CTableRow key={i}>
+                        {/* <CTableDataCell>#123</CTableDataCell> */}
+                        <CTableDataCell>{item?.id}</CTableDataCell>
+                        <CTableDataCell title={item?.first_name}>
+                          {item?.first_name?.length > 10
+                            ? `${item?.first_name?.slice(0, 10)}...`
+                            : item?.first_name}
+                        </CTableDataCell>
+                        <CTableDataCell title={item?.last_name}>
+                          {item?.last_name?.length > 10
+                            ? `${item?.last_name?.slice(0, 10)}...`
+                            : item?.last_name}
+                        </CTableDataCell>
+
+                        <CTableDataCell>{item?.email}</CTableDataCell>
+                        <CTableDataCell>{item?.phone}</CTableDataCell>
+                        <CTableDataCell className="address_text">
+                          {item?.message}
+                        </CTableDataCell>
+                        {/* <CTableDataCell>
                         <div
                           style={{ position: "relative", marginBottom: "16px" }}
                         >
@@ -345,9 +382,9 @@ const Messages = () => {
                           )}
                         </div>
                       </CTableDataCell> */}
-                    </CTableRow>
-                  );
-                })}
+                      </CTableRow>
+                    );
+                  })}
                 {/* <CTableRow>
                 <CTableDataCell>#123</CTableDataCell>
                 <CTableDataCell>#123</CTableDataCell>

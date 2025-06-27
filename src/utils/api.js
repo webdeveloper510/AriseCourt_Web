@@ -358,9 +358,11 @@ export const updateProfile = async (data) => {
   }
 };
 
-export const getContactMessage = async () => {
+export const getContactMessage = async (page,search,startDate, endDate) => {
+  const searchVal = search ? `&search=${search}` : "";
+  const start_date = startDate ? `&start_date=${startDate}&end_date=${endDate}` : ""
   try {
-    const response = await axios.get(`/contact-us/`, {
+    const response = await axios.get(`/contact-us/?page=${page}${searchVal}${start_date}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },

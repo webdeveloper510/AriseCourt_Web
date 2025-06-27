@@ -32,6 +32,7 @@ import {
   cilFilter,
   cilPencil,
   cilSearch,
+  cilX,
 } from "@coreui/icons";
 import { deleteLocationbyId, getLocation } from "../../utils/api";
 import deleteImage from "../../assets/images/delete_image.png";
@@ -201,7 +202,7 @@ const Locations = () => {
               <CButton className="add_new_butn">+ Add New</CButton>
             </Link>
           </CCol>
-          <CCol sm={12} md={6} className="mt-3">
+          <CCol sm={12} md={6} className="mt-3 d-flex align-items-center gap-1">
             <CInputGroup
               className="search_input_group"
               style={{ height: "45px" }}
@@ -219,6 +220,14 @@ const Locations = () => {
                 onChange={handleSearchChange}
               />
             </CInputGroup>
+            <CButton
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="add_new_butn"
+              style={{ height: "50px !important" }}
+            >
+              <CIcon icon={cilX} />
+            </CButton>
           </CCol>
 
           {/* <CCol sm={6} className="mt-3">
@@ -282,87 +291,97 @@ const Locations = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {locationData?.sort((a,b)=> b?.id - a?.id)?.map((item, i) => {
-                  return (
-                    <CTableRow key={i}>
-                      <CTableDataCell>
-                        {item?.id}
-                        <div
-                          onClick={() => {
-                            handleViewDetails(item.id);
-                            setOpenMenuId(null);
-                          }}
-                          className="action_icons"
-                        >
-                          <i className="bi bi-eye-fill view_icon" style={{color : "#0860fb"}} />
-                        </div>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        {item?.logo && (
-                          <img
-                            src={item?.logo}
-                            height={50}
-                            width={50}
-                            style={{ borderRadius: "5px" }}
-                          />
-                        )}
-                      </CTableDataCell>
-                      <CTableDataCell>{item?.email}</CTableDataCell>
-                      <CTableDataCell>{item?.phone}</CTableDataCell>
-                      <CTableDataCell>{item?.city}</CTableDataCell>
-                      <CTableDataCell>{item?.country}</CTableDataCell>
-                      <CTableDataCell>{item?.courts?.length}</CTableDataCell>
-                      <CTableDataCell>
-                        <div
-                          style={{ position: "relative", marginBottom: "16px" }}
-                        >
-                          <span
-                            style={{ fontSize: "24px", cursor: "pointer" }}
-                            onClick={() => toggleMenu(item.id)}
+                {locationData
+                  ?.sort((a, b) => b?.id - a?.id)
+                  ?.map((item, i) => {
+                    return (
+                      <CTableRow key={i}>
+                        <CTableDataCell>
+                          {item?.id}
+                          <div
+                            onClick={() => {
+                              handleViewDetails(item.id);
+                              setOpenMenuId(null);
+                            }}
+                            className="action_icons"
                           >
-                            ⋮
-                          </span>
-
-                          {openMenuId === item.id && (
-                            <div
-                              className="outer_action_icons"
-                            >
-                              <div
-                                onClick={() => {
-                                  handleViewDetails(item.id);
-                                  setOpenMenuId(null);
-                                }}
-                                className="action_icons"
-                              >
-                                <i className="bi bi-eye-fill view_icon" /> View
-                              </div>
-                              <div
-                                onClick={() => {
-                                  handleEditLocation(item.id);
-                                  setOpenMenuId(null);
-                                }}
-                                className="action_icons"
-                              >
-                                <CIcon icon={cilPencil} className="edit_icon" />{" "}
-                                Edit
-                              </div>
-                              <div
-                                onClick={() => {
-                                  handleDeleteModal(item.id);
-                                  setOpenMenuId(null);
-                                }}
-                                className="action_icons"
-                              >
-                                <CIcon
-                                  icon={cilDelete}
-                                  className="delete_icon"
-                                />{" "}
-                                Delete
-                              </div>
-                            </div>
+                            <i
+                              className="bi bi-eye-fill view_icon"
+                              style={{ color: "#0860fb" }}
+                            />
+                          </div>
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {item?.logo && (
+                            <img
+                              src={item?.logo}
+                              height={50}
+                              width={50}
+                              style={{ borderRadius: "5px" }}
+                            />
                           )}
-                        </div>
-                        {/* <CIcon
+                        </CTableDataCell>
+                        <CTableDataCell>{item?.email}</CTableDataCell>
+                        <CTableDataCell>{item?.phone}</CTableDataCell>
+                        <CTableDataCell>{item?.city}</CTableDataCell>
+                        <CTableDataCell>{item?.country}</CTableDataCell>
+                        <CTableDataCell>{item?.courts?.length}</CTableDataCell>
+                        <CTableDataCell>
+                          <div
+                            style={{
+                              position: "relative",
+                              marginBottom: "16px",
+                            }}
+                          >
+                            <span
+                              style={{ fontSize: "24px", cursor: "pointer" }}
+                              onClick={() => toggleMenu(item.id)}
+                            >
+                              ⋮
+                            </span>
+
+                            {openMenuId === item.id && (
+                              <div className="outer_action_icons">
+                                <div
+                                  onClick={() => {
+                                    handleViewDetails(item.id);
+                                    setOpenMenuId(null);
+                                  }}
+                                  className="action_icons"
+                                >
+                                  <i className="bi bi-eye-fill view_icon" />{" "}
+                                  View
+                                </div>
+                                <div
+                                  onClick={() => {
+                                    handleEditLocation(item.id);
+                                    setOpenMenuId(null);
+                                  }}
+                                  className="action_icons"
+                                >
+                                  <CIcon
+                                    icon={cilPencil}
+                                    className="edit_icon"
+                                  />{" "}
+                                  Edit
+                                </div>
+                                <div
+                                  onClick={() => {
+                                    handleDeleteModal(item.id);
+                                    setOpenMenuId(null);
+                                  }}
+                                  className="action_icons"
+                                >
+                                  <CIcon
+                                    icon={cilDelete}
+                                    className="delete_icon"
+                                  />{" "}
+                                  Delete
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                          {/* <CIcon
                         icon={cilSearch}
                         onClick={() => {
                           handleViewDetails();
@@ -383,10 +402,10 @@ const Locations = () => {
                         icon={cilDelete}
                         className="delete_icon"
                       ></CIcon> */}
-                      </CTableDataCell>
-                    </CTableRow>
-                  );
-                })}
+                        </CTableDataCell>
+                      </CTableRow>
+                    );
+                  })}
               </CTableBody>
             </CTable>
           </div>

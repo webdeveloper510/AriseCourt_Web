@@ -26,6 +26,7 @@ import {
   cilFilter,
   cilPencil,
   cilSearch,
+  cilX,
 } from "@coreui/icons";
 import { CPagination, CPaginationItem } from "@coreui/react";
 import { deleteAdminbyId, getAdmin } from "../../utils/api";
@@ -209,7 +210,7 @@ const Dashboard = () => {
               <CButton className="add_new_butn">+ Add New</CButton>
             </Link>
           </CCol>
-          <CCol sm={12} md={6} className="mt-3">
+          <CCol sm={12} md={6} className="mt-3 d-flex align-items-center gap-1">
             <CInputGroup
               className="search_input_group"
               style={{ height: "45px" }}
@@ -227,6 +228,14 @@ const Dashboard = () => {
                 onChange={handleSearchChange}
               />
             </CInputGroup>
+            <CButton
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="add_new_butn"
+              style={{ height: "50px !important" }}
+            >
+              <CIcon icon={cilX} />
+            </CButton>
           </CCol>
 
           <CCol sm={6} className="mt-3">
@@ -239,16 +248,14 @@ const Dashboard = () => {
                   display: "inline-block",
                   cursor: "pointer",
                   borderRadius: "12px",
-                  height: "50px"
+                  height: "50px",
                 }}
               >
                 <span>
                   <CIcon icon={cilCalendar}></CIcon>{" "}
                   {`${
                     selectionRange.startDate
-                      ? moment(
-                          selectionRange.startDate
-                        ).format("ll")
+                      ? moment(selectionRange.startDate).format("ll")
                       : "Start Date"
                   } - ${selectionRange.endDate ? moment(selectionRange.endDate).format("ll") : "End Date"}`}
                 </span>
@@ -298,72 +305,91 @@ const Dashboard = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {adminData?.sort((a,b)=> b?.id - a?.id)?.map((item, i) => {
-                  return (
-                    <CTableRow key={i}>
-                      {/* <CTableDataCell>#123</CTableDataCell> */}
-                      <CTableDataCell>{item?.id}</CTableDataCell>
-                      <CTableDataCell title={item?.first_name} >{item?.first_name?.length > 10 ? `${item?.first_name?.slice(0,10)}...` : item?.first_name}</CTableDataCell>
-                      <CTableDataCell title={item?.last_name}>{item?.last_name?.length > 10 ? `${item?.last_name?.slice(0,10)}...` : item?.last_name}</CTableDataCell>
-                      <CTableDataCell>
-                        {item?.user_type == 1 ? "Admin" : ""}
-                      </CTableDataCell>
-                      <CTableDataCell>0</CTableDataCell>
-                      <CTableDataCell>{item?.email}</CTableDataCell>
-                      <CTableDataCell>{item?.phone}</CTableDataCell>
-                      {/* <CTableDataCell>{item?.city}</CTableDataCell> */}
-                      <CTableDataCell>
-                        <div
-                          style={{ position: "relative", marginBottom: "16px" }}
-                        >
-                          {/* Three-dot icon */}
-                          <span
-                            style={{ fontSize: "24px", cursor: "pointer" }}
-                            onClick={() => toggleMenu(item.id)}
+                {adminData
+                  ?.sort((a, b) => b?.id - a?.id)
+                  ?.map((item, i) => {
+                    return (
+                      <CTableRow key={i}>
+                        {/* <CTableDataCell>#123</CTableDataCell> */}
+                        <CTableDataCell>{item?.id}</CTableDataCell>
+                        <CTableDataCell title={item?.first_name}>
+                          {item?.first_name?.length > 10
+                            ? `${item?.first_name?.slice(0, 10)}...`
+                            : item?.first_name}
+                        </CTableDataCell>
+                        <CTableDataCell title={item?.last_name}>
+                          {item?.last_name?.length > 10
+                            ? `${item?.last_name?.slice(0, 10)}...`
+                            : item?.last_name}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {item?.user_type == 1 ? "Admin" : ""}
+                        </CTableDataCell>
+                        <CTableDataCell>0</CTableDataCell>
+                        <CTableDataCell>{item?.email}</CTableDataCell>
+                        <CTableDataCell>{item?.phone}</CTableDataCell>
+                        {/* <CTableDataCell>{item?.city}</CTableDataCell> */}
+                        <CTableDataCell>
+                          <div
+                            style={{
+                              position: "relative",
+                              marginBottom: "16px",
+                            }}
                           >
-                            ⋮
-                          </span>
-
-                          {/* Dropdown menu only for selected item */}
-                          {openMenuId === item.id && (
-                            <div
-                              style={{
-                                // position: "absolute",
-                                // top: "30px",
-                                // right: 0,
-                                // backgroundColor: "#fff",
-                                // borderRadius: "10px",
-                                // padding: "12px",
-                                // boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-                                // zIndex: 999999,
-                              }} className="outer_action_icons"
+                            {/* Three-dot icon */}
+                            <span
+                              style={{ fontSize: "24px", cursor: "pointer" }}
+                              onClick={() => toggleMenu(item.id)}
                             >
+                              ⋮
+                            </span>
+
+                            {/* Dropdown menu only for selected item */}
+                            {openMenuId === item.id && (
                               <div
-                                onClick={() => {
-                                  handleEditAdmin(item?.id);
-                                }}
-                                className="action_icons"
+                                style={
+                                  {
+                                    // position: "absolute",
+                                    // top: "30px",
+                                    // right: 0,
+                                    // backgroundColor: "#fff",
+                                    // borderRadius: "10px",
+                                    // padding: "12px",
+                                    // boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+                                    // zIndex: 999999,
+                                  }
+                                }
+                                className="outer_action_icons"
                               >
-                                <CIcon icon={cilPencil} className="edit_icon" />{" "}
-                                Edit
+                                <div
+                                  onClick={() => {
+                                    handleEditAdmin(item?.id);
+                                  }}
+                                  className="action_icons"
+                                >
+                                  <CIcon
+                                    icon={cilPencil}
+                                    className="edit_icon"
+                                  />{" "}
+                                  Edit
+                                </div>
+                                <div
+                                  onClick={() => {
+                                    handleDeleteModal(item.id);
+                                    setOpenMenuId(null);
+                                  }}
+                                  className="action_icons"
+                                >
+                                  <CIcon
+                                    icon={cilDelete}
+                                    className="delete_icon"
+                                  />{" "}
+                                  Delete
+                                </div>
                               </div>
-                              <div
-                                onClick={() => {
-                                  handleDeleteModal(item.id);
-                                  setOpenMenuId(null);
-                                }}
-                                className="action_icons"
-                              >
-                                <CIcon
-                                  icon={cilDelete}
-                                  className="delete_icon"
-                                />{" "}
-                                Delete
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                        {/* <CIcon
+                            )}
+                          </div>
+                          {/* <CIcon
                       icon={cilPencil}
                       onClick={() => {
                         handleEditAdmin(item?.id);
@@ -371,10 +397,10 @@ const Dashboard = () => {
                       className="mx-2 edit_icon"
                     ></CIcon>
                     <CIcon icon={cilDelete} className="delete_icon"></CIcon> */}
-                      </CTableDataCell>
-                    </CTableRow>
-                  );
-                })}
+                        </CTableDataCell>
+                      </CTableRow>
+                    );
+                  })}
                 {/* <CTableRow>
                 <CTableDataCell>#123</CTableDataCell>
                 <CTableDataCell>#123</CTableDataCell>
