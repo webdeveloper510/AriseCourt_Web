@@ -193,10 +193,10 @@ const LocationDetails = () => {
       location_id: id,
       court_number: addCourt?.court_number,
       court_fee_hrs: addCourt?.court_fee_hrs,
-      tax: addCourt?.tax,
-      cc_fees: addCourt?.cc_fees,
-      start_time: `${addCourt?.start_time}%`,
-      end_time: `${addCourt?.end_time}%`,
+      tax: `${addCourt?.tax}%`,
+      cc_fees: `${addCourt?.cc_fees}%`,
+      start_time: addCourt?.start_time,
+      end_time: addCourt?.end_time,
       availability: true,
     }
     if (courtId) {
