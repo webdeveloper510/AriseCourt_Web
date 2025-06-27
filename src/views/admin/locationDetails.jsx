@@ -95,14 +95,21 @@ const LocationDetails = () => {
       errors.court_fee_hrs = "Court fee per hour must be a number.";
     }
 
+    // Regex for max 2 decimal places
+    const decimalRegex = /^\d+(\.\d{1,2})?$/;
+
     if (!data.tax || isNaN(data.tax)) {
       errors.tax = "Tax must be a number.";
+    } else if (!decimalRegex.test(data.tax)) {
+      errors.tax = "Tax must have at most 2 decimal places.";
     } else if (Number(data.tax) > 100) {
       errors.tax = "Tax cannot be greater than 100.";
     }
 
     if (!data.cc_fees || isNaN(data.cc_fees)) {
       errors.cc_fees = "CC fees must be a number.";
+    } else if (!decimalRegex.test(data.cc_fees)) {
+      errors.cc_fees = "CC fees must have at most 2 decimal places.";
     }
 
     if (!data.start_time || !data.start_time.trim()) {
@@ -198,7 +205,7 @@ const LocationDetails = () => {
       start_time: addCourt?.start_time,
       end_time: addCourt?.end_time,
       availability: true,
-    }
+    };
     if (courtId) {
       updateCourt(courtId, addCourt)
         .then((res) => {
@@ -271,7 +278,7 @@ const LocationDetails = () => {
   const handleDeletCourtModal = (id) => {
     setDeletCourt(true);
     setDeletCourtId(id);
-    console.log("idddddd",id)
+    console.log("idddddd", id);
   };
 
   const handleDeleteCourt = () => {
@@ -524,7 +531,9 @@ const LocationDetails = () => {
                         <CTableDataCell>
                           <CIcon
                             className="edit_icon me-2"
-                            onClick={() => handleEditCourtModal(item?.court_id, item)}
+                            onClick={() =>
+                              handleEditCourtModal(item?.court_id, item)
+                            }
                             icon={cilPencil}
                           ></CIcon>
                           <CIcon
@@ -691,7 +700,7 @@ const LocationDetails = () => {
 
                   <CFormInput
                     type="time"
-                    className="register_input"                    
+                    className="register_input"
                     aria-label="default input example"
                     value={addCourt?.end_time}
                     name="end_time"
