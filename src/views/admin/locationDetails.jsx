@@ -200,7 +200,7 @@ const LocationDetails = () => {
       availability: true,
     }
     if (courtId) {
-      updateCourt(courtId, body)
+      updateCourt(courtId, addCourt)
         .then((res) => {
           setLoading(false);
           if (res?.status == 200 || res?.status == 201) {
@@ -216,7 +216,7 @@ const LocationDetails = () => {
           setLoading(false);
         });
     } else {
-      addCourtData(body)
+      addCourtData(addCourt)
         .then((res) => {
           setLoading(false);
           if (res?.status == 200 || res?.status == 201) {
@@ -271,6 +271,7 @@ const LocationDetails = () => {
   const handleDeletCourtModal = (id) => {
     setDeletCourt(true);
     setDeletCourtId(id);
+    console.log("idddddd",id)
   };
 
   const handleDeleteCourt = () => {
@@ -523,13 +524,13 @@ const LocationDetails = () => {
                         <CTableDataCell>
                           <CIcon
                             className="edit_icon me-2"
-                            onClick={() => handleEditCourtModal(item?.id, item)}
+                            onClick={() => handleEditCourtModal(item?.court_id, item)}
                             icon={cilPencil}
                           ></CIcon>
                           <CIcon
                             className="delete_icon"
                             onClick={() =>
-                              handleDeletCourtModal(item?.id, item)
+                              handleDeletCourtModal(item?.court_id, item)
                             }
                             icon={cilDelete}
                           ></CIcon>
@@ -690,8 +691,7 @@ const LocationDetails = () => {
 
                   <CFormInput
                     type="time"
-                    className="register_input"
-                    placeholder="Enter Taxes percentage"
+                    className="register_input"                    
                     aria-label="default input example"
                     value={addCourt?.end_time}
                     name="end_time"
