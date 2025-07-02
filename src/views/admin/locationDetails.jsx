@@ -517,11 +517,11 @@ const LocationDetails = () => {
                         <CTableDataCell>
                           {/* {`${item?.availability}`} */}
                           <CFormSwitch
-                            key={item.id}
-                            checked={item.availability}
+                            key={item?.court_id}
+                            checked={item?.availability}
                             onChange={(e) =>
                               handleAvailabilityToggle(
-                                item.id,
+                                item?.court_id,
                                 e.target.checked
                               )
                             }

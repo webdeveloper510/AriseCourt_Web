@@ -152,6 +152,24 @@ const Reporting = () => {
     setCurrentPage(1); // Reset to the first page when a new search is made
   };
 
+  const convertToHoursAndMinutes = (timeString) => {
+    const [hours, minutes] = timeString.split(":");
+    const hourNum = parseInt(hours, 10);
+    const minuteNum = parseInt(minutes, 10);
+
+    let result = "";
+
+    if (hourNum > 0) {
+      result += `${hourNum}hr`;
+    }
+
+    if (minuteNum > 0) {
+      result += ` ${minuteNum}min`;
+    }
+
+    return result.trim();
+  };
+
   return (
     <>
       {/* <WidgetsDropdown className="mb-4" /> */}
@@ -274,7 +292,7 @@ const Reporting = () => {
                         display: "inline-block",
                         cursor: "pointer",
                         borderRadius: "12px",
-                        height: "50px"
+                        height: "50px",
                       }}
                     >
                       <span>{`${
@@ -314,33 +332,34 @@ const Reporting = () => {
                   <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Email</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">User Type</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Country</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">From Date</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Duration</CTableHeaderCell>
                   {/* <CTableHeaderCell scope="col">No. of Courts</CTableHeaderCell> */}
                   {/* <CTableHeaderCell scope="col">Action</CTableHeaderCell> */}
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {reportTable?.sort((a,b)=> b?.id - a?.id)?.map((item, i) => {
-                  return (
-                    <CTableRow key={i}>
-                      <CTableDataCell>{item?.id}</CTableDataCell>
-                      <CTableDataCell>{`${item?.first_name} ${item?.last_name}`}</CTableDataCell>
-                      <CTableDataCell>{item?.email}</CTableDataCell>
-                      <CTableDataCell>{item?.phone}</CTableDataCell>
-                      <CTableDataCell>
-                        {" "}
-                        {item?.user_type == 2
-                          ? "Coach"
-                          : item?.user_type == 3
-                            ? "Player"
-                            : item?.user_type == 4
-                              ? "Court"
-                              : ""}
-                      </CTableDataCell>
-                      <CTableDataCell>{item?.country}</CTableDataCell>
-                      {/* <CTableDataCell>19</CTableDataCell> */}
-                      {/* <CTableDataCell>
+                {reportTable
+                  ?.sort((a, b) => b?.id - a?.id)
+                  ?.map((item, i) => {
+                    return (
+                      <CTableRow key={i}>
+                        <CTableDataCell>{item?.id}</CTableDataCell>
+                        <CTableDataCell>{`${item?.first_name} ${item?.last_name}`}</CTableDataCell>
+                        <CTableDataCell>{item?.email}</CTableDataCell>
+                        <CTableDataCell>{item?.phone}</CTableDataCell>
+                        <CTableDataCell>
+                          {item?.court_bookings?.[0]?.booking_date}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {item?.court_bookings?.[0]?.duration_time
+                            ? convertToHoursAndMinutes(
+                                item?.court_bookings?.[0]?.duration_time
+                              )
+                            : ""}
+                        </CTableDataCell>
+                        {/* <CTableDataCell>19</CTableDataCell> */}
+                        {/* <CTableDataCell>
                         <div
                           style={{ position: "relative", marginBottom: "16px" }}
                         >
@@ -401,9 +420,9 @@ const Reporting = () => {
                         </div>
                        
                       </CTableDataCell> */}
-                    </CTableRow>
-                  );
-                })}
+                      </CTableRow>
+                    );
+                  })}
               </CTableBody>
             </CTable>
           </div>
