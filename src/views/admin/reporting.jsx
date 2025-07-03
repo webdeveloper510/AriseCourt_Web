@@ -262,7 +262,7 @@ const Reporting = () => {
                 <div>
                   <h6 className="report_card_title">
                     {reportData?.total_profit
-                      ? `$${reportData?.total_profit}`
+                      ? `${reportData?.total_profit}`
                       : "0"}
                   </h6>
                   <p className="report_card_Desc">Total profit</p>
