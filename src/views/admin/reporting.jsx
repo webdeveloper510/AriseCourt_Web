@@ -403,7 +403,7 @@ const Reporting = () => {
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>{item?.court_bookings?.[0]?.total_price
-                            ? item?.court_bookings?.[0]?.total_price
+                            ? `$${item?.court_bookings?.[0]?.total_price}`
                             : ""}</CTableDataCell>
                         {/* <CTableDataCell>
                         <div
