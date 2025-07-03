@@ -238,6 +238,10 @@ const LocationDetails = () => {
               theme: "colored",
             });
             getLocationDatabyId();
+          }else{
+            toast.error(res?.data?.message, {
+              theme: "colored",
+            });
           }
         })
         .catch((error) => {
@@ -254,6 +258,10 @@ const LocationDetails = () => {
               theme: "colored",
             });
             getLocationDatabyId();
+          }else{
+            toast.error(res?.data?.message, {
+              theme: "colored",
+            });
           }
         })
         .catch((error) => {
