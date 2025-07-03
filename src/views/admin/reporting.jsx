@@ -183,6 +183,14 @@ const Reporting = () => {
     return result.trim();
   };
 
+  const convertToAmPm = (timeString) => {
+    const [hours, minutes] = timeString.split(":");
+    const hourNum = parseInt(hours, 10);
+    const ampm = hourNum >= 12 ? "PM" : "AM";
+    const adjustedHour = hourNum % 12 || 12; // Convert 0 to 12
+    return `${adjustedHour}:${minutes} ${ampm}`;
+  };
+
   return (
     <>
       {/* <WidgetsDropdown className="mb-4" /> */}
@@ -365,13 +373,30 @@ const Reporting = () => {
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">Sr no.</CTableHeaderCell>
-                  <CTableHeaderCell scope="col" style={{width:"20%"}}>Description</CTableHeaderCell>
+                  <CTableHeaderCell scope="col" style={{ width: "20%" }}>
+                    Description
+                  </CTableHeaderCell>
                   <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Email</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">From Date</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Duration</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Amount Paid</CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    From Date
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    Duration
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    Amount Paid
+                  </CTableHeaderCell>
                   {/* <CTableHeaderCell scope="col">No. of Courts</CTableHeaderCell> */}
                   {/* <CTableHeaderCell scope="col">Action</CTableHeaderCell> */}
                 </CTableRow>
@@ -383,17 +408,28 @@ const Reporting = () => {
                     return (
                       <CTableRow key={i}>
                         <CTableDataCell>{SerialId++}</CTableDataCell>
-                        <CTableDataCell>
+                        <CTableDataCell
+                          title={item?.court_bookings?.[0]?.description}
+                        >
                           {" "}
-                          {item?.court_bookings?.[0]?.description
-                            ? item?.court_bookings?.[0]?.description
-                            : ""}
+                          {item?.court_bookings?.[0]?.description &&
+                          item?.court_bookings?.[0]?.description?.length > 30
+                            ? `${item?.court_bookings?.[0]?.description?.slice(0, 30)}...`
+                            : item?.court_bookings?.[0]?.description}
                         </CTableDataCell>
-                        <CTableDataCell>{`${item?.first_name} ${item?.last_name}`}</CTableDataCell>
+                        <CTableDataCell
+                          style={{ whiteSpace: "nowrap" }}
+                        >{`${item?.first_name} ${item?.last_name}`}</CTableDataCell>
                         <CTableDataCell>{item?.email}</CTableDataCell>
                         <CTableDataCell>{item?.phone}</CTableDataCell>
-                        <CTableDataCell>
+                        <CTableDataCell style={{ whiteSpace: "nowrap" }}>
                           {item?.court_bookings?.[0]?.booking_date}
+                          <br />
+                          {item?.court_bookings?.[0]?.start_time
+                            ? convertToAmPm(
+                                item?.court_bookings?.[0]?.start_time
+                              )
+                            : ""}
                         </CTableDataCell>
                         <CTableDataCell>
                           {item?.court_bookings?.[0]?.duration_time
@@ -402,9 +438,11 @@ const Reporting = () => {
                               )
                             : ""}
                         </CTableDataCell>
-                        <CTableDataCell>{item?.court_bookings?.[0]?.total_price
+                        <CTableDataCell>
+                          {item?.court_bookings?.[0]?.total_price
                             ? `$${item?.court_bookings?.[0]?.total_price}`
-                            : ""}</CTableDataCell>
+                            : ""}
+                        </CTableDataCell>
                         {/* <CTableDataCell>
                         <div
                           style={{ position: "relative", marginBottom: "16px" }}
