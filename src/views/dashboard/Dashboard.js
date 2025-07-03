@@ -24,9 +24,12 @@ import {
   cilCalendar,
   cilDelete,
   cilFilter,
+  cilFilterX,
   cilPencil,
+  cilReload,
   cilSearch,
   cilX,
+  cilXCircle,
 } from "@coreui/icons";
 import { CPagination, CPaginationItem } from "@coreui/react";
 import { deleteAdminbyId, getAdmin } from "../../utils/api";
@@ -37,6 +40,7 @@ import { toast } from "react-toastify";
 import moment from "moment/moment";
 
 const Dashboard = () => {
+  let SerialId=1;
   const navigate = useNavigate();
   const calendarRef = useRef(null);
   const filterButtonRef = useRef(null);
@@ -234,13 +238,14 @@ const Dashboard = () => {
               className="add_new_butn"
               style={{ height: "50px !important" }}
             >
-              <CIcon icon={cilX} />
+              <CIcon icon={cilReload} />
             </CButton>
           </CCol>
 
           <CCol sm={6} className="mt-3">
             <div className="text-end date_filter_section">
-              <div
+              
+              {/* <div
                 onClick={handleCalendarClick}
                 style={{
                   padding: "10px",
@@ -259,7 +264,7 @@ const Dashboard = () => {
                       : "Start Date"
                   } - ${selectionRange.endDate ? moment(selectionRange.endDate).format("ll") : "End Date"}`}
                 </span>
-              </div>
+              </div> */}
 
               {/* Display DateRangePicker when calendar is open */}
               {isCalendarOpen && (
@@ -275,13 +280,13 @@ const Dashboard = () => {
               )}
 
               {/* Filter Button */}
-              <CButton
+              {/* <CButton
                 ref={filterButtonRef}
                 className="filter_butn"
                 onClick={handleFilterClick}
               >
                 <CIcon icon={cilFilter}></CIcon> FILTERS
-              </CButton>
+              </CButton> */}
             </div>
           </CCol>
         </CRow>
@@ -291,7 +296,7 @@ const Dashboard = () => {
               <CTableHead>
                 <CTableRow>
                   {/* <CTableHeaderCell scope="col">Location Id</CTableHeaderCell> */}
-                  <CTableHeaderCell scope="col">Admin Id</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Sr no.</CTableHeaderCell>
                   <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Type</CTableHeaderCell>
@@ -311,7 +316,7 @@ const Dashboard = () => {
                     return (
                       <CTableRow key={i}>
                         {/* <CTableDataCell>#123</CTableDataCell> */}
-                        <CTableDataCell>{item?.id}</CTableDataCell>
+                        <CTableDataCell>{SerialId++}</CTableDataCell>
                         <CTableDataCell title={item?.first_name}>
                           {item?.first_name?.length > 10
                             ? `${item?.first_name?.slice(0, 10)}...`

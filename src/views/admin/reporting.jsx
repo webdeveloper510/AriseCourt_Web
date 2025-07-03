@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   CButton,
   CCard,
@@ -26,6 +26,7 @@ import {
   cilDelete,
   cilFilter,
   cilPencil,
+  cilReload,
   cilSearch,
 } from "@coreui/icons";
 import UserIcon from "../../assets/images/report_user_icon.png";
@@ -38,7 +39,17 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 
 const Reporting = () => {
+  let SerialId = 1;
   const navigate = useNavigate();
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  };
+  const calendarRef = useRef(null);
+  const filterButtonRef = useRef(null);
   const [selectionRange, setSelectionRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -48,6 +59,8 @@ const Reporting = () => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const itemsPerPage = 10;
   const [totalCounts, setTotalCounts] = useState(0);
+  const [startDate, setStartDate] = useState(formatDate(new Date())); // Start date for API
+  const [endDate, setEndDate] = useState(formatDate(new Date()));
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -260,7 +273,7 @@ const Reporting = () => {
 
           <CCol sm={12} xl={8} className="my-1">
             <CRow>
-              <CCol md={6} className="my-1">
+              <CCol md={6} className="my-1 d-flex align-items-center gap-1 ">
                 <CInputGroup
                   className="search_input_group_reports"
                   style={{ height: "45px" }}
@@ -278,6 +291,24 @@ const Reporting = () => {
                     onChange={handleSearchChange}
                   />
                 </CInputGroup>
+                <CButton
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery("");
+                    setStartDate(new Date());
+                    setEndDate(new Date());
+                    setSelectionRange({
+                      startDate: new Date(),
+                      endDate: new Date(),
+                      key: "selection",
+                    });
+                    getLocationData();
+                  }}
+                  className="add_new_butn"
+                  style={{ height: "50px !important" }}
+                >
+                  <CIcon icon={cilReload} />
+                </CButton>
               </CCol>
 
               <CCol md={6} className="my-1">
@@ -314,7 +345,12 @@ const Reporting = () => {
                   </div>
 
                   <div>
-                    <CButton className="filter_butn">
+                    <CButton
+                      className="filter_butn"
+                      ref={filterButtonRef}
+                      style={{ whiteSpace: "nowrap" }}
+                      onClick={handleFilterClick}
+                    >
                       <CIcon icon={cilFilter}></CIcon> FILTERS
                     </CButton>
                   </div>
@@ -328,12 +364,14 @@ const Reporting = () => {
             <CTable className="mt-4 main_table" striped>
               <CTableHead>
                 <CTableRow>
-                  <CTableHeaderCell scope="col">Id Key</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Sr no.</CTableHeaderCell>
+                  <CTableHeaderCell scope="col" style={{width:"20%"}}>Description</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Email</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
                   <CTableHeaderCell scope="col">From Date</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Duration</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Amount Paid</CTableHeaderCell>
                   {/* <CTableHeaderCell scope="col">No. of Courts</CTableHeaderCell> */}
                   {/* <CTableHeaderCell scope="col">Action</CTableHeaderCell> */}
                 </CTableRow>
@@ -344,7 +382,13 @@ const Reporting = () => {
                   ?.map((item, i) => {
                     return (
                       <CTableRow key={i}>
-                        <CTableDataCell>{item?.id}</CTableDataCell>
+                        <CTableDataCell>{SerialId++}</CTableDataCell>
+                        <CTableDataCell>
+                          {" "}
+                          {item?.court_bookings?.[0]?.description
+                            ? item?.court_bookings?.[0]?.description
+                            : ""}
+                        </CTableDataCell>
                         <CTableDataCell>{`${item?.first_name} ${item?.last_name}`}</CTableDataCell>
                         <CTableDataCell>{item?.email}</CTableDataCell>
                         <CTableDataCell>{item?.phone}</CTableDataCell>
@@ -358,7 +402,9 @@ const Reporting = () => {
                               )
                             : ""}
                         </CTableDataCell>
-                        {/* <CTableDataCell>19</CTableDataCell> */}
+                        <CTableDataCell>{item?.court_bookings?.[0]?.total_price
+                            ? item?.court_bookings?.[0]?.total_price
+                            : ""}</CTableDataCell>
                         {/* <CTableDataCell>
                         <div
                           style={{ position: "relative", marginBottom: "16px" }}

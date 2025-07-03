@@ -25,6 +25,7 @@ import {
   cilDelete,
   cilFilter,
   cilPencil,
+  cilReload,
   cilSearch,
   cilX,
 } from "@coreui/icons";
@@ -226,11 +227,21 @@ const Messages = () => {
             </CInputGroup>
             <CButton
               type="button"
-              onClick={() => setSearchQuery("")}
+              onClick={() => {
+                setSearchQuery("");
+                setStartDate(new Date());
+                setEndDate(new Date());
+                setSelectionRange({
+                  startDate: new Date(),
+                  endDate: new Date(),
+                  key: "selection",
+                });
+                getAdminData()
+              }}
               className="add_new_butn"
               style={{ height: "50px !important" }}
             >
-              <CIcon icon={cilX} />
+              <CIcon icon={cilReload} />
             </CButton>
           </CCol>
 

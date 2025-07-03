@@ -31,6 +31,7 @@ import {
   cilDelete,
   cilFilter,
   cilPencil,
+  cilReload,
   cilSearch,
   cilX,
 } from "@coreui/icons";
@@ -42,6 +43,7 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import moment from "moment";
 
 const Locations = () => {
+  let SerialId = 1;
   const navigate = useNavigate();
   const calendarRef = useRef(null);
   const filterButtonRef = useRef(null);
@@ -177,6 +179,7 @@ const Locations = () => {
         setLoading(false);
       });
   };
+  console.log(locationData);
 
   return (
     <>
@@ -226,7 +229,7 @@ const Locations = () => {
               className="add_new_butn"
               style={{ height: "50px !important" }}
             >
-              <CIcon icon={cilX} />
+              <CIcon icon={cilReload} />
             </CButton>
           </CCol>
 
@@ -280,13 +283,14 @@ const Locations = () => {
             <CTable className="mt-4 main_table" striped>
               <CTableHead>
                 <CTableRow>
-                  <CTableHeaderCell scope="col">Id Key</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Sr no.</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Logo</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Email</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
                   <CTableHeaderCell scope="col">City</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Country</CTableHeaderCell>
                   <CTableHeaderCell scope="col">No. of Courts</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">View Courts</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
@@ -297,7 +301,7 @@ const Locations = () => {
                     return (
                       <CTableRow key={i}>
                         <CTableDataCell>
-                          {item?.id}
+                          {SerialId++}
                           <div
                             onClick={() => {
                               handleViewDetails(item.id);
@@ -327,6 +331,16 @@ const Locations = () => {
                         <CTableDataCell>{item?.country}</CTableDataCell>
                         <CTableDataCell>{item?.courts?.length}</CTableDataCell>
                         <CTableDataCell>
+                          <i
+                            onClick={() => {
+                              handleViewDetails(item.id);
+                              setOpenMenuId(null);
+                            }}
+                            className="bi bi-eye-fill view_icon"
+                            style={{ color: "#0860fb" }}
+                          />
+                        </CTableDataCell>
+                        <CTableDataCell>
                           <div
                             style={{
                               position: "relative",
@@ -342,16 +356,6 @@ const Locations = () => {
 
                             {openMenuId === item.id && (
                               <div className="outer_action_icons">
-                                <div
-                                  onClick={() => {
-                                    handleViewDetails(item.id);
-                                    setOpenMenuId(null);
-                                  }}
-                                  className="action_icons"
-                                >
-                                  <i className="bi bi-eye-fill view_icon" />{" "}
-                                  View
-                                </div>
                                 <div
                                   onClick={() => {
                                     handleEditLocation(item.id);

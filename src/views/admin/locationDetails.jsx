@@ -85,6 +85,8 @@ const LocationDetails = () => {
   };
 
   const validateCourtData = (data) => {
+    console.log(data);
+
     const errors = {};
 
     if (!data.court_number.trim()) {
@@ -132,6 +134,26 @@ const LocationDetails = () => {
     // }
 
     // ✅ Check: end time must be greater than start time
+
+    if (timeRegex.test(data.start_time)) {
+      const [startH, startM] = data.start_time.split(":").map(Number);
+      const startTotal = startH * 60 + startM;
+      if (startTotal % 30 != 0) {
+        errors.start_time =
+          "Please select Start time in intervals of 30 minutes (e.g., 10:00, 10:30)";
+      }
+    }
+
+    if (timeRegex.test(data.end_time)) {
+      const [endH, endM] = data.end_time.split(":").map(Number);
+      const endTotal = endH * 60 + endM;
+
+      if (endTotal % 30 != 0) {
+        errors.end_time =
+          "Please select end time in intervals of 30 minutes (e.g., 10:00, 10:30)";
+      }
+    }
+
     if (timeRegex.test(data.start_time) && timeRegex.test(data.end_time)) {
       const [startH, startM] = data.start_time.split(":").map(Number);
       const [endH, endM] = data.end_time.split(":").map(Number);
@@ -362,7 +384,7 @@ const LocationDetails = () => {
               }}
               className="add_new_butn"
             >
-              <CIcon icon={cilPenNib}></CIcon> Edit
+              <CIcon icon={cilPenNib}></CIcon> Edit Location
             </CButton>
           </CCol>
         </CRow>
@@ -380,10 +402,6 @@ const LocationDetails = () => {
             <CCol sm={12} md={9}>
               <CRow>
                 <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Id key</h6>
-                  <p className="details_description">{formData?.id}</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Email</h6>
                   <p
                     className="details_description"
@@ -391,25 +409,9 @@ const LocationDetails = () => {
                   >
                     {formData?.email}
                   </p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Phone</h6>
+                  <h6 className="detail_title mt-1">Phone</h6>
                   <p className="details_description">{formData?.phone}</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Name</h6>
-                  <p className="details_description">{formData?.name}</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">City</h6>
-                  <p className="details_description">{formData?.city}</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">State</h6>
-                  <p className="details_description">{formData?.state}</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Website</h6>
+                  <h6 className="detail_title mt-1">Website</h6>
                   <p
                     className="details_description"
                     style={{ textTransform: "lowercase" }}
@@ -418,10 +420,6 @@ const LocationDetails = () => {
                   </p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Country</h6>
-                  <p className="details_description">{formData?.country}</p>
-                </CCol>
-                <CCol sm={12} md={12} className="my-1">
                   <h6 className="detail_title">Description</h6>
                   <p
                     className="details_description"
@@ -430,12 +428,33 @@ const LocationDetails = () => {
                     {formData?.description}
                   </p>
                 </CCol>
+
+                {/* <CCol sm={12} md={4} className="my-1">
+                  <h6 className="detail_title">Name</h6>
+                  <p className="details_description">{formData?.name}</p>
+                </CCol> */}
+                <CCol sm={12} md={4} className="my-1">
+                  <h6 className="detail_title">Address</h6>
+                  <p className="details_description">{`${formData?.address_1} 
+                  ${formData?.address_2 ? `${formData?.address_2}` : ""}
+                   ${formData?.address_3 ? `${formData?.address_3}` : ""} 
+                   ${formData?.address_4 ? `${formData?.address_4}` : ""}
+                 
+                   `}</p>
+                   {/*   ${formData?.city} ${formData?.state} ${formData?.country} */}
+                  {/* <p className="details_description">{formData?.city}</p> */}
+                  <h6 className="detail_title">State</h6>
+                  <p className="details_description">{formData?.state}</p>
+                  <h6 className="detail_title">Country</h6>
+                  <p className="details_description">{formData?.country}</p>
+                </CCol>
               </CRow>
             </CCol>
           </CRow>
         </div>
 
-        <div className="address_Section mt-4">
+        {/* <div className="address_Section mt-4">
+          <h5>Address</h5>
           <CRow>
             <CCol sm={12} md={6}>
               <label className="add_court_label">Address 1</label>
@@ -454,7 +473,7 @@ const LocationDetails = () => {
               <p className="address_text">{formData?.address_4}</p>
             </CCol>
           </CRow>
-        </div>
+        </div> */}
 
         <div className="address_Section mt-4">
           <CRow>
@@ -468,7 +487,7 @@ const LocationDetails = () => {
                 className="add_new_butn"
                 onClick={() => setVisible(true)}
               >
-                + Add New
+                + Add Court
               </CButton>
             </CCol>
           </CRow>
@@ -481,7 +500,7 @@ const LocationDetails = () => {
                     <CTableHeaderCell scope="col">
                       Court Number
                     </CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Location ID</CTableHeaderCell>
+                    {/* <CTableHeaderCell scope="col">Location ID</CTableHeaderCell> */}
                     <CTableHeaderCell scope="col">
                       Court Fee by Hour
                     </CTableHeaderCell>
@@ -502,7 +521,7 @@ const LocationDetails = () => {
                     return (
                       <CTableRow key={i}>
                         <CTableDataCell>{item?.court_number}</CTableDataCell>
-                        <CTableDataCell>{item?.location_id}</CTableDataCell>
+                        {/* <CTableDataCell>{item?.location_id}</CTableDataCell> */}
                         <CTableDataCell>{`$${item?.court_fee_hrs}/hr`}</CTableDataCell>
                         <CTableDataCell>{`${item?.tax}%`}</CTableDataCell>
                         <CTableDataCell>{`${item?.cc_fees}%`}</CTableDataCell>

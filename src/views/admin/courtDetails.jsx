@@ -87,7 +87,7 @@ const CourtDetails = () => {
               </div>
               <div>
                 <h4 id="traffic" className="card-title mb-0">
-                  Court Details
+                  Booking Details
                 </h4>
               </div>
             </div>
@@ -107,28 +107,21 @@ const CourtDetails = () => {
             <CCol sm={12} md={9}>
               <CRow>
                 <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Id key</h6>
-                  <p className="details_description">{formData?.booking_id}</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Email</h6>
+                  <h6 className="text-white">Booked by</h6>
+                  <h6 className="detail_title">Name</h6>
+                  <p className="details_description">{`${formData?.user?.first_name} ${formData?.user?.last_name}`}</p>
+                  <h6 className="detail_title mt-1">Email</h6>
                   <p
                     className="details_description"
                     style={{ textTransform: "lowercase" }}
                   >
                     {formData?.user?.email}
                   </p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Phone</h6>
+
+                  <h6 className="detail_title mt-1">Phone</h6>
                   <p className="details_description">{formData?.user?.phone}</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Name</h6>
-                  <p className="details_description">{`${formData?.user?.first_name} ${formData?.user?.last_name}`}</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">User Type</h6>
+
+                  <h6 className="detail_title mt-1">User Type</h6>
                   <p className="details_description">
                     {formData?.user?.user_type == 1
                       ? "Admin"
@@ -143,61 +136,47 @@ const CourtDetails = () => {
                 </CCol>
 
                 <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Amount</h6>
-                  <p className="details_description">{formData?.amount}</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">CC Fees</h6>
-                  <p className="details_description">{formData?.cc_fees}%</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Court Number</h6>
-                  <p className="details_description">
-                    {formData?.court?.court_number}
-                  </p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Court fees per hours</h6>
-                  <p className="details_description">
-                    {formData?.court?.court_fee_hrs}
-                  </p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Tax</h6>
-                  <p className="details_description">{formData?.tax}%</p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
+                  <h6 className="text-white">Date and time</h6>
                   <h6 className="detail_title">Booking Date</h6>
                   <p className="details_description">
                     {formData?.booking_date}
                   </p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Start Time</h6>
+                  <h6 className="detail_title mt-1">Start Time</h6>
                   <p className="details_description">
                     {formData?.start_time
                       ? convertToAmPm(formData?.start_time)
                       : ""}
                   </p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">End Time</h6>
+
+                  <h6 className="detail_title mt-1">End Time</h6>
                   <p className="details_description">
                     {formData?.end_time
                       ? convertToAmPm(formData?.end_time)
                       : ""}
                   </p>
-                </CCol>
-                <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Duration Time</h6>
+
+                  <h6 className="detail_title mt-1">Duration Time</h6>
                   <p className="details_description">
                     {formData?.duration_time
                       ? convertToHoursOnly(formData?.duration_time)
                       : ""}
                   </p>
                 </CCol>
+
                 <CCol sm={12} md={4} className="my-1">
-                  <h6 className="detail_title">Payment Status</h6>
+                  <h6 className="text-white">Payment details</h6>
+                  <h6 className="detail_title">Amount</h6>
+                  <p className="details_description">{formData?.amount}</p>
+
+                  <h6 className="detail_title mt-1">CC Fees</h6>
+                  <p className="details_description">{formData?.cc_fees}%</p>
+                  <h6 className="detail_title mt-1">Court fees per hours</h6>
+                  <p className="details_description">
+                    {formData?.court?.court_fee_hrs}
+                  </p>
+                  <h6 className="detail_title mt-1">Tax</h6>
+                  <p className="details_description">{formData?.tax}%</p>
+                  <h6 className="detail_title mt-1">Payment Status</h6>
                   <p className="details_description">{formData?.status}</p>
                 </CCol>
               </CRow>
@@ -206,33 +185,20 @@ const CourtDetails = () => {
         </div>
 
         <div className="address_Section mt-4">
+          <h5>Address</h5>
           <CRow>
             <CCol sm={12} md={6}>
-              <label className="add_court_label">Address 1</label>
+              {/* <label className="add_court_label">Address 1</label> */}
               <p className="address_text">
-                {formData?.court?.location?.address_1}
-              </p>
-            </CCol>
-            <CCol sm={12} md={6}>
-              <label className="add_court_label">Address 2</label>
-              <p className="address_text">
-                {formData?.court?.location?.address_2}
-              </p>
-            </CCol>
-            <CCol sm={12} md={6}>
-              <label className="add_court_label">Address 3</label>
-              <p className="address_text">
-                {formData?.court?.location?.address_3}
-              </p>
-            </CCol>
-            <CCol sm={12} md={6}>
-              <label className="add_court_label">Address 4</label>
-              <p className="address_text">
+                {formData?.court?.location?.address_1}{" "}
+                {formData?.court?.location?.address_2}{" "}
+                {formData?.court?.location?.address_3}{" "}
                 {formData?.court?.location?.address_4}
               </p>
             </CCol>
+           
             <CCol sm={12} md={12}>
-              <label className="add_court_label">Description</label>
+              <h5>Description</h5>
               <p className="address_text">
                 {formData?.court?.location?.description}
               </p>

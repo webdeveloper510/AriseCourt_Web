@@ -28,6 +28,7 @@ import {
   cilDelete,
   cilFilter,
   cilPencil,
+  cilReload,
   cilSearch,
   cilX,
 } from "@coreui/icons";
@@ -36,6 +37,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 
 const CourtConfiguration = () => {
+  let SerialId = 1;
   const navigate = useNavigate();
   const calendarRef = useRef(null);
   const filterButtonRef = useRef(null);
@@ -81,20 +83,6 @@ const CourtConfiguration = () => {
     setOpenMenuId((prevId) => (prevId === id ? null : id)); // Toggle
   };
 
-  // const getCourtBookingData = () => {
-  //   getCourtBooking()
-  //     .then((res) => {
-  //       console.log("getCourtBookingData", res)
-  //       if (res?.status == 200) {
-  //         setAdminData(res?.data?.results);
-  //         setTotalCounts(res?.data?.count);
-  //         setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
   const getCourtBookingData = (
     bookingType = "",
     page = 1,
@@ -161,34 +149,6 @@ const CourtConfiguration = () => {
 
   const handleCalendarClick = () => {
     setIsCalendarOpen(!isCalendarOpen); // Toggle calendar visibility
-  };
-
-  const handleEditAdmin = (id) => {
-    // navigate(`/update-registraion/${id}`);
-  };
-
-  const handleDeleteModal = (id) => {
-    setVisible(true);
-    setAdminId(id);
-  };
-
-  const handleDeleteAdmin = () => {
-    setLoading(true);
-    deleteAdminbyId(adminId)
-      .then((res) => {
-        setLoading(false);
-        if (res.status == 200 || res?.status == 204) {
-          toast.success(res?.data?.message, {
-            theme: "colored",
-          });
-          getCourtBookingData();
-          setVisible(false);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
   };
 
   const handleClickOutside = (event) => {
@@ -291,7 +251,7 @@ const CourtConfiguration = () => {
 
           <CCol sm={12} md={8}>
             <CRow>
-              <CCol md={5}  className="d-flex align-items-center gap-1">
+              <CCol md={5} className="d-flex align-items-center gap-1">
                 <CInputGroup
                   className="search_input_group_reports"
                   style={{ height: "45px" }}
@@ -311,11 +271,21 @@ const CourtConfiguration = () => {
                 </CInputGroup>
                 <CButton
                   type="button"
-                  onClick={() => setSearchQuery("")}
+                  onClick={() => {
+                    setSearchQuery("");
+                    setStartDate(new Date());
+                    setEndDate(new Date());
+                    setSelectionRange({
+                      startDate: new Date(),
+                      endDate: new Date(),
+                      key: "selection",
+                    });
+                    getCourtBookingData();
+                  }}
                   className="add_new_butn"
                   style={{ height: "50px !important" }}
                 >
-                  <CIcon icon={cilX} />
+                  <CIcon icon={cilReload} />
                 </CButton>
               </CCol>
 
@@ -376,16 +346,18 @@ const CourtConfiguration = () => {
               <CTableHead>
                 <CTableRow>
                   {/* <CTableHeaderCell scope="col">Location Id</CTableHeaderCell> */}
-                  <CTableHeaderCell scope="col">Id</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Sr no.</CTableHeaderCell>
                   {/* <CTableHeaderCell scope="col">Location</CTableHeaderCell> */}
                   <CTableHeaderCell scope="col">Date & Time</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Court No.</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Booked By</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Type</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">
-                    Contact Details
-                  </CTableHeaderCell>
+                 
+                  <CTableHeaderCell scope="col">Location</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Price</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">
+                    Payment Status
+                  </CTableHeaderCell>
                   <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
@@ -396,7 +368,7 @@ const CourtConfiguration = () => {
                     return (
                       <CTableRow key={i}>
                         <CTableDataCell>
-                          {item?.booking_id}
+                          {SerialId++}
                           <div
                             onClick={() => {
                               handleViewDetails(item.booking_id);
@@ -429,7 +401,15 @@ const CourtConfiguration = () => {
                         <CTableDataCell>
                           {item?.court?.court_number}
                         </CTableDataCell>
-                        <CTableDataCell>{`${item?.user?.first_name} ${item?.user?.last_name}`}</CTableDataCell>
+                        <CTableDataCell>
+                          {`${item?.user?.first_name} ${item?.user?.last_name}`}
+                          <div>
+                            <p className="mb-0 user_phone">
+                              {item?.user?.phone}
+                            </p>
+                            <p className="mb-0">{item?.user?.email}</p>
+                          </div>
+                        </CTableDataCell>
                         <CTableDataCell>
                           {item?.user?.user_type == 1
                             ? "Admin"
@@ -441,36 +421,42 @@ const CourtConfiguration = () => {
                                   ? "Court"
                                   : ""}
                         </CTableDataCell>
-                        <CTableDataCell>
+                        {/* <CTableDataCell>
                           <div>
                             <p className="mb-0 user_phone">
                               {item?.user?.phone}
                             </p>
                             <p className="mb-0">{item?.user?.email}</p>
                           </div>
+                        </CTableDataCell> */}
+                        <CTableDataCell>
+                          {item.court.location.address_1}
                         </CTableDataCell>
                         <CTableDataCell>
-                          <span
-                            style={{
-                              textTransform: "capitalize",
-                              color:
-                                item?.status == "cancelled"
-                                  ? "#FA3B3B"
-                                  : item?.status == "completed"
-                                    ? "#05D005"
-                                    : item?.status == "confirmed"
-                                      ? "#0860fb"
-                                      : item?.status == "pending"
-                                        ? "#f99e15"
-                                        : "#182B4D",
-                            }}
-                          >
-                            {item?.status}
-                          </span>
-                          <br />
-                          {item?.summary
-                            ? `$${item?.summary}`
-                            : ""}
+                          {item?.summary ? `$${item?.summary}` : ""}
+                        </CTableDataCell>
+                       
+                        
+                        <CTableDataCell>
+                          {
+                            <span
+                              style={{
+                                textTransform: "capitalize",
+                                color:
+                                  item?.status == "cancelled"
+                                    ? "#FA3B3B"
+                                    : item?.status == "completed"
+                                      ? "#05D005"
+                                      : item?.status == "confirmed"
+                                        ? "#0860fb"
+                                        : item?.status == "pending"
+                                          ? "#f99e15"
+                                          : "#182B4D",
+                              }}
+                            >
+                              {item?.status}
+                            </span>
+                          }
                         </CTableDataCell>
                         <CTableDataCell>
                           <div
