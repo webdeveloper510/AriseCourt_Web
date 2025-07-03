@@ -193,10 +193,13 @@ const CourtDetails = () => {
                 {formData?.court?.location?.address_1}{" "}
                 {formData?.court?.location?.address_2}{" "}
                 {formData?.court?.location?.address_3}{" "}
-                {formData?.court?.location?.address_4}
+                {formData?.court?.location?.address_4}{" "}
+                {formData?.court?.location?.city}{" "}
+                {formData?.court?.location?.state}{" "}
+                {formData?.court?.location?.country}{" "}
               </p>
             </CCol>
-           
+
             <CCol sm={12} md={12}>
               <h5>Description</h5>
               <p className="address_text">
