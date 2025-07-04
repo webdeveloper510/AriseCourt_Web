@@ -186,7 +186,7 @@ const AddLocations = () => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       phone: value, // full phone number
-      country: data.countryCode.toUpperCase(), // e.g., "US"
+      // country: data.countryCode.toUpperCase(), // e.g., "US"
     }));
   };
 
@@ -329,7 +329,7 @@ const AddLocations = () => {
                 />
               </CCol> */}
 
-              <CCol md={12} className="">
+              <CCol md={12} className="mb-2">
                 <label className="d-flex">Logo</label>
                 <div className="d-flex gap-4">
                   <CFormInput
@@ -365,7 +365,7 @@ const AddLocations = () => {
 
               {/* <CCol md={formData.logo ? 6 : 12} className="my-1"></CCol> */}
 
-              <CCol sm={12} md={6} lg={4} className="my-1">
+              <CCol sm={12} md={6} lg={4} className="my-2">
                 <label>Email Address</label>
 
                 <CFormInput
@@ -378,6 +378,7 @@ const AddLocations = () => {
                   onChange={(e) => {
                     handleInputChange(e);
                   }}
+                  autoComplete="off"
                 />
                 {errors.email && (
                   <div className="text-danger">{errors.email}</div>
@@ -399,26 +400,28 @@ const AddLocations = () => {
                   <div className="text-danger">{errors.password}</div>
                 )}
               </CCol>
-              <CCol sm={12} md={6} lg={4} className="my-1">
+              <CCol sm={12} md={6} lg={4} className="my-2">
                 <label>Phone</label>
                 <PhoneInput
                   country={"us"}
                   value={formData.phone}
                   className="form-control"
                   onChange={handlePhoneChange}
+                  autoComplete="off"
                 />
                 {errors.phone && (
                   <div className="text-danger">{errors.phone}</div>
                 )}
               </CCol>
 
-              <CCol sm={12} md={6} lg={4} className="my-1">
+              <CCol sm={12} md={6} lg={6} className="my-1">
                 <label>City</label>
 
                 <CFormInput
                   type="text"
                   className="register_input"
                   placeholder="Enter City"
+                  autoComplete="off"
                   aria-label="default input example"
                   value={formData.city}
                   name="city"
@@ -430,13 +433,14 @@ const AddLocations = () => {
                   <div className="text-danger">{errors.city}</div>
                 )}
               </CCol>
-              <CCol sm={12} md={6} lg={4} className="my-1">
+              <CCol sm={12} md={6} lg={6} className="my-1">
                 <label>State</label>
 
                 <CFormInput
                   type="text"
                   className="register_input"
                   placeholder="Enter State"
+                  autoComplete="off"
                   aria-label="default input example"
                   value={formData.state}
                   name="state"
@@ -448,8 +452,27 @@ const AddLocations = () => {
                   <div className="text-danger">{errors.state}</div>
                 )}
               </CCol>
+              <CCol sm={12} md={6} lg={6} className="my-1">
+                <label>Country</label>
 
-              <CCol sm={12} md={6} lg={4} className="my-1">
+                <CFormInput
+                  type="text"
+                  className="register_input"
+                  placeholder="Enter Country"
+                  autoComplete="off"
+                  aria-label="default input example"
+                  value={formData.country}
+                  name="country"
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
+                />
+                {errors.state && (
+                  <div className="text-danger">{errors.state}</div>
+                )}
+              </CCol>
+
+              <CCol sm={12} md={6} lg={6} className="my-1">
                 <label>Website</label>
                 <CFormInput
                   type="text"
@@ -457,6 +480,7 @@ const AddLocations = () => {
                   placeholder="Enter Website"
                   aria-label="default input example"
                   value={formData.website}
+                  autoComplete="off"
                   name="website"
                   onChange={(e) => {
                     handleInputChange(e);
@@ -475,6 +499,7 @@ const AddLocations = () => {
                   placeholder="Enter Address 1"
                   aria-label="default input example"
                   value={formData.address_1}
+                  autoComplete="off"
                   name="address_1"
                   onChange={(e) => {
                     handleInputChange(e);
@@ -493,6 +518,7 @@ const AddLocations = () => {
                   placeholder="Enter Address 2"
                   aria-label="default input example"
                   value={formData.address_2}
+                  autoComplete="off"
                   name="address_2"
                   onChange={(e) => {
                     handleInputChange(e);
@@ -510,6 +536,7 @@ const AddLocations = () => {
                   className="register_input"
                   placeholder="Enter Address 3"
                   aria-label="default input example"
+                  autoComplete="off"
                   value={formData.address_3}
                   name="address_3"
                   onChange={(e) => {
@@ -528,6 +555,7 @@ const AddLocations = () => {
                   className="register_input"
                   placeholder="Enter Address 4"
                   aria-label="default input example"
+                  autoComplete="off"
                   value={formData.address_4}
                   name="address_4"
                   onChange={(e) => {

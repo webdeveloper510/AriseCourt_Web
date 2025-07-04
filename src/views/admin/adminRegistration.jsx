@@ -5,6 +5,7 @@ import {
   CCol,
   CForm,
   CFormInput,
+  CFormSelect,
   CRow,
 } from "@coreui/react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -13,6 +14,7 @@ import CIcon from "@coreui/icons-react";
 import {
   addAdmintData,
   getAdminbyId,
+  getLocation,
   registerUser,
   updateAdmin,
 } from "../../utils/api";
@@ -25,7 +27,7 @@ import Multiselect from "multiselect-react-dropdown";
 const AdminRegistration = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const [locationFilter, setLocationFilter] = useState([]);
   const [options] = useState([
     { name: "Full Access", id: 0 },
     { name: "Location Tab only", id: 1 },
@@ -43,6 +45,7 @@ const AdminRegistration = () => {
     confirm_password: "",
     user_type: 1,
     access_flag: [],
+    location:""
   });
   const selectedOptions = options.filter((option) =>
     formData?.access_flag?.includes(option.id)
@@ -70,6 +73,31 @@ const AdminRegistration = () => {
       })
       .catch((error) => {
         console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getLocationData();
+  }, []);
+
+  const getLocationData = (
+    page = 1,
+    query = "",
+    startDate = "",
+    endDate = ""
+  ) => {
+    getLocation(page, query, startDate, endDate)
+      .then((res) => {
+        setLoading(false);
+        if (res.status == 200) {
+          setLocationFilter(res?.data?.results);
+        } else {
+          setLocationFilter([]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setLocationFilter([]);
       });
   };
 
@@ -338,6 +366,7 @@ const AdminRegistration = () => {
                 <CFormInput
                   type="text"
                   className="register_input"
+                  autoComplete="off"
                   placeholder="Enter First Name"
                   aria-label="default input example"
                   value={formData.first_name}
@@ -354,6 +383,7 @@ const AdminRegistration = () => {
                   type="text"
                   className="register_input"
                   placeholder="Enter Last Name"
+                  autoComplete="off"
                   aria-label="default input example"
                   value={formData.last_name}
                   name="last_name"
@@ -370,6 +400,7 @@ const AdminRegistration = () => {
                   type="text"
                   className="register_input"
                   placeholder="Enter Email Address"
+                  autoComplete="off"
                   aria-label="default input example"
                   value={formData.email}
                   name="email"
@@ -386,11 +417,11 @@ const AdminRegistration = () => {
                 <PhoneInput
                   country={"us"}
                   value={formData.phone}
+                  autoComplete="off"
                   className="form-control"
                   onChange={handlePhoneChange}
                 />
 
-               
                 {errors.phone && (
                   <div className="text-danger">{errors.phone}</div>
                 )}
@@ -440,6 +471,7 @@ const AdminRegistration = () => {
                 <label>Permission</label>
                 <Multiselect
                   options={renderedOptions}
+                  autoComplete="off"
                   selectedValues={selectedOptions}
                   onSelect={onSelect}
                   onRemove={onRemove}
@@ -454,6 +486,34 @@ const AdminRegistration = () => {
               {errors.access_flag && (
                 <div className="text-danger">{errors.access_flag}</div>
               )}
+
+              {/* {locationFilter?.length > 0 && ( */}
+                <CCol md={4} className="my-2">
+                  <label>Select Location</label>
+                  <CFormSelect
+                    className="form-control"
+                    placeholder="Select Location"
+                    style={{ height: "50px" }}
+                    defaultValue=""
+                    onChange={(e) => handleInputChange(e)}
+                    value={formData?.location}
+                    name="location"
+                  >
+                    <option disabled value="">
+                      Select Location
+                    </option>
+                    {[
+                      ...new Set(
+                        locationFilter.map((location) => location.city)
+                      ),
+                    ].map((city, index) => (
+                      <option key={index} value={city} style={{textTransform:"capitalize"}}>
+                        {city}
+                      </option>
+                    ))}
+                  </CFormSelect>
+                </CCol>
+              {/* )} */}
 
               <CCol md={12} className="mt-4">
                 <CButton type="submit" className="add_new_butn">

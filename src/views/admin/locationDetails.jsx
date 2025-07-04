@@ -651,6 +651,7 @@ const LocationDetails = () => {
                     className="register_input"
                     placeholder="Enter Court Number"
                     aria-label="default input example"
+                    autoComplete="off"
                     value={addCourt?.court_number}
                     name="court_number"
                     onChange={(e) => handleCourtInput(e)}
@@ -666,6 +667,7 @@ const LocationDetails = () => {
                     type="text"
                     className="register_input"
                     placeholder="Enter Court Fee by Hour"
+                    autoComplete="off"
                     aria-label="default input example"
                     value={addCourt?.court_fee_hrs}
                     name="court_fee_hrs"
@@ -682,6 +684,7 @@ const LocationDetails = () => {
                     type="text"
                     className="register_input"
                     placeholder="Enter Taxes percentage"
+                    autoComplete="off"
                     aria-label="default input example"
                     value={addCourt?.tax}
                     name="tax"
@@ -698,6 +701,7 @@ const LocationDetails = () => {
                     type="text"
                     className="register_input"
                     placeholder="Enter cc fees%"
+                    autoComplete="off"
                     aria-label="default input example"
                     value={addCourt?.cc_fees}
                     name="cc_fees"
@@ -714,6 +718,7 @@ const LocationDetails = () => {
                     type="time"
                     className="register_input"
                     aria-label="default input example"
+                    autoComplete="off"
                     value={addCourt?.start_time}
                     name="start_time"
                     onChange={(e) => handleCourtInput(e)}
@@ -728,6 +733,7 @@ const LocationDetails = () => {
                   <CFormInput
                     type="time"
                     className="register_input"
+                    autoComplete="off"
                     aria-label="default input example"
                     value={addCourt?.end_time}
                     name="end_time"

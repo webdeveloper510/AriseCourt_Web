@@ -210,7 +210,7 @@ const Dashboard = () => {
             </div>
           </CCol>
           <CCol xs={6} sm={6} md={6} className="text-end">
-            <Link to="/admin-registraion">
+            <Link to="/admin-registration">
               <CButton className="add_new_butn">+ Add New</CButton>
             </Link>
           </CCol>

@@ -21,6 +21,7 @@ import {
   CModalFooter,
   CModalHeader,
   CModalTitle,
+  CFormSelect,
 } from "@coreui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { DateRangePicker } from "react-date-range";
@@ -48,6 +49,8 @@ const Locations = () => {
   const calendarRef = useRef(null);
   const filterButtonRef = useRef(null);
   const [locationData, setLocationData] = useState([]);
+  const [locationFilter, setLocationFilter] = useState([]);
+  const [selectLocation, setSelectLocation] = useState("")
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [locationId, setLocationId] = useState("");
@@ -110,6 +113,7 @@ const Locations = () => {
         setLoading(false);
         if (res.status == 200) {
           setLocationData(res?.data?.results);
+          setLocationFilter(res?.data?.results);
           setTotalCounts(res?.data?.count); // Total count of admin data
           setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
         } else if (res?.data?.code == "token_not_valid") {
@@ -179,7 +183,15 @@ const Locations = () => {
         setLoading(false);
       });
   };
-  console.log(locationData);
+
+  const handleLocationChange = (e) => {
+    const value = e.target.value;
+    setSelectLocation(value)
+    const filteredData = locationFilter?.filter(
+      (location) => location.city === value
+    );
+    setLocationData(filteredData);
+  };
 
   return (
     <>
@@ -205,7 +217,7 @@ const Locations = () => {
               <CButton className="add_new_butn">+ Add New</CButton>
             </Link>
           </CCol>
-          <CCol sm={12} md={6} className="mt-3 d-flex align-items-center gap-1">
+          <CCol sm={12} md={6} className="my-3 d-flex align-items-center gap-1">
             <CInputGroup
               className="search_input_group"
               style={{ height: "45px" }}
@@ -225,13 +237,41 @@ const Locations = () => {
             </CInputGroup>
             <CButton
               type="button"
-              onClick={() => setSearchQuery("")}
+              onClick={() => {
+                setSearchQuery("");
+                setLocationData(locationFilter)
+                setSelectLocation("")
+              }}
               className="add_new_butn"
               style={{ height: "50px !important" }}
             >
               <CIcon icon={cilReload} />
             </CButton>
           </CCol>
+
+          {locationFilter?.length > 0 && (
+            <CCol md={6} className="my-3">
+              <CFormSelect
+                className="form-control location_select"
+                placeholder="Select Location"
+                style={{ height: "50px" }}
+                defaultValue=""
+                onChange={(e) => handleLocationChange(e)}
+                value={selectLocation}
+              >
+                <option disabled value="">
+                  Select Location
+                </option>
+                {[
+                  ...new Set(locationFilter.map((location) => location.city)),
+                ].map((city, index) => (
+                  <option key={index} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </CFormSelect>
+            </CCol>
+          )}
 
           {/* <CCol sm={6} className="mt-3">
             <div className="text-end date_filter_section">

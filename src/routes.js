@@ -16,7 +16,7 @@ const CourtDetails = React.lazy(() => import('./views/admin/courtDetails'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  { path: '/admin-registraion', name: 'AdminRegistration', element: AdminRegistration },
+  { path: '/admin-registration', name: 'AdminRegistration', element: AdminRegistration },
   { path: '/update-registraion/:id', name: 'AdminRegistration', element: AdminRegistration },
   { path: '/messages', name: 'Messages', element: Messages },
   { path: '/locations', name: 'Locations', element: Locations },
