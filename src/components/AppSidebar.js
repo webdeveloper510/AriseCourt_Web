@@ -18,6 +18,7 @@ const AppSidebar = () => {
   const dispatch = useDispatch();
   const unfoldable = useSelector((state) => state.sidebarUnfoldable);
   const sidebarShow = useSelector((state) => state.sidebarShow);
+  const [userData, setUserData] = useState(null);
 
   const navigate = useNavigate();
   const [userPermissions, setUserPermissions] = useState([]);
@@ -25,9 +26,10 @@ const AppSidebar = () => {
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("logged_user_data"));
+    setUserData(data);
 
     if (data) {
-      if (data?.access_flag === "0" || data?.user_type === 0) {
+      if (data.access_flag === "0" || data.user_type === 0) {
         setHasFullAccess(true);
       } else {
         const permissions = data.access_flag
@@ -38,12 +40,31 @@ const AppSidebar = () => {
     }
   }, []);
 
-  const filteredNavigation = hasFullAccess
-    ? navigation
-    : navigation?.filter(
-        (item) =>
-          item?.name === "Profile" || userPermissions.includes(item?.permissionId)
-      );
+  const filteredNavigation = navigation.filter((item) => {
+    // Always show Profile
+    if (item.name === "Users") return true;
+
+    // If user_type !== 0 → hide Admin and Message
+    if (
+      userData?.user_type === 1 &&
+      (item.name === "Admin" || item.name === "Messages" || item.name === "Locations")
+    ) {
+      return false;
+    }
+
+    if (
+      userData?.user_type === 0 &&
+      (item.name === "Location")
+    ) {
+      return false;
+    }
+
+    // If user has full access → show everything else
+    if (hasFullAccess) return true;
+
+    // Otherwise, show items only if permissionId matches
+    return userPermissions.includes(item.permissionId);
+  });
 
   const handleLogOut = () => {
     localStorage.removeItem("logged_user_data");

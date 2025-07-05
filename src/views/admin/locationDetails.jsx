@@ -27,6 +27,7 @@ import {
   deleteCourtbyId,
   getCourts,
   getLocationbyId,
+  getMyLocation,
   updateCourt,
 } from "../../utils/api";
 import { toast } from "react-toastify";
@@ -170,9 +171,40 @@ const LocationDetails = () => {
   };
 
   useEffect(() => {
-    getLocationDatabyId();
-    // getCourtsData(currentPage);
+    if (id) {
+      getLocationDatabyId();
+    } else {
+      getLocationData();
+    }
   }, [id]);
+
+  const getLocationData = () => {
+    setLoading(true)
+    getMyLocation()
+      .then((res) => {
+        setLoading(false);
+        if (res?.status == 200) {
+          setFormData(res?.data);
+          setCourtData(res?.data?.courts);
+        } else if (res?.data?.code == "token_not_valid") {
+          toast.error(res?.data?.detail, {
+            theme: "colored",
+          });
+          localStorage.removeItem("user_access_valid_token");
+          localStorage.removeItem("logged_user_data");
+          navigate("/login");
+        } else {
+          setFormData(null);
+          setCourtData([]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+        setFormData(null);
+        setCourtData([]);
+      });
+  };
 
   const getLocationDatabyId = () => {
     setLoading(true);
@@ -238,7 +270,7 @@ const LocationDetails = () => {
               theme: "colored",
             });
             getLocationDatabyId();
-          }else{
+          } else {
             toast.error(res?.data?.message, {
               theme: "colored",
             });
@@ -258,7 +290,7 @@ const LocationDetails = () => {
               theme: "colored",
             });
             getLocationDatabyId();
-          }else{
+          } else {
             toast.error(res?.data?.message, {
               theme: "colored",
             });
@@ -308,7 +340,6 @@ const LocationDetails = () => {
   const handleDeletCourtModal = (id) => {
     setDeletCourt(true);
     setDeletCourtId(id);
-    console.log("idddddd", id);
   };
 
   const handleDeleteCourt = () => {
@@ -385,16 +416,18 @@ const LocationDetails = () => {
               </div>
             </div>
           </CCol>
-          <CCol sm={12} md={6} className="text-end">
-            <CButton
-              onClick={() => {
-                handleEditLocation(formData?.id);
-              }}
-              className="add_new_butn"
-            >
-              <CIcon icon={cilPenNib}></CIcon> Edit Location
-            </CButton>
-          </CCol>
+          {id && (
+            <CCol sm={12} md={6} className="text-end">
+              <CButton
+                onClick={() => {
+                  handleEditLocation(formData?.id);
+                }}
+                className="add_new_butn"
+              >
+                <CIcon icon={cilPenNib}></CIcon> Edit Location
+              </CButton>
+            </CCol>
+          )}
         </CRow>
 
         <div className="mt-4 location_Details_section">
@@ -449,7 +482,7 @@ const LocationDetails = () => {
                    ${formData?.address_4 ? `${formData?.address_4}` : ""}
                  
                    `}</p>
-                   {/*   ${formData?.city} ${formData?.state} ${formData?.country} */}
+                  {/*   ${formData?.city} ${formData?.state} ${formData?.country} */}
                   {/* <p className="details_description">{formData?.city}</p> */}
                   <h6 className="detail_title">State</h6>
                   <p className="details_description">{formData?.state}</p>

@@ -45,7 +45,7 @@ const AdminRegistration = () => {
     confirm_password: "",
     user_type: 1,
     access_flag: [],
-    location:""
+    location_id: "",
   });
   const selectedOptions = options.filter((option) =>
     formData?.access_flag?.includes(option.id)
@@ -89,6 +89,7 @@ const AdminRegistration = () => {
     getLocation(page, query, startDate, endDate)
       .then((res) => {
         setLoading(false);
+        console.log("address1address1",res)
         if (res.status == 200) {
           setLocationFilter(res?.data?.results);
         } else {
@@ -361,6 +362,33 @@ const AdminRegistration = () => {
         <div className="registration_form">
           <CForm onSubmit={handleFormSubmit} onKeyDown={handleKeyDown}>
             <CRow className="d-flex ">
+              {/* {locationFilter?.length > 0 && ( */}
+              <CCol md={4} className="my-2">
+                <label>Select Location</label>
+                <CFormSelect
+                  className="form-control"
+                  placeholder="Select Location"
+                  style={{ height: "50px" }}
+                  defaultValue=""
+                  onChange={(e) => handleInputChange(e)}
+                  value={formData?.location_id}
+                  name="location_id"
+                >
+                  <option disabled value="">
+                    Select Location
+                  </option>
+                  {locationFilter?.map((address, index) => (
+                    <option
+                      key={index}
+                      value={address?.id}
+                      style={{ textTransform: "capitalize" }}
+                    >
+                      {address?.address_1} {address?.address_2} {address?.address_3} {address?.address_4}
+                    </option>
+                  ))}
+                </CFormSelect>
+              </CCol>
+              {/* )} */}
               <CCol sm={12} md={6} lg={4} className="my-2">
                 <label>First Name</label>
                 <CFormInput
@@ -486,34 +514,6 @@ const AdminRegistration = () => {
               {errors.access_flag && (
                 <div className="text-danger">{errors.access_flag}</div>
               )}
-
-              {/* {locationFilter?.length > 0 && ( */}
-                <CCol md={4} className="my-2">
-                  <label>Select Location</label>
-                  <CFormSelect
-                    className="form-control"
-                    placeholder="Select Location"
-                    style={{ height: "50px" }}
-                    defaultValue=""
-                    onChange={(e) => handleInputChange(e)}
-                    value={formData?.location}
-                    name="location"
-                  >
-                    <option disabled value="">
-                      Select Location
-                    </option>
-                    {[
-                      ...new Set(
-                        locationFilter.map((location) => location.city)
-                      ),
-                    ].map((city, index) => (
-                      <option key={index} value={city} style={{textTransform:"capitalize"}}>
-                        {city}
-                      </option>
-                    ))}
-                  </CFormSelect>
-                </CCol>
-              {/* )} */}
 
               <CCol md={12} className="mt-4">
                 <CButton type="submit" className="add_new_butn">

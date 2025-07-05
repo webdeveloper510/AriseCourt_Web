@@ -249,29 +249,6 @@ const Locations = () => {
             </CButton>
           </CCol>
 
-          {locationFilter?.length > 0 && (
-            <CCol md={6} className="my-3">
-              <CFormSelect
-                className="form-control location_select"
-                placeholder="Select Location"
-                style={{ height: "50px" }}
-                defaultValue=""
-                onChange={(e) => handleLocationChange(e)}
-                value={selectLocation}
-              >
-                <option disabled value="">
-                  Select Location
-                </option>
-                {[
-                  ...new Set(locationFilter.map((location) => location.city)),
-                ].map((city, index) => (
-                  <option key={index} value={city}>
-                    {city}
-                  </option>
-                ))}
-              </CFormSelect>
-            </CCol>
-          )}
 
           {/* <CCol sm={6} className="mt-3">
             <div className="text-end date_filter_section">

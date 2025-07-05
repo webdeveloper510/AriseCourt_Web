@@ -5,6 +5,7 @@ import {
   CCardBody,
   CCol,
   CFormInput,
+  CFormSelect,
   CInputGroup,
   CInputGroupText,
   CPagination,
@@ -56,8 +57,8 @@ const CourtConfiguration = () => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [startDate, setStartDate] = useState(formatDate(new Date())); // Start date for API
   const [endDate, setEndDate] = useState(formatDate(new Date()));
-  const [visible, setVisible] = useState(false);
-  const [adminId, setAdminId] = useState("");
+  const [locationFilter, setLocationFilter] = useState([]);
+  const [selectLocation, setSelectLocation] = useState("")
   const [adminData, setAdminData] = useState([]);
   const [openMenuId, setOpenMenuId] = useState(null);
   const itemsPerPage = 10;
@@ -200,6 +201,15 @@ const CourtConfiguration = () => {
     navigate(`/court-details/${id}`);
   };
 
+  const handleLocationChange = (e) => {
+    const value = e.target.value;
+    setSelectLocation(value)
+    const filteredData = locationFilter?.filter(
+      (location) => location.city === value
+    );
+    setAdminData(filteredData);
+  };
+
   return (
     <>
       {/* <WidgetsDropdown className="mb-4" /> */}
@@ -225,7 +235,7 @@ const CourtConfiguration = () => {
         </CRow>
 
         <CRow className="mt-2">
-          <CCol sm={12} md={4}>
+          <CCol sm={12} md={12}>
             <CButton
               onClick={() => setBookingType("")}
               style={{
@@ -249,9 +259,9 @@ const CourtConfiguration = () => {
             </CButton>
           </CCol>
 
-          <CCol sm={12} md={8}>
+          <CCol sm={12} md={12} className="mt-2">
             <CRow>
-              <CCol md={5} className="d-flex align-items-center gap-1">
+              <CCol md={4} className="d-flex align-items-center gap-1">
                 <CInputGroup
                   className="search_input_group_reports"
                   style={{ height: "45px" }}
@@ -289,7 +299,29 @@ const CourtConfiguration = () => {
                 </CButton>
               </CCol>
 
-              <CCol md={7}>
+              <CCol md={4}>
+                <CFormSelect
+                  className="form-control"
+                  placeholder="Select Location"
+                  style={{ height: "50px" }}
+                  defaultValue=""
+                  onChange={(e) => handleLocationChange(e)}
+                  value={selectLocation}
+                >
+                  <option disabled value="">
+                    Select Location
+                  </option>
+                  {[
+                    ...new Set(locationFilter.map((location) => location.city)),
+                  ].map((city, index) => (
+                    <option key={index} value={city}>
+                      {city}
+                    </option>
+                  ))}
+                </CFormSelect>
+              </CCol>
+
+              <CCol md={4}>
                 <div className="text-end date_filter_section">
                   <div
                     onClick={handleCalendarClick}
@@ -352,7 +384,7 @@ const CourtConfiguration = () => {
                   <CTableHeaderCell scope="col">Court No.</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Booked By</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Type</CTableHeaderCell>
-                 
+
                   <CTableHeaderCell scope="col">Location</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Price</CTableHeaderCell>
                   <CTableHeaderCell scope="col">
@@ -435,8 +467,7 @@ const CourtConfiguration = () => {
                         <CTableDataCell>
                           {item?.summary ? `$${item?.summary}` : ""}
                         </CTableDataCell>
-                       
-                        
+
                         <CTableDataCell>
                           {
                             <span

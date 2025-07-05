@@ -372,3 +372,29 @@ export const getContactMessage = async (page,search,startDate, endDate) => {
     return error.response;
   }
 };
+// /my_location/
+export const getMyLocation = async () => {
+  try {
+    const response = await axios.get(`/my_location/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const getPerLocation = async () => {
+  try {
+    const response = await axios.get(`/users_my_locations/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
