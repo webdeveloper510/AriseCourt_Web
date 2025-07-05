@@ -5,7 +5,7 @@ import { cilArrowLeft } from "@coreui/icons";
 import { useNavigate, useParams } from "react-router-dom";
 import badminton from "../../assets/images/badminton.png";
 
-import { getCourtBookingbyId } from "../../utils/api";
+import { getCourtBookingbyId, updateCourtBooking } from "../../utils/api";
 import { toast } from "react-toastify";
 
 const CourtDetails = () => {
@@ -64,6 +64,10 @@ const CourtDetails = () => {
     const hourNum = parseInt(hours, 10);
     return `${hourNum} Hour${hourNum !== 1 ? "s" : ""}`;
   };
+
+  const updateCourtBooking = () => {
+    updateCourtBooking()
+  }
 
   return (
     <>
@@ -169,13 +173,13 @@ const CourtDetails = () => {
                   <p className="details_description">{formData?.amount}</p>
 
                   <h6 className="detail_title mt-1">CC Fees</h6>
-                  <p className="details_description">{formData?.cc_fees}%</p>
+                  <p className="details_description">{formData?.cc_fees}</p>
                   <h6 className="detail_title mt-1">Court fees per hours</h6>
                   <p className="details_description">
                     {formData?.court?.court_fee_hrs}
                   </p>
                   <h6 className="detail_title mt-1">Tax</h6>
-                  <p className="details_description">{formData?.tax}%</p>
+                  <p className="details_description">{formData?.tax}</p>
                   <h6 className="detail_title mt-1">Payment Status</h6>
                   <p className="details_description">{formData?.status}</p>
                 </CCol>

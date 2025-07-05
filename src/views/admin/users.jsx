@@ -87,13 +87,6 @@ const Users = () => {
   const userData = JSON.parse(localStorage.getItem("logged_user_data"));
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("logged_user_data"));
-    if (userData?.user_type == 0) {
-    } else if (userData?.user_type == 1) {
-    }
-  }, []);
-
-  useEffect(() => {
     getLocationData(bookingType, currentPage, searchQuery);
   }, [bookingType, currentPage, searchQuery]);
 

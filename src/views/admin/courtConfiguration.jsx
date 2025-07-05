@@ -33,7 +33,7 @@ import {
   cilSearch,
   cilX,
 } from "@coreui/icons";
-import { getCourtBooking } from "../../utils/api";
+import { getCourtBooking, getCourtBookingByAdmin } from "../../utils/api";
 import { toast } from "react-toastify";
 import moment from "moment";
 
@@ -58,7 +58,7 @@ const CourtConfiguration = () => {
   const [startDate, setStartDate] = useState(formatDate(new Date())); // Start date for API
   const [endDate, setEndDate] = useState(formatDate(new Date()));
   const [locationFilter, setLocationFilter] = useState([]);
-  const [selectLocation, setSelectLocation] = useState("")
+  const [selectLocation, setSelectLocation] = useState("");
   const [adminData, setAdminData] = useState([]);
   const [openMenuId, setOpenMenuId] = useState(null);
   const itemsPerPage = 10;
@@ -68,6 +68,8 @@ const CourtConfiguration = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [bookingType, setBookingType] = useState("");
+
+  const userData = JSON.parse(localStorage.getItem("logged_user_data"));
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -93,29 +95,55 @@ const CourtConfiguration = () => {
     loader
   ) => {
     setLoading(query ? false : true);
-    getCourtBooking(bookingType, page, query, startDate, endDate)
-      .then((res) => {
-        setLoading(false);
-        if (res?.status === 200) {
-          setAdminData(res?.data?.results);
-          setTotalCounts(res?.data?.count);
-          setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
-        } else if (res?.data?.code == "token_not_valid") {
-          toast.error(res?.data?.detail, {
-            theme: "colored",
-          });
-          localStorage.removeItem("user_access_valid_token");
-          localStorage.removeItem("logged_user_data");
-          navigate("/login");
-        } else {
+    if (userData?.user_type == 0) {
+      getCourtBooking(bookingType, page, query, startDate, endDate)
+        .then((res) => {
+          setLoading(false);
+          if (res?.status === 200) {
+            setAdminData(res?.data?.results);
+            setTotalCounts(res?.data?.count);
+            setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
+          } else if (res?.data?.code == "token_not_valid") {
+            toast.error(res?.data?.detail, {
+              theme: "colored",
+            });
+            localStorage.removeItem("user_access_valid_token");
+            localStorage.removeItem("logged_user_data");
+            navigate("/login");
+          } else {
+            setAdminData([]);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
           setAdminData([]);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        setAdminData([]);
-        setLoading(false);
-      });
+          setLoading(false);
+        });
+    } else {
+      getCourtBookingByAdmin(bookingType, page, query, startDate, endDate)
+        .then((res) => {
+          setLoading(false);
+          if (res?.status === 200) {
+            setAdminData(res?.data?.results);
+            setTotalCounts(res?.data?.count);
+            setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
+          } else if (res?.data?.code == "token_not_valid") {
+            toast.error(res?.data?.detail, {
+              theme: "colored",
+            });
+            localStorage.removeItem("user_access_valid_token");
+            localStorage.removeItem("logged_user_data");
+            navigate("/login");
+          } else {
+            setAdminData([]);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          setAdminData([]);
+          setLoading(false);
+        });
+    }
   };
 
   const handleFilterClick = () => {
@@ -203,7 +231,7 @@ const CourtConfiguration = () => {
 
   const handleLocationChange = (e) => {
     const value = e.target.value;
-    setSelectLocation(value)
+    setSelectLocation(value);
     const filteredData = locationFilter?.filter(
       (location) => location.city === value
     );
@@ -486,6 +514,13 @@ const CourtConfiguration = () => {
                               }}
                             >
                               {item?.status}
+
+                              {/* {item?.status == "completed" && 
+                              <>
+                              <CFormSelect>
+
+                              </CFormSelect>
+                              </>} */}
                             </span>
                           }
                         </CTableDataCell>
