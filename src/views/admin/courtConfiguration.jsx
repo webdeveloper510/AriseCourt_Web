@@ -618,7 +618,7 @@ const CourtConfiguration = () => {
                             >
                               {/* {item?.status} */}
 
-                              {item.status === "pending" ||
+                              {
                               item.status === "confirmed" ||
                               item.status === "completed" ? (
                                 <CDropdown className="">
