@@ -26,6 +26,12 @@ import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import CIcon from "@coreui/icons-react";
 import {
+  CDropdown,
+  CDropdownToggle,
+  CDropdownMenu,
+  CDropdownItem,
+} from "@coreui/react";
+import {
   cilCalendar,
   cilFilter,
   cilPencil,
@@ -469,14 +475,43 @@ const CourtConfiguration = () => {
                   {/* <CTableHeaderCell scope="col">Location Id</CTableHeaderCell> */}
                   <CTableHeaderCell scope="col">Sr no.</CTableHeaderCell>
                   {/* <CTableHeaderCell scope="col">Location</CTableHeaderCell> */}
-                  <CTableHeaderCell scope="col">Date & Time</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Court No.</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Booked By</CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    Date & Time
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    Court No.
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    Booked By
+                  </CTableHeaderCell>
                   <CTableHeaderCell scope="col">Type</CTableHeaderCell>
 
-                  <CTableHeaderCell scope="col">Address</CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    Address
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    Location Name
+                  </CTableHeaderCell>
                   <CTableHeaderCell scope="col">Price</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
                     Payment Status
                   </CTableHeaderCell>
                   <CTableHeaderCell scope="col">Action</CTableHeaderCell>
@@ -551,7 +586,13 @@ const CourtConfiguration = () => {
                           </div>
                         </CTableDataCell> */}
                         <CTableDataCell>
-                          {item.court.location.address_1}
+                          {item.court.location.address_1}{" "}
+                          {item.court.location.address_2}{" "}
+                          {item.court.location.address_3}{" "}
+                          {item.court.location.address_4}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {item.court.location.name}
                         </CTableDataCell>
                         <CTableDataCell>
                           {item?.summary ? `$${item?.summary}` : ""}
@@ -577,19 +618,36 @@ const CourtConfiguration = () => {
                             >
                               {/* {item?.status} */}
 
-                              {item.status == "confirmed" ||
-                              item.status == "completed" ? (
-                                <>
-                                  <CFormSelect
-                                    className="cancel_status"
-                                    onChange={(e) =>
-                                      handlePaymentChange(e, item?.booking_id)
-                                    }
-                                  >
-                                    <option>{item?.status}</option>
-                                    <option>Cancel</option>
-                                  </CFormSelect>
-                                </>
+                              {item.status === "pending" ||
+                              item.status === "confirmed" ||
+                              item.status === "completed" ? (
+                                <CDropdown className="">
+                                  <CDropdownToggle color="secondary">
+                                    {item?.status}
+                                  </CDropdownToggle>
+                                  <CDropdownMenu>
+                                    <CDropdownItem
+                                      onClick={() =>
+                                        handlePaymentChange(
+                                          { target: { value: item?.status } },
+                                          item?.booking_id
+                                        )
+                                      }
+                                    >
+                                      {item?.status}
+                                    </CDropdownItem>
+                                    <CDropdownItem
+                                      onClick={() =>
+                                        handlePaymentChange(
+                                          { target: { value: "Cancel" } },
+                                          item?.booking_id
+                                        )
+                                      }
+                                    >
+                                      Cancel
+                                    </CDropdownItem>
+                                  </CDropdownMenu>
+                                </CDropdown>
                               ) : (
                                 <>{item?.status}</>
                               )}
@@ -693,9 +751,13 @@ const CourtConfiguration = () => {
         <CModalBody className="modal_body_court">
           <div className="add_court_modal text-center">
             <img src={deleteImage} alt="deleteImage" width={100} />
-            <h1 className="card-title my-4">
-              Are you really want <br /> to cancel this booking?
+            <h1 className="card-title mt-4">
+              Are you sure
+              <br />
             </h1>
+            <h4 className="card-title-cancel">
+              you want to cancel this booking?
+            </h4>
             <div className="d-flex gap-2 mt-4 justify-content-center">
               <CButton
                 type="button"

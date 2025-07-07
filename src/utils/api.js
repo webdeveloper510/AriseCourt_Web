@@ -406,9 +406,19 @@ export const getMyLocation = async () => {
   }
 };
 
-export const getPerLocation = async () => {
+export const getPerLocation = async (  type,
+  page,
+  search,
+  startDate,
+  endDate
+) => {
+  const bookingType = type ? type : "";
+  const searchVal = search ? `&search=${search}` : "";
+  const start_date = startDate
+    ? `&start_date=${startDate}&end_date=${endDate}`
+    : "";
   try {
-    const response = await axios.get(`/users_my_locations/`, {
+    const response = await axios.get(`/users_my_locations/?user_type=${bookingType}&page=${page}${searchVal}${start_date}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
@@ -447,7 +457,7 @@ export const getCourtBookingByAdmin = async (
 
   try {
     const response = await axios.get(
-      `/court-get_booking_byadmin/?type=${bookingType}&page=${page}${searchVal}${start_date}`,
+      `/get_booking_byadmin/?type=${bookingType}&page=${page}${searchVal}${start_date}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,

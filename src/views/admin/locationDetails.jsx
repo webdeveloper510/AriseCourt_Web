@@ -171,67 +171,63 @@ const LocationDetails = () => {
   };
 
   useEffect(() => {
-    if (id) {
-      getLocationDatabyId();
-    } else {
-      getLocationData();
-    }
-  }, [id]);
-
-  const getLocationData = () => {
-    setLoading(true)
-    getMyLocation()
-      .then((res) => {
-        setLoading(false);
-        if (res?.status == 200) {
-          setFormData(res?.data);
-          setCourtData(res?.data?.courts);
-        } else if (res?.data?.code == "token_not_valid") {
-          toast.error(res?.data?.detail, {
-            theme: "colored",
-          });
-          localStorage.removeItem("user_access_valid_token");
-          localStorage.removeItem("logged_user_data");
-          navigate("/login");
-        } else {
-          setFormData(null);
-          setCourtData([]);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-        setFormData(null);
-        setCourtData([]);
-      });
-  };
+      getLocationDatabyId();  
+  }, []);
 
   const getLocationDatabyId = () => {
     setLoading(true);
-    getLocationbyId(id)
-      .then((res) => {
-        setLoading(false);
-        if (res?.status == 200) {
-          setFormData(res?.data);
-          setCourtData(res?.data?.courts);
-        } else if (res?.data?.code == "token_not_valid") {
-          toast.error(res?.data?.detail, {
-            theme: "colored",
-          });
-          localStorage.removeItem("user_access_valid_token");
-          localStorage.removeItem("logged_user_data");
-          navigate("/login");
-        } else {
+    if (id) {
+      getLocationbyId(id)
+        .then((res) => {
+          setLoading(false);
+          if (res?.status == 200) {
+            setFormData(res?.data);
+            setCourtData(res?.data?.courts);
+          } else if (res?.data?.code == "token_not_valid") {
+            toast.error(res?.data?.detail, {
+              theme: "colored",
+            });
+            localStorage.removeItem("user_access_valid_token");
+            localStorage.removeItem("logged_user_data");
+            navigate("/login");
+          } else {
+            setFormData(null);
+            setCourtData([]);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          setLoading(false);
           setFormData(null);
           setCourtData([]);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-        setFormData(null);
-        setCourtData([]);
-      });
+        });
+    } else {
+      getMyLocation()
+        .then((res) => {
+          setLoading(false);
+          console.log("location_idlocation_id", res?.data?.id);
+          if (res?.status == 200) {
+            setFormData(res?.data);
+            setCourtData(res?.data?.courts);
+          } else if (res?.data?.code == "token_not_valid") {
+            toast.error(res?.data?.detail, {
+              theme: "colored",
+            });
+            localStorage.removeItem("user_access_valid_token");
+            localStorage.removeItem("logged_user_data");
+            navigate("/login");
+          } else {
+            setFormData(null);
+            setCourtData([]);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          setLoading(false);
+          setFormData(null);
+          setCourtData([]);
+        });
+    }
   };
 
   const handleBackNavigate = () => {
@@ -251,7 +247,7 @@ const LocationDetails = () => {
     }
     setLoading(true);
     const body = {
-      location_id: id,
+      location_id: id || formData?.id,
       court_number: addCourt?.court_number,
       court_fee_hrs: addCourt?.court_fee_hrs,
       tax: `${addCourt?.tax}%`,
@@ -281,7 +277,7 @@ const LocationDetails = () => {
           setLoading(false);
         });
     } else {
-      addCourtData(addCourt)
+      addCourtData(body)
         .then((res) => {
           setLoading(false);
           if (res?.status == 200 || res?.status == 201) {
