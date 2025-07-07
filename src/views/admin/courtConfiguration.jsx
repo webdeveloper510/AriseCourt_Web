@@ -8,6 +8,8 @@ import {
   CFormSelect,
   CInputGroup,
   CInputGroupText,
+  CModal,
+  CModalBody,
   CPagination,
   CPaginationItem,
   CRow,
@@ -22,26 +24,32 @@ import { Link, useNavigate } from "react-router-dom";
 import { DateRangePicker } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import CIcon, { CIconSvg } from "@coreui/icons-react";
+import CIcon from "@coreui/icons-react";
 import {
   cilCalendar,
-  cilCloudUpload,
-  cilDelete,
   cilFilter,
   cilPencil,
   cilReload,
   cilSearch,
   cilX,
 } from "@coreui/icons";
-import { getCourtBooking, getCourtBookingByAdmin } from "../../utils/api";
+import {
+  getAllBookedLocation,
+  getCourtBooking,
+  getCourtBookingByAdmin,
+  getLocation,
+  updateCourtBooking,
+} from "../../utils/api";
 import { toast } from "react-toastify";
 import moment from "moment";
+import deleteImage from "../../assets/images/delete_image.png";
 
 const CourtConfiguration = () => {
   let SerialId = 1;
   const navigate = useNavigate();
   const calendarRef = useRef(null);
   const filterButtonRef = useRef(null);
+  const [visible, setVisible] = useState(false);
   const [selectionRange, setSelectionRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -68,6 +76,8 @@ const CourtConfiguration = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [bookingType, setBookingType] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState("");
+  const [paymentId, setPaymentId] = useState("");
 
   const userData = JSON.parse(localStorage.getItem("logged_user_data"));
 
@@ -159,6 +169,7 @@ const CourtConfiguration = () => {
 
   useEffect(() => {
     getCourtBookingData(bookingType, currentPage, searchQuery);
+    getLocationData();
   }, [bookingType, currentPage, searchQuery]);
 
   const handleSearchChange = (event) => {
@@ -236,6 +247,53 @@ const CourtConfiguration = () => {
       (location) => location.city === value
     );
     setAdminData(filteredData);
+  };
+
+  const getLocationData = () => {
+    getAllBookedLocation()
+      .then((res) => {
+        setLoading(false);
+        if (res.status == 200) {
+          setLocationFilter(res?.data);
+        } else {
+          setLocationFilter([]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setLocationFilter([]);
+      });
+  };
+  const handlePaymentChange = (e, id) => {
+    const status = e.target.value;
+    setVisible(true);
+    setPaymentStatus(status);
+    setPaymentId(id);
+  };
+
+  const handleUpdateStatus = () => {
+    setLoading(true);
+    updateCourtBooking(paymentId, {
+      status: "cancelled",
+    })
+      .then((res) => {
+        setLoading(false);
+        setVisible(false);
+        if (res?.data?.status_code == 200) {
+          toast.success(res?.data?.message, {
+            theme: "colored",
+          });
+          getCourtBookingData(bookingType, currentPage, searchQuery);
+        } else {
+          toast.error(res?.data?.message, {
+            theme: "colored",
+          });
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+      });
   };
 
   return (
@@ -329,9 +387,8 @@ const CourtConfiguration = () => {
 
               <CCol md={4}>
                 <CFormSelect
-                  className="form-control"
+                  className="form-control select_location_field"
                   placeholder="Select Location"
-                  style={{ height: "50px" }}
                   defaultValue=""
                   onChange={(e) => handleLocationChange(e)}
                   value={selectLocation}
@@ -339,11 +396,14 @@ const CourtConfiguration = () => {
                   <option disabled value="">
                     Select Location
                   </option>
-                  {[
-                    ...new Set(locationFilter.map((location) => location.city)),
-                  ].map((city, index) => (
-                    <option key={index} value={city}>
-                      {city}
+                  {locationFilter?.map((address, index) => (
+                    <option
+                      key={index}
+                      value={address?.id}
+                      style={{ textTransform: "capitalize" }}
+                    >
+                      {address?.address_1} {address?.address_2}{" "}
+                      {address?.address_3} {address?.address_4}
                     </option>
                   ))}
                 </CFormSelect>
@@ -361,6 +421,7 @@ const CourtConfiguration = () => {
                       borderRadius: "12px",
                       whiteSpace: "nowrap",
                       height: "50px",
+                      background: "white",
                     }}
                   >
                     <span>
@@ -413,7 +474,7 @@ const CourtConfiguration = () => {
                   <CTableHeaderCell scope="col">Booked By</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Type</CTableHeaderCell>
 
-                  <CTableHeaderCell scope="col">Location</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Address</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Price</CTableHeaderCell>
                   <CTableHeaderCell scope="col">
                     Payment Status
@@ -501,6 +562,7 @@ const CourtConfiguration = () => {
                             <span
                               style={{
                                 textTransform: "capitalize",
+                                fontWeight: "600",
                                 color:
                                   item?.status == "cancelled"
                                     ? "#FA3B3B"
@@ -513,14 +575,24 @@ const CourtConfiguration = () => {
                                           : "#182B4D",
                               }}
                             >
-                              {item?.status}
+                              {/* {item?.status} */}
 
-                              {/* {item?.status == "completed" && 
-                              <>
-                              <CFormSelect>
-
-                              </CFormSelect>
-                              </>} */}
+                              {item.status == "confirmed" ||
+                              item.status == "completed" ? (
+                                <>
+                                  <CFormSelect
+                                    className="cancel_status"
+                                    onChange={(e) =>
+                                      handlePaymentChange(e, item?.booking_id)
+                                    }
+                                  >
+                                    <option>{item?.status}</option>
+                                    <option>Cancel</option>
+                                  </CFormSelect>
+                                </>
+                              ) : (
+                                <>{item?.status}</>
+                              )}
                             </span>
                           }
                         </CTableDataCell>
@@ -611,6 +683,38 @@ const CourtConfiguration = () => {
           </div>
         )}
       </CCardBody>
+
+      <CModal
+        alignment="center"
+        visible={visible}
+        onClose={() => setVisible(false)}
+        aria-labelledby="LiveDemoExampleLabel"
+      >
+        <CModalBody className="modal_body_court">
+          <div className="add_court_modal text-center">
+            <img src={deleteImage} alt="deleteImage" width={100} />
+            <h1 className="card-title my-4">
+              Are you really want <br /> to cancel this booking?
+            </h1>
+            <div className="d-flex gap-2 mt-4 justify-content-center">
+              <CButton
+                type="button"
+                onClick={() => handleUpdateStatus()}
+                className="delet_yes"
+              >
+                Yes
+              </CButton>
+              <CButton
+                type="button"
+                className="delet_cancel"
+                onClick={() => setVisible(false)}
+              >
+                No
+              </CButton>
+            </div>
+          </div>
+        </CModalBody>
+      </CModal>
       {/* </CCard> */}
     </>
   );

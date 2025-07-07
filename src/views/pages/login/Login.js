@@ -86,7 +86,11 @@ const Login = () => {
           ) {
             navigate("/reporting");
           } else if (userData?.access_flag?.includes("1")) {
-            navigate("/locations");
+            if(userData?.user_type === 0){
+              navigate("/locations");
+            }else if(userData?.user_type === 1){
+              navigate("/locations");
+            }
           } else if (userData?.access_flag?.includes("2")) {
             navigate("/court-bookings");
           } else if (userData?.access_flag?.includes("3")) {

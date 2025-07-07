@@ -432,7 +432,7 @@ const LocationDetails = () => {
 
         <div className="mt-4 location_Details_section">
           <CRow className="align-items-center">
-            <CCol sm={12} md={3}>
+            <CCol sm={12} md={4} lg={3}>
               <div className="badminton_bg">
                 <img
                   src={formData?.logo ? formData?.logo : badminton}
@@ -440,9 +440,9 @@ const LocationDetails = () => {
                 />
               </div>
             </CCol>
-            <CCol sm={12} md={9}>
+            <CCol sm={12} md={8} lg={9}>
               <CRow>
-                <CCol sm={12} md={4} className="my-1">
+                <CCol sm={12} md={6} lg={4} className="my-1">
                   <h6 className="detail_title">Email</h6>
                   <p
                     className="details_description"
@@ -460,7 +460,7 @@ const LocationDetails = () => {
                     {formData?.website}
                   </p>
                 </CCol>
-                <CCol sm={12} md={4} className="my-1">
+                <CCol sm={12} md={6} lg={4} className="my-1">
                   <h6 className="detail_title">Description</h6>
                   <p
                     className="details_description"
@@ -474,7 +474,7 @@ const LocationDetails = () => {
                   <h6 className="detail_title">Name</h6>
                   <p className="details_description">{formData?.name}</p>
                 </CCol> */}
-                <CCol sm={12} md={4} className="my-1">
+                <CCol sm={12} md={6} lg={4} className="my-1">
                   <h6 className="detail_title">Address</h6>
                   <p className="details_description">{`${formData?.address_1} 
                   ${formData?.address_2 ? `${formData?.address_2}` : ""}

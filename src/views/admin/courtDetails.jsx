@@ -5,7 +5,7 @@ import { cilArrowLeft } from "@coreui/icons";
 import { useNavigate, useParams } from "react-router-dom";
 import badminton from "../../assets/images/badminton.png";
 
-import { getCourtBookingbyId, updateCourtBooking } from "../../utils/api";
+import { getCourtBookingbyId } from "../../utils/api";
 import { toast } from "react-toastify";
 
 const CourtDetails = () => {
@@ -65,9 +65,7 @@ const CourtDetails = () => {
     return `${hourNum} Hour${hourNum !== 1 ? "s" : ""}`;
   };
 
-  const updateCourtBooking = () => {
-    updateCourtBooking()
-  }
+ 
 
   return (
     <>
@@ -100,7 +98,7 @@ const CourtDetails = () => {
 
         <div className="mt-4 location_Details_section">
           <CRow className="align-items-center">
-            <CCol sm={12} md={3}>
+            <CCol sm={12} md={4} lg={3}>
               <div className="badminton_bg">
                 <img
                   src={formData?.logo ? formData?.logo : badminton}
@@ -108,9 +106,9 @@ const CourtDetails = () => {
                 />
               </div>
             </CCol>
-            <CCol sm={12} md={9}>
+            <CCol sm={12} md={8} lg={9}>
               <CRow>
-                <CCol sm={12} md={4} className="my-1">
+                <CCol sm={12} md={6} lg={4} className="my-1">
                   <h6 className="text-white">Booked by</h6>
                   <h6 className="detail_title">Name</h6>
                   <p className="details_description">{`${formData?.user?.first_name} ${formData?.user?.last_name}`}</p>
@@ -139,7 +137,7 @@ const CourtDetails = () => {
                   </p>
                 </CCol>
 
-                <CCol sm={12} md={4} className="my-1">
+                <CCol sm={12} md={6} lg={4} className="my-1">
                   <h6 className="text-white">Date and time</h6>
                   <h6 className="detail_title">Booking Date</h6>
                   <p className="details_description">
@@ -167,7 +165,7 @@ const CourtDetails = () => {
                   </p>
                 </CCol>
 
-                <CCol sm={12} md={4} className="my-1">
+                <CCol sm={12} md={6} lg={4} className="my-1">
                   <h6 className="text-white">Payment details</h6>
                   <h6 className="detail_title">Amount</h6>
                   <p className="details_description">{formData?.amount}</p>

@@ -96,9 +96,11 @@ body {
   color: #0860FB;
   background: white;
 }
-.sidebar-nav .nav-link{
+
+.sidebar-nav .nav-link {
   height: 50px !important;
 }
+
 .sidebar-nav .nav-link.active .nav-icon {
   color: #0860FB;
 }
@@ -263,9 +265,11 @@ body {
   font-size: 14px;
   color: #333;
 }
-.dropdown-item{
+
+.dropdown-item {
   cursor: pointer;
 }
+
 .input_icons {
   background: white !important;
   border-top-left-radius: 12px !important;
@@ -300,6 +304,7 @@ body {
 
 .modal.fade.show {
   background: #0860fb2e !important;
+  z-index: 99999 !important;
 }
 
 .main_table td {
@@ -384,6 +389,14 @@ body {
   font-weight: 600;
   white-space: nowrap;
   color: #182B4D;
+  background: white;
+}
+
+.select_location_field {
+  width: 90% !important;
+  height: 50px;
+  margin-left: auto;
+  border-radius: 15px;
 }
 
 .location_Details_section {
@@ -769,9 +782,10 @@ input:-webkit-autofill {
   .login_outer {
     height: auto;
   }
+
   .location_Details_section {
     border-radius: 30px;
-}
+  }
 }
 
 .table_flow {
@@ -825,8 +839,42 @@ input:-webkit-autofill {
   box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
   z-index: 999999;
 }
-.location_select{
+
+.location_select {
   height: 50px;
   width: 60% !important;
   margin-left: auto;
+}
+
+.cancel_status {
+  height: 30px;
+  font-size: 14px;
+  border-radius: 15px;
+  background-color: #e1e1e1;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0px 10px;
+  text-transform: capitalize;
+}
+
+.cancel_status:focus {
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+.css-13cymwt-control {
+  height: 48px !important;
+  border-radius: 12px !important;
+  margin-top: 2px !important;
+  border: 1px solid #dbdfe6 !important;
+}
+
+.css-13cymwt-control:focus-visible, .css-b62m3t-container:focus-visible, .css-1f43avz-a11yText-A11yText :focus-visible, .css-hlgwow:focus-visible{
+  outline: none !important;
+  box-shadow: none !important;
+  height: 48px !important;
+  border-radius: 12px !important;
+  margin-top: 2px !important;
+  border: 1px solid #dbdfe6 !important;
+  border-color: #dbdfe6 !important;
 }

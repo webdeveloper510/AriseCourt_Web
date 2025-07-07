@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   CButton,
   CCardBody,
@@ -15,14 +15,20 @@ import { addLocation, getLocationbyId, updateLocation } from "../../utils/api";
 import { toast } from "react-toastify";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import Select from "react-select";
+import countryList from "react-select-country-list";
 
 const AddLocations = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const userData = JSON.parse(localStorage.getItem("logged_user_data"));
   const [loading, setLoading] = useState(false);
+  const [value, setValue] = useState("");
+  const options = useMemo(() => countryList().getData(), []);
+
   const [formData, setFormData] = useState({
     email: "",
+    name: "",
     address_1: "",
     address_2: "",
     address_3: "",
@@ -39,6 +45,14 @@ const AddLocations = () => {
   });
 
   const [errors, setErrors] = useState({});
+
+  const changeHandler = (selectedOption) => {
+    setValue(selectedOption);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      country: selectedOption?.label || "",
+    }));
+  };
 
   const validateFormData = (data, fieldToValidate = null) => {
     const errors = {};
@@ -179,20 +193,21 @@ const AddLocations = () => {
     setFormData(updatedData);
 
     const fieldErrors = validateFormData(updatedData, name);
-    setErrors((prev) => ({ ...prev, [name]: fieldErrors[name] || "" }));
+    setErrors((prev) => ({
+      ...prev,
+      [name]: fieldErrors[name] || "",
+    }));
   };
 
   const handlePhoneChange = (value, data) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      phone: value, // full phone number
-      // country: data.countryCode.toUpperCase(), // e.g., "US"
+      phone: value,
     }));
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-
     const validationErrors = validateFormData(formData);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -408,13 +423,33 @@ const AddLocations = () => {
                   className="form-control"
                   onChange={handlePhoneChange}
                   autoComplete="off"
+                  name="phone"
                 />
                 {errors.phone && (
                   <div className="text-danger">{errors.phone}</div>
                 )}
               </CCol>
+              <CCol sm={12} md={6} lg={4} className="my-1">
+                <label>Location Name</label>
 
-              <CCol sm={12} md={6} lg={6} className="my-1">
+                <CFormInput
+                  type="text"
+                  className="register_input"
+                  placeholder="Enter Location Name"
+                  autoComplete="off"
+                  aria-label="default input example"
+                  value={formData.name}
+                  name="name"
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
+                />
+                {errors.name && (
+                  <div className="text-danger">{errors.name}</div>
+                )}
+              </CCol>
+
+              <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>City</label>
 
                 <CFormInput
@@ -433,7 +468,7 @@ const AddLocations = () => {
                   <div className="text-danger">{errors.city}</div>
                 )}
               </CCol>
-              <CCol sm={12} md={6} lg={6} className="my-1">
+              <CCol sm={12} md={6} lg={4} className="my-1">
                 <label>State</label>
 
                 <CFormInput
@@ -454,6 +489,25 @@ const AddLocations = () => {
               </CCol>
               <CCol sm={12} md={6} lg={6} className="my-1">
                 <label>Country</label>
+                <Select
+                  options={options}
+                  onChange={(selectedOption) => {
+                    handleInputChange({
+                      target: {
+                        name: "country",
+                        value: selectedOption?.label || "",
+                      },
+                    });
+                  }}
+                  className="register_input"
+                  value={
+                    options?.find(
+                      (option) => option?.label === formData?.country
+                    ) || null
+                  }
+                  name="country"
+                />
+                {/* 
 
                 <CFormInput
                   type="text"
@@ -466,9 +520,9 @@ const AddLocations = () => {
                   onChange={(e) => {
                     handleInputChange(e);
                   }}
-                />
-                {errors.state && (
-                  <div className="text-danger">{errors.state}</div>
+                /> */}
+                {errors.country && (
+                  <div className="text-danger">{errors.country}</div>
                 )}
               </CCol>
 

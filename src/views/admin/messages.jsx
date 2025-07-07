@@ -256,6 +256,7 @@ const Messages = () => {
                   cursor: "pointer",
                   borderRadius: "12px",
                   height: "50px",
+                  background: "white",
                 }}
               >
                 <span>

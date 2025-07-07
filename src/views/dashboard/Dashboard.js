@@ -300,7 +300,7 @@ const Dashboard = () => {
                   <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Type</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Access</CTableHeaderCell>
+                  {/* <CTableHeaderCell scope="col">Access</CTableHeaderCell> */}
                   <CTableHeaderCell scope="col">
                     E-mail Address
                   </CTableHeaderCell>
@@ -330,7 +330,7 @@ const Dashboard = () => {
                         <CTableDataCell>
                           {item?.user_type == 1 ? "Admin" : ""}
                         </CTableDataCell>
-                        <CTableDataCell>0</CTableDataCell>
+                        {/* <CTableDataCell>0</CTableDataCell> */}
                         <CTableDataCell>{item?.email}</CTableDataCell>
                         <CTableDataCell>{item?.phone}</CTableDataCell>
                         {/* <CTableDataCell>{item?.city}</CTableDataCell> */}
@@ -340,11 +340,12 @@ const Dashboard = () => {
                               position: "relative",
                               marginBottom: "16px",
                             }}
+                            onClick={() => toggleMenu(item.id)}
                           >
                             {/* Three-dot icon */}
                             <span
                               style={{ fontSize: "24px", cursor: "pointer" }}
-                              onClick={() => toggleMenu(item.id)}
+                              // onClick={() => toggleMenu(item.id)}
                             >
                               ⋮
                             </span>

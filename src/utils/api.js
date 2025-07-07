@@ -154,7 +154,6 @@ export const getCourts = async (id, page) => {
   }
 };
 
-
 export const updateCourt = async (id, data) => {
   try {
     const response = await axios.put(`/courts/${id}/`, data, {
@@ -266,10 +265,18 @@ export const deleteAdminbyId = async (id) => {
   }
 };
 
-export const getCourtBooking = async (type,page,search,startDate, endDate) => {
-const bookingType = type ? type : ""
-const searchVal = search ? `&search=${search}` : "";
-const start_date = startDate ? `&start_date=${startDate}&end_date=${endDate}` : ""
+export const getCourtBooking = async (
+  type,
+  page,
+  search,
+  startDate,
+  endDate
+) => {
+  const bookingType = type ? type : "";
+  const searchVal = search ? `&search=${search}` : "";
+  const start_date = startDate
+    ? `&start_date=${startDate}&end_date=${endDate}`
+    : "";
 
   try {
     const response = await axios.get(
@@ -299,25 +306,33 @@ export const getCourtBookingbyId = async (id) => {
   }
 };
 
-export const getReportBooking = async (type,page,search,startDate, endDate) => {
-  const bookingType = type ? type : ""
+export const getReportBooking = async (
+  type,
+  page,
+  search,
+  startDate,
+  endDate
+) => {
+  const bookingType = type ? type : "";
   const searchVal = search ? `&search=${search}` : "";
-  const start_date = startDate ? `&start_date=${startDate}&end_date=${endDate}` : ""
-  
-    try {
-      const response = await axios.get(
-        `/user-data/?user_type=${bookingType}&page=${page}${searchVal}${start_date}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
-          },
-        }
-      );
-      return response;
-    } catch (error) {
-      return error.response;
-    }
-  };
+  const start_date = startDate
+    ? `&start_date=${startDate}&end_date=${endDate}`
+    : "";
+
+  try {
+    const response = await axios.get(
+      `/user-data/?user_type=${bookingType}&page=${page}${searchVal}${start_date}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
 
 export const getReportData = async () => {
   try {
@@ -358,15 +373,20 @@ export const updateProfile = async (data) => {
   }
 };
 
-export const getContactMessage = async (page,search,startDate, endDate) => {
+export const getContactMessage = async (page, search, startDate, endDate) => {
   const searchVal = search ? `&search=${search}` : "";
-  const start_date = startDate ? `&start_date=${startDate}&end_date=${endDate}` : ""
+  const start_date = startDate
+    ? `&start_date=${startDate}&end_date=${endDate}`
+    : "";
   try {
-    const response = await axios.get(`/contact-us/?page=${page}${searchVal}${start_date}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
-      },
-    });
+    const response = await axios.get(
+      `/contact-us/?page=${page}${searchVal}${start_date}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+        },
+      }
+    );
     return response;
   } catch (error) {
     return error.response;
@@ -399,9 +419,9 @@ export const getPerLocation = async () => {
   }
 };
 
-export const updateCourtBooking = async (data) => {
+export const updateCourtBooking = async (id, data) => {
   try {
-    const response = await axios.put(`/court-bookings/`, data, {
+    const response = await axios.put(`/court-bookings/${id}/`, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
@@ -412,22 +432,56 @@ export const updateCourtBooking = async (data) => {
   }
 };
 
-export const getCourtBookingByAdmin = async (type,page,search,startDate, endDate) => {
-  const bookingType = type ? type : ""
+export const getCourtBookingByAdmin = async (
+  type,
+  page,
+  search,
+  startDate,
+  endDate
+) => {
+  const bookingType = type ? type : "";
   const searchVal = search ? `&search=${search}` : "";
-  const start_date = startDate ? `&start_date=${startDate}&end_date=${endDate}` : ""
-  
-    try {
-      const response = await axios.get(
-        `/court-get_booking_byadmin/?type=${bookingType}&page=${page}${searchVal}${start_date}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
-          },
-        }
-      );
-      return response;
-    } catch (error) {
-      return error.response;
-    }
-  };
+  const start_date = startDate
+    ? `&start_date=${startDate}&end_date=${endDate}`
+    : "";
+
+  try {
+    const response = await axios.get(
+      `/court-get_booking_byadmin/?type=${bookingType}&page=${page}${searchVal}${start_date}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const getAllLocation = async () => {
+  try {
+    const response = await axios.get(`/get_locations_byAdmin/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const getAllBookedLocation = async () => {
+  try {
+    const response = await axios.get(`/booked-locations/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};

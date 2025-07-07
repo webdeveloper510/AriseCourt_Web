@@ -14,6 +14,7 @@ import CIcon from "@coreui/icons-react";
 import {
   addAdmintData,
   getAdminbyId,
+  getAllLocation,
   getLocation,
   registerUser,
   updateAdmin,
@@ -80,16 +81,10 @@ const AdminRegistration = () => {
     getLocationData();
   }, []);
 
-  const getLocationData = (
-    page = 1,
-    query = "",
-    startDate = "",
-    endDate = ""
-  ) => {
-    getLocation(page, query, startDate, endDate)
+  const getLocationData = () => {
+    getAllLocation()
       .then((res) => {
         setLoading(false);
-        console.log("address1address1",res)
         if (res.status == 200) {
           setLocationFilter(res?.data?.results);
         } else {
@@ -383,7 +378,8 @@ const AdminRegistration = () => {
                       value={address?.id}
                       style={{ textTransform: "capitalize" }}
                     >
-                      {address?.address_1} {address?.address_2} {address?.address_3} {address?.address_4}
+                      {address?.address_1} {address?.address_2}{" "}
+                      {address?.address_3} {address?.address_4}
                     </option>
                   ))}
                 </CFormSelect>
