@@ -47,8 +47,9 @@ const AdminRegistration = () => {
     user_type: 1,
     access_flag: [],
     location_id: "",
+    locations_id: "",
   });
-  const [locationAddress, setLocationAddress] = useState("")
+  const [locationAddress, setLocationAddress] = useState("");
   const selectedOptions = options.filter((option) =>
     formData?.access_flag?.includes(option.id)
   );
@@ -64,9 +65,9 @@ const AdminRegistration = () => {
       .then((res) => {
         if (res?.status == 200 || res?.status == 201) {
           setFormData(res?.data);
-          const loc = res?.data?.locations?.[0]
-          const address = `${loc?.address_1} ${loc?.address_2} ${loc?.address_3} ${loc?.address_4}` 
-          setLocationAddress(address)
+          const loc = res?.data?.locations?.[0];
+          const address = `${loc?.address_1 ? loc?.address_1 : ""} ${loc?.address_2 ? loc?.address_2 : ""} ${loc?.address_3 ? loc?.address_3 : ""} ${loc?.address_4 ? loc?.address_4 : ""}`;
+          setLocationAddress(address);
         } else if (res?.data?.code == "token_not_valid") {
           toast.error(res?.data?.detail, {
             theme: "colored",
@@ -295,17 +296,30 @@ const AdminRegistration = () => {
       setErrors(validationErrors); // Set field-wise errors
       return; // Stop submission
     }
+    let payload = formData;
+    if (isEditMode) {
+      // remove locations AND rename location_id → locatios_id
+      const { locations, location_id, ...rest } = formData;
+
+      payload = {
+        ...rest,
+        locatios_id: location_id, // renamed key
+      };
+    }
+
     setLoading(true);
+
     const apiCall = isEditMode
-      ? updateAdmin(id, formData)
+      ? updateAdmin(id, payload)
       : addAdmintData(formData);
 
     apiCall
       .then((res) => {
         setLoading(false);
+        console.log("apiCallapiCall", res)
         if (res.status === 200 || res.status === 201) {
           navigate(-1);
-          toast.success(res?.data?.msg, { theme: "colored" });
+          toast.success(res?.data?.message, { theme: "colored" });
         } else {
           Object.keys(res?.data).forEach((key) => {
             res?.data[key].forEach((msg) => {
@@ -325,7 +339,6 @@ const AdminRegistration = () => {
       handleFormSubmit(e);
     }
   };
-  console.log("addressaddressaddress", locationAddress, formData?.location_id)
 
   return (
     <>
@@ -371,24 +384,28 @@ const AdminRegistration = () => {
                   style={{ height: "50px" }}
                   defaultValue=""
                   onChange={(e) => handleInputChange(e)}
-                  value={formData?.location_id}
+                  value={formData?.location_id || formData?.locations_id}
                   name="location_id"
                 >
-                  {id ? <option value={formData?.locations?.[0]?.id}>
-                   {locationAddress} 
-                  </option>
-                  :
-                  <option disabled value="">
-                   {"Select Location"} 
-                  </option>}
+                  {id ? (
+                    <option value={formData?.locations?.[0]?.id}>
+                      {locationAddress}
+                    </option>
+                  ) : (
+                    <option disabled value="">
+                      {"Select Location"}
+                    </option>
+                  )}
                   {locationFilter?.map((address, index) => (
                     <option
                       key={index}
                       value={address?.id}
                       style={{ textTransform: "capitalize" }}
                     >
-                      {address?.address_1} {address?.address_2}{" "}
-                      {address?.address_3} {address?.address_4}
+                      {address?.address_1 ? address?.address_1 : ""}{" "}
+                      {address?.address_2 ? address?.address_2 : ""}{" "}
+                      {address?.address_3 ? address?.address_3 : ""}{" "}
+                      {address?.address_4 ? address?.address_4 : ""}
                     </option>
                   ))}
                 </CFormSelect>

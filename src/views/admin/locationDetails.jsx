@@ -57,6 +57,21 @@ const LocationDetails = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalCounts = courtData?.length;
   const totalPages = Math.ceil(totalCounts / itemsPerPage);
+  const [expanded, setExpanded] = useState(false);
+  const charLimit = 50;
+
+  const location = `${formData?.address_1} 
+  ${formData?.address_2 ? `${formData?.address_2}` : ""}
+   ${formData?.address_3 ? `${formData?.address_3}` : ""} 
+   ${formData?.address_4 ? `${formData?.address_4}` : ""}`;
+
+  const isLong = location?.length > charLimit;
+  const displayText =
+    expanded || !isLong ? location : location.slice(0, charLimit) + "...";
+
+  const handleToggle = () => {
+    setExpanded(!expanded);
+  };
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -67,7 +82,10 @@ const LocationDetails = () => {
   // Get data for the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = courtData?.length > 0 ? courtData?.slice(indexOfFirstItem, indexOfLastItem) : []; // Slice the data to display on current page
+  const currentItems =
+    courtData?.length > 0
+      ? courtData?.slice(indexOfFirstItem, indexOfLastItem)
+      : []; // Slice the data to display on current page
 
   // Create page numbers dynamically
   const pageNumbers = [];
@@ -171,7 +189,7 @@ const LocationDetails = () => {
   };
 
   useEffect(() => {
-      getLocationDatabyId();  
+    getLocationDatabyId();
   }, []);
 
   const getLocationDatabyId = () => {
@@ -180,7 +198,7 @@ const LocationDetails = () => {
       getLocationbyId(id)
         .then((res) => {
           setLoading(false);
-          
+
           if (res?.status == 200) {
             setFormData(res?.data);
             setCourtData(res?.data?.courts);
@@ -473,12 +491,56 @@ const LocationDetails = () => {
                 </CCol> */}
                 <CCol sm={12} md={6} lg={4} className="my-1">
                   <h6 className="detail_title">Address</h6>
-                  <p className="details_description">{`${formData?.address_1} 
-                  ${formData?.address_2 ? `${formData?.address_2}` : ""}
-                   ${formData?.address_3 ? `${formData?.address_3}` : ""} 
-                   ${formData?.address_4 ? `${formData?.address_4}` : ""}
-                 
-                   `}</p>
+                  <p className="details_description">
+                    {location?.length > 50 && !expanded
+                      ? `${location.slice(0, 50)}... `
+                      : location}{" "}
+                    {location?.length > 50 && (
+                      <span
+                        onClick={() => setExpanded(!expanded)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {" "}
+                        {expanded ? (
+                          <>
+                            <br />
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              fill="currentColor"
+                              class="bi bi-arrow-up-short"
+                              viewBox="0 0 16 16"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5"
+                              />
+                            </svg>
+                            Show Less
+                          </>
+                        ) : (
+                          <>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              fill="currentColor"
+                              class="bi bi-arrow-down-short"
+                              viewBox="0 0 16 16"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4"
+                              />
+                            </svg>
+                            Read More
+                          </>
+                        )}
+                      </span>
+                    )}
+                  </p>
+
                   {/*   ${formData?.city} ${formData?.state} ${formData?.country} */}
                   {/* <p className="details_description">{formData?.city}</p> */}
                   <h6 className="detail_title">State</h6>

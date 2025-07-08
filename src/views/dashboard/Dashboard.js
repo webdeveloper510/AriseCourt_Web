@@ -312,6 +312,10 @@ const Dashboard = () => {
                 {adminData
                   ?.sort((a, b) => b?.id - a?.id)
                   ?.map((item, i) => {
+                    const location = `${item?.locations?.[0]?.address_1 ? item?.locations?.[0]?.address_1 : ""} 
+                        ${item?.locations?.[0]?.address_2 ? item?.locations?.[0]?.address_2  : ""} 
+                        ${item?.locations?.[0]?.address_3 ? item?.locations?.[0]?.address_3 : ""} 
+                        ${item?.locations?.[0]?.address_4 ? item?.locations?.[0]?.address_4 : ""}`
                     return (
                       <CTableRow key={i}>
                         {/* <CTableDataCell>#123</CTableDataCell> */}
@@ -332,10 +336,7 @@ const Dashboard = () => {
                         {/* <CTableDataCell>0</CTableDataCell> */}
                         <CTableDataCell>{item?.email}</CTableDataCell>
                         <CTableDataCell>{item?.phone}</CTableDataCell>
-                        <CTableDataCell>{`${item?.locations?.[0]?.address_1 ? item?.locations?.[0]?.address_1 : ""} 
-                        ${item?.locations?.[0]?.address_2 ? item?.locations?.[0]?.address_2  : ""} 
-                        ${item?.locations?.[0]?.address_3 ? item?.locations?.[0]?.address_3 : ""} 
-                        ${item?.locations?.[0]?.address_4 ? item?.locations?.[0]?.address_4 : ""}`}</CTableDataCell>
+                        <CTableDataCell title={location} style={{width:"20%"}}>{location?.length > 50 ? `${location?.slice(0,50)}...` : location}</CTableDataCell>
                         <CTableDataCell>
                           <div
                             style={{

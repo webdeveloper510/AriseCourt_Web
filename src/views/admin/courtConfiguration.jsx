@@ -259,6 +259,7 @@ const CourtConfiguration = () => {
     getAllBookedLocation()
       .then((res) => {
         setLoading(false);
+        console.log("getAllBookedLocation", res)
         if (res.status == 200) {
           setLocationFilter(res?.data);
         } else {
