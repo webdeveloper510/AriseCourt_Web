@@ -379,6 +379,7 @@ const CourtConfiguration = () => {
                     setSearchQuery("");
                     setStartDate(new Date());
                     setEndDate(new Date());
+                    setSelectLocation("")
                     setSelectionRange({
                       startDate: new Date(),
                       endDate: new Date(),
