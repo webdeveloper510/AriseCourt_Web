@@ -106,13 +106,14 @@ const CourtConfiguration = () => {
     bookingType = "",
     page = 1,
     query = "",
+    selectLocation = "",
     startDate = "",
     endDate = "",
     loader
   ) => {
     setLoading(query ? false : true);
     if (userData?.user_type == 0) {
-      getCourtBooking(bookingType, page, query, startDate, endDate)
+      getCourtBooking(bookingType, page, query,selectLocation, startDate, endDate)
         .then((res) => {
           setLoading(false);
           if (res?.status === 200) {
@@ -136,7 +137,7 @@ const CourtConfiguration = () => {
           setLoading(false);
         });
     } else {
-      getCourtBookingByAdmin(bookingType, page, query, startDate, endDate)
+      getCourtBookingByAdmin(bookingType, page, query,selectLocation, startDate, endDate)
         .then((res) => {
           setLoading(false);
           if (res?.status === 200) {
@@ -167,6 +168,7 @@ const CourtConfiguration = () => {
       bookingType,
       currentPage,
       searchQuery,
+      selectLocation,
       startDate,
       endDate,
       "loader"
@@ -174,9 +176,9 @@ const CourtConfiguration = () => {
   };
 
   useEffect(() => {
-    getCourtBookingData(bookingType, currentPage, searchQuery);
+    getCourtBookingData(bookingType, currentPage, searchQuery, selectLocation);
     getLocationData();
-  }, [bookingType, currentPage, searchQuery]);
+  }, [bookingType, currentPage, searchQuery, selectLocation]);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -259,7 +261,6 @@ const CourtConfiguration = () => {
     getAllBookedLocation()
       .then((res) => {
         setLoading(false);
-        console.log("getAllBookedLocation", res)
         if (res.status == 200) {
           setLocationFilter(res?.data);
         } else {
@@ -290,7 +291,7 @@ const CourtConfiguration = () => {
           toast.success(res?.data?.message, {
             theme: "colored",
           });
-          getCourtBookingData(bookingType, currentPage, searchQuery);
+          getCourtBookingData(bookingType, currentPage, searchQuery,selectLocation);
         } else {
           toast.error(res?.data?.message, {
             theme: "colored",
@@ -403,16 +404,17 @@ const CourtConfiguration = () => {
                   <option disabled value="">
                     Select Location
                   </option>
-                  {locationFilter?.map((address, index) => (
+                  {locationFilter?.map((address, index) => {
+                    const newAddress = `${address?.address_1} ${address?.address_2} ${address?.address_3} ${address?.address_4}`
+                    return(
                     <option
                       key={index}
-                      value={address?.id}
+                      value={newAddress}
                       style={{ textTransform: "capitalize" }}
                     >
-                      {address?.address_1} {address?.address_2}{" "}
-                      {address?.address_3} {address?.address_4}
+                      {newAddress}
                     </option>
-                  ))}
+                  )})}
                 </CFormSelect>
               </CCol>
 
