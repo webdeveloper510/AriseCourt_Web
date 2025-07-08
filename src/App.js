@@ -8,6 +8,7 @@ import './scss/examples.scss';
 import ForgotEmail from './views/pages/forgotpassword/forgotemail';
 import NewPassword from './views/pages/forgotpassword/new-password';
 import { PrivateRoute, PublicRoute } from './utils/RouteGuards';
+import VerifyEmail from './views/admin/verifyEmail';
 
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));
 const Login = React.lazy(() => import('./views/pages/login/Login'));
@@ -57,6 +58,14 @@ const App = () => {
             <PublicRoute>
               <NewPassword />
             </PublicRoute>
+          }
+        />
+        <Route
+          path="/verify-email/:id"
+          element={
+            // <PublicRoute>
+              <VerifyEmail />
+            // </PublicRoute>
           }
         />
 
