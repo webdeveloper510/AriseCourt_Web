@@ -525,7 +525,7 @@ const CourtConfiguration = () => {
                       <CTableRow key={i}>
                         <CTableDataCell>
                           {SerialId++}
-                          <div
+                          {/* <div
                             onClick={() => {
                               handleViewDetails(item.booking_id);
                               setOpenMenuId(null);
@@ -536,7 +536,7 @@ const CourtConfiguration = () => {
                               className="bi bi-eye-fill view_icon"
                               style={{ color: "#0860fb" }}
                             />
-                          </div>
+                          </div> */}
                         </CTableDataCell>
                         {/* <CTableDataCell>{item?.user?.first_name}</CTableDataCell> */}
                         <CTableDataCell>

@@ -349,7 +349,7 @@ const AdminRegistration = () => {
               </div>
               <div>
                 <h4 id="traffic" className="card-title mb-0">
-                  Admin Registration
+                  Admins Registration
                 </h4>
                 <div className="card_description">
                   {id ? "Edit" : "Add"} new Users

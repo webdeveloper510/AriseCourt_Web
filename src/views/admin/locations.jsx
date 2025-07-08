@@ -319,7 +319,7 @@ const Locations = () => {
                       <CTableRow key={i}>
                         <CTableDataCell>
                           {SerialId++}
-                          <div
+                          {/* <div
                             onClick={() => {
                               handleViewDetails(item.id);
                               setOpenMenuId(null);
@@ -330,7 +330,7 @@ const Locations = () => {
                               className="bi bi-eye-fill view_icon"
                               style={{ color: "#0860fb" }}
                             />
-                          </div>
+                          </div> */}
                         </CTableDataCell>
                         <CTableDataCell>
                           {item?.logo && (

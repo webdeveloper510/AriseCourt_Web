@@ -55,7 +55,7 @@ const LocationDetails = () => {
   const [errors, setErrors] = useState({});
   const itemsPerPage = 5; // Number of items to show per page
   const [currentPage, setCurrentPage] = useState(1);
-  const totalCounts = courtData.length;
+  const totalCounts = courtData?.length;
   const totalPages = Math.ceil(totalCounts / itemsPerPage);
 
   const handlePageChange = (page) => {
@@ -67,7 +67,7 @@ const LocationDetails = () => {
   // Get data for the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = courtData.slice(indexOfFirstItem, indexOfLastItem); // Slice the data to display on current page
+  const currentItems = courtData?.length > 0 ? courtData?.slice(indexOfFirstItem, indexOfLastItem) : []; // Slice the data to display on current page
 
   // Create page numbers dynamically
   const pageNumbers = [];
@@ -180,6 +180,7 @@ const LocationDetails = () => {
       getLocationbyId(id)
         .then((res) => {
           setLoading(false);
+          
           if (res?.status == 200) {
             setFormData(res?.data);
             setCourtData(res?.data?.courts);
@@ -205,10 +206,10 @@ const LocationDetails = () => {
       getMyLocation()
         .then((res) => {
           setLoading(false);
-          console.log("location_idlocation_id", res?.data?.id);
+          console.log("location_idlocation_id", res);
           if (res?.status == 200) {
-            setFormData(res?.data);
-            setCourtData(res?.data?.courts);
+            setFormData(res?.data?.[0]);
+            setCourtData(res?.data?.[0]?.courts);
           } else if (res?.data?.code == "token_not_valid") {
             toast.error(res?.data?.detail, {
               theme: "colored",

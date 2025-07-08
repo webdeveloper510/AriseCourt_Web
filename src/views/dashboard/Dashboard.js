@@ -40,7 +40,7 @@ import { toast } from "react-toastify";
 import moment from "moment/moment";
 
 const Dashboard = () => {
-  let SerialId=1;
+  let SerialId = 1;
   const navigate = useNavigate();
   const calendarRef = useRef(null);
   const filterButtonRef = useRef(null);
@@ -244,7 +244,6 @@ const Dashboard = () => {
 
           <CCol sm={6} className="mt-3">
             <div className="text-end date_filter_section">
-              
               {/* <div
                 onClick={handleCalendarClick}
                 style={{
@@ -305,7 +304,7 @@ const Dashboard = () => {
                     E-mail Address
                   </CTableHeaderCell>
                   <CTableHeaderCell scope="col">Phone Number</CTableHeaderCell>
-                  {/* <CTableHeaderCell scope="col">City</CTableHeaderCell> */}
+                  <CTableHeaderCell scope="col">Location</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
@@ -333,7 +332,10 @@ const Dashboard = () => {
                         {/* <CTableDataCell>0</CTableDataCell> */}
                         <CTableDataCell>{item?.email}</CTableDataCell>
                         <CTableDataCell>{item?.phone}</CTableDataCell>
-                        {/* <CTableDataCell>{item?.city}</CTableDataCell> */}
+                        <CTableDataCell>{`${item?.locations?.[0]?.address_1 ? item?.locations?.[0]?.address_1 : ""} 
+                        ${item?.locations?.[0]?.address_2 ? item?.locations?.[0]?.address_2  : ""} 
+                        ${item?.locations?.[0]?.address_3 ? item?.locations?.[0]?.address_3 : ""} 
+                        ${item?.locations?.[0]?.address_4 ? item?.locations?.[0]?.address_4 : ""}`}</CTableDataCell>
                         <CTableDataCell>
                           <div
                             style={{
