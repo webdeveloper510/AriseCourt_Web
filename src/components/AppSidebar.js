@@ -47,7 +47,7 @@ const AppSidebar = () => {
     // If user_type !== 0 → hide Admin and Message
     if (
       userData?.user_type === 1 &&
-      (item.name === "Admin" || item.name === "Messages" || item.name === "Locations")
+      (item.name === "Admins" || item.name === "Messages" || item.name === "Locations")
     ) {
       return false;
     }

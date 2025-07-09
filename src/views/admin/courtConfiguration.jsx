@@ -546,7 +546,8 @@ const CourtConfiguration = () => {
                   ?.sort((a, b) => b?.id - a?.id)
                   ?.map((item, i) => {
                     const location = `${item?.court?.location?.address_1 ? item?.court?.location?.address_1 : ""} ${item?.court?.location?.address_2 ? item?.court?.location?.address_2 : ""} ${item?.court?.location?.address_3 ? item?.court?.location?.address_3 : ""} ${item?.court?.location?.address_4 ? item?.court?.location?.address_4 : ""}`;
-                    
+                    console.log("locationlocationlocation",location)
+                    const locationaddress = location?.trim() ? location : item?.location_address
                     return (
                       <CTableRow key={i}>
                         <CTableDataCell>
@@ -584,12 +585,13 @@ const CourtConfiguration = () => {
                           {item?.court?.court_number || item?.court_number}
                         </CTableDataCell>
                         <CTableDataCell>
-                          {item?.user?.first_name} {item?.user?.last_name}
+                          {item?.user?.first_name || item?.user_first_name} {item?.user?.last_name || item?.user_last_name}
+                         
                           <div>
                             <p className="mb-0 user_phone">
-                              {item?.user?.phone}
+                              {item?.user?.phone || item?.user_phone}
                             </p>
-                            <p className="mb-0">{item?.user?.email}</p>
+                            <p className="mb-0">{item?.user?.email || item?.user_email}</p>
                           </div>
                         </CTableDataCell>
                         <CTableDataCell>
@@ -614,12 +616,12 @@ const CourtConfiguration = () => {
                           </div>
                         </CTableDataCell> */}
                         <CTableDataCell
-                          title={location}
+                          title={locationaddress}
                           style={{ width: "20%" }}
                         >
-                          {location?.length > 50
-                            ? `${location?.slice(0, 50)}...`
-                            : location}
+                          {locationaddress?.length > 50
+                            ? `${locationaddress?.slice(0, 50)}...`
+                            : locationaddress}
                         </CTableDataCell>
                         {/* <CTableDataCell>
                           {item?.court?.location?.address_1}{" "}
@@ -631,7 +633,7 @@ const CourtConfiguration = () => {
                           {item?.court?.location?.name || item?.location_name}
                         </CTableDataCell>
                         <CTableDataCell>
-                          {item?.summary ? `$${item?.summary}` : ""}
+                          {item?.summary ? `$${item?.summary}` : item?.total_price ? `$${item?.total_price}` : "" }
                         </CTableDataCell>
 
                         <CTableDataCell>

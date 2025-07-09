@@ -23,7 +23,6 @@ const _nav = [
     name: "Admins",
     to: "/dashboard",
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    permissionId: 0, // Full Access (id = 0)
   },
   {
     component: CNavItem,
