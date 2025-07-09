@@ -62,9 +62,14 @@ const CourtDetails = () => {
   const convertToHoursOnly = (timeString) => {
     const [hours, minutes, seconds] = timeString.split(":");
     const hourNum = parseInt(hours, 10);
-    return `${hourNum} Hour${hourNum !== 1 ? "s" : ""}`;
+    const minuteNum = parseInt(minutes, 10);
+  
+    // Convert minutes to fraction of hour
+    const totalHours = hourNum + minuteNum / 60;
+  
+    return `${totalHours} Hour${totalHours !== 1 ? "s" : ""}`;
   };
-
+  
  
 
   return (
