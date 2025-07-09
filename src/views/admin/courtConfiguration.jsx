@@ -113,7 +113,14 @@ const CourtConfiguration = () => {
   ) => {
     setLoading(query ? false : true);
     if (userData?.user_type == 0) {
-      getCourtBooking(bookingType, page, query,selectLocation, startDate, endDate)
+      getCourtBooking(
+        bookingType,
+        page,
+        query,
+        selectLocation,
+        startDate,
+        endDate
+      )
         .then((res) => {
           setLoading(false);
           if (res?.status === 200) {
@@ -137,7 +144,14 @@ const CourtConfiguration = () => {
           setLoading(false);
         });
     } else {
-      getCourtBookingByAdmin(bookingType, page, query,selectLocation, startDate, endDate)
+      getCourtBookingByAdmin(
+        bookingType,
+        page,
+        query,
+        selectLocation,
+        startDate,
+        endDate
+      )
         .then((res) => {
           setLoading(false);
           if (res?.status === 200) {
@@ -291,7 +305,12 @@ const CourtConfiguration = () => {
           toast.success(res?.data?.message, {
             theme: "colored",
           });
-          getCourtBookingData(bookingType, currentPage, searchQuery,selectLocation);
+          getCourtBookingData(
+            bookingType,
+            currentPage,
+            searchQuery,
+            selectLocation
+          );
         } else {
           toast.error(res?.data?.message, {
             theme: "colored",
@@ -379,7 +398,7 @@ const CourtConfiguration = () => {
                     setSearchQuery("");
                     setStartDate(new Date());
                     setEndDate(new Date());
-                    setSelectLocation("")
+                    setSelectLocation("");
                     setSelectionRange({
                       startDate: new Date(),
                       endDate: new Date(),
@@ -406,16 +425,17 @@ const CourtConfiguration = () => {
                     Select Location
                   </option>
                   {locationFilter?.map((address, index) => {
-                    const newAddress = `${address?.address_1} ${address?.address_2} ${address?.address_3} ${address?.address_4}`
-                    return(
-                    <option
-                      key={index}
-                      value={newAddress}
-                      style={{ textTransform: "capitalize" }}
-                    >
-                      {newAddress}
-                    </option>
-                  )})}
+                    const newAddress = `${address?.address_1} ${address?.address_2} ${address?.address_3} ${address?.address_4}`;
+                    return (
+                      <option
+                        key={index}
+                        value={newAddress}
+                        style={{ textTransform: "capitalize" }}
+                      >
+                        {newAddress}
+                      </option>
+                    );
+                  })}
                 </CFormSelect>
               </CCol>
 
@@ -525,6 +545,8 @@ const CourtConfiguration = () => {
                 {adminData
                   ?.sort((a, b) => b?.id - a?.id)
                   ?.map((item, i) => {
+                    const location = `${item?.court?.location?.address_1 ? item?.court?.location?.address_1 : ""} ${item?.court?.location?.address_2 ? item?.court?.location?.address_2 : ""} ${item?.court?.location?.address_3 ? item?.court?.location?.address_3 : ""} ${item?.court?.location?.address_4 ? item?.court?.location?.address_4 : ""}`;
+                    
                     return (
                       <CTableRow key={i}>
                         <CTableDataCell>
@@ -559,10 +581,10 @@ const CourtConfiguration = () => {
                           </div>
                         </CTableDataCell>
                         <CTableDataCell>
-                          {item?.court?.court_number}
+                          {item?.court?.court_number || item?.court_number}
                         </CTableDataCell>
                         <CTableDataCell>
-                          {`${item?.user?.first_name} ${item?.user?.last_name}`}
+                          {item?.user?.first_name} {item?.user?.last_name}
                           <div>
                             <p className="mb-0 user_phone">
                               {item?.user?.phone}
@@ -571,13 +593,15 @@ const CourtConfiguration = () => {
                           </div>
                         </CTableDataCell>
                         <CTableDataCell>
-                          {item?.user?.user_type == 1
+                          {item?.user?.user_type == 1 || item?.user_type == 1
                             ? "Admin"
-                            : item?.user?.user_type == 3
+                            : item?.user?.user_type == 3 || item?.user_type == 3
                               ? "Player"
-                              : item?.user?.user_type == 2
+                              : item?.user?.user_type == 2 ||
+                                  item?.user_type == 2
                                 ? "Coach"
-                                : item?.user?.user_type == 4
+                                : item?.user?.user_type == 4 ||
+                                    item?.user_type == 4
                                   ? "Court"
                                   : ""}
                         </CTableDataCell>
@@ -589,14 +613,22 @@ const CourtConfiguration = () => {
                             <p className="mb-0">{item?.user?.email}</p>
                           </div>
                         </CTableDataCell> */}
-                        <CTableDataCell>
-                          {item.court.location.address_1}{" "}
-                          {item.court.location.address_2}{" "}
-                          {item.court.location.address_3}{" "}
-                          {item.court.location.address_4}
+                        <CTableDataCell
+                          title={location}
+                          style={{ width: "20%" }}
+                        >
+                          {location?.length > 50
+                            ? `${location?.slice(0, 50)}...`
+                            : location}
                         </CTableDataCell>
+                        {/* <CTableDataCell>
+                          {item?.court?.location?.address_1}{" "}
+                          {item?.court?.location?.address_2}{" "}
+                          {item?.court?.location?.address_3}{" "}
+                          {item?.court?.location?.address_4}
+                        </CTableDataCell> */}
                         <CTableDataCell>
-                          {item.court.location.name}
+                          {item?.court?.location?.name || item?.location_name}
                         </CTableDataCell>
                         <CTableDataCell>
                           {item?.summary ? `$${item?.summary}` : ""}
@@ -622,24 +654,13 @@ const CourtConfiguration = () => {
                             >
                               {/* {item?.status} */}
 
-                              {
-                              item.status === "confirmed" ||
+                              {item.status === "confirmed" ||
                               item.status === "completed" ? (
                                 <CDropdown className="">
                                   <CDropdownToggle color="secondary">
                                     {item?.status}
                                   </CDropdownToggle>
                                   <CDropdownMenu>
-                                    <CDropdownItem
-                                      onClick={() =>
-                                        handlePaymentChange(
-                                          { target: { value: item?.status } },
-                                          item?.booking_id
-                                        )
-                                      }
-                                    >
-                                      {item?.status}
-                                    </CDropdownItem>
                                     <CDropdownItem
                                       onClick={() =>
                                         handlePaymentChange(

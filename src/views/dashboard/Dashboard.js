@@ -312,10 +312,7 @@ const Dashboard = () => {
                 {adminData
                   ?.sort((a, b) => b?.id - a?.id)
                   ?.map((item, i) => {
-                    const location = `${item?.locations?.[0]?.address_1 ? item?.locations?.[0]?.address_1 : ""} 
-                        ${item?.locations?.[0]?.address_2 ? item?.locations?.[0]?.address_2  : ""} 
-                        ${item?.locations?.[0]?.address_3 ? item?.locations?.[0]?.address_3 : ""} 
-                        ${item?.locations?.[0]?.address_4 ? item?.locations?.[0]?.address_4 : ""}`
+                    const location = `${item?.locations?.[0]?.address_1 ? item?.locations?.[0]?.address_1 : ""} ${item?.locations?.[0]?.address_2 ? item?.locations?.[0]?.address_2  : ""} ${item?.locations?.[0]?.address_3 ? item?.locations?.[0]?.address_3 : ""} ${item?.locations?.[0]?.address_4 ? item?.locations?.[0]?.address_4 : ""}`
                     return (
                       <CTableRow key={i}>
                         {/* <CTableDataCell>#123</CTableDataCell> */}
