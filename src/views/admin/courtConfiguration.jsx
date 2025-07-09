@@ -99,6 +99,7 @@ const CourtConfiguration = () => {
   }
 
   const toggleMenu = (id) => {
+    console.log("openMenuId === item?.booking_id", id)
     setOpenMenuId((prevId) => (prevId === id ? null : id)); // Toggle
   };
 
@@ -259,6 +260,7 @@ const CourtConfiguration = () => {
   };
 
   const handleViewDetails = (id) => {
+    console.log("item?.booking_id", id)
     navigate(`/court-details/${id}`);
   };
 
@@ -667,7 +669,7 @@ const CourtConfiguration = () => {
                                       onClick={() =>
                                         handlePaymentChange(
                                           { target: { value: "Cancel" } },
-                                          item?.booking_id
+                                          item?.booking_id || item?.booking_id
                                         )
                                       }
                                     >
@@ -690,18 +692,18 @@ const CourtConfiguration = () => {
                           >
                             <span
                               style={{ fontSize: "24px", cursor: "pointer" }}
-                              onClick={() => toggleMenu(item.booking_id)}
+                              onClick={() => toggleMenu(item?.booking_id || item?.id)}
                             >
                               ⋮
                             </span>
-                            {openMenuId === item.booking_id && (
+                            {openMenuId === item?.booking_id || openMenuId === item?.id && (
                               <div
                                 className="outer_action_icons"
                                 style={{ right: "68px" }}
                               >
                                 <div
                                   onClick={() => {
-                                    handleViewDetails(item.booking_id);
+                                    handleViewDetails(item?.booking_id || item?.id);
                                     setOpenMenuId(null);
                                   }}
                                   className="action_icons"

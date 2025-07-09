@@ -211,6 +211,16 @@ const AdminRegistration = () => {
             errors.country = "Country code is required.";
           }
           break;
+        case "location_id":
+        case "locations_id": {
+          const key =
+            data.location_id !== undefined ? "location_id" : "locations_id";
+          const value = data[key]?.trim();
+          if (!value) {
+            errors.location_id = "Location is required.";
+          }
+          break;
+        }
         case "password":
           if (!isEditMode && !data.password) {
             errors.password = "Password is required.";
@@ -316,7 +326,7 @@ const AdminRegistration = () => {
     apiCall
       .then((res) => {
         setLoading(false);
-        console.log("apiCallapiCall", res)
+        console.log("apiCallapiCall", res);
         if (res.status === 200 || res.status === 201) {
           navigate(-1);
           toast.success(res?.data?.message, { theme: "colored" });
@@ -409,6 +419,9 @@ const AdminRegistration = () => {
                     </option>
                   ))}
                 </CFormSelect>
+                {errors.location_id && (
+                  <div className="text-danger">{errors.location_id}</div>
+                )}
               </CCol>
               {/* )} */}
               <CCol sm={12} md={6} lg={4} className="my-2">

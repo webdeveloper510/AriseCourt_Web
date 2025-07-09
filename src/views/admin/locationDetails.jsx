@@ -450,7 +450,7 @@ const LocationDetails = () => {
             <CCol sm={12} md={4} lg={3}>
               <div className="badminton_bg">
                 <img
-                  src={formData?.logo ? formData?.logo : badminton}
+                  src={formData?.logo ? `http://3.12.136.26:8000${formData?.logo}` : badminton}
                   alt="logo"
                 />
               </div>
