@@ -548,7 +548,7 @@ const CourtConfiguration = () => {
                   ?.sort((a, b) => b?.id - a?.id)
                   ?.map((item, i) => {
                     const location = `${item?.court?.location?.address_1 ? item?.court?.location?.address_1 : ""} ${item?.court?.location?.address_2 ? item?.court?.location?.address_2 : ""} ${item?.court?.location?.address_3 ? item?.court?.location?.address_3 : ""} ${item?.court?.location?.address_4 ? item?.court?.location?.address_4 : ""}`;
-                    console.log("locationlocationlocation",location)
+                    
                     const locationaddress = location?.trim() ? location : item?.location_address
                     return (
                       <CTableRow key={i}>
@@ -696,7 +696,7 @@ const CourtConfiguration = () => {
                             >
                               ⋮
                             </span>
-                            {openMenuId === item?.booking_id || openMenuId === item?.id && (
+                            {(openMenuId === item?.booking_id || openMenuId === item?.id )&& (
                               <div
                                 className="outer_action_icons"
                                 style={{ right: "68px" }}
