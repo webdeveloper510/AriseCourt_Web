@@ -42,6 +42,7 @@ import { toast } from "react-toastify";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import moment from "moment";
+import parsePhoneNumberFromString from "libphonenumber-js";
 
 const Locations = () => {
   let SerialId = 1;
@@ -193,6 +194,24 @@ const Locations = () => {
     setLocationData(filteredData);
   };
 
+    function formatPhoneNumber(number) {
+      if (!number) return '';
+    
+      // Make sure number starts with '+'
+      let formattedInput = number;
+      if (!number.startsWith('+')) {
+        formattedInput = `+${number}`;
+      }
+    
+      const phoneNumber = parsePhoneNumberFromString(formattedInput);
+    
+      if (phoneNumber && phoneNumber.isValid()) {
+        return phoneNumber.formatInternational();
+      }
+    
+      return number; // fallback
+    }
+
   return (
     <>
       {loading && (
@@ -343,7 +362,7 @@ const Locations = () => {
                           )}
                         </CTableDataCell>
                         <CTableDataCell>{item?.email}</CTableDataCell>
-                        <CTableDataCell>{item?.phone}</CTableDataCell>
+                        <CTableDataCell>{item?.phone ? formatPhoneNumber(item?.phone) : ""}</CTableDataCell>
                         <CTableDataCell>{item?.city}</CTableDataCell>
                         <CTableDataCell>{item?.country}</CTableDataCell>
                         <CTableDataCell>{item?.courts?.length}</CTableDataCell>

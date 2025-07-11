@@ -448,6 +448,7 @@ export const getCourtBookingByAdmin = async (
   type,
   page,
   search,
+  selectLocation,
   startDate,
   endDate
 ) => {
@@ -456,10 +457,10 @@ export const getCourtBookingByAdmin = async (
   const start_date = startDate
     ? `&start_date=${startDate}&end_date=${endDate}`
     : "";
-
+ const address = selectLocation ? `&full_address=${selectLocation}` : ""
   try {
     const response = await axios.get(
-      `/get_booking_byadmin/?type=${bookingType}&page=${page}${searchVal}${start_date}`,
+      `/get_booking_byadmin/?type=${bookingType}&page=${page}${searchVal}${start_date}${address}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,

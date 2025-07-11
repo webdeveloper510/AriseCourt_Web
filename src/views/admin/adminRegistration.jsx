@@ -224,10 +224,17 @@ const AdminRegistration = () => {
         case "password":
           if (!isEditMode && !data.password) {
             errors.password = "Password is required.";
-          } else if (data.password && data.password.length < 6) {
-            errors.password = "Password must be greater than 6 characters.";
+          } else if (data.password) {
+            const strongPasswordRegex =
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+            if (!strongPasswordRegex.test(data.password)) {
+              errors.password =
+                "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
+            }
           }
           break;
+
         case "confirm_password":
           if (!isEditMode && !data.confirm_password) {
             errors.confirm_password = "Confirm password is required.";
@@ -406,18 +413,19 @@ const AdminRegistration = () => {
                       {"Select Location"}
                     </option>
                   )}
-                  {locationFilter?.map((address, index) => (
-                    <option
-                      key={index}
-                      value={address?.id}
-                      style={{ textTransform: "capitalize" }}
-                    >
-                      {address?.address_1 ? address?.address_1 : ""}{" "}
-                      {address?.address_2 ? address?.address_2 : ""}{" "}
-                      {address?.address_3 ? address?.address_3 : ""}{" "}
-                      {address?.address_4 ? address?.address_4 : ""}
-                    </option>
-                  ))}
+                  {!id &&
+                    locationFilter?.map((address, index) => (
+                      <option
+                        key={index}
+                        value={address?.id}
+                        style={{ textTransform: "capitalize" }}
+                      >
+                        {address?.address_1 ? address?.address_1 : ""}{" "}
+                        {address?.address_2 ? address?.address_2 : ""}{" "}
+                        {address?.address_3 ? address?.address_3 : ""}{" "}
+                        {address?.address_4 ? address?.address_4 : ""}
+                      </option>
+                    ))}
                 </CFormSelect>
                 {errors.location_id && (
                   <div className="text-danger">{errors.location_id}</div>
@@ -545,10 +553,11 @@ const AdminRegistration = () => {
                       : "fix_height"
                   }
                 />
-              </CCol>
-              {errors.access_flag && (
+                 {errors.access_flag && (
                 <div className="text-danger">{errors.access_flag}</div>
               )}
+              </CCol>
+             
 
               <CCol md={12} className="mt-4">
                 <CButton type="submit" className="add_new_butn">

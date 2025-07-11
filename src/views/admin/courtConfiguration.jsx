@@ -179,6 +179,7 @@ const CourtConfiguration = () => {
   };
 
   const handleFilterClick = () => {
+    console.log("bookingType", bookingType, "currentPage",currentPage,"searchQuery", searchQuery, "selectLocation",selectLocation)
     getCourtBookingData(
       bookingType,
       currentPage,
