@@ -120,16 +120,10 @@ const AddLocations = () => {
           }
           break;
         case "password":
-          if (!isEditMode && !data.password) {
+          if (!id && !data.password) {
             errors.password = "Password is required.";
-          } else if (data.password) {
-            const strongPasswordRegex =
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-
-            if (!strongPasswordRegex.test(data.password)) {
-              errors.password =
-                "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
-            }
+          } else if (data.password && data.password.length < 6) {
+            errors.password = "Password must be greater than 6 characters.";
           }
           break;
 

@@ -884,3 +884,9 @@ input:-webkit-autofill {
   border: 1px solid #dbdfe6 !important;
   border-color: #dbdfe6 !important;
 }
+
+.form-select:focus {
+  border-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+}

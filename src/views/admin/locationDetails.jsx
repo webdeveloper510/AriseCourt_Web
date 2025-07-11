@@ -31,6 +31,7 @@ import {
   updateCourt,
 } from "../../utils/api";
 import { toast } from "react-toastify";
+import TimePickerSelect from "../../components/timePicker";
 
 const LocationDetails = () => {
   const { id } = useParams();
@@ -450,7 +451,11 @@ const LocationDetails = () => {
             <CCol sm={12} md={4} lg={3}>
               <div className="badminton_bg">
                 <img
-                  src={formData?.logo ? `http://3.12.136.26:8000${formData?.logo?.replace("http://3.12.136.26:8000","")}` : badminton}
+                  src={
+                    formData?.logo
+                      ? `http://3.12.136.26:8000${formData?.logo?.replace("http://3.12.136.26:8000", "")}`
+                      : badminton
+                  }
                   alt="logo"
                 />
               </div>
@@ -803,11 +808,28 @@ const LocationDetails = () => {
                     <div className="text-danger">{errors.cc_fees}</div>
                   )}
                 </CCol>
-                <CCol sm={12} md={6} lg={6} className="my-1">
+                <TimePickerSelect
+                  label="Start Time"
+                  name="start_time"
+                  value={addCourt?.start_time}
+                  onChange={handleCourtInput}
+                  error={errors.start_time}
+                />
+
+                <TimePickerSelect
+                  label="End Time"
+                  name="end_time"
+                  value={addCourt?.end_time}
+                  onChange={handleCourtInput}
+                  error={errors.end_time}
+                />
+
+                {/* <CCol sm={12} md={6} lg={6} className="my-1">
                   <label className="add_court_label">Start Time</label>
 
                   <CFormInput
                     type="time"
+                    step="1800"
                     className="register_input"
                     aria-label="default input example"
                     autoComplete="off"
@@ -819,11 +841,13 @@ const LocationDetails = () => {
                     <div className="text-danger">{errors.start_time}</div>
                   )}
                 </CCol>
+
                 <CCol sm={12} md={6} lg={6} className="my-1">
                   <label className="add_court_label">End Time</label>
 
                   <CFormInput
                     type="time"
+                    step="1800"
                     className="register_input"
                     autoComplete="off"
                     aria-label="default input example"
@@ -834,7 +858,8 @@ const LocationDetails = () => {
                   {errors?.end_time && (
                     <div className="text-danger">{errors?.end_time}</div>
                   )}
-                </CCol>
+                </CCol> */}
+
                 <CCol sm={12} md={6} lg={6} className="my-1">
                   <label className="add_court_label">Availability</label>
                   <CFormSwitch
