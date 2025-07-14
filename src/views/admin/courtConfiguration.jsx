@@ -99,7 +99,7 @@ const CourtConfiguration = () => {
   }
 
   const toggleMenu = (id) => {
-    console.log("openMenuId === item?.booking_id", id)
+    console.log("openMenuId === item?.booking_id", id);
     setOpenMenuId((prevId) => (prevId === id ? null : id)); // Toggle
   };
 
@@ -179,7 +179,16 @@ const CourtConfiguration = () => {
   };
 
   const handleFilterClick = () => {
-    console.log("bookingType", bookingType, "currentPage",currentPage,"searchQuery", searchQuery, "selectLocation",selectLocation)
+    console.log(
+      "bookingType",
+      bookingType,
+      "currentPage",
+      currentPage,
+      "searchQuery",
+      searchQuery,
+      "selectLocation",
+      selectLocation
+    );
     getCourtBookingData(
       bookingType,
       currentPage,
@@ -261,17 +270,17 @@ const CourtConfiguration = () => {
   };
 
   const handleViewDetails = (id) => {
-    console.log("item?.booking_id", id)
+    console.log("item?.booking_id", id);
     navigate(`/court-details/${id}`);
   };
 
   const handleLocationChange = (e) => {
     const value = e.target.value;
     setSelectLocation(value);
-    const filteredData = locationFilter?.filter(
-      (location) => location.city === value
-    );
-    setAdminData(filteredData);
+    // const filteredData = locationFilter?.filter(
+    //   (location) => location.city === value
+    // );
+    // setAdminData(filteredData);
   };
 
   const getLocationData = () => {
@@ -499,9 +508,7 @@ const CourtConfiguration = () => {
             <CTable className="mt-4 main_table" striped>
               <CTableHead>
                 <CTableRow>
-                  {/* <CTableHeaderCell scope="col">Location Id</CTableHeaderCell> */}
                   <CTableHeaderCell scope="col">Sr no.</CTableHeaderCell>
-                  {/* <CTableHeaderCell scope="col">Location</CTableHeaderCell> */}
                   <CTableHeaderCell
                     scope="col"
                     style={{ whiteSpace: "nowrap" }}
@@ -524,7 +531,7 @@ const CourtConfiguration = () => {
 
                   <CTableHeaderCell
                     scope="col"
-                    style={{ whiteSpace: "nowrap" }}
+                    style={{ width: "30% !important" }}
                   >
                     Address
                   </CTableHeaderCell>
@@ -549,8 +556,10 @@ const CourtConfiguration = () => {
                   ?.sort((a, b) => b?.id - a?.id)
                   ?.map((item, i) => {
                     const location = `${item?.court?.location?.address_1 ? item?.court?.location?.address_1 : ""} ${item?.court?.location?.address_2 ? item?.court?.location?.address_2 : ""} ${item?.court?.location?.address_3 ? item?.court?.location?.address_3 : ""} ${item?.court?.location?.address_4 ? item?.court?.location?.address_4 : ""}`;
-                    
-                    const locationaddress = location?.trim() ? location : item?.location_address
+
+                    const locationaddress = location?.trim()
+                      ? location
+                      : item?.location_address;
                     return (
                       <CTableRow key={i}>
                         <CTableDataCell>
@@ -588,13 +597,15 @@ const CourtConfiguration = () => {
                           {item?.court?.court_number || item?.court_number}
                         </CTableDataCell>
                         <CTableDataCell>
-                          {item?.user?.first_name || item?.user_first_name} {item?.user?.last_name || item?.user_last_name}
-                         
+                          {item?.user?.first_name || item?.user_first_name}{" "}
+                          {item?.user?.last_name || item?.user_last_name}
                           <div>
                             <p className="mb-0 user_phone">
                               {item?.user?.phone || item?.user_phone}
                             </p>
-                            <p className="mb-0">{item?.user?.email || item?.user_email}</p>
+                            <p className="mb-0">
+                              {item?.user?.email || item?.user_email}
+                            </p>
                           </div>
                         </CTableDataCell>
                         <CTableDataCell>
@@ -610,14 +621,6 @@ const CourtConfiguration = () => {
                                   ? "Court"
                                   : ""}
                         </CTableDataCell>
-                        {/* <CTableDataCell>
-                          <div>
-                            <p className="mb-0 user_phone">
-                              {item?.user?.phone}
-                            </p>
-                            <p className="mb-0">{item?.user?.email}</p>
-                          </div>
-                        </CTableDataCell> */}
                         <CTableDataCell
                           title={locationaddress}
                           style={{ width: "20%" }}
@@ -626,64 +629,74 @@ const CourtConfiguration = () => {
                             ? `${locationaddress?.slice(0, 50)}...`
                             : locationaddress}
                         </CTableDataCell>
-                        {/* <CTableDataCell>
-                          {item?.court?.location?.address_1}{" "}
-                          {item?.court?.location?.address_2}{" "}
-                          {item?.court?.location?.address_3}{" "}
-                          {item?.court?.location?.address_4}
-                        </CTableDataCell> */}
                         <CTableDataCell>
                           {item?.court?.location?.name || item?.location_name}
                         </CTableDataCell>
                         <CTableDataCell>
-                          {item?.summary ? `$${item?.summary}` : item?.total_price ? `$${item?.total_price}` : "" }
+                          {item?.summary
+                            ? `$${item?.summary}`
+                            : item?.total_price
+                              ? `$${item?.total_price}`
+                              : ""}
                         </CTableDataCell>
 
                         <CTableDataCell>
-                          {
-                            <span
-                              style={{
-                                textTransform: "capitalize",
-                                fontWeight: "600",
-                                color:
-                                  item?.status == "cancelled"
-                                    ? "#FA3B3B"
-                                    : item?.status == "completed"
-                                      ? "#05D005"
-                                      : item?.status == "confirmed"
-                                        ? "#0860fb"
-                                        : item?.status == "pending"
-                                          ? "#f99e15"
-                                          : "#182B4D",
-                              }}
-                            >
-                              {/* {item?.status} */}
-
-                              {item.status === "confirmed" ||
-                              item.status === "completed" ? (
-                                <CDropdown className="">
-                                  <CDropdownToggle color="secondary">
-                                    {item?.status}
-                                  </CDropdownToggle>
-                                  <CDropdownMenu>
-                                    <CDropdownItem
-                                      onClick={() =>
-                                        handlePaymentChange(
-                                          { target: { value: "Cancel" } },
-                                          item?.booking_id || item?.booking_id
-                                        )
-                                      }
-                                    >
-                                      Cancel
-                                    </CDropdownItem>
-                                  </CDropdownMenu>
-                                </CDropdown>
-                              ) : (
-                                <>{item?.status}</>
-                              )}
-                            </span>
-                          }
+                          <span
+                            style={{
+                              textTransform: "capitalize",
+                              fontWeight: "600",
+                              color:
+                                item?.status === "cancelled"
+                                  ? "#FA3B3B"
+                                  : item?.status === "completed"
+                                    ? "#05D005"
+                                    : item?.status === "confirmed"
+                                      ? "#0860fb"
+                                      : item?.status === "pending"
+                                        ? "#f99e15"
+                                        : "#182B4D",
+                            }}
+                          >
+                            {item.status === "confirmed" ||
+                            item.status === "completed" ? (
+                              <CDropdown>
+                                <CDropdownToggle
+                                  style={{
+                                    textTransform: "capitalize",
+                                    backgroundColor:
+                                      item?.status === "cancelled"
+                                        ? "#FA3B3B"
+                                        : item?.status === "completed"
+                                          ? "#05D005"
+                                          : item?.status === "confirmed"
+                                            ? "#0860fb"
+                                            : item?.status === "pending"
+                                              ? "#f99e15"
+                                              : "#182B4D",
+                                    color: "white",
+                                  }}
+                                >
+                                  {item?.status}
+                                </CDropdownToggle>
+                                <CDropdownMenu className="custom-dropdown-menu">
+                                  <CDropdownItem
+                                    onClick={() =>
+                                      handlePaymentChange(
+                                        { target: { value: "Cancel" } },
+                                        item?.booking_id || item?.booking_id
+                                      )
+                                    }
+                                  >
+                                    Cancel
+                                  </CDropdownItem>
+                                </CDropdownMenu>
+                              </CDropdown>
+                            ) : (
+                              <>{item?.status}</>
+                            )}
+                          </span>
                         </CTableDataCell>
+
                         <CTableDataCell>
                           <div
                             style={{
@@ -693,18 +706,23 @@ const CourtConfiguration = () => {
                           >
                             <span
                               style={{ fontSize: "24px", cursor: "pointer" }}
-                              onClick={() => toggleMenu(item?.booking_id || item?.id)}
+                              onClick={() =>
+                                toggleMenu(item?.booking_id || item?.id)
+                              }
                             >
                               ⋮
                             </span>
-                            {(openMenuId === item?.booking_id || openMenuId === item?.id )&& (
+                            {(openMenuId === item?.booking_id ||
+                              openMenuId === item?.id) && (
                               <div
                                 className="outer_action_icons"
                                 style={{ right: "68px" }}
                               >
                                 <div
                                   onClick={() => {
-                                    handleViewDetails(item?.booking_id || item?.id);
+                                    handleViewDetails(
+                                      item?.booking_id || item?.id
+                                    );
                                     setOpenMenuId(null);
                                   }}
                                   className="action_icons"

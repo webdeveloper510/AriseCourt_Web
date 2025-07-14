@@ -890,3 +890,16 @@ input:-webkit-autofill {
   outline: none !important;
   box-shadow: none !important;
 }
+
+/* Ensure to target the dropdown menu with a specific class */
+.custom-dropdown-menu {
+  padding: 0px 10px !important;
+  width: 115px !important;  /* Force the width to be 115px */
+  min-width: 115px !important;  /* Ensure no minimum width is overriding */
+  max-width: 115px !important;  /* Prevent any maximum width from interfering */
+}
+
+/* Add additional CSS to prevent layout shifts if needed */
+.custom-dropdown-menu .dropdown-item {
+  white-space: nowrap;  /* Ensure text doesn't break into multiple lines */
+}

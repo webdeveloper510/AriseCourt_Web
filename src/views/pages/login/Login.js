@@ -89,7 +89,7 @@ const Login = () => {
             if(userData?.user_type === 0){
               navigate("/locations");
             }else if(userData?.user_type === 1){
-              navigate("/reporting");
+              navigate("/location");
             }
           } else if (userData?.access_flag?.includes("2")) {
             navigate("/court-bookings");

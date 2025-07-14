@@ -24,6 +24,7 @@ const AddLocations = () => {
   const userData = JSON.parse(localStorage.getItem("logged_user_data"));
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const options = useMemo(() => countryList().getData(), []);
 
   const [formData, setFormData] = useState({
@@ -43,6 +44,10 @@ const AddLocations = () => {
     user: userData?.id,
     logo: null,
   });
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const [errors, setErrors] = useState({});
 
@@ -400,10 +405,11 @@ const AddLocations = () => {
                 )}
               </CCol>
               <CCol sm={12} md={6} lg={4} className="my-2">
+              <div className="position-relative">
                 <label>Password</label>
 
                 <CFormInput
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   className="register_input"
                   placeholder="Enter Password"
                   aria-label="default input example"
@@ -411,6 +417,21 @@ const AddLocations = () => {
                   name="password"
                   onChange={(e) => handleInputChange(e)}
                 />
+                <i
+                  className={
+                    showPassword ? "bi bi-eye-slash" : "bi bi-eye-fill"
+                  } // Change icon based on state
+                  onClick={() => togglePasswordVisibility()} // Toggle visibility on click
+                  style={{
+                    cursor: "pointer",
+                    position: "absolute",
+                    right: "10px",
+                    top: "38px",
+                    color: "#0860FB",
+                    zIndex: "99",
+                  }} // Add pointer cursor to indicate clickability
+                />
+                </div>
                 {errors.password && (
                   <div className="text-danger">{errors.password}</div>
                 )}

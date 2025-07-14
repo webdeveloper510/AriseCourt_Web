@@ -50,11 +50,21 @@ const AdminRegistration = () => {
     locations_id: "",
   });
   const [locationAddress, setLocationAddress] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfPassword, setShowConfPassword] = useState(false);
   const selectedOptions = options.filter((option) =>
     formData?.access_flag?.includes(option.id)
   );
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfPasswordVisibility = () => {
+    setShowConfPassword(!showConfPassword);
+  };
 
   useEffect(() => {
     getAdminData();
@@ -501,34 +511,68 @@ const AdminRegistration = () => {
               {!id && (
                 <>
                   <CCol sm={12} md={6} lg={4} className="my-2">
-                    <label>Password</label>
+                    <div className="position-relative">
+                      <label>Password</label>
 
-                    <CFormInput
-                      type="password"
-                      className="register_input"
-                      placeholder="Enter Password"
-                      aria-label="default input example"
-                      value={formData.password}
-                      name="password"
-                      onChange={(e) => handleInputChange(e)}
-                    />
-                    {errors.password && (
-                      <div className="text-danger">{errors.password}</div>
-                    )}
+                      <CFormInput
+                        type={showPassword ? "text" : "password"}
+                        className="register_input"
+                        placeholder="Enter Password"
+                        aria-label="default input example"
+                        value={formData.password}
+                        name="password"
+                        onChange={(e) => handleInputChange(e)}
+                      />
+                      <i
+                        className={
+                          showPassword ? "bi bi-eye-slash" : "bi bi-eye-fill"
+                        }
+                        onClick={() => togglePasswordVisibility()}
+                        style={{
+                          cursor: "pointer",
+                          position: "absolute",
+                          right: "10px",
+                          top: "38px",
+                          color: "#0860FB",
+                          zIndex: "99",
+                        }}
+                      />
+                      {errors.password && (
+                        <div className="text-danger">{errors.password}</div>
+                      )}
+                    </div>
                   </CCol>
 
                   <CCol sm={12} md={6} lg={4} className="my-2">
-                    <label>Confirm Password</label>
+                    <div className="position-relative">
+                      <label>Confirm Password</label>
 
-                    <CFormInput
-                      type="password"
-                      className="register_input"
-                      placeholder="Enter Password"
-                      aria-label="default input example"
-                      value={formData.confirm_password}
-                      name="confirm_password"
-                      onChange={(e) => handleInputChange(e)}
-                    />
+                      <CFormInput
+                        type={showConfPassword ? "text" : "password"}
+                        className="register_input"
+                        placeholder="Enter Password"
+                        aria-label="default input example"
+                        value={formData.confirm_password}
+                        name="confirm_password"
+                        onChange={(e) => handleInputChange(e)}
+                      />
+                      <i
+                        className={
+                          showConfPassword
+                            ? "bi bi-eye-slash"
+                            : "bi bi-eye-fill"
+                        }
+                        onClick={() => toggleConfPasswordVisibility()}
+                        style={{
+                          cursor: "pointer",
+                          position: "absolute",
+                          right: "10px",
+                          top: "38px",
+                          color: "#0860FB",
+                          zIndex: "99",
+                        }}
+                      />
+                    </div>
                     {errors.confirm_password && (
                       <div className="text-danger">
                         {errors.confirm_password}
@@ -553,11 +597,10 @@ const AdminRegistration = () => {
                       : "fix_height"
                   }
                 />
-                 {errors.access_flag && (
-                <div className="text-danger">{errors.access_flag}</div>
-              )}
+                {errors.access_flag && (
+                  <div className="text-danger">{errors.access_flag}</div>
+                )}
               </CCol>
-             
 
               <CCol md={12} className="mt-4">
                 <CButton type="submit" className="add_new_butn">
