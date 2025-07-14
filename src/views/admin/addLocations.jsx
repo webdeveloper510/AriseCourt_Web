@@ -512,6 +512,8 @@ const AddLocations = () => {
                 <label>Country</label>
                 <Select
                   options={options}
+                  defaultValue={"US"}
+                  defaultInputValue="US"
                   onChange={(selectedOption) => {
                     handleInputChange({
                       target: {
