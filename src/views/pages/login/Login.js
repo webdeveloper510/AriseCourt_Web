@@ -126,7 +126,7 @@ const Login = () => {
               navigate("/reporting");
             }
           } else {
-            toast.error("Incorrect Username and Password", {
+            toast.error("Details are incorrect", {
               theme: "colored",
             });
           }
