@@ -40,7 +40,6 @@ const Login = () => {
   const getLocationData = () => {
     getAllLocations()
       .then((res) => {
-        console.log("getAllLocationsgetAllLocations", res)
         if (res.status == 200) {
           setLocationFilter(res?.data);
         } else {
@@ -93,7 +92,14 @@ const Login = () => {
     }
     // navigate("/dashboard");
 
-    loginUser(formData)
+    let dataToSend = { ...formData };
+
+    if (userType === "super") {
+      const { location, ...rest } = formData;
+      dataToSend = rest;
+    }
+
+    loginUser(dataToSend)
       .then((res) => {
         setLoading(false);
         if (res.data.code == 200) {
