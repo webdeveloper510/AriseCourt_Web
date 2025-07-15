@@ -498,3 +498,12 @@ export const getAllBookedLocation = async () => {
     return error.response;
   }
 };
+
+export const getAllLocations = async () => {
+  try {
+    const response = await axios.get(`/all_locations/`);
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};

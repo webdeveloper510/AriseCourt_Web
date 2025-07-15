@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   CButton,
@@ -6,31 +6,51 @@ import {
   CCol,
   CForm,
   CFormInput,
+  CFormSelect,
   CInputGroup,
   CRow,
 } from "@coreui/react";
 import Logo from "../../../assets/images/login_logo.png";
 import HomeBg from "../../../assets/images/login_bg_image.png";
-import CIcon from "@coreui/icons-react";
-import { cilLockLocked, cilLockUnlocked } from "@coreui/icons";
-import { loginUser } from "../../../utils/api";
+import { getAllLocation, getAllLocations, loginUser } from "../../../utils/api";
 import { toast } from "react-toastify";
-// import cilEye from "@coreui/icons";
-// import cilEyeSlash from "@coreui/icons";
 
 const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [locationFilter, setLocationFilter] = useState([]);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    location: "",
   });
   const [errors, setErrors] = useState({});
+  const [userType, setUserType] = useState("staff");
 
   const [loading, setLoading] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  useEffect(() => {
+    getLocationData();
+  }, []);
+
+  const getLocationData = () => {
+    getAllLocations()
+      .then((res) => {
+        console.log("getAllLocationsgetAllLocations", res)
+        if (res.status == 200) {
+          setLocationFilter(res?.data);
+        } else {
+          setLocationFilter([]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setLocationFilter([]);
+      });
   };
 
   const validateFormData = (formData) => {
@@ -43,6 +63,10 @@ const Login = () => {
     if (!formData.password || formData.password.length < 6) {
       errors.password =
         "Password is required and must be at least 6 characters long.";
+    }
+
+    if (!formData.location && userType == "staff") {
+      errors.location = "Location is required ";
     }
 
     return errors;
@@ -77,24 +101,24 @@ const Login = () => {
           const accessToken = res?.data?.data?.access_token;
           localStorage.setItem("user_access_valid_token", accessToken);
           localStorage.setItem("logged_user_data", JSON.stringify(userData));
-          if(userData?.user_type === 0 || userData?.user_type === 1){
+          if (userData?.user_type === 0 || userData?.user_type === 1) {
             toast.success(res?.data?.message, { theme: "colored" });
-          }
-          if (
-            userData?.user_type === 0 ||
-            userData?.access_flag?.includes("0")
-          ) {
-            navigate("/reporting");
-          } else if (userData?.access_flag?.includes("1")) {
-            if(userData?.user_type === 0){
-              navigate("/locations");
-            }else if(userData?.user_type === 1){
-              navigate("/location");
+            if (
+              userData?.user_type === 0 ||
+              userData?.access_flag?.includes("0")
+            ) {
+              navigate("/reporting");
+            } else if (userData?.access_flag?.includes("1")) {
+              if (userData?.user_type === 0) {
+                navigate("/locations");
+              } else if (userData?.user_type === 1) {
+                navigate("/location");
+              }
+            } else if (userData?.access_flag?.includes("2")) {
+              navigate("/court-bookings");
+            } else if (userData?.access_flag?.includes("3")) {
+              navigate("/reporting");
             }
-          } else if (userData?.access_flag?.includes("2")) {
-            navigate("/court-bookings");
-          } else if (userData?.access_flag?.includes("3")) {
-            navigate("/reporting");
           } else {
             toast.error("Incorrect Username and Password", {
               theme: "colored",
@@ -140,6 +164,20 @@ const Login = () => {
                       Login
                     </h2>
                     <p className="text-body-secondary">Welcome Back</p>
+                    <div className="mb-2">
+                      <CButton
+                        onClick={() => setUserType("staff")}
+                        className={`${userType == "staff" ? "add_new_butn" : "selected_type"}`}
+                      >
+                        Staff sign in
+                      </CButton>
+                      <CButton
+                        onClick={() => setUserType("super")}
+                        className={`mx-2 ${userType == "super" ? "add_new_butn" : "selected_type"}`}
+                      >
+                        Super User
+                      </CButton>
+                    </div>
                     <CInputGroup className="mb-3">
                       <div className="input_section">
                         <label>Email Address</label>
@@ -190,6 +228,45 @@ const Login = () => {
                         <span className="error_message">{errors.password}</span>
                       )}
                     </CInputGroup>
+                    {userType == "staff" && (
+                      <>
+                        <div className="input_section mb-3">
+                          <label>Select Location</label>
+                          <CFormSelect
+                            className="select_location"
+                            placeholder="Select Location"
+                            style={{
+                              height: "30px",
+                              paddingInlineStart: "0px",
+                            }}
+                            defaultValue=""
+                            onChange={(e) => handleInputChange(e)}
+                            value={formData?.location}
+                            name="location"
+                          >
+                            <option disabled value="">
+                              Select Location
+                            </option>
+
+                            {locationFilter?.map((address, index) => (
+                              <option
+                                key={index}
+                                value={address?.id}
+                                style={{ textTransform: "capitalize" }}
+                              >
+                                {address?.address_1 ? address?.address_1 : ""}{" "}
+                                {address?.address_2 ? address?.address_2 : ""}{" "}
+                                {address?.address_3 ? address?.address_3 : ""}{" "}
+                                {address?.address_4 ? address?.address_4 : ""}
+                              </option>
+                            ))}
+                          </CFormSelect>
+                        </div>
+                        {errors.location && (
+                          <div className="text-danger">{errors.location}</div>
+                        )}
+                      </>
+                    )}
                     <CRow>
                       <CCol xs={12} className="">
                         <CButton type="button" className="text_color px-0">

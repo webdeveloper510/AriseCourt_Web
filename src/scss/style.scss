@@ -775,7 +775,28 @@ input:-webkit-autofill {
 .login_outer {
   height: 100vh;
 }
-
+.selected_type{
+  border: 1px solid #3d99f5;
+  background: white;
+  background-color: white;
+  color: #3d99f5;
+  font-weight: 500;
+}
+.selected_type:hover {
+  background: #0860FB;
+  color: white;
+  height: 40px;
+}
+.selected_type:focus{
+  border: 1px solid #3d99f5;
+  background: white;
+  background-color: white;
+  color: #3d99f5;
+  font-weight: 500;
+}
+.select_location{
+  border: none !important;
+}
 @media screen and (max-width: 580px) {
   .registration_form {
     height: 100%;
