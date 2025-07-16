@@ -633,11 +633,7 @@ const CourtConfiguration = () => {
                           {item?.court?.location?.name || item?.location_name}
                         </CTableDataCell>
                         <CTableDataCell>
-                          {item?.summary
-                            ? `$${item?.summary}`
-                            : item?.total_price
-                              ? `$${item?.total_price}`
-                              : ""}
+                          {item?.on_amount ? `$${item?.on_amount}` : ""}
                         </CTableDataCell>
 
                         <CTableDataCell>
