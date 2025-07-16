@@ -924,3 +924,19 @@ input:-webkit-autofill {
 .custom-dropdown-menu .dropdown-item {
   white-space: nowrap;  /* Ensure text doesn't break into multiple lines */
 }
+
+@media screen and (min-width: 1880px) and (max-width: 2560px) {
+  .table_flow {
+    min-height: 72vh;
+    height: 72vh;
+    overflow-y: auto;
+  }
+}
+
+@media screen and (min-width: 1440px) and (max-width: 1880px) {
+  .table_flow {
+    min-height: 64vh;
+    height: 64vh;
+    overflow-y: auto;
+  }
+}

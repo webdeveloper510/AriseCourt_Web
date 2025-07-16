@@ -38,7 +38,7 @@ const AddLocations = () => {
     phone: "",
     website: "",
     state: "",
-    country: "",
+    country: "United States",
     password: "",
     description: "",
     user: userData?.id,
