@@ -517,35 +517,35 @@ const Reporting = () => {
                       <CTableRow key={i}>
                         <CTableDataCell>{SerialId++}</CTableDataCell>
                         <CTableDataCell style={{ whiteSpace: "nowrap" }}>
-                          {item?.court_bookings?.[0]?.created_at
+                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.created_at
                             ? formatNewDate(
-                                item?.court_bookings?.[0]?.created_at
+                                item?.court_bookings?.[item?.court_bookings?.length - 1]?.created_at
                               )
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell style={{ whiteSpace: "nowrap" }}>
-                          {item?.court_bookings?.[0]?.booking_date
+                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.booking_date
                             ? formatNewDate(
-                                item?.court_bookings?.[0]?.booking_date
+                                item?.court_bookings?.[item?.court_bookings?.length - 1]?.booking_date
                               )
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell style={{ whiteSpace: "nowrap" }}>
-                          {item?.court_bookings?.[0]?.start_time
+                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.start_time
                             ? convertToAmPm(
-                                item?.court_bookings?.[0]?.start_time
+                                item?.court_bookings?.[item?.court_bookings?.length - 1]?.start_time
                               )
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell style={{ whiteSpace: "nowrap" }}>
-                          {item?.court_bookings?.[0]?.duration_time
+                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.duration_time
                             ? convertToHoursAndMinutes(
-                                item?.court_bookings?.[0]?.duration_time
+                                item?.court_bookings?.[item?.court_bookings?.length - 1]?.duration_time
                               )
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>
-                          {item?.court_bookings?.[0]?.court_number}
+                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.court_number}
                         </CTableDataCell>
                         <CTableDataCell
                           style={{ whiteSpace: "nowrap" }}
@@ -556,28 +556,28 @@ const Reporting = () => {
                         <CTableDataCell>{item?.phone}</CTableDataCell>
 
                         <CTableDataCell>
-                          {item?.court_bookings?.[0]?.court_fee_hrs
-                            ? `$${item?.court_bookings?.[0]?.court_fee_hrs}`
+                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.court_fee_hrs
+                            ? `$${item?.court_bookings?.[item?.court_bookings?.length - 1]?.court_fee_hrs}`
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
-                          {item?.court_bookings?.[0]?.tax ||
-                          item?.court_bookings?.[0]?.tax == 0
-                            ? `$${item?.court_bookings?.[0]?.tax}`
+                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.tax ||
+                          item?.court_bookings?.[item?.court_bookings?.length - 1]?.tax == 0
+                            ? `$${item?.court_bookings?.[item?.court_bookings?.length - 1]?.tax}`
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
-                          {item?.court_bookings?.[0]?.cc_fees ||
-                          item?.court_bookings?.[0]?.cc_fees == 0
-                            ? `$${item?.court_bookings?.[0]?.cc_fees}`
+                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.cc_fees ||
+                          item?.court_bookings?.[item?.court_bookings?.length - 1]?.cc_fees == 0
+                            ? `$${item?.court_bookings?.[item?.court_bookings?.length - 1]?.cc_fees}`
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
-                          {item?.court_bookings?.[0]?.on_amount
-                            ? `$${item?.court_bookings?.[0]?.on_amount}`
+                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.on_amount
+                            ? `$${item?.court_bookings?.[item?.court_bookings?.length - 1]?.on_amount}`
                             : ""}
                         </CTableDataCell>
                       </CTableRow>
