@@ -114,6 +114,8 @@ const Login = () => {
               userData?.access_flag?.includes("0")
             ) {
               navigate("/reporting");
+            } else if (userData?.access_flag?.includes("3")) {
+              navigate("/reporting");
             } else if (userData?.access_flag?.includes("1")) {
               if (userData?.user_type === 0) {
                 navigate("/locations");
@@ -122,8 +124,6 @@ const Login = () => {
               }
             } else if (userData?.access_flag?.includes("2")) {
               navigate("/court-bookings");
-            } else if (userData?.access_flag?.includes("3")) {
-              navigate("/reporting");
             }
           } else {
             toast.error("Details are incorrect", {

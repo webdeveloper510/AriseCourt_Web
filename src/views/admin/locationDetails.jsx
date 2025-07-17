@@ -445,7 +445,7 @@ const LocationDetails = () => {
                 <h4 id="traffic" className="card-title mb-0">
                   Location Details
                 </h4>
-                <div className="card_description">{`List of Location`}</div>
+                <div className="card_description">{`List of Location > ${formData?.name}`}</div>
               </div>
             </div>
           </CCol>
