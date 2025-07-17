@@ -353,7 +353,7 @@ const Dashboard = () => {
                     return (
                       <CTableRow key={i}>
                         {/* <CTableDataCell>#123</CTableDataCell> */}
-                        <CTableDataCell>{SerialId++}</CTableDataCell>
+                        <CTableDataCell>{(currentPage - 1) * itemsPerPage + i + 1}</CTableDataCell>
                         <CTableDataCell title={item?.first_name}>
                           {item?.first_name?.length > 10
                             ? `${item?.first_name?.slice(0, 10)}...`
