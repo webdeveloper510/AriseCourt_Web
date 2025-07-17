@@ -370,6 +370,9 @@ const Reporting = () => {
                         <option disabled value="">
                           Select Location
                         </option>
+                        <option value="">
+                          All
+                        </option>
 
                         {locationFilter?.map((address, index) => {
                           const newAddress = `${address?.address_1} ${address?.address_2} ${address?.address_3} ${address?.address_4}`;
@@ -468,7 +471,7 @@ const Reporting = () => {
                       style={{ whiteSpace: "nowrap" }}
                       onClick={handleFilterClick}
                     >
-                      <CIcon icon={cilFilter}></CIcon> FILTERS
+                     Search
                     </CButton>
                   </div>
                 </div>
