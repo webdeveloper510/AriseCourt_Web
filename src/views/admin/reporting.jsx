@@ -417,6 +417,7 @@ const Reporting = () => {
                       endDate: new Date(),
                       key: "selection",
                     });
+                    setSelectedLocation("")
                     getLocationData();
                   }}
                   className="add_new_butn"
@@ -515,7 +516,7 @@ const Reporting = () => {
                   ?.map((item, i) => {
                     return (
                       <CTableRow key={i}>
-                        <CTableDataCell>{SerialId++}</CTableDataCell>
+                        <CTableDataCell>{(currentPage - 1) * itemsPerPage + i + 1}</CTableDataCell>
                         <CTableDataCell style={{ whiteSpace: "nowrap" }}>
                           {item?.court_bookings?.[item?.court_bookings?.length - 1]?.created_at
                             ? formatNewDate(

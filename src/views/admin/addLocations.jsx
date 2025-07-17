@@ -309,9 +309,7 @@ const AddLocations = () => {
                 <h4 id="traffic" className="card-title mb-0">
                   {id ? "Edit" : "Add"} Location Details
                 </h4>
-                <div className="card_description">
-                  {`List of Locations`}
-                </div>
+                <div className="card_description">{`List of Location`}</div>
               </div>
             </div>
           </CCol>
@@ -405,32 +403,32 @@ const AddLocations = () => {
                 )}
               </CCol>
               <CCol sm={12} md={6} lg={4} className="my-2">
-              <div className="position-relative">
-                <label>Password</label>
+                <div className="position-relative">
+                  <label>Password</label>
 
-                <CFormInput
-                  type={showPassword ? "text" : "password"}
-                  className="register_input"
-                  placeholder="Enter Password"
-                  aria-label="default input example"
-                  value={formData.password}
-                  name="password"
-                  onChange={(e) => handleInputChange(e)}
-                />
-                <i
-                  className={
-                    showPassword ? "bi bi-eye-slash" : "bi bi-eye-fill"
-                  } // Change icon based on state
-                  onClick={() => togglePasswordVisibility()} // Toggle visibility on click
-                  style={{
-                    cursor: "pointer",
-                    position: "absolute",
-                    right: "10px",
-                    top: "38px",
-                    color: "#0860FB",
-                    zIndex: "99",
-                  }} // Add pointer cursor to indicate clickability
-                />
+                  <CFormInput
+                    type={showPassword ? "text" : "password"}
+                    className="register_input"
+                    placeholder="Enter Password"
+                    aria-label="default input example"
+                    value={formData.password}
+                    name="password"
+                    onChange={(e) => handleInputChange(e)}
+                  />
+                  <i
+                    className={
+                      showPassword ? "bi bi-eye-slash" : "bi bi-eye-fill"
+                    } // Change icon based on state
+                    onClick={() => togglePasswordVisibility()} // Toggle visibility on click
+                    style={{
+                      cursor: "pointer",
+                      position: "absolute",
+                      right: "10px",
+                      top: "38px",
+                      color: "#0860FB",
+                      zIndex: "99",
+                    }} // Add pointer cursor to indicate clickability
+                  />
                 </div>
                 {errors.password && (
                   <div className="text-danger">{errors.password}</div>
@@ -512,8 +510,6 @@ const AddLocations = () => {
                 <label>Country</label>
                 <Select
                   options={options}
-                  defaultValue={"US"}
-                  defaultInputValue="US"
                   onChange={(selectedOption) => {
                     handleInputChange({
                       target: {
@@ -523,13 +519,14 @@ const AddLocations = () => {
                     });
                   }}
                   className="register_input"
-                  value={
-                    options?.find(
-                      (option) => option?.label === formData?.country
-                    ) || null
-                  }
                   name="country"
+                  value={
+                    options.find(
+                      (option) => option.label === formData?.country
+                    ) || options.find((option) => option.value === "US")
+                  }
                 />
+
                 {/* 
 
                 <CFormInput

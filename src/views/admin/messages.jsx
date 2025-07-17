@@ -318,7 +318,7 @@ const Messages = () => {
               <CTableHead>
                 <CTableRow>
                   {/* <CTableHeaderCell scope="col">Location Id</CTableHeaderCell> */}
-                  <CTableHeaderCell scope="col">Id</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Sr no.</CTableHeaderCell>
                   <CTableHeaderCell
                     scope="col"
                     style={{ whiteSpace: "nowrap" }}
@@ -354,7 +354,7 @@ const Messages = () => {
                     return (
                       <CTableRow key={i}>
                         {/* <CTableDataCell>#123</CTableDataCell> */}
-                        <CTableDataCell>{item?.id}</CTableDataCell>
+                        <CTableDataCell>{(currentPage - 1) * itemsPerPage + i + 1}</CTableDataCell>
                         <CTableDataCell title={item?.first_name}>
                           {item?.first_name?.length > 10
                             ? `${item?.first_name?.slice(0, 10)}...`

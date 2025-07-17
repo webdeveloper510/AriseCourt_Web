@@ -346,7 +346,7 @@ const Locations = () => {
                     return (
                       <CTableRow key={i}>
                         <CTableDataCell>
-                          {SerialId++}
+                          {(currentPage - 1) * itemsPerPage + i + 1}
                           {/* <div
                             onClick={() => {
                               handleViewDetails(item.id);

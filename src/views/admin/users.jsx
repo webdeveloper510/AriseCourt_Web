@@ -311,7 +311,7 @@ const Users = () => {
                   ?.map((item, i) => {
                     return (
                       <CTableRow key={i}>
-                        <CTableDataCell>{SerialId++}</CTableDataCell>
+                        <CTableDataCell>{(currentPage - 1) * itemsPerPage + i + 1}</CTableDataCell>
 
                         <CTableDataCell
                           style={{ whiteSpace: "nowrap" }}
