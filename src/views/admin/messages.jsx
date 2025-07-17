@@ -264,7 +264,7 @@ const Messages = () => {
             </CButton>
           </CCol>
 
-          <CCol sm={6} className="mt-3">
+          {/* <CCol sm={6} className="mt-3">
             <div className="text-end date_filter_section">
               <div
                 onClick={handleCalendarClick}
@@ -288,7 +288,6 @@ const Messages = () => {
                 </span>
               </div>
 
-              {/* Display DateRangePicker when calendar is open */}
               {isCalendarOpen && (
                 <div
                   ref={calendarRef}
@@ -296,12 +295,11 @@ const Messages = () => {
                 >
                   <DateRangePicker
                     ranges={[selectionRange]}
-                    onChange={handleSelect} // Update the selection when a date is selected
+                    onChange={handleSelect} 
                   />
                 </div>
               )}
 
-              {/* Filter Button */}
               <CButton
                 ref={filterButtonRef}
                 className="filter_butn"
@@ -310,7 +308,7 @@ const Messages = () => {
                 <CIcon icon={cilFilter}></CIcon> FILTERS
               </CButton>
             </div>
-          </CCol>
+          </CCol> */}
         </CRow>
         {adminData?.length > 0 ? (
           <div style={{ overflowX: "auto" }} className="table_flow">

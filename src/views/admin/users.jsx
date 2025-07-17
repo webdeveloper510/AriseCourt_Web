@@ -88,20 +88,17 @@ const Users = () => {
   const userData = JSON.parse(localStorage.getItem("logged_user_data"));
 
   useEffect(() => {
-    getLocationData(bookingType, currentPage, searchQuery);
-  }, [bookingType, currentPage, searchQuery]);
+    getLocationData(currentPage, searchQuery);
+  }, [currentPage, searchQuery]);
 
   const getLocationData = (
-    bookingType = "",
     page = 1,
     query = "",
-    startDate = "",
-    endDate = "",
     loader
   ) => {
     setLoading(query ? false : true);
 
-    userBasicData(bookingType, page, query, startDate, endDate)
+    userBasicData(page, query)
       .then((res) => {
         setLoading(false);
         if (res.status == 200) {
@@ -121,11 +118,8 @@ const Users = () => {
 
   const handleFilterClick = () => {
     getLocationData(
-      bookingType,
       currentPage,
       searchQuery,
-      startDate,
-      endDate,
       "loader"
     );
   };
@@ -227,9 +221,9 @@ const Users = () => {
                 </CButton>
               </CCol>
 
-              <CCol md={6} className="my-1 text-end">
+              {/* <CCol md={6} className="my-1 text-end">
                 <div className="text-end date_filter_section">
-                  {/* Calendar area */}
+                
                   <div>
                     <div
                       onClick={handleCalendarClick}
@@ -250,7 +244,6 @@ const Users = () => {
                       } - ${selectionRange.endDate ? moment(selectionRange.endDate).format("ll") : "End Date"}`}</span>
                     </div>
 
-                    {/* Display DateRangePicker when calendar is open */}
                     {isCalendarOpen && (
                       <div style={{ position: "absolute", zIndex: 10 }}>
                         <DateRangePicker
@@ -272,7 +265,7 @@ const Users = () => {
                     </CButton>
                   </div>
                 </div>
-              </CCol>
+              </CCol> */}
             </CRow>
           </CCol>
         </CRow>

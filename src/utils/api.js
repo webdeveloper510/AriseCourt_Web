@@ -514,13 +514,18 @@ export const getAllLocations = async () => {
   }
 };
 
-export const userBasicData = async () => {
+export const userBasicData = async (page, search) => {
+  const searchVal = search ? `&search=${search}` : "";
+ 
   try {
-    const response = await axios.get(`/user_basic_data/`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
-      },
-    });
+    const response = await axios.get(
+      `/user_basic_data/?page=${page}${searchVal}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+        },
+      }
+    );
     return response;
   } catch (error) {
     return error.response;
