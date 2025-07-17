@@ -402,6 +402,25 @@ const LocationDetails = () => {
     return `${hours12}:${minutes.toString().padStart(2, "0")} ${ampm}`;
   };
 
+  const getVisiblePageNumbers = () => {
+    const maxVisible = 4;
+    const pages = [];
+
+    let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let end = start + maxVisible - 1;
+
+    if (end > totalPages) {
+      end = totalPages;
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  };
+
   return (
     <>
       {loading && (
@@ -426,9 +445,7 @@ const LocationDetails = () => {
                 <h4 id="traffic" className="card-title mb-0">
                   Location Details
                 </h4>
-                <div className="card_description">
-                  {`List of Locations > Beach Badminton Club`}
-                </div>
+                <div className="card_description">{`List of Locations`}</div>
               </div>
             </div>
           </CCol>
@@ -681,7 +698,7 @@ const LocationDetails = () => {
           )}
 
           {courtData?.length > 0 && (
-            <div className="pagination_outer mt-5">
+            <div className="pagination_outer mt-5 pt-4">
               <div className="pagination_section">
                 <CRow className="align-items-center">
                   <CCol md={6}>
@@ -701,7 +718,8 @@ const LocationDetails = () => {
                       >
                         {"<<"}
                       </CPaginationItem>
-                      {pageNumbers.map((page) => (
+
+                      {getVisiblePageNumbers().map((page) => (
                         <CPaginationItem
                           key={page}
                           active={currentPage === page}
@@ -710,6 +728,7 @@ const LocationDetails = () => {
                           {page}
                         </CPaginationItem>
                       ))}
+
                       <CPaginationItem
                         disabled={currentPage === totalPages}
                         className="prev_next"

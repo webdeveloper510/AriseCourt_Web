@@ -278,7 +278,7 @@ export const getCourtBooking = async (
   const start_date = startDate
     ? `&start_date=${startDate}&end_date=${endDate}`
     : "";
-  const address = selectLocation ? `&location=${selectLocation}` : ""
+  const address = selectLocation ? `&location=${selectLocation}` : "";
 
   try {
     const response = await axios.get(
@@ -312,6 +312,7 @@ export const getReportBooking = async (
   type,
   page,
   search,
+  selectLocation,
   startDate,
   endDate
 ) => {
@@ -320,10 +321,11 @@ export const getReportBooking = async (
   const start_date = startDate
     ? `&start_date=${startDate}&end_date=${endDate}`
     : "";
+  const address = selectLocation ? `&location=${selectLocation}` : "";
 
   try {
     const response = await axios.get(
-      `/user-data/?user_type=${bookingType}&page=${page}${searchVal}${start_date}`,
+      `/user-data/?user_type=${bookingType}&page=${page}${searchVal}${start_date}${address}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
@@ -408,7 +410,8 @@ export const getMyLocation = async () => {
   }
 };
 
-export const getPerLocation = async (  type,
+export const getPerLocation = async (
+  type,
   page,
   search,
   startDate,
@@ -420,11 +423,14 @@ export const getPerLocation = async (  type,
     ? `&start_date=${startDate}&end_date=${endDate}`
     : "";
   try {
-    const response = await axios.get(`/users_my_locations/?user_type=${bookingType}&page=${page}${searchVal}${start_date}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
-      },
-    });
+    const response = await axios.get(
+      `/users_my_locations/?user_type=${bookingType}&page=${page}${searchVal}${start_date}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+        },
+      }
+    );
     return response;
   } catch (error) {
     return error.response;
@@ -457,7 +463,7 @@ export const getCourtBookingByAdmin = async (
   const start_date = startDate
     ? `&start_date=${startDate}&end_date=${endDate}`
     : "";
- const address = selectLocation ? `&location=${selectLocation}` : ""
+  const address = selectLocation ? `&location=${selectLocation}` : "";
   try {
     const response = await axios.get(
       `/get_booking_byadmin/?type=${bookingType}&page=${page}${searchVal}${start_date}${address}`,

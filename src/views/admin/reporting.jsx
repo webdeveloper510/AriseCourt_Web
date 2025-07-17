@@ -5,6 +5,7 @@ import {
   CCardBody,
   CCol,
   CFormInput,
+  CFormSelect,
   CInputGroup,
   CInputGroupText,
   CPagination,
@@ -33,7 +34,12 @@ import UserIcon from "../../assets/images/report_user_icon.png";
 import BookingIcon from "../../assets/images/report_booking_icon.png";
 import CourtsIcon from "../../assets/images/report_court_icon.png";
 import ProfitIcon from "../../assets/images/report_profit_icon.png";
-import { getLocation, getReportBooking, getReportData } from "../../utils/api";
+import {
+  getAllLocations,
+  getLocation,
+  getReportBooking,
+  getReportData,
+} from "../../utils/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
@@ -41,6 +47,8 @@ import moment from "moment";
 const Reporting = () => {
   let SerialId = 1;
   const navigate = useNavigate();
+  const userData = JSON.parse(localStorage.getItem("logged_user_data"));
+
   const formatDate = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
@@ -56,17 +64,19 @@ const Reporting = () => {
     key: "selection",
   });
   const [loading, setLoading] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState("");
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const itemsPerPage = 10;
   const [totalCounts, setTotalCounts] = useState(0);
-  const [startDate, setStartDate] = useState(formatDate(new Date())); // Start date for API
-  const [endDate, setEndDate] = useState(formatDate(new Date()));
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [startDate, setStartDate] = useState(formatDate(new Date())); // Start date for API
+  const [endDate, setEndDate] = useState(formatDate(new Date()));
   const [searchQuery, setSearchQuery] = useState("");
   const [reportData, setReportData] = useState({});
   const [reportTable, setReportTable] = useState([]);
   const [bookingType, setBookingType] = useState("");
+  const [locationFilter, setLocationFilter] = useState([]);
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -105,19 +115,46 @@ const Reporting = () => {
   };
 
   useEffect(() => {
-    getLocationData(bookingType, currentPage, searchQuery);
-  }, [bookingType, currentPage, searchQuery]);
+    getLocationData(bookingType, currentPage, searchQuery, selectedLocation);
+  }, [bookingType, currentPage, searchQuery, selectedLocation]);
+
+  useEffect(() => {
+    getAllLocationData();
+  }, []);
+
+  const getAllLocationData = () => {
+    getAllLocations()
+      .then((res) => {
+        if (res.status == 200) {
+          setLocationFilter(res?.data);
+        } else {
+          setLocationFilter([]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setLocationFilter([]);
+      });
+  };
 
   const getLocationData = (
     bookingType = "",
     page = 1,
     query = "",
+    selectedLocation = "",
     startDate = "",
     endDate = "",
     loader
   ) => {
     setLoading(query ? false : true);
-    getReportBooking(bookingType, page, query, startDate, endDate)
+    getReportBooking(
+      bookingType,
+      page,
+      query,
+      selectedLocation,
+      startDate,
+      endDate
+    )
       .then((res) => {
         setLoading(false);
         if (res.status == 200) {
@@ -140,6 +177,7 @@ const Reporting = () => {
       bookingType,
       currentPage,
       searchQuery,
+      selectedLocation,
       startDate,
       endDate,
       "loader"
@@ -189,6 +227,38 @@ const Reporting = () => {
     const ampm = hourNum >= 12 ? "PM" : "AM";
     const adjustedHour = hourNum % 12 || 12; // Convert 0 to 12
     return `${adjustedHour}:${minutes} ${ampm}`;
+  };
+
+  const formatNewDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+    const yyyy = date.getFullYear();
+    return `${mm}-${dd}-${yyyy}`;
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedLocation(value);
+  };
+
+  const getVisiblePageNumbers = () => {
+    const maxVisible = 4;
+    const pages = [];
+
+    let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let end = start + maxVisible - 1;
+
+    if (end > totalPages) {
+      end = totalPages;
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    return pages;
   };
 
   return (
@@ -279,9 +349,46 @@ const Reporting = () => {
             </h6>
           </CCol>
 
-          <CCol sm={12} xl={8} className="my-1">
+          <CCol sm={12} xl={12} className="my-1">
             <CRow>
-              <CCol md={6} className="my-1 d-flex align-items-center gap-1 ">
+              <CCol className="my-1 d-flex align-items-center gap-1 ">
+                {userData?.user_type == 0 && (
+                  <>
+                    <div className="input_section mt-1">
+                      <CFormSelect
+                        className="select_location"
+                        placeholder="Select Location"
+                        style={{
+                          height: "40px",
+                          paddingInlineStart: "0px",
+                        }}
+                        defaultValue=""
+                        onChange={(e) => handleInputChange(e)}
+                        value={selectedLocation}
+                        name="location"
+                      >
+                        <option disabled value="">
+                          Select Location
+                        </option>
+
+                        {locationFilter?.map((address, index) => {
+                          const newAddress = `${address?.address_1} ${address?.address_2} ${address?.address_3} ${address?.address_4}`;
+                          return (
+                            <option
+                              key={index}
+                              value={newAddress}
+                              style={{ textTransform: "capitalize" }}
+                            >
+                              {newAddress}
+                            </option>
+                          );
+                        })}
+                      </CFormSelect>
+                    </div>
+                  </>
+                )}
+              </CCol>
+              <CCol md={4} className="my-1 d-flex align-items-center gap-1 ">
                 <CInputGroup
                   className="search_input_group_reports"
                   style={{ height: "45px" }}
@@ -319,7 +426,7 @@ const Reporting = () => {
                 </CButton>
               </CCol>
 
-              <CCol md={6} className="my-1">
+              <CCol md={4} className="my-1">
                 <div className="text-end date_filter_section">
                   {/* Calendar area */}
                   <div>
@@ -375,31 +482,31 @@ const Reporting = () => {
                 <CTableRow>
                   <CTableHeaderCell scope="col">Sr no.</CTableHeaderCell>
                   <CTableHeaderCell scope="col" style={{ width: "20%" }}>
-                    Description
+                    Booking Date
                   </CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Email</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
-                  <CTableHeaderCell
-                    scope="col"
-                    style={{ whiteSpace: "nowrap" }}
-                  >
-                    From Date
+                  <CTableHeaderCell scope="col" style={{ width: "20%" }}>
+                    Reservation Date
                   </CTableHeaderCell>
-                  <CTableHeaderCell
-                    scope="col"
-                    style={{ whiteSpace: "nowrap" }}
-                  >
+                  <CTableHeaderCell scope="col" style={{ width: "20%" }}>
+                    Reservation From Time
+                  </CTableHeaderCell>
+                  <CTableHeaderCell scope="col" style={{ width: "20%" }}>
                     Duration
                   </CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Court Number</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Full Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Email Address</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Phone Number</CTableHeaderCell>
+
                   <CTableHeaderCell
                     scope="col"
                     style={{ whiteSpace: "nowrap" }}
                   >
-                    Amount Paid
+                    Amount
                   </CTableHeaderCell>
-                  {/* <CTableHeaderCell scope="col">No. of Courts</CTableHeaderCell> */}
-                  {/* <CTableHeaderCell scope="col">Action</CTableHeaderCell> */}
+                  <CTableHeaderCell scope="col">Sales Tax</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">CC Fees</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Total Amount</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
@@ -409,30 +516,28 @@ const Reporting = () => {
                     return (
                       <CTableRow key={i}>
                         <CTableDataCell>{SerialId++}</CTableDataCell>
-                        <CTableDataCell
-                          title={item?.court_bookings?.[0]?.description}
-                        >
-                          {" "}
-                          {item?.court_bookings?.[0]?.description &&
-                          item?.court_bookings?.[0]?.description?.length > 30
-                            ? `${item?.court_bookings?.[0]?.description?.slice(0, 30)}...`
-                            : item?.court_bookings?.[0]?.description}
-                        </CTableDataCell>
-                        <CTableDataCell
-                          style={{ whiteSpace: "nowrap" }}
-                        >{`${item?.first_name} ${item?.last_name}`}</CTableDataCell>
-                        <CTableDataCell>{item?.email}</CTableDataCell>
-                        <CTableDataCell>{item?.phone}</CTableDataCell>
                         <CTableDataCell style={{ whiteSpace: "nowrap" }}>
-                          {item?.court_bookings?.[0]?.booking_date}
-                          <br />
+                          {item?.court_bookings?.[0]?.created_at
+                            ? formatNewDate(
+                                item?.court_bookings?.[0]?.created_at
+                              )
+                            : ""}
+                        </CTableDataCell>
+                        <CTableDataCell style={{ whiteSpace: "nowrap" }}>
+                          {item?.court_bookings?.[0]?.booking_date
+                            ? formatNewDate(
+                                item?.court_bookings?.[0]?.booking_date
+                              )
+                            : ""}
+                        </CTableDataCell>
+                        <CTableDataCell style={{ whiteSpace: "nowrap" }}>
                           {item?.court_bookings?.[0]?.start_time
                             ? convertToAmPm(
                                 item?.court_bookings?.[0]?.start_time
                               )
                             : ""}
                         </CTableDataCell>
-                        <CTableDataCell>
+                        <CTableDataCell style={{ whiteSpace: "nowrap" }}>
                           {item?.court_bookings?.[0]?.duration_time
                             ? convertToHoursAndMinutes(
                                 item?.court_bookings?.[0]?.duration_time
@@ -440,71 +545,41 @@ const Reporting = () => {
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>
-                          {item?.court_bookings?.[0]?.total_price
-                            ? `$${item?.court_bookings?.[0]?.total_price}`
+                          {item?.court_bookings?.[0]?.court_number}
+                        </CTableDataCell>
+                        <CTableDataCell
+                          style={{ whiteSpace: "nowrap" }}
+                        >{`${item?.first_name} ${item?.last_name}`}</CTableDataCell>
+                        <CTableDataCell style={{ whiteSpace: "nowrap" }}>
+                          {item?.email}
+                        </CTableDataCell>
+                        <CTableDataCell>{item?.phone}</CTableDataCell>
+
+                        <CTableDataCell>
+                          {item?.court_bookings?.[0]?.court_fee_hrs
+                            ? `$${item?.court_bookings?.[0]?.court_fee_hrs}`
                             : ""}
                         </CTableDataCell>
-                        {/* <CTableDataCell>
-                        <div
-                          style={{ position: "relative", marginBottom: "16px" }}
-                        >
-                          <span
-                            style={{ fontSize: "24px", cursor: "pointer" }}
-                            onClick={() => toggleMenu(item.id)}
-                          >
-                            ⋮
-                          </span>
-                          {openMenuId === item.id && (
-                            <div
-                              style={{
-                                position: "absolute",
-                                top: "30px",
-                                right: 0,
-                                backgroundColor: "#fff",
-                                borderRadius: "10px",
-                                padding: "12px",
-                                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-                                zIndex: 999999,
-                              }}
-                            >
-                              <div
-                                onClick={() => {
-                                  handleViewDetails(item.id);
-                                  setOpenMenuId(null);
-                                }}
-                                className="action_icons"
-                              >
-                                <CIcon icon={cilSearch} className="view_icon" />{" "}
-                                View
-                              </div>
-                              <div
-                                onClick={() => {
-                                  handleEditLocation(item.id);
-                                  setOpenMenuId(null);
-                                }}
-                                className="action_icons"
-                              >
-                                <CIcon icon={cilPencil} className="edit_icon" />{" "}
-                                Edit
-                              </div>
-                              <div
-                                onClick={() => {
-                                  handleDeleteModal(item.id);
-                                  setOpenMenuId(null);
-                                }}
-                                className="action_icons"
-                              >
-                                <CIcon
-                                  icon={cilDelete}
-                                  className="delete_icon"
-                                />{" "}
-                                Delete
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                       
-                      </CTableDataCell> */}
+                        <CTableDataCell>
+                          {" "}
+                          {item?.court_bookings?.[0]?.tax ||
+                          item?.court_bookings?.[0]?.tax == 0
+                            ? `$${item?.court_bookings?.[0]?.tax}`
+                            : ""}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {" "}
+                          {item?.court_bookings?.[0]?.cc_fees ||
+                          item?.court_bookings?.[0]?.cc_fees == 0
+                            ? `$${item?.court_bookings?.[0]?.cc_fees}`
+                            : ""}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {" "}
+                          {item?.court_bookings?.[0]?.on_amount
+                            ? `$${item?.court_bookings?.[0]?.on_amount}`
+                            : ""}
+                        </CTableDataCell>
                       </CTableRow>
                     );
                   })}
@@ -537,7 +612,8 @@ const Reporting = () => {
                     >
                       {"<<"}
                     </CPaginationItem>
-                    {pageNumbers.map((page) => (
+
+                    {getVisiblePageNumbers().map((page) => (
                       <CPaginationItem
                         key={page}
                         active={currentPage === page}
@@ -546,6 +622,7 @@ const Reporting = () => {
                         {page}
                       </CPaginationItem>
                     ))}
+
                     <CPaginationItem
                       disabled={currentPage === totalPages}
                       className="prev_next"

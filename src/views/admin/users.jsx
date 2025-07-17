@@ -166,30 +166,23 @@ const Users = () => {
     setCurrentPage(1); // Reset to the first page when a new search is made
   };
 
-  const convertToHoursAndMinutes = (timeString) => {
-    const [hours, minutes] = timeString.split(":");
-    const hourNum = parseInt(hours, 10);
-    const minuteNum = parseInt(minutes, 10);
+  const getVisiblePageNumbers = () => {
+    const maxVisible = 4;
+    const pages = [];
 
-    let result = "";
+    let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let end = start + maxVisible - 1;
 
-    if (hourNum > 0) {
-      result += `${hourNum}hr`;
+    if (end > totalPages) {
+      end = totalPages;
+      start = Math.max(1, end - maxVisible + 1);
     }
 
-    if (minuteNum > 0) {
-      result += ` ${minuteNum}min`;
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
     }
 
-    return result.trim();
-  };
-
-  const convertToAmPm = (timeString) => {
-    const [hours, minutes] = timeString.split(":");
-    const hourNum = parseInt(hours, 10);
-    const ampm = hourNum >= 12 ? "PM" : "AM";
-    const adjustedHour = hourNum % 12 || 12; // Convert 0 to 12
-    return `${adjustedHour}:${minutes} ${ampm}`;
+    return pages;
   };
 
   return (
@@ -360,7 +353,8 @@ const Users = () => {
                     >
                       {"<<"}
                     </CPaginationItem>
-                    {pageNumbers.map((page) => (
+
+                    {getVisiblePageNumbers().map((page) => (
                       <CPaginationItem
                         key={page}
                         active={currentPage === page}
@@ -369,6 +363,7 @@ const Users = () => {
                         {page}
                       </CPaginationItem>
                     ))}
+
                     <CPaginationItem
                       disabled={currentPage === totalPages}
                       className="prev_next"

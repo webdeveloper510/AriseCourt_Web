@@ -187,6 +187,25 @@ const Messages = () => {
     };
   }, []);
 
+  const getVisiblePageNumbers = () => {
+    const maxVisible = 4;
+    const pages = [];
+
+    let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let end = start + maxVisible - 1;
+
+    if (end > totalPages) {
+      end = totalPages;
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  };
+
   return (
     <>
       {/* <WidgetsDropdown className="mb-4" /> */}
@@ -236,7 +255,7 @@ const Messages = () => {
                   endDate: new Date(),
                   key: "selection",
                 });
-                getAdminData()
+                getAdminData();
               }}
               className="add_new_butn"
               style={{ height: "50px !important" }}
@@ -446,7 +465,8 @@ const Messages = () => {
                     >
                       {"<<"}
                     </CPaginationItem>
-                    {pageNumbers.map((page) => (
+
+                    {getVisiblePageNumbers().map((page) => (
                       <CPaginationItem
                         key={page}
                         active={currentPage === page}
@@ -455,6 +475,7 @@ const Messages = () => {
                         {page}
                       </CPaginationItem>
                     ))}
+
                     <CPaginationItem
                       disabled={currentPage === totalPages}
                       className="prev_next"

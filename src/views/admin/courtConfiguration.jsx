@@ -335,6 +335,25 @@ const CourtConfiguration = () => {
       });
   };
 
+  const getVisiblePageNumbers = () => {
+    const maxVisible = 4;
+    const pages = [];
+
+    let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let end = start + maxVisible - 1;
+
+    if (end > totalPages) {
+      end = totalPages;
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  };
+
   return (
     <>
       {/* <WidgetsDropdown className="mb-4" /> */}
@@ -426,29 +445,31 @@ const CourtConfiguration = () => {
               </CCol>
 
               <CCol md={4}>
-                <CFormSelect
-                  className="form-control select_location_field"
-                  placeholder="Select Location"
-                  defaultValue=""
-                  onChange={(e) => handleLocationChange(e)}
-                  value={selectLocation}
-                >
-                  <option disabled value="">
-                    Select Location
-                  </option>
-                  {locationFilter?.map((address, index) => {
-                    const newAddress = `${address?.address_1} ${address?.address_2} ${address?.address_3} ${address?.address_4}`;
-                    return (
-                      <option
-                        key={index}
-                        value={newAddress}
-                        style={{ textTransform: "capitalize" }}
-                      >
-                        {newAddress}
-                      </option>
-                    );
-                  })}
-                </CFormSelect>
+                {userData?.user_type == 0 && (
+                  <CFormSelect
+                    className="form-control select_location_field"
+                    placeholder="Select Location"
+                    defaultValue=""
+                    onChange={(e) => handleLocationChange(e)}
+                    value={selectLocation}
+                  >
+                    <option disabled value="">
+                      Select Location
+                    </option>
+                    {locationFilter?.map((address, index) => {
+                      const newAddress = `${address?.address_1} ${address?.address_2} ${address?.address_3} ${address?.address_4}`;
+                      return (
+                        <option
+                          key={index}
+                          value={newAddress}
+                          style={{ textTransform: "capitalize" }}
+                        >
+                          {newAddress}
+                        </option>
+                      );
+                    })}
+                  </CFormSelect>
+                )}
               </CCol>
 
               <CCol md={4}>
@@ -762,7 +783,8 @@ const CourtConfiguration = () => {
                     >
                       {"<<"}
                     </CPaginationItem>
-                    {pageNumbers.map((page) => (
+
+                    {getVisiblePageNumbers().map((page) => (
                       <CPaginationItem
                         key={page}
                         active={currentPage === page}
@@ -771,6 +793,7 @@ const CourtConfiguration = () => {
                         {page}
                       </CPaginationItem>
                     ))}
+
                     <CPaginationItem
                       disabled={currentPage === totalPages}
                       className="prev_next"

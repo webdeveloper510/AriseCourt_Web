@@ -173,7 +173,7 @@ const CourtDetails = () => {
                 <CCol sm={12} md={6} lg={4} className="my-1">
                   <h6 className="text-white">Payment details</h6>
                   <h6 className="detail_title">Amount</h6>
-                  <p className="details_description">{formData?.amount}</p>
+                  <p className="details_description">{formData?.on_amount}</p>
 
                   <h6 className="detail_title mt-1">CC Fees</h6>
                   <p className="details_description">{formData?.cc_fees}</p>

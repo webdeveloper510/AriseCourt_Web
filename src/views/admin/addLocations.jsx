@@ -310,7 +310,7 @@ const AddLocations = () => {
                   {id ? "Edit" : "Add"} Location Details
                 </h4>
                 <div className="card_description">
-                  {`List of Locations > Beach Badminton Club`}
+                  {`List of Locations`}
                 </div>
               </div>
             </div>

@@ -39,7 +39,7 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: "Location",
+    name: "Manage Courts",
     to: "/location",
     icon: <CIcon icon={cilLocationPin} customClassName="nav-icon" />,
     permissionId: 1, // Location Tab only (id = 1)

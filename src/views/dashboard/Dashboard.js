@@ -37,7 +37,7 @@ import deleteImage from "../../assets/images/delete_image.png";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { toast } from "react-toastify";
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 const Dashboard = () => {
   let SerialId = 1;
@@ -191,22 +191,41 @@ const Dashboard = () => {
   }, []);
 
   function formatPhoneNumber(number) {
-    if (!number) return '';
-  
+    if (!number) return "";
+
     // Make sure number starts with '+'
     let formattedInput = number;
-    if (!number.startsWith('+')) {
+    if (!number.startsWith("+")) {
       formattedInput = `+${number}`;
     }
-  
+
     const phoneNumber = parsePhoneNumberFromString(formattedInput);
-  
+
     if (phoneNumber && phoneNumber.isValid()) {
       return phoneNumber.formatInternational();
     }
-  
+
     return number; // fallback
   }
+
+  const getVisiblePageNumbers = () => {
+    const maxVisible = 4;
+    const pages = [];
+
+    let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let end = start + maxVisible - 1;
+
+    if (end > totalPages) {
+      end = totalPages;
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  };
 
   return (
     <>
@@ -330,7 +349,7 @@ const Dashboard = () => {
                 {adminData
                   ?.sort((a, b) => b?.id - a?.id)
                   ?.map((item, i) => {
-                    const location = `${item?.locations?.[0]?.address_1 ? item?.locations?.[0]?.address_1 : ""} ${item?.locations?.[0]?.address_2 ? item?.locations?.[0]?.address_2  : ""} ${item?.locations?.[0]?.address_3 ? item?.locations?.[0]?.address_3 : ""} ${item?.locations?.[0]?.address_4 ? item?.locations?.[0]?.address_4 : ""}`
+                    const location = `${item?.locations?.[0]?.address_1 ? item?.locations?.[0]?.address_1 : ""} ${item?.locations?.[0]?.address_2 ? item?.locations?.[0]?.address_2 : ""} ${item?.locations?.[0]?.address_3 ? item?.locations?.[0]?.address_3 : ""} ${item?.locations?.[0]?.address_4 ? item?.locations?.[0]?.address_4 : ""}`;
                     return (
                       <CTableRow key={i}>
                         {/* <CTableDataCell>#123</CTableDataCell> */}
@@ -350,8 +369,17 @@ const Dashboard = () => {
                         </CTableDataCell>
                         {/* <CTableDataCell>0</CTableDataCell> */}
                         <CTableDataCell>{item?.email}</CTableDataCell>
-                        <CTableDataCell>{item?.phone ? formatPhoneNumber(item?.phone) : ""}</CTableDataCell>
-                        <CTableDataCell title={location} style={{width:"20%"}}>{location?.length > 50 ? `${location?.slice(0,50)}...` : location}</CTableDataCell>
+                        <CTableDataCell>
+                          {item?.phone ? formatPhoneNumber(item?.phone) : ""}
+                        </CTableDataCell>
+                        <CTableDataCell
+                          title={location}
+                          style={{ width: "20%" }}
+                        >
+                          {location?.length > 50
+                            ? `${location?.slice(0, 50)}...`
+                            : location}
+                        </CTableDataCell>
                         <CTableDataCell>
                           <div
                             style={{
@@ -474,7 +502,8 @@ const Dashboard = () => {
                     >
                       {"<<"}
                     </CPaginationItem>
-                    {pageNumbers.map((page) => (
+
+                    {getVisiblePageNumbers().map((page) => (
                       <CPaginationItem
                         key={page}
                         active={currentPage === page}
@@ -483,6 +512,7 @@ const Dashboard = () => {
                         {page}
                       </CPaginationItem>
                     ))}
+
                     <CPaginationItem
                       disabled={currentPage === totalPages}
                       className="prev_next"

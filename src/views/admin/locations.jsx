@@ -51,7 +51,7 @@ const Locations = () => {
   const filterButtonRef = useRef(null);
   const [locationData, setLocationData] = useState([]);
   const [locationFilter, setLocationFilter] = useState([]);
-  const [selectLocation, setSelectLocation] = useState("")
+  const [selectLocation, setSelectLocation] = useState("");
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [locationId, setLocationId] = useState("");
@@ -185,32 +185,42 @@ const Locations = () => {
       });
   };
 
-  const handleLocationChange = (e) => {
-    const value = e.target.value;
-    setSelectLocation(value)
-    const filteredData = locationFilter?.filter(
-      (location) => location.city === value
-    );
-    setLocationData(filteredData);
-  };
+  function formatPhoneNumber(number) {
+    if (!number) return "";
 
-    function formatPhoneNumber(number) {
-      if (!number) return '';
-    
-      // Make sure number starts with '+'
-      let formattedInput = number;
-      if (!number.startsWith('+')) {
-        formattedInput = `+${number}`;
-      }
-    
-      const phoneNumber = parsePhoneNumberFromString(formattedInput);
-    
-      if (phoneNumber && phoneNumber.isValid()) {
-        return phoneNumber.formatInternational();
-      }
-    
-      return number; // fallback
+    // Make sure number starts with '+'
+    let formattedInput = number;
+    if (!number.startsWith("+")) {
+      formattedInput = `+${number}`;
     }
+
+    const phoneNumber = parsePhoneNumberFromString(formattedInput);
+
+    if (phoneNumber && phoneNumber.isValid()) {
+      return phoneNumber.formatInternational();
+    }
+
+    return number; // fallback
+  }
+
+  const getVisiblePageNumbers = () => {
+    const maxVisible = 4;
+    const pages = [];
+
+    let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let end = start + maxVisible - 1;
+
+    if (end > totalPages) {
+      end = totalPages;
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  };
 
   return (
     <>
@@ -258,8 +268,8 @@ const Locations = () => {
               type="button"
               onClick={() => {
                 setSearchQuery("");
-                setLocationData(locationFilter)
-                setSelectLocation("")
+                setLocationData(locationFilter);
+                setSelectLocation("");
               }}
               className="add_new_butn"
               style={{ height: "50px !important" }}
@@ -267,7 +277,6 @@ const Locations = () => {
               <CIcon icon={cilReload} />
             </CButton>
           </CCol>
-
 
           {/* <CCol sm={6} className="mt-3">
             <div className="text-end date_filter_section">
@@ -362,7 +371,9 @@ const Locations = () => {
                           )}
                         </CTableDataCell>
                         <CTableDataCell>{item?.email}</CTableDataCell>
-                        <CTableDataCell>{item?.phone ? formatPhoneNumber(item?.phone) : ""}</CTableDataCell>
+                        <CTableDataCell>
+                          {item?.phone ? formatPhoneNumber(item?.phone) : ""}
+                        </CTableDataCell>
                         <CTableDataCell>{item?.city}</CTableDataCell>
                         <CTableDataCell>{item?.country}</CTableDataCell>
                         <CTableDataCell>{item?.courts?.length}</CTableDataCell>
@@ -458,7 +469,7 @@ const Locations = () => {
         )}
 
         {locationData?.length > 0 && (
-          <div className="pagination_outer mt-5">
+          <div className="pagination_outer mt-5 pt-4">
             <div className="pagination_section">
               <CRow className="align-items-center">
                 <CCol md={6}>
@@ -475,7 +486,8 @@ const Locations = () => {
                     >
                       {"<<"}
                     </CPaginationItem>
-                    {pageNumbers.map((page) => (
+
+                    {getVisiblePageNumbers().map((page) => (
                       <CPaginationItem
                         key={page}
                         active={currentPage === page}
@@ -484,6 +496,7 @@ const Locations = () => {
                         {page}
                       </CPaginationItem>
                     ))}
+
                     <CPaginationItem
                       disabled={currentPage === totalPages}
                       className="prev_next"

@@ -54,7 +54,7 @@ const AppSidebar = () => {
 
     if (
       userData?.user_type === 0 &&
-      (item.name === "Location")
+      (item.name === "Manage Courts")
     ) {
       return false;
     }
