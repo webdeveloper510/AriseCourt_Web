@@ -63,14 +63,12 @@ const CourtDetails = () => {
     const [hours, minutes, seconds] = timeString.split(":");
     const hourNum = parseInt(hours, 10);
     const minuteNum = parseInt(minutes, 10);
-  
+
     // Convert minutes to fraction of hour
     const totalHours = hourNum + minuteNum / 60;
-  
+
     return `${totalHours} Hour${totalHours !== 1 ? "s" : ""}`;
   };
-  
- 
 
   return (
     <>
@@ -172,17 +170,19 @@ const CourtDetails = () => {
 
                 <CCol sm={12} md={6} lg={4} className="my-1">
                   <h6 className="text-white">Payment details</h6>
-                  <h6 className="detail_title">Amount</h6>
-                  <p className="details_description">{formData?.on_amount}</p>
-
-                  <h6 className="detail_title mt-1">CC Fees</h6>
-                  <p className="details_description">{formData?.cc_fees}</p>
                   <h6 className="detail_title mt-1">Court fees per hours</h6>
                   <p className="details_description">
                     {formData?.court?.court_fee_hrs}
                   </p>
+
+                  <h6 className="detail_title mt-1">CC Fees</h6>
+                  <p className="details_description">{formData?.cc_fees}</p>
                   <h6 className="detail_title mt-1">Tax</h6>
                   <p className="details_description">{formData?.tax}</p>
+
+                  <h6 className="detail_title">Amount</h6>
+                  <p className="details_description">{formData?.on_amount}</p>
+
                   <h6 className="detail_title mt-1">Payment Status</h6>
                   <p className="details_description">{formData?.status}</p>
                 </CCol>
