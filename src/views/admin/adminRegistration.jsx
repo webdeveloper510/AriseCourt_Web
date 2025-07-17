@@ -392,7 +392,7 @@ const AdminRegistration = () => {
                   Admins Registration
                 </h4>
                 <div className="card_description">
-                  {id ? "Edit" : "Add"} new Users
+                  {id ? "Edit" : "Add"} new admin
                 </div>
               </div>
             </div>
