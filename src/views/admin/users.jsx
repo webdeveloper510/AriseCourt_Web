@@ -38,6 +38,7 @@ import {
   getPerLocation,
   getReportBooking,
   getReportData,
+  userBasicData,
 } from "../../utils/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -99,41 +100,23 @@ const Users = () => {
     loader
   ) => {
     setLoading(query ? false : true);
-    if (userData?.user_type == 0) {
-      getReportBooking(bookingType, page, query, startDate, endDate)
-        .then((res) => {
-          setLoading(false);
-          if (res.status == 200) {
-            setReportTable(res?.data?.results);
-            setTotalCounts(res?.data?.count); // Total count of admin data
-            setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
-          } else {
-            setReportTable([]);
-          }
-        })
-        .catch((error) => {
-          setLoading(false);
-          console.log(error);
+
+    userBasicData(bookingType, page, query, startDate, endDate)
+      .then((res) => {
+        setLoading(false);
+        if (res.status == 200) {
+          setReportTable(res?.data?.results);
+          setTotalCounts(res?.data?.count); // Total count of admin data
+          setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
+        } else {
           setReportTable([]);
-        });
-    } else {
-      getPerLocation(bookingType, page, query, startDate, endDate)
-        .then((res) => {
-          setLoading(false);
-          if (res.status == 200) {
-            setReportTable(res?.data?.results);
-            setTotalCounts(res?.data?.count); // Total count of admin data
-            setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
-          } else {
-            setReportTable([]);
-          }
-        })
-        .catch((error) => {
-          setLoading(false);
-          console.log(error);
-          setReportTable([]);
-        });
-    }
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+        setReportTable([]);
+      });
   };
 
   const handleFilterClick = () => {
@@ -311,7 +294,9 @@ const Users = () => {
                   ?.map((item, i) => {
                     return (
                       <CTableRow key={i}>
-                        <CTableDataCell>{(currentPage - 1) * itemsPerPage + i + 1}</CTableDataCell>
+                        <CTableDataCell>
+                          {(currentPage - 1) * itemsPerPage + i + 1}
+                        </CTableDataCell>
 
                         <CTableDataCell
                           style={{ whiteSpace: "nowrap" }}

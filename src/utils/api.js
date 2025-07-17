@@ -513,3 +513,16 @@ export const getAllLocations = async () => {
     return error.response;
   }
 };
+
+export const userBasicData = async () => {
+  try {
+    const response = await axios.get(`/user_basic_data/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
