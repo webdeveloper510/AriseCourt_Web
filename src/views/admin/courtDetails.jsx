@@ -174,7 +174,7 @@ const CourtDetails = () => {
                   <p className="details_description">{formData?.tax}</p>
 
                   <h6 className="detail_title">Amount</h6>
-                  <p className="details_description">{formData?.on_amount}</p>
+                  <p className="details_description">{parseFloat(formData?.on_amount).toFixed(2)}</p>
 
                   <h6 className="detail_title mt-1">Payment Status</h6>
                   <p className="details_description">{formData?.status}</p>
