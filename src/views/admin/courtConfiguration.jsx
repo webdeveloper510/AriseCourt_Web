@@ -428,6 +428,7 @@ const CourtConfiguration = () => {
                   onClick={() => {
                     setSearchQuery("");
                     setStartDate(new Date());
+                    setCurrentPage(1)
                     setEndDate(new Date());
                     setSelectLocation("");
                     setSelectionRange({
