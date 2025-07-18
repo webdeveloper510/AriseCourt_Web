@@ -49,6 +49,7 @@ import {
 import { toast } from "react-toastify";
 import moment from "moment";
 import deleteImage from "../../assets/images/delete_image.png";
+import Select from "react-select";
 
 const CourtConfiguration = () => {
   let SerialId = 1;
@@ -93,6 +94,19 @@ const CourtConfiguration = () => {
     }
   };
 
+  const locationOptions = (locationFilter || []).map((address) => {
+    const fullAddress =
+      `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`.trim();
+
+    return {
+      value: fullAddress,
+      label: fullAddress,
+    };
+  });
+
+  // Optional: Add "Select Location" placeholder as an option (or keep it as placeholder only)
+  const placeholderOption = { label: "Select Location", value: "" };
+
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
@@ -128,7 +142,7 @@ const CourtConfiguration = () => {
             setAdminData(res?.data?.results);
             setTotalCounts(res?.data?.count);
             setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
-          }  else {
+          } else {
             setAdminData([]);
           }
         })
@@ -152,7 +166,7 @@ const CourtConfiguration = () => {
             setAdminData(res?.data?.results);
             setTotalCounts(res?.data?.count);
             setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
-          }  else {
+          } else {
             setAdminData([]);
           }
         })
@@ -414,7 +428,7 @@ const CourtConfiguration = () => {
                   onClick={() => {
                     setSearchQuery("");
                     setStartDate(new Date());
-                    setCurrentPage(1)
+                    setCurrentPage(1);
                     setEndDate(new Date());
                     setSelectLocation("");
                     setSelectionRange({
@@ -433,29 +447,27 @@ const CourtConfiguration = () => {
 
               <CCol md={4}>
                 {userData?.user_type == 0 && (
-                  <CFormSelect
-                    className="form-control select_location_field"
-                    placeholder="Select Location"
-                    defaultValue=""
-                    onChange={(e) => handleLocationChange(e)}
-                    value={selectLocation}
-                  >
-                    <option disabled value="">
-                      Select Location
-                    </option>
-                    {locationFilter?.map((address, index) => {
-                      const newAddress = `${address?.address_1} ${address?.address_2} ${address?.address_3} ${address?.address_4}`;
-                      return (
-                        <option
-                          key={index}
-                          value={newAddress}
-                          style={{ textTransform: "capitalize" }}
-                        >
-                          {newAddress}
-                        </option>
-                      );
-                    })}
-                  </CFormSelect>
+                  <Select
+                    className=""
+                    placeholder={placeholderOption.label}
+                    options={locationOptions}
+                    name="location"
+                    value={
+                      locationOptions.find(
+                        (opt) => opt.value === selectLocation
+                      ) || null
+                    }
+                    onChange={(selected) =>
+                      handleLocationChange({
+                        target: {
+                          name: "location",
+                          value: selected?.value || "",
+                        },
+                      })
+                    }
+                  
+                    menuPortalTarget={document.body}
+                  />
                 )}
               </CCol>
 
@@ -571,7 +583,7 @@ const CourtConfiguration = () => {
                     return (
                       <CTableRow key={i}>
                         <CTableDataCell>
-                        {(currentPage - 1) * itemsPerPage + i + 1}
+                          {(currentPage - 1) * itemsPerPage + i + 1}
                           {/* <div
                             onClick={() => {
                               handleViewDetails(item.booking_id);
