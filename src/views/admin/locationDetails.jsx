@@ -218,7 +218,6 @@ const LocationDetails = () => {
       getMyLocation()
         .then((res) => {
           setLoading(false);
-          console.log("location_idlocation_id", res);
           if (res?.status == 200) {
             setFormData(res?.data?.[0]);
             setCourtData(res?.data?.[0]?.courts);
@@ -366,6 +365,7 @@ const LocationDetails = () => {
   const handleCloseCourt = () => {
     setVisible(false);
     setErrors({});
+    setCourtId("")
     setAddCourt({
       location_id: id,
       court_number: "",

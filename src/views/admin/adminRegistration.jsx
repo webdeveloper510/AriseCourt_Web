@@ -336,7 +336,6 @@ const AdminRegistration = () => {
     apiCall
       .then((res) => {
         setLoading(false);
-        console.log("apiCallapiCall", res);
         if (res.status === 200 || res.status === 201) {
           navigate(-1);
           toast.success(res?.data?.message, { theme: "colored" });
