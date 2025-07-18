@@ -593,7 +593,7 @@ const Reporting = () => {
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
-                          {item?.on_amount ? `$${item?.on_amount}` : ""}
+                          {item?.on_amount ? `$${parseFloat(item?.on_amount).toFixed(2)}` : ""}
                         </CTableDataCell>
                       </CTableRow>
                     );
