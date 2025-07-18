@@ -193,19 +193,15 @@ const Dashboard = () => {
   function formatPhoneNumber(number) {
     if (!number) return "";
 
-    // Make sure number starts with '+'
-    let formattedInput = number;
-    if (!number.startsWith("+")) {
-      formattedInput = `+${number}`;
+    const input = number.startsWith("+") ? number : `+${number}`;
+
+    const phoneNumber = parsePhoneNumberFromString(input);
+
+    if (phoneNumber) {
+      return phoneNumber.formatInternational(); // like "+1 893 268 7354"
     }
 
-    const phoneNumber = parsePhoneNumberFromString(formattedInput);
-
-    if (phoneNumber && phoneNumber.isValid()) {
-      return phoneNumber.formatInternational();
-    }
-
-    return number; // fallback
+    return number;
   }
 
   const getVisiblePageNumbers = () => {
@@ -273,7 +269,7 @@ const Dashboard = () => {
               type="button"
               onClick={() => {
                 setSearchQuery("");
-                setCurrentPage(1)
+                setCurrentPage(1);
                 getAdminData();
               }}
               className="add_new_butn"
