@@ -188,19 +188,15 @@ const Locations = () => {
   function formatPhoneNumber(number) {
     if (!number) return "";
 
-    // Make sure number starts with '+'
-    let formattedInput = number;
-    if (!number.startsWith("+")) {
-      formattedInput = `+${number}`;
+    const input = number.startsWith("+") ? number : `+${number}`;
+
+    const phoneNumber = parsePhoneNumberFromString(input);
+
+    if (phoneNumber) {
+      return phoneNumber.formatInternational(); // like "+1 893 268 7354"
     }
 
-    const phoneNumber = parsePhoneNumberFromString(formattedInput);
-
-    if (phoneNumber && phoneNumber.isValid()) {
-      return phoneNumber.formatInternational();
-    }
-
-    return number; // fallback
+    return number;
   }
 
   const getVisiblePageNumbers = () => {
@@ -268,7 +264,7 @@ const Locations = () => {
               type="button"
               onClick={() => {
                 setSearchQuery("");
-                setCurrentPage(1)
+                setCurrentPage(1);
                 setLocationData(locationFilter);
                 setSelectLocation("");
               }}
@@ -372,11 +368,11 @@ const Locations = () => {
                           )}
                         </CTableDataCell>
                         <CTableDataCell>{item?.email}</CTableDataCell>
-                        <CTableDataCell>
+                        <CTableDataCell style={{whiteSpace:"nowrap"}}>
                           {item?.phone ? formatPhoneNumber(item?.phone) : ""}
                         </CTableDataCell>
-                        <CTableDataCell>{item?.city}</CTableDataCell>
-                        <CTableDataCell>{item?.country}</CTableDataCell>
+                        <CTableDataCell style={{whiteSpace:"nowrap"}}>{item?.city}</CTableDataCell>
+                        <CTableDataCell style={{whiteSpace:"nowrap"}}>{item?.country}</CTableDataCell>
                         <CTableDataCell>{item?.courts?.length}</CTableDataCell>
                         <CTableDataCell>
                           <i
