@@ -577,7 +577,7 @@ const Reporting = () => {
                         <CTableDataCell>{item?.user?.phone}</CTableDataCell>
 
                         <CTableDataCell>
-                          {item?.total_price ? `$${item?.total_price}` : ""}
+                          {item?.court?.court_fee_hrs ? `$${item?.court?.court_fee_hrs}` : ""}
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
