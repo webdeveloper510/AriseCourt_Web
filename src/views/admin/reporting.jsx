@@ -43,6 +43,7 @@ import {
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import Select from "react-select";
 
 const Reporting = () => {
   let SerialId = 1;
@@ -77,6 +78,27 @@ const Reporting = () => {
   const [reportTable, setReportTable] = useState([]);
   const [bookingType, setBookingType] = useState("");
   const [locationFilter, setLocationFilter] = useState([]);
+
+  const locationOptions = (locationFilter || []).map((address) => {
+    const fullAddress =
+      `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`.trim();
+    return {
+      label: fullAddress,
+      value: fullAddress,
+    };
+  });
+
+  // Ensure only one "All" option at the top
+  const options = [{ label: "All", value: "" }, ...locationOptions];
+
+  // Prevent duplicates
+  const uniqueOptions = options.filter(
+    (option, index, self) =>
+      index === self.findIndex((o) => o.value === option.value)
+  );
+
+  // Add 'All' option at the beginning
+  options.unshift({ label: "All", value: "" });
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -348,38 +370,45 @@ const Reporting = () => {
                 {userData?.user_type == 0 && (
                   <>
                     <div className="input_section mt-1">
-                      <CFormSelect
+                      <Select
                         className="select_location"
                         placeholder="Select Location"
-                        style={{
-                          height: "40px",
-                          paddingInlineStart: "0px",
-                        }}
-                        defaultValue=""
-                        onChange={(e) => handleInputChange(e)}
-                        value={selectedLocation}
                         name="location"
-                      >
-                        {/* <option disabled value="">
-                          Select Location
-                        </option> */}
-                        <option value="">
-                          All
-                        </option>
-
-                        {locationFilter?.map((address, index) => {
-                          const newAddress = `${address?.address_1} ${address?.address_2} ${address?.address_3} ${address?.address_4}`;
-                          return (
-                            <option
-                              key={index}
-                              value={newAddress}
-                              style={{ textTransform: "capitalize" }}
-                            >
-                              {newAddress}
-                            </option>
-                          );
-                        })}
-                      </CFormSelect>
+                        options={uniqueOptions}
+                        value={uniqueOptions.find(
+                          (opt) => opt.value === selectedLocation
+                        )}
+                        onChange={(selected) =>
+                          handleInputChange({
+                            target: {
+                              name: "location",
+                              value: selected?.value || "",
+                            },
+                          })
+                        }
+                        styles={{
+                          control: (base) => ({
+                            ...base,
+                            minHeight: "40px",
+                            border: "1px solid #ccc",
+                            boxShadow: "none",
+                            "&:hover": { borderColor: "#aaa" },
+                          }),
+                          option: (base) => ({
+                            ...base,
+                            textTransform: "capitalize",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }),
+                          menu: (base) => ({
+                            ...base,
+                            zIndex: 9999,
+                          }),
+                          indicatorSeparator: () => ({ display: "none" }),
+                        }}
+                        menuPortalTarget={document.body}
+                      />
                     </div>
                   </>
                 )}
@@ -406,7 +435,7 @@ const Reporting = () => {
                   type="button"
                   onClick={() => {
                     setSearchQuery("");
-                    setCurrentPage(1)
+                    setCurrentPage(1);
                     setStartDate(new Date());
                     setEndDate(new Date());
                     setSelectionRange({
@@ -414,7 +443,7 @@ const Reporting = () => {
                       endDate: new Date(),
                       key: "selection",
                     });
-                    setSelectedLocation("")
+                    setSelectedLocation("");
                     getLocationData();
                   }}
                   className="add_new_butn"
@@ -465,7 +494,7 @@ const Reporting = () => {
                       style={{ whiteSpace: "nowrap" }}
                       onClick={handleFilterClick}
                     >
-                     Search
+                      Search
                     </CButton>
                   </div>
                 </div>
@@ -513,33 +542,27 @@ const Reporting = () => {
                   ?.map((item, i) => {
                     return (
                       <CTableRow key={i}>
-                        <CTableDataCell>{(currentPage - 1) * itemsPerPage + i + 1}</CTableDataCell>
+                        <CTableDataCell>
+                          {(currentPage - 1) * itemsPerPage + i + 1}
+                        </CTableDataCell>
                         <CTableDataCell style={{ whiteSpace: "nowrap" }}>
                           {item?.created_at
-                            ? formatNewDate(
-                                item?.created_at
-                              )
+                            ? formatNewDate(item?.created_at)
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell style={{ whiteSpace: "nowrap" }}>
                           {item?.booking_date
-                            ? formatNewDate(
-                                item?.booking_date
-                              )
+                            ? formatNewDate(item?.booking_date)
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell style={{ whiteSpace: "nowrap" }}>
                           {item?.start_time
-                            ? convertToAmPm(
-                                item?.start_time
-                              )
+                            ? convertToAmPm(item?.start_time)
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell style={{ whiteSpace: "nowrap" }}>
                           {item?.duration_time
-                            ? convertToHoursAndMinutes(
-                                item?.duration_time
-                              )
+                            ? convertToHoursAndMinutes(item?.duration_time)
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>
@@ -554,29 +577,23 @@ const Reporting = () => {
                         <CTableDataCell>{item?.user?.phone}</CTableDataCell>
 
                         <CTableDataCell>
-                          {item?.total_price
-                            ? `$${item?.total_price}`
-                            : ""}
+                          {item?.total_price ? `$${item?.total_price}` : ""}
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
-                          {item?.court?.tax ||
-                          item?.court?.tax == 0
+                          {item?.court?.tax || item?.court?.tax == 0
                             ? `$${item?.court?.tax}`
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
-                          {item?.court?.cc_fees ||
-                          item?.court?.cc_fees == 0
+                          {item?.court?.cc_fees || item?.court?.cc_fees == 0
                             ? `$${item?.court?.cc_fees}`
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
-                          {item?.on_amount
-                            ? `$${item?.on_amount}`
-                            : ""}
+                          {item?.on_amount ? `$${item?.on_amount}` : ""}
                         </CTableDataCell>
                       </CTableRow>
                     );

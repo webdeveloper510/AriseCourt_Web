@@ -940,3 +940,35 @@ input:-webkit-autofill {
     overflow-y: auto;
   }
 }
+
+.select_location {
+  width: 100%;
+  height: 30px;
+  padding-inline-start: 0px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.select_location option {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+.css-1m9x2j-control,.css-1m9x2j-control:hover, .css-1m9x2j-control:focus ,.css-1m9x2j-control:focus-visible {
+  border: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+.css-1m9x2j-control{
+  border: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.css-181as9g-control{
+  border: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}

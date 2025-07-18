@@ -14,6 +14,7 @@ import Logo from "../../../assets/images/login_logo.png";
 import HomeBg from "../../../assets/images/login_bg_image.png";
 import { getAllLocation, getAllLocations, loginUser } from "../../../utils/api";
 import { toast } from "react-toastify";
+import Select from "react-select";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -148,6 +149,20 @@ const Login = () => {
     }
   };
 
+  const options = locationFilter.map((address) => {
+    const fullAddress =
+      `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`.trim();
+
+    return {
+      value: address?.id,
+      label:
+        fullAddress.length > 60
+          ? fullAddress.slice(0, 57) + "..."
+          : fullAddress,
+      fullLabel: fullAddress, // optional: for tooltip
+    };
+  });
+
   return (
     <div className=" min-vh-100 d-flex flex-row align-items-center login_outer">
       <CRow className="justify-content-center" style={{ width: "100%" }}>
@@ -238,35 +253,51 @@ const Login = () => {
                       <>
                         <div className="input_section mb-3">
                           <label>Select Location</label>
-                          <CFormSelect
+                          <Select
                             className="select_location"
-                            placeholder="Select Location"
-                            style={{
-                              height: "30px",
-                              paddingInlineStart: "0px",
+                            options={options}
+                            value={options.find(
+                              (opt) => opt.value === formData?.location
+                            )}
+                            onChange={(selected) =>
+                              handleInputChange({
+                                target: {
+                                  name: "location",
+                                  value: selected.value,
+                                },
+                              })
+                            }
+                            styles={{
+                              control: (base, state) => ({
+                                ...base,
+                                minHeight: 30,
+                                border: "none",
+                                boxShadow: "none",
+                                backgroundColor: "transparent",
+                                cursor: "pointer",
+                                "&:hover": {
+                                  border: "none",
+                                },
+                              }),
+                              option: (base) => ({
+                                ...base,
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                              }),
+                              menu: (base) => ({
+                                ...base,
+                                width: "100%",
+                                zIndex: 9999, // ensure it's above other elements
+                              }),
+                              menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                              indicatorSeparator: () => ({
+                                display: "none",
+                              }),
                             }}
-                            defaultValue=""
-                            onChange={(e) => handleInputChange(e)}
-                            value={formData?.location}
-                            name="location"
-                          >
-                            <option disabled value="">
-                              Select Location
-                            </option>
-
-                            {locationFilter?.map((address, index) => (
-                              <option
-                                key={index}
-                                value={address?.id}
-                                style={{ textTransform: "capitalize" }}
-                              >
-                                {address?.address_1 ? address?.address_1 : ""}{" "}
-                                {address?.address_2 ? address?.address_2 : ""}{" "}
-                                {address?.address_3 ? address?.address_3 : ""}{" "}
-                                {address?.address_4 ? address?.address_4 : ""}
-                              </option>
-                            ))}
-                          </CFormSelect>
+                            menuPortalTarget={document.body}
+                            placeholder="Select Location"
+                          />
                         </div>
                         {errors.location && (
                           <div className="text-danger">{errors.location}</div>
