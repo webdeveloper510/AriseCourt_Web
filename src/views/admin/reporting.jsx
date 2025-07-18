@@ -413,6 +413,7 @@ const Reporting = () => {
                   type="button"
                   onClick={() => {
                     setSearchQuery("");
+                    setCurrentPage(1)
                     setStartDate(new Date());
                     setEndDate(new Date());
                     setSelectionRange({
@@ -521,67 +522,67 @@ const Reporting = () => {
                       <CTableRow key={i}>
                         <CTableDataCell>{(currentPage - 1) * itemsPerPage + i + 1}</CTableDataCell>
                         <CTableDataCell style={{ whiteSpace: "nowrap" }}>
-                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.created_at
+                          {item?.created_at
                             ? formatNewDate(
-                                item?.court_bookings?.[item?.court_bookings?.length - 1]?.created_at
+                                item?.created_at
                               )
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell style={{ whiteSpace: "nowrap" }}>
-                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.booking_date
+                          {item?.booking_date
                             ? formatNewDate(
-                                item?.court_bookings?.[item?.court_bookings?.length - 1]?.booking_date
+                                item?.booking_date
                               )
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell style={{ whiteSpace: "nowrap" }}>
-                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.start_time
+                          {item?.start_time
                             ? convertToAmPm(
-                                item?.court_bookings?.[item?.court_bookings?.length - 1]?.start_time
+                                item?.start_time
                               )
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell style={{ whiteSpace: "nowrap" }}>
-                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.duration_time
+                          {item?.duration_time
                             ? convertToHoursAndMinutes(
-                                item?.court_bookings?.[item?.court_bookings?.length - 1]?.duration_time
+                                item?.duration_time
                               )
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>
-                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.court_number}
+                          {item?.court?.court_number}
                         </CTableDataCell>
                         <CTableDataCell
                           style={{ whiteSpace: "nowrap" }}
-                        >{`${item?.first_name} ${item?.last_name}`}</CTableDataCell>
+                        >{`${item?.user?.first_name} ${item?.user?.last_name}`}</CTableDataCell>
                         <CTableDataCell style={{ whiteSpace: "nowrap" }}>
-                          {item?.email}
+                          {item?.user?.email}
                         </CTableDataCell>
-                        <CTableDataCell>{item?.phone}</CTableDataCell>
+                        <CTableDataCell>{item?.user?.phone}</CTableDataCell>
 
                         <CTableDataCell>
-                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.court_fee_hrs
-                            ? `$${item?.court_bookings?.[item?.court_bookings?.length - 1]?.court_fee_hrs}`
+                          {item?.total_price
+                            ? `$${item?.total_price}`
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
-                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.tax ||
-                          item?.court_bookings?.[item?.court_bookings?.length - 1]?.tax == 0
-                            ? `$${item?.court_bookings?.[item?.court_bookings?.length - 1]?.tax}`
+                          {item?.court?.tax ||
+                          item?.court?.tax == 0
+                            ? `$${item?.court?.tax}`
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
-                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.cc_fees ||
-                          item?.court_bookings?.[item?.court_bookings?.length - 1]?.cc_fees == 0
-                            ? `$${item?.court_bookings?.[item?.court_bookings?.length - 1]?.cc_fees}`
+                          {item?.court?.cc_fees ||
+                          item?.court?.cc_fees == 0
+                            ? `$${item?.court?.cc_fees}`
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
-                          {item?.court_bookings?.[item?.court_bookings?.length - 1]?.on_amount
-                            ? `$${item?.court_bookings?.[item?.court_bookings?.length - 1]?.on_amount}`
+                          {item?.on_amount
+                            ? `$${item?.on_amount}`
                             : ""}
                         </CTableDataCell>
                       </CTableRow>

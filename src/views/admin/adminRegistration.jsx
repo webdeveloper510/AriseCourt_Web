@@ -277,18 +277,24 @@ const AdminRegistration = () => {
   };
 
   const handlePhoneChange = (value, data) => {
+    console.log("datadatadata", value, data);
+
+    const dialCode = `+${data.dialCode}`;
+    const phoneNumber = value.replace(dialCode, "").trim();
+
     setFormData((prevFormData) => ({
       ...prevFormData,
-      phone: value,
-      country: data.countryCode.toUpperCase(),
+      phone: phoneNumber,
+      country: data.dialCode,
     }));
 
     const isEditMode = Boolean(id);
     const fieldErrors = validateFormData(
-      { ...formData, phone: value, country: data.countryCode },
+      { ...formData, phone: phoneNumber, country: data.countryCode },
       isEditMode,
       "phone"
     );
+
     setErrors((prevErrors) => ({
       ...prevErrors,
       phone: fieldErrors.phone || "",
@@ -392,7 +398,7 @@ const AdminRegistration = () => {
                   Admins Registration
                 </h4>
                 <div className="card_description">
-                  {id ? "Edit" : "Add"} new admin
+                  {id ? "Edit admin" : "Add new admin"}
                 </div>
               </div>
             </div>

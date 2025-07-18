@@ -268,6 +268,7 @@ const Locations = () => {
               type="button"
               onClick={() => {
                 setSearchQuery("");
+                setCurrentPage(1)
                 setLocationData(locationFilter);
                 setSelectLocation("");
               }}

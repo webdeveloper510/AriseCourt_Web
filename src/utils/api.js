@@ -325,7 +325,7 @@ export const getReportBooking = async (
 
   try {
     const response = await axios.get(
-      `/user-data/?user_type=${bookingType}&page=${page}${searchVal}${start_date}${address}`,
+      `/users-data/?user_type=${bookingType}&page=${page}${searchVal}${start_date}${address}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,

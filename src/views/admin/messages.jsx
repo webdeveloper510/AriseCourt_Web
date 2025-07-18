@@ -248,6 +248,7 @@ const Messages = () => {
               type="button"
               onClick={() => {
                 setSearchQuery("");
+                setCurrentPage(1)
                 setStartDate(new Date());
                 setEndDate(new Date());
                 setSelectionRange({
