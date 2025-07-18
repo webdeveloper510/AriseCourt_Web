@@ -117,13 +117,6 @@ const Locations = () => {
           setLocationFilter(res?.data?.results);
           setTotalCounts(res?.data?.count); // Total count of admin data
           setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
-        } else if (res?.data?.code == "token_not_valid") {
-          toast.error(res?.data?.detail, {
-            theme: "colored",
-          });
-          localStorage.removeItem("user_access_valid_token");
-          localStorage.removeItem("logged_user_data");
-          navigate("/login");
         } else {
           setLocationData([]);
         }

@@ -100,11 +100,6 @@ const Dashboard = () => {
           setAdminData(res?.data?.results);
           setTotalCounts(res?.data?.count);
           setTotalPages(Math.ceil(res?.data?.count / itemsPerPage));
-        } else if (res?.data?.code == "token_not_valid") {
-          localStorage.removeItem("user_access_valid_token");
-          localStorage.removeItem("logged_user_data");
-          navigate("/login");
-          setAdminData([]);
         } else {
           setAdminData([]);
         }

@@ -42,13 +42,6 @@ const Profile = () => {
         if (res?.data.code == "200") {
           setUserData(res?.data?.data);
           setFormData(res?.data?.data);
-        } else if (res?.data?.code == "token_not_valid") {
-          toast.error(res?.data?.detail, {
-            theme: "colored",
-          });
-          localStorage.removeItem("user_access_valid_token");
-          localStorage.removeItem("logged_user_data");
-          navigate("/login");
         }
       })
       .catch((error) => {

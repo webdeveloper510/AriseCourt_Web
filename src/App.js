@@ -9,6 +9,7 @@ import ForgotEmail from './views/pages/forgotpassword/forgotemail';
 import NewPassword from './views/pages/forgotpassword/new-password';
 import { PrivateRoute, PublicRoute } from './utils/RouteGuards';
 import VerifyEmail from './views/admin/verifyEmail';
+import { getProfile } from './utils/api';
 
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));
 const Login = React.lazy(() => import('./views/pages/login/Login'));
@@ -23,6 +24,25 @@ const App = () => {
   useEffect(() => {
     setColorMode('white');
   }, []);
+
+   useEffect(() => {
+      getProfileData();
+    }, []);
+  
+    const getProfileData = () => {
+      getProfile()
+        .then((res) => {
+          if (res?.data.code == "200") {          
+          } else if (res?.data?.code == "token_not_valid") {            
+            localStorage.removeItem("user_access_valid_token");
+            localStorage.removeItem("logged_user_data");
+            navigate("/login");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
 
   return (
     <BrowserRouter>

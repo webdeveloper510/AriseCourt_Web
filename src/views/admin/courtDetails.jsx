@@ -27,13 +27,6 @@ const CourtDetails = () => {
         if (res?.status == 200) {
           setFormData(res?.data);
           setCourtData(res?.data?.courts);
-        } else if (res?.data?.code == "token_not_valid") {
-          toast.error(res?.data?.detail, {
-            theme: "colored",
-          });
-          localStorage.removeItem("user_access_valid_token");
-          localStorage.removeItem("logged_user_data");
-          navigate("/login");
         } else {
           setFormData(null);
           setCourtData([]);

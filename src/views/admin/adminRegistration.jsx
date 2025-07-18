@@ -78,14 +78,7 @@ const AdminRegistration = () => {
           const loc = res?.data?.locations?.[0];
           const address = `${loc?.address_1 ? loc?.address_1 : ""} ${loc?.address_2 ? loc?.address_2 : ""} ${loc?.address_3 ? loc?.address_3 : ""} ${loc?.address_4 ? loc?.address_4 : ""}`;
           setLocationAddress(address);
-        } else if (res?.data?.code == "token_not_valid") {
-          toast.error(res?.data?.detail, {
-            theme: "colored",
-          });
-          localStorage.removeItem("user_access_valid_token");
-          localStorage.removeItem("logged_user_data");
-          navigate("/login");
-        }
+        } 
       })
       .catch((error) => {
         console.log(error);

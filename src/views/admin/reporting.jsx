@@ -98,13 +98,6 @@ const Reporting = () => {
       .then((res) => {
         if (res?.status == 200) {
           setReportData(res?.data);
-        } else if (res?.data?.code == "token_not_valid") {
-          toast.error(res?.data?.detail, {
-            theme: "colored",
-          });
-          localStorage.removeItem("user_access_valid_token");
-          localStorage.removeItem("logged_user_data");
-          navigate("/login");
         } else {
           setReportData({});
         }
@@ -367,9 +360,9 @@ const Reporting = () => {
                         value={selectedLocation}
                         name="location"
                       >
-                        <option disabled value="">
+                        {/* <option disabled value="">
                           Select Location
-                        </option>
+                        </option> */}
                         <option value="">
                           All
                         </option>
