@@ -561,7 +561,7 @@ const CourtConfiguration = () => {
                   >
                     Location Name
                   </CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Price</CTableHeaderCell>
+                  {/* <CTableHeaderCell scope="col">Price</CTableHeaderCell> */}
                   <CTableHeaderCell
                     scope="col"
                     style={{ whiteSpace: "nowrap" }}
@@ -652,9 +652,9 @@ const CourtConfiguration = () => {
                         <CTableDataCell>
                           {item?.court?.location?.name || item?.location_name}
                         </CTableDataCell>
-                        <CTableDataCell>
+                        {/* <CTableDataCell>
                           {item?.on_amount ? `$${parseFloat(item?.on_amount).toFixed(2)}` : ""}
-                        </CTableDataCell>
+                        </CTableDataCell> */}
 
                         <CTableDataCell>
                           <span

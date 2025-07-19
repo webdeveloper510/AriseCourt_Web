@@ -199,10 +199,14 @@ const LocationDetails = () => {
       getLocationbyId(id)
         .then((res) => {
           setLoading(false);
-
-          if (res?.status == 200) {
+          if (res?.status === 200) {
             setFormData(res?.data);
-            setCourtData(res?.data?.courts);
+
+            const sortedCourts = res?.data?.courts?.sort(
+              (a, b) => new Date(b.created_at) - new Date(a.created_at)
+            );
+
+            setCourtData(sortedCourts);
           } else {
             setFormData(null);
             setCourtData([]);
@@ -312,9 +316,8 @@ const LocationDetails = () => {
 
   const handleAvailabilityToggle = (courtId, newAvailability) => {
     const updatedCourt = { availability: newAvailability };
-
     setLoading(true);
-
+    console.log("updatedCourtupdatedCourt", updatedCourt);
     updateCourt(courtId, updatedCourt)
       .then((res) => {
         setLoading(false);
@@ -322,7 +325,7 @@ const LocationDetails = () => {
           toast.success("Availability updated successfully!", {
             theme: "colored",
           });
-          getLocationDatabyId();
+          getLocationDatabyId(); // to ensure sync
         }
       })
       .catch((error) => {
@@ -365,7 +368,7 @@ const LocationDetails = () => {
   const handleCloseCourt = () => {
     setVisible(false);
     setErrors({});
-    setCourtId("")
+    setCourtId("");
     setAddCourt({
       location_id: id,
       court_number: "",
@@ -644,14 +647,13 @@ const LocationDetails = () => {
                         <CTableDataCell>
                           {/* {`${item?.availability}`} */}
                           <CFormSwitch
-                            key={item?.court_id}
-                            checked={item?.availability}
-                            onChange={(e) =>
+                            checked={item.availability === true}
+                            onChange={(e) => {
                               handleAvailabilityToggle(
-                                item?.court_id,
+                                item.court_id,
                                 e.target.checked
-                              )
-                            }
+                              );
+                            }}
                             style={{ cursor: "pointer" }}
                           />
                         </CTableDataCell>
