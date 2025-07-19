@@ -22,14 +22,7 @@ import { DateRangePicker } from "react-date-range";
 import CIcon, { CIconSvg } from "@coreui/icons-react";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import {
-  cilCloudUpload,
-  cilDelete,
-  cilFilter,
-  cilPencil,
-  cilReload,
-  cilSearch,
-} from "@coreui/icons";
+import { cilReload, cilSearch } from "@coreui/icons";
 import UserIcon from "../../assets/images/report_user_icon.png";
 import BookingIcon from "../../assets/images/report_booking_icon.png";
 import CourtsIcon from "../../assets/images/report_court_icon.png";
@@ -44,6 +37,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import Select from "react-select";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const Reporting = () => {
   let SerialId = 1;
@@ -276,6 +271,38 @@ const Reporting = () => {
     return pages;
   };
 
+  const exportToExcel = () => {
+    const dataToExport = reportTable.map((item, index) => ({
+      "S.No": index + 1,
+      "Booking Date": formatNewDate(item.created_at),
+      "Reservation Date": formatNewDate(item.booking_date),
+      "Reservation From Time": convertToAmPm(item.start_time),
+      Duration: convertToHoursAndMinutes(item.duration_time),
+      "Court Number": item.court?.court_number,
+      "Full Name": `${item.user?.first_name} ${item.user?.last_name}`,
+      Email: item.user?.email,
+      Phone: item.user?.phone,
+      Country: item.user?.country,
+      "Amount": `$${item.court?.court_fee_hrs || 0}`,
+      "Sales Tax": `$${item.court?.tax || 0}`,
+      "CC Fees": `$${item.court?.cc_fees || 0}`,
+      "Total Amount": `$${parseFloat(item.on_amount).toFixed(2)}`,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Report");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const dataBlob = new Blob([excelBuffer], {
+      type: "application/octet-stream",
+    });
+    saveAs(dataBlob, "Court_Booking_Report.xlsx");
+  };
+
   return (
     <>
       {/* <WidgetsDropdown className="mb-4" /> */}
@@ -362,6 +389,11 @@ const Reporting = () => {
             <h6 id="traffic" className="card-title mb-0">
               Reports
             </h6>
+          </CCol>
+          <CCol sm={12} xl={8} className="my-1 text-end">
+            <CButton className="add_new_butn" onClick={exportToExcel}>
+              Download XLS
+            </CButton>
           </CCol>
 
           <CCol sm={12} xl={12} className="my-1">
@@ -577,7 +609,9 @@ const Reporting = () => {
                         <CTableDataCell>{item?.user?.phone}</CTableDataCell>
 
                         <CTableDataCell>
-                          {item?.court?.court_fee_hrs ? `$${item?.court?.court_fee_hrs}` : ""}
+                          {item?.court?.court_fee_hrs
+                            ? `$${item?.court?.court_fee_hrs}`
+                            : ""}
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
@@ -593,7 +627,9 @@ const Reporting = () => {
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
-                          {item?.on_amount ? `$${parseFloat(item?.on_amount).toFixed(2)}` : ""}
+                          {item?.on_amount
+                            ? `$${parseFloat(item?.on_amount).toFixed(2)}`
+                            : ""}
                         </CTableDataCell>
                       </CTableRow>
                     );
