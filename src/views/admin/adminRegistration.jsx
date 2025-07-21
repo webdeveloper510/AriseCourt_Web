@@ -24,6 +24,7 @@ import "react-phone-input-2/lib/style.css";
 import { toast } from "react-toastify";
 import { CMultiSelect } from "@coreui/react-pro";
 import Multiselect from "multiselect-react-dropdown";
+import Select from "react-select";
 
 const AdminRegistration = () => {
   const { id } = useParams();
@@ -78,7 +79,7 @@ const AdminRegistration = () => {
           const loc = res?.data?.locations?.[0];
           const address = `${loc?.address_1 ? loc?.address_1 : ""} ${loc?.address_2 ? loc?.address_2 : ""} ${loc?.address_3 ? loc?.address_3 : ""} ${loc?.address_4 ? loc?.address_4 : ""}`;
           setLocationAddress(address);
-        } 
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -359,6 +360,19 @@ const AdminRegistration = () => {
     }
   };
 
+  const customStyles = {
+    control: (base) => ({
+      ...base,
+      height: 50,
+      minHeight: 50,
+    }),
+  };
+
+  const optionsLocation = locationFilter?.map((address) => ({
+    value: address?.id,
+    label: `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`,
+  }));
+
   return (
     <>
       {loading && (
@@ -384,7 +398,7 @@ const AdminRegistration = () => {
                   Admins Registration
                 </h4>
                 <div className="card_description">
-                  {id ? "Edit admin" : "Add new admin"} 
+                  {id ? "Edit admin" : "Add new admin"}
                 </div>
               </div>
             </div>
@@ -397,38 +411,28 @@ const AdminRegistration = () => {
               {/* {locationFilter?.length > 0 && ( */}
               <CCol md={4} className="my-2">
                 <label>Select Location</label>
-                <CFormSelect
-                  className="form-control"
-                  placeholder="Select Location"
-                  style={{ height: "50px" }}
-                  defaultValue=""
-                  onChange={(e) => handleInputChange(e)}
-                  value={formData?.location_id || formData?.locations_id}
+                <Select
                   name="location_id"
-                >
-                  {id ? (
-                    <option value={formData?.locations?.[0]?.id}>
-                      {locationAddress}
-                    </option>
-                  ) : (
-                    <option disabled value="">
-                      {"Select Location"}
-                    </option>
+                  styles={customStyles}
+                  className="basic-single"
+                  classNamePrefix="select"
+                  placeholder="Select Location"
+                  options={optionsLocation}
+                  value={optionsLocation.find(
+                    (opt) =>
+                      opt.value === formData?.location_id ||
+                      opt.value === formData?.locations_id
                   )}
-                  {!id &&
-                    locationFilter?.map((address, index) => (
-                      <option
-                        key={index}
-                        value={address?.id}
-                        style={{ textTransform: "capitalize" }}
-                      >
-                        {address?.address_1 ? address?.address_1 : ""}{" "}
-                        {address?.address_2 ? address?.address_2 : ""}{" "}
-                        {address?.address_3 ? address?.address_3 : ""}{" "}
-                        {address?.address_4 ? address?.address_4 : ""}
-                      </option>
-                    ))}
-                </CFormSelect>
+                  onChange={(selectedOption) =>
+                    handleInputChange({
+                      target: {
+                        name: "location_id",
+                        value: selectedOption?.value,
+                      },
+                    })
+                  }
+                  isDisabled={!!id}
+                />
                 {errors.location_id && (
                   <div className="text-danger">{errors.location_id}</div>
                 )}
