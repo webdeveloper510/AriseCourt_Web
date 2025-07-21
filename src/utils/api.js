@@ -531,3 +531,21 @@ export const userBasicData = async (page, search) => {
     return error.response;
   }
 };
+
+// ?export=excel
+export const userDataExcel = async () => {
+ 
+  try {
+    const response = await axios.get(
+      `/download_csv/`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};

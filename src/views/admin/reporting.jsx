@@ -32,6 +32,7 @@ import {
   getLocation,
   getReportBooking,
   getReportData,
+  userDataExcel,
 } from "../../utils/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -73,6 +74,7 @@ const Reporting = () => {
   const [reportTable, setReportTable] = useState([]);
   const [bookingType, setBookingType] = useState("");
   const [locationFilter, setLocationFilter] = useState([]);
+  const [excelData, setExcelData] = useState([])
 
   const locationOptions = (locationFilter || []).map((address) => {
     const fullAddress =
@@ -130,6 +132,7 @@ const Reporting = () => {
 
   useEffect(() => {
     getAllLocationData();
+    getExcelData()
   }, []);
 
   const getAllLocationData = () => {
@@ -271,8 +274,18 @@ const Reporting = () => {
     return pages;
   };
 
+  const getExcelData = () =>{
+    userDataExcel().then((res)=>{
+      if(res?.status == 200){
+        setExcelData(res?.data)
+      }
+    }).catch((error)=>{
+      console.log("error", error)
+    })
+  }
+
   const exportToExcel = () => {
-    const dataToExport = reportTable.map((item, index) => ({
+    const dataToExport = excelData.map((item, index) => ({
       "S.No": index + 1,
       "Booking Date": formatNewDate(item.created_at),
       "Reservation Date": formatNewDate(item.booking_date),

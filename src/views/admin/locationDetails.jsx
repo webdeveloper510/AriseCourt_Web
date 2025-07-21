@@ -608,6 +608,7 @@ const LocationDetails = () => {
               <CTable className="mt-4 main_table" striped>
                 <CTableHead>
                   <CTableRow>
+                    <CTableHeaderCell scope="col">Sr no.</CTableHeaderCell>
                     <CTableHeaderCell scope="col">
                       Court Number
                     </CTableHeaderCell>
@@ -631,6 +632,7 @@ const LocationDetails = () => {
                   {currentItems?.map((item, i) => {
                     return (
                       <CTableRow key={i}>
+                        <CTableDataCell>{(currentPage - 1) * itemsPerPage + i + 1}</CTableDataCell>
                         <CTableDataCell>{item?.court_number}</CTableDataCell>
                         {/* <CTableDataCell>{item?.location_id}</CTableDataCell> */}
                         <CTableDataCell>{`$${item?.court_fee_hrs}/hr`}</CTableDataCell>
