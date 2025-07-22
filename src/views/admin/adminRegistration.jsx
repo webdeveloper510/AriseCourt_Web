@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   CButton,
   CCardBody,
@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 import { CMultiSelect } from "@coreui/react-pro";
 import Multiselect from "multiselect-react-dropdown";
 import Select from "react-select";
+import countryList from "react-select-country-list";
 
 const AdminRegistration = () => {
   const { id } = useParams();
@@ -37,12 +38,14 @@ const AdminRegistration = () => {
     { name: "Reporting Only", id: 3 },
   ]);
 
+  const countryOptions = useMemo(() => countryList().getData(), []);
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
     email: "",
     phone: "",
-    country: "",
+    country: "United States",
     password: "",
     confirm_password: "",
     user_type: 1,
@@ -212,14 +215,14 @@ const AdminRegistration = () => {
           break;
         case "country":
           if (!data.country.trim()) {
-            errors.country = "Country code is required.";
+            errors.country = "Country is required.";
           }
           break;
         case "location_id":
         case "locations_id": {
           const key =
             data.location_id !== undefined ? "location_id" : "locations_id";
-          const value = data[key]?.trim();
+          const value = data[key];
           if (!value) {
             errors.location_id = "Location is required.";
           }
@@ -274,12 +277,11 @@ const AdminRegistration = () => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       phone: value,
-      country: data.countryCode.toUpperCase(),
     }));
 
     const isEditMode = Boolean(id);
     const fieldErrors = validateFormData(
-      { ...formData, phone: value, country: data.countryCode },
+      { ...formData, phone: value },
       isEditMode,
       "phone"
     );
@@ -409,7 +411,7 @@ const AdminRegistration = () => {
           <CForm onSubmit={handleFormSubmit} onKeyDown={handleKeyDown}>
             <CRow className="d-flex ">
               {/* {locationFilter?.length > 0 && ( */}
-              <CCol md={4} className="my-2">
+              <CCol sm={12} md={6} lg={4} className="my-2">
                 <label>Select Location</label>
                 <Select
                   name="location_id"
@@ -503,6 +505,50 @@ const AdminRegistration = () => {
                   <div className="text-danger">{errors.phone}</div>
                 )}
               </CCol>
+              <CCol sm={12} md={6} lg={4} className="my-1">
+                <label>Country</label>
+                <Select
+                  options={countryOptions}
+                  onChange={(selectedOption) => {
+                    handleInputChange({
+                      target: {
+                        name: "country",
+                        value: selectedOption?.label || "",
+                      },
+                    });
+                  }}
+                  className="register_input"
+                  name="country"
+                  value={
+                    countryOptions.find(
+                      (option) => option.label === formData?.country
+                    ) || countryOptions.find((option) => option.value === "US")
+                  }
+                />
+                {errors.country && (
+                  <div className="text-danger">{errors.country}</div>
+                )}
+              </CCol>
+
+              <CCol sm={12} md={6} lg={4} className="my-2">
+                <label>Permission</label>
+                <Multiselect
+                  options={renderedOptions}
+                  autoComplete="off"
+                  selectedValues={selectedOptions}
+                  onSelect={onSelect}
+                  onRemove={onRemove}
+                  displayValue="name"
+                  className={
+                    formData?.access_flag?.length > 0
+                      ? "permission_multi_select"
+                      : "fix_height"
+                  }
+                />
+                {errors.access_flag && (
+                  <div className="text-danger">{errors.access_flag}</div>
+                )}
+              </CCol>
 
               {!id && (
                 <>
@@ -577,26 +623,6 @@ const AdminRegistration = () => {
                   </CCol>
                 </>
               )}
-
-              <CCol sm={12} md={6} lg={4} className="my-2">
-                <label>Permission</label>
-                <Multiselect
-                  options={renderedOptions}
-                  autoComplete="off"
-                  selectedValues={selectedOptions}
-                  onSelect={onSelect}
-                  onRemove={onRemove}
-                  displayValue="name"
-                  className={
-                    formData?.access_flag?.length > 0
-                      ? "permission_multi_select"
-                      : "fix_height"
-                  }
-                />
-                {errors.access_flag && (
-                  <div className="text-danger">{errors.access_flag}</div>
-                )}
-              </CCol>
 
               <CCol md={12} className="mt-4">
                 <CButton type="submit" className="add_new_butn">

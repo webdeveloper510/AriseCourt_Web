@@ -56,8 +56,8 @@ const Reporting = () => {
   const calendarRef = useRef(null);
   const filterButtonRef = useRef(null);
   const [selectionRange, setSelectionRange] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: "",
+    endDate: "",
     key: "selection",
   });
   const [loading, setLoading] = useState(false);
@@ -411,7 +411,7 @@ const Reporting = () => {
 
           <CCol sm={12} xl={12} className="my-1">
             <CRow>
-              <CCol className="my-1 d-flex align-items-center gap-1 ">
+              <CCol  md={6} lg={6} xl={4} className="my-1 d-flex align-items-center gap-1 ">
                 {userData?.user_type == 0 && (
                   <>
                     <div className="input_section mt-1">
@@ -458,7 +458,7 @@ const Reporting = () => {
                   </>
                 )}
               </CCol>
-              <CCol md={4} className="my-1 d-flex align-items-center gap-1 ">
+              <CCol md={6} lg={6} xl={4} className="my-1 d-flex align-items-center gap-1 ">
                 <CInputGroup
                   className="search_input_group_reports"
                   style={{ height: "45px" }}
@@ -498,7 +498,7 @@ const Reporting = () => {
                 </CButton>
               </CCol>
 
-              <CCol md={4} className="my-1">
+              <CCol md={6} lg={6} xl={4} className="my-1">
                 <div className="text-end date_filter_section">
                   {/* Calendar area */}
                   <div>

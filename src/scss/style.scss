@@ -941,6 +941,12 @@ input:-webkit-autofill {
   }
 }
 
+@media screen and (max-width: 1220px){
+  .date_filter_section{
+    justify-content: start;
+  }
+}
+
 .select_location {
   width: 100%;
   height: 30px;
@@ -975,7 +981,4 @@ input:-webkit-autofill {
 .select__control.css-gkxu6j-control{
   border-radius: 15px !important;
   border: 1px solid #dbdfe6 !important;
-}
-.css-b62m3t-container{
-  z-index: 99999 !important
 }

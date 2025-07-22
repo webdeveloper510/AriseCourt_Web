@@ -51,14 +51,6 @@ const AddLocations = () => {
 
   const [errors, setErrors] = useState({});
 
-  const changeHandler = (selectedOption) => {
-    setValue(selectedOption);
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      country: selectedOption?.label || "",
-    }));
-  };
-
   const validateFormData = (data, fieldToValidate = null) => {
     const errors = {};
 

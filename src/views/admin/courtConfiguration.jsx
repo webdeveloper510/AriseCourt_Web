@@ -58,8 +58,8 @@ const CourtConfiguration = () => {
   const filterButtonRef = useRef(null);
   const [visible, setVisible] = useState(false);
   const [selectionRange, setSelectionRange] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: "",
+    endDate: "",
     key: "selection",
   });
   const formatDate = (date) => {
@@ -379,7 +379,7 @@ const CourtConfiguration = () => {
         </CRow>
 
         <CRow className="mt-2">
-          <CCol sm={12} md={12}>
+          <CCol sm={12} md={12} className="d-flex">
             <CButton
               onClick={() => setBookingType("")}
               style={{
@@ -405,7 +405,7 @@ const CourtConfiguration = () => {
 
           <CCol sm={12} md={12} className="mt-2">
             <CRow>
-              <CCol md={4} className="d-flex align-items-center gap-1">
+              <CCol md={6} lg={6} xl={4} className="d-flex align-items-center gap-1 my-1">
                 <CInputGroup
                   className="search_input_group_reports"
                   style={{ height: "45px" }}
@@ -432,8 +432,8 @@ const CourtConfiguration = () => {
                     setEndDate(new Date());
                     setSelectLocation("");
                     setSelectionRange({
-                      startDate: new Date(),
-                      endDate: new Date(),
+                      startDate: "",
+                      endDate: "",
                       key: "selection",
                     });
                     getCourtBookingData();
@@ -445,7 +445,7 @@ const CourtConfiguration = () => {
                 </CButton>
               </CCol>
 
-              <CCol md={4}>
+              <CCol md={6} lg={6} xl={4} className="my-1">
                 {userData?.user_type == 0 && (
                   <Select
                     className=""
@@ -471,7 +471,7 @@ const CourtConfiguration = () => {
                 )}
               </CCol>
 
-              <CCol md={4}>
+              <CCol md={6} lg={6} xl={4} className="my-1">
                 <div className="text-end date_filter_section">
                   <div
                     onClick={handleCalendarClick}
