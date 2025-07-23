@@ -317,7 +317,6 @@ const LocationDetails = () => {
   const handleAvailabilityToggle = (courtId, newAvailability) => {
     const updatedCourt = { availability: newAvailability };
     setLoading(true);
-    console.log("updatedCourtupdatedCourt", updatedCourt);
     updateCourt(courtId, updatedCourt)
       .then((res) => {
         setLoading(false);
@@ -620,8 +619,8 @@ const LocationDetails = () => {
                       Taxes percentage
                     </CTableHeaderCell>
                     <CTableHeaderCell scope="col">cc fees%</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Start Time</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">End Time</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Closing from</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Closing to</CTableHeaderCell>
                     <CTableHeaderCell scope="col">
                       Availability
                     </CTableHeaderCell>
