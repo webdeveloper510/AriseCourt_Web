@@ -50,7 +50,7 @@ const LocationDetails = () => {
     cc_fees: "",
     start_time: "",
     end_time: "",
-    availability: true,
+    availability: false,
   });
   const [courtId, setCourtId] = useState("");
   const [errors, setErrors] = useState({});
@@ -263,7 +263,7 @@ const LocationDetails = () => {
       cc_fees: addCourt?.cc_fees,
       start_time: addCourt?.start_time,
       end_time: addCourt?.end_time,
-      availability: true,
+      availability: false,
     };
     if (courtId) {
       updateCourt(courtId, addCourt)
@@ -375,7 +375,7 @@ const LocationDetails = () => {
       court_fee_hrs: "",
       tax: "",
       cc_fees: "",
-      availability: true,
+      availability: false,
       start_time: "",
       end_time: "",
     });
