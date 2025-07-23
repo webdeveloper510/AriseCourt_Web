@@ -628,14 +628,14 @@ const Reporting = () => {
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
-                          {item?.court?.tax || item?.court?.tax == 0
-                            ? `$${item?.court?.tax}`
+                          {item?.tax || item?.tax == 0
+                            ? `$${item?.tax}`
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
-                          {item?.court?.cc_fees || item?.court?.cc_fees == 0
-                            ? `$${item?.court?.cc_fees}`
+                          {item?.cc_fees || item?.cc_fees == 0
+                            ? `$${item?.cc_fees}`
                             : ""}
                         </CTableDataCell>
                         <CTableDataCell>
