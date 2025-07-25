@@ -30,8 +30,8 @@ const Profile = () => {
     email: "",
     phone: "",
     image: null,
-    EMAIL_HOST_USER:"",
-    EMAIL_HOST_PASSWORD:""
+    EMAIL_HOST_USER: "",
+    EMAIL_HOST_PASSWORD: "",
   });
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const Profile = () => {
     const errors = {};
 
     const validateField = (field) => {
-      const value = data[field] ?? ""; // ensures null/undefined become empty string
+      const value = data[field] ?? "";
 
       switch (field) {
         case "first_name":
@@ -94,8 +94,8 @@ const Profile = () => {
             errors.phone = "Phone number must be at least 7 characters.";
           }
           break;
+
         case "image":
-          // If image is a string (existing URL), skip validation
           if (
             !data.image ||
             (typeof data.image !== "string" && !(data.image instanceof File))
@@ -103,6 +103,19 @@ const Profile = () => {
             errors.image = "Image is required.";
           }
           break;
+
+        case "EMAIL_HOST_USER":
+          if (!value.trim()) {
+            errors.EMAIL_HOST_USER = "Email host user is required.";
+          }
+          break;
+
+        case "EMAIL_HOST_PASSWORD":
+          if (!value.trim()) {
+            errors.EMAIL_HOST_PASSWORD = "Email host password is required.";
+          }
+          break;
+
         default:
           break;
       }
@@ -111,7 +124,6 @@ const Profile = () => {
     if (fieldToValidate) {
       validateField(fieldToValidate);
     } else {
-      // full validation
       Object.keys(data).forEach((field) => validateField(field));
     }
 
@@ -239,7 +251,12 @@ const Profile = () => {
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Email</h6>
-                  <p className="details_description" style={{textTransform:"lowercase"}}>{userData?.email}</p>
+                  <p
+                    className="details_description"
+                    style={{ textTransform: "lowercase" }}
+                  >
+                    {userData?.email}
+                  </p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Phone</h6>
@@ -348,6 +365,40 @@ const Profile = () => {
 
                 {errors.image && (
                   <div className="text-danger">{errors.image}</div>
+                )}
+              </CCol>
+
+              <CCol sm={12} md={6} lg={4} className="my-2">
+                <label>SMTP Email</label>
+                <CFormInput
+                  type="text"
+                  className="register_input"
+                  placeholder="Enter SMTP Email"
+                  aria-label="default input example"
+                  value={formData.EMAIL_HOST_USER}
+                  name="EMAIL_HOST_USER"
+                  onChange={(e) => handleInputChange(e)}
+                />
+                {errors.EMAIL_HOST_USER && (
+                  <div className="text-danger">{errors.EMAIL_HOST_USER}</div>
+                )}
+              </CCol>
+
+              <CCol sm={12} md={6} lg={4} className="my-2">
+                <label>SMTP Password</label>
+                <CFormInput
+                  type="text"
+                  className="register_input"
+                  placeholder="Enter SMTP Password"
+                  aria-label="default input example"
+                  value={formData.EMAIL_HOST_PASSWORD}
+                  name="EMAIL_HOST_PASSWORD"
+                  onChange={(e) => handleInputChange(e)}
+                />
+                {errors.EMAIL_HOST_PASSWORD && (
+                  <div className="text-danger">
+                    {errors.EMAIL_HOST_PASSWORD}
+                  </div>
                 )}
               </CCol>
 
