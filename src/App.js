@@ -36,7 +36,6 @@ const App = () => {
   const getProfileData = () => {
     getProfile()
       .then((res) => {
-        console.log("token_not_valid", res);
         if (res?.data.code == "200") {
         } else if (res?.data?.code == "token_not_valid") {
           navigate("/login");

@@ -513,7 +513,7 @@ const AdminRegistration = () => {
                     handleInputChange({
                       target: {
                         name: "country",
-                        value: selectedOption?.label || "",
+                        value: selectedOption?.value || "", // store country code
                       },
                     });
                   }}
@@ -521,8 +521,8 @@ const AdminRegistration = () => {
                   name="country"
                   value={
                     countryOptions.find(
-                      (option) => option.label === formData?.country
-                    ) || countryOptions.find((option) => option.value === "US")
+                      (option) => option.value === formData?.country // match by country code
+                    ) || countryOptions.find((option) => option.value === "US") // default
                   }
                 />
                 {errors.country && (
