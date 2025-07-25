@@ -91,6 +91,15 @@ const CourtConfiguration = () => {
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page); // Update current page
+      getCourtBookingData(
+        bookingType,
+        page,
+        searchQuery,
+        selectLocation,
+        startDate,
+        endDate,
+        "loader"
+      );
     }
   };
 

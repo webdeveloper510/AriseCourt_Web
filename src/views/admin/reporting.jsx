@@ -100,6 +100,15 @@ const Reporting = () => {
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
+      getLocationData(
+        bookingType,
+        page,
+        searchQuery,
+        selectedLocation,
+        startDate,
+        endDate,
+        "loader"
+      );
     }
   };
 
