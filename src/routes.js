@@ -13,6 +13,7 @@ const Messages = React.lazy(() => import('./views/admin/messages'))
 const CourtDetails = React.lazy(() => import('./views/admin/courtDetails'))
 const Users = React.lazy(() => import('./views/admin/users'))
 const VerifyEmail = React.lazy(() => import('./views/admin/verifyEmail'))
+const PrivacyPolicy = React.lazy(() => import('./views/pages/PrivacyPolicy'))
 
 
 const routes = [
@@ -33,7 +34,8 @@ const routes = [
   { path: '/price-configuration', name: 'PriceConfiguration', element: PriceConfiguration },
   { path: '/court-bookings', name: 'CourtConfiguration', element: CourtConfiguration },
   { path: '/court-details/:id', name: 'CourtDetails', element: CourtDetails },
-  { path: '/verify-email/:id', name: 'VerifyEmail', element: VerifyEmail },
+  // { path: '/verify-email/:id', name: 'VerifyEmail', element: VerifyEmail },
+  { path: '/privacy-policy', name: 'PrivacyPolicy', element: PrivacyPolicy },
   
 ]
 

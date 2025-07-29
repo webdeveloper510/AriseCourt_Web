@@ -11,6 +11,7 @@ import NewPassword from "./views/pages/forgotpassword/new-password";
 import { PrivateRoute, PublicRoute } from "./utils/RouteGuards";
 import VerifyEmail from "./views/admin/verifyEmail";
 import { getProfile } from "./utils/api";
+import PrivacyPolicy from "./views/pages/PrivacyPolicy";
 
 const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 const Login = React.lazy(() => import("./views/pages/login/Login"));
@@ -34,81 +35,93 @@ const App = () => {
   }, []);
 
   const getProfileData = () => {
-    getProfile()
-      .then((res) => {
-        if (res?.data.code == "200") {
-        } else if (res?.data?.code == "token_not_valid") {
+    const token = localStorage.getItem("user_access_valid_token");
+
+    if (token) {
+      getProfile()
+        .then((res) => {
+          console.log("PrivateRoutePrivateRoute", res);
+          if (res?.data.code == "200") {
+          } else if (res?.data?.code == "token_not_valid") {
+            navigate("/login");
+            localStorage.removeItem("user_access_valid_token");
+            localStorage.removeItem("logged_user_data");
+          }
+        })
+        .catch((error) => {
           navigate("/login");
-          localStorage.removeItem("user_access_valid_token");
-          localStorage.removeItem("logged_user_data");
-        }
-      })
-      .catch((error) => {
-        navigate("/login");
-        console.log(error);
-      });
+          console.log(error);
+        });
+    }
   };
 
   return (
-  
-      <Routes>
-        {/* Public Auth Routes */}
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <PublicRoute>
-              <Register />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/forgot-password"
-          element={
-            <PublicRoute>
-              <ForgotEmail />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/new-password"
-          element={
-            <PublicRoute>
-              <NewPassword />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/verify-email/:id"
-          element={
-            // <PublicRoute>
-            <VerifyEmail />
-            // </PublicRoute>
-          }
-        />
+    <Routes>
+      {/* Public Auth Routes */}
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/forgot-password"
+        element={
+          <PublicRoute>
+            <ForgotEmail />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/new-password"
+        element={
+          <PublicRoute>
+            <NewPassword />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/verify-email/:id"
+        element={
+          // <PublicRoute>
+          <VerifyEmail />
+          // </PublicRoute>
+        }
+      />
 
-        {/* Error Pages - can be accessed by anyone */}
-        <Route path="/404" element={<Page404 />} />
-        <Route path="/500" element={<Page500 />} />
+      <Route
+        path="/privacy-policy"
+        element={
+          // <PrivateRoute>
+          <PrivacyPolicy />
+          //  </PrivateRoute>
+        }
+      />
 
-        {/* Private Routes (App) */}
-        <Route
-          path="*"
-          element={
-            <PrivateRoute>
-              <DefaultLayout />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
-   
+      {/* Error Pages - can be accessed by anyone */}
+      <Route path="/404" element={<Page404 />} />
+      <Route path="/500" element={<Page500 />} />
+
+      {/* Private Routes (App) */}
+      <Route
+        path="*"
+        element={
+          <PrivateRoute>
+            <DefaultLayout />
+          </PrivateRoute>
+        }
+      />
+    </Routes>
   );
 };
 
