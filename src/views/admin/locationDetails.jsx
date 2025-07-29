@@ -61,10 +61,10 @@ const LocationDetails = () => {
   const [expanded, setExpanded] = useState(false);
   const charLimit = 50;
 
-  const location = `${formData?.address_1} 
+  const location =  formData?.address_1  ? `${formData?.address_1} 
   ${formData?.address_2 ? `${formData?.address_2}` : ""}
    ${formData?.address_3 ? `${formData?.address_3}` : ""} 
-   ${formData?.address_4 ? `${formData?.address_4}` : ""}`;
+   ${formData?.address_4 ? `${formData?.address_4}` : ""}` : "";
 
   const isLong = location?.length > charLimit;
   const displayText =

@@ -77,8 +77,8 @@ const Reporting = () => {
   const [excelData, setExcelData] = useState([])
 
   const locationOptions = (locationFilter || []).map((address) => {
-    const fullAddress =
-      `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`.trim();
+    const fullAddress = address?.name
+      // `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`.trim();
     return {
       label: fullAddress,
       value: fullAddress,
