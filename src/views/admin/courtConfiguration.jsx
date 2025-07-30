@@ -556,7 +556,7 @@ const CourtConfiguration = () => {
                   >
                     Booked By
                   </CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Type</CTableHeaderCell>
+                  {/* <CTableHeaderCell scope="col">Type</CTableHeaderCell> */}
 
                   <CTableHeaderCell
                     scope="col"
@@ -637,7 +637,7 @@ const CourtConfiguration = () => {
                             </p>
                           </div>
                         </CTableDataCell>
-                        <CTableDataCell>
+                        {/* <CTableDataCell>
                           {item?.user?.user_type == 1 || item?.user_type == 1
                             ? "Admin"
                             : item?.user?.user_type == 3 || item?.user_type == 3
@@ -649,7 +649,7 @@ const CourtConfiguration = () => {
                                     item?.user_type == 4
                                   ? "Court"
                                   : ""}
-                        </CTableDataCell>
+                        </CTableDataCell> */}
                         <CTableDataCell
                           title={locationaddress}
                           style={{ width: "20%" }}
