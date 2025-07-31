@@ -372,8 +372,8 @@ const AdminRegistration = () => {
 
   const optionsLocation = locationFilter?.map((address) => ({
     value: address?.id,
-    label : address?.name
-    // label: `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`,
+    // label : address?.name
+    label: `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`,
   }));
 
   return (
