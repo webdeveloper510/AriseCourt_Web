@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "http://3.12.136.26:8000";
+axios.defaults.baseURL = "https://api.get1court.com";
 
 export const registerUser = async (data) => {
   try {
