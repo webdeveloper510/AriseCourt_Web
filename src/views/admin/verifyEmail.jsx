@@ -12,7 +12,9 @@ const VerifyEmail = () => {
           <CModal
             alignment="center"
             visible={visible}
-            onClose={() => setVisible(true)}
+            onClose={() => {setVisible(true)
+              navigate("/login")
+            }}
             aria-labelledby="LiveDemoExampleLabel"
           >
             <CModalBody className="modal_body_court">
