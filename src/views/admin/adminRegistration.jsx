@@ -45,7 +45,7 @@ const AdminRegistration = () => {
     last_name: "",
     email: "",
     phone: "",
-    country: "United States",
+    country: "US",
     password: "",
     confirm_password: "",
     user_type: 1,
@@ -78,7 +78,16 @@ const AdminRegistration = () => {
     getAdminbyId(id)
       .then((res) => {
         if (res?.status == 200 || res?.status == 201) {
-          setFormData(res?.data);
+          setFormData({
+            first_name: res?.data?.first_name,
+            last_name: res?.data?.last_name,
+            email: res?.data?.email,
+            country: res?.data?.country,
+            user_type: res?.data?.user_type,
+            access_flag: res?.data?.access_flag,
+            location_id: res?.data?.locations?.[0]?.id,
+            locations_id: res?.data?.locations?.[0]?.id,
+          });
           const loc = res?.data?.locations?.[0];
           const address = `${loc?.address_1 ? loc?.address_1 : ""} ${loc?.address_2 ? loc?.address_2 : ""} ${loc?.address_3 ? loc?.address_3 : ""} ${loc?.address_4 ? loc?.address_4 : ""}`;
           setLocationAddress(address);
@@ -320,13 +329,13 @@ const AdminRegistration = () => {
       return; // Stop submission
     }
     let payload = formData;
+
     if (isEditMode) {
       // remove locations AND rename location_id → locatios_id
       const { locations, location_id, ...rest } = formData;
-
       payload = {
         ...rest,
-        locatios_id: location_id, // renamed key
+        location_id: location_id, // renamed key
       };
     }
 
@@ -372,8 +381,8 @@ const AdminRegistration = () => {
 
   const optionsLocation = locationFilter?.map((address) => ({
     value: address?.id,
-    // label : address?.name
-    label: `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`,
+    label : address?.name
+    // label: `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`,
   }));
 
   return (
@@ -424,7 +433,7 @@ const AdminRegistration = () => {
                   value={optionsLocation.find(
                     (opt) =>
                       opt.value === formData?.location_id ||
-                      opt.value === formData?.locations_id
+                      opt.value === formData?.locations?.[0]?.id
                   )}
                   onChange={(selectedOption) =>
                     handleInputChange({
@@ -434,7 +443,7 @@ const AdminRegistration = () => {
                       },
                     })
                   }
-                  isDisabled={!!id}
+                  // isDisabled={!!id}
                 />
                 {errors.location_id && (
                   <div className="text-danger">{errors.location_id}</div>
