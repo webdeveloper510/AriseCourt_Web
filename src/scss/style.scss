@@ -1136,9 +1136,9 @@ input:-webkit-autofill {
 
 .active .step_form_name {
   font-family: DM Sans;
-  font-weight: 800;
+  font-weight: 900;
   font-style: ExtraBold;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 15.46px;
   letter-spacing: 0%;
   text-transform: capitalize;
@@ -1488,7 +1488,6 @@ input:-webkit-autofill {
   background-color: #0860FB;
   color: white;
   text-align: center;
-  padding: 5px;
 }
 
 .main_app_heading p {
@@ -1500,7 +1499,7 @@ input:-webkit-autofill {
   height: 50px;
   border-radius: 77px;
   border-width: 1px;
-  background: #D2E3FF;
+  background: #d2e3ff;
   border: 1px solid #EBEBEB;
   padding: 0px 15px;
 }
@@ -1522,7 +1521,6 @@ input:-webkit-autofill {
 }
 
 .locations_name_section {
-  background: #D2E3FF;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -1531,6 +1529,13 @@ input:-webkit-autofill {
   margin-top: 10px;
   cursor: pointer;
   justify-content: space-between;
+  border: 1px solid #C2DAFF;
+}
+.even_bg{
+  background: #D2E3FF;
+}
+.odd_bg{
+  background: #DBE9FF;
 }
 
 .location_detail_section {
@@ -1790,7 +1795,7 @@ hr {
   border-radius: 50%;
 }
 
-.dropdown {
+.user_dropdown {
   position: absolute;
   right: 0;
   margin-top: 5px;
@@ -1802,19 +1807,19 @@ hr {
   z-index: 100;
 }
 
-.dropdown ul {
+.user_dropdown ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.dropdown li {
+.user_dropdown li {
   padding: 10px 15px;
   cursor: pointer;
   transition: background 0.2s;
 }
 
-.dropdown li:hover {
+.user_dropdown li:hover {
   background: #e2e2e2;
   color: #182B4D;
   font-weight: 600;
@@ -2020,4 +2025,8 @@ hr {
 .payment_form {
   width: 500px;
   margin: auto;
+}
+.duration_time{
+  width: 100px;
+  text-align: center;
 }

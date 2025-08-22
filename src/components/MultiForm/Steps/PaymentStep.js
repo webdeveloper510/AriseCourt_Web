@@ -73,6 +73,13 @@ export default function PaymentStep({
       <div className="section">
         <h5 className="my_details_title">Payment Summary</h5>
         <div className="summary-row">
+          <span className="label">Amount :</span>
+          <span className="value">
+            {" "}
+            {allBooking?.total_price ? `$${allBooking?.total_price}` : ""}
+          </span>
+        </div>
+        <div className="summary-row">
           <span className="label">CC Fees :</span>
           <span className="value">
             {" "}
@@ -88,8 +95,7 @@ export default function PaymentStep({
         <div className="summary-row">
           <span className="label summary">Summary :</span>
           <span className="value summary">
-            {" "}
-            {allBooking?.total_price ? `$${allBooking?.total_price}` : ""}
+            {allBooking?.summary ? `$${allBooking?.summary}` : ""}
           </span>
         </div>
       </div>

@@ -20,7 +20,8 @@ export default function BookCourt() {
     court_id: null,
     location: locationId,
     book_for_four_weeks: "False",
-    total_price:""
+    total_price: "",
+    on_amount: "",
   });
   const [bookingDetails, setBookingDetails] = useState(null);
 

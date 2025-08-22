@@ -116,7 +116,7 @@ export default function MyBooking() {
                   </tr>
                 </thead>
                 <tbody>
-                  {allBooking?.sort((a,b)=> a?.created_at - b?.created_at)?.map((b, i) => (
+                  {allBooking?.map((b, i) => (
                     <tr key={i}>
                       <td>{i + 1}</td>
                       <td>
@@ -150,7 +150,7 @@ export default function MyBooking() {
                           <span className={b?.status.toLowerCase()}>
                             {b?.status}
                           </span>
-                          <span>{Number(b?.on_amount) || b?.total_price}</span>
+                          <span>${Number(b?.on_amount) || b?.total_price}</span>
                         </div>
                       </td>
                       <td>

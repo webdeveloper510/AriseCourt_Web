@@ -58,7 +58,7 @@ const HomeNavbar = () => {
         <p>Not a business? Book on the arisecourt app</p>
       </div>
       <div className="container">
-        <Navbar expand="lg" className="bg-body-tertiary">
+        <Navbar expand="lg" className="bg-body-tertiary p-0 m-0">
           <Container fluid>
             <Navbar.Brand href="/">
               <img src={logo} alt="logo" />
@@ -70,10 +70,10 @@ const HomeNavbar = () => {
                 style={{ maxHeight: "100px", margin: "auto" }}
                 navbarScroll
               >
-                <Nav.Link href="/user/bookings" className="header_links">
+                <Nav.Link href={token ? "/user/bookings" : "/user/login"} className="header_links">
                   My Bookings
                 </Nav.Link>
-                <Nav.Link href="/user/contact-us" className="header_links">
+                <Nav.Link href={token ? "/user/contact-us" : "/user/contact-us"} className="header_links">
                   Contact us
                 </Nav.Link>
               </Nav>
@@ -112,7 +112,7 @@ const HomeNavbar = () => {
 
                       {/* Dropdown Menu */}
                       {open && (
-                        <div className="dropdown">
+                        <div className="user_dropdown">
                           <ul>
                             <li onClick={() => navigate("/user/profile")}>
                               <i className="bi bi-person-fill"></i> Profile

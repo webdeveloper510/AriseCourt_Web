@@ -136,14 +136,16 @@ const RegisterPage = ({ locationId, setRegisterPage }) => {
       setLoading(false);
       return;
     }
-
+    setLoading(true)
     userRegister(formData)
       .then((res) => {
         console.log("userRegister", res);
-        if (res?.data?.code == 200) {
+        setLoading(true)
+        if (res?.data?.code == 200 || res?.data?.code == 201 || res?.status == 200 || res?.status == 201) {
           toast.success(res?.data?.message, {
             theme: "colored",
           });
+          setRegisterPage(false)
         } else {
           toast.error(res?.data?.message, {
             theme: "colored",
@@ -221,7 +223,7 @@ const RegisterPage = ({ locationId, setRegisterPage }) => {
                     <CCol sm={12} md={6} className="my-2">
                       <CInputGroup className="mb-3">
                         <div className="user_input_section">
-                          <label>First Name*</label>
+                          <label>Last Name*</label>
                           <CFormInput
                             type="text"
                             placeholder="Enter Last Name"
@@ -361,7 +363,7 @@ const RegisterPage = ({ locationId, setRegisterPage }) => {
                         className="px-5 add_new_butn"
                         style={{ width: "250px" }}
                       >
-                        {loading ? "Loading..." : "Login"}
+                        {loading ? "Loading..." : "Sign up"}
                       </CButton>
                     </CCol>
 

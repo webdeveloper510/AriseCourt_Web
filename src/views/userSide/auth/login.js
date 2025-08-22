@@ -62,7 +62,7 @@ const UserLogin = () => {
 
   const handleSearchLocation = (e) => {
     e.preventDefault();
-    if (searchLocation?.length > 3) {
+    if (searchLocation?.length > 2) {
       setLocationName("");
       const filterData = allLocation?.filter((item) =>
         item?.name?.toLowerCase().includes(searchLocation?.toLowerCase())
@@ -90,7 +90,7 @@ const UserLogin = () => {
 
   return (
     <UserLayout>
-      <div className="book_court_section">
+      <div className="book_court_section" style={{height : filteredLocation?.length > 2 ? "auto" : "450px"}}>
         {!loginPage && (
           <div className="container text-center">
             <h4 className="book_court_title">Search Court</h4>
@@ -117,7 +117,7 @@ const UserLogin = () => {
                   </div>
                 </div>
                 <span className="letter_validtaion">
-                  Enter at least 4 characters
+                  Enter at least 3 characters
                 </span>
               </CCol>
             </CRow>
@@ -130,7 +130,7 @@ const UserLogin = () => {
                       onClick={() => {
                         handleLocationSelect(item?.name, item?.id);
                       }}
-                      className={`locations_name_section ${locationName == item?.name ? "selected_name" : ""}`}
+                      className={`locations_name_section ${locationName == item?.name ? "selected_name" : ""} ${i%2 == 0 ? "even_bg" : "odd_bg"}`}
                     >
                       <div className="location_detail_section">
                         <div>
@@ -157,7 +157,11 @@ const UserLogin = () => {
                   );
                 })
               ) : (
-                <></>
+                <>
+                  {
+                    searchLocation && <h3 className="mt-5" style={{fontWeight:"600"}}>Data Not Found</h3>
+                  }
+                </>
               )}
             </div>
 

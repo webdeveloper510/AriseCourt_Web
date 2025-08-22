@@ -16,8 +16,12 @@ export default function CourtSelectionStep({
   const [selectedCourt, setSelectedCourt] = useState(
     formData?.court_id || null
   );
+
+  console.log("selectedCourt", selectedCourt);
   const [courtData, setCourtData] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const [selectedPrice, setSelectedPrice] = useState(null);
 
   const timeToHours = (timeString) => {
     if (!timeString) return 0;
@@ -38,6 +42,7 @@ export default function CourtSelectionStep({
       date: formData?.booking_date,
       start_time: formData?.start_time,
       end_time: formData?.end_time,
+      book_for_four_weeks: formData?.book_for_four_weeks,
     })
       .then((res) => {
         setLoading(false);
@@ -55,11 +60,18 @@ export default function CourtSelectionStep({
 
   const handleNext = () => {
     setLoading(true);
-    addCourtBookings(formData)
+    addCourtBookings({
+      ...formData,
+      total_price: formData?.book_for_four_weeks == "True"
+        ? `${durationInHours * Number(formData?.total_price) * 4}`
+        : court?.court_fee_hrs,
+      on_amount: formData?.total_price,
+    })
       .then((res) => {
+        console.log("addCourtBookingsaddCourtBookings", res);
         setLoading(false);
         if (res?.data?.status_code == 200 || res?.data?.status_code == 201) {
-          toast.success(res?.data?.message, { theme: "colored" });
+          // toast.success(res?.data?.message, { theme: "colored" });
           setBookingDetails(res?.data?.data?.[0]);
           onNext();
         } else {
@@ -100,10 +112,15 @@ export default function CourtSelectionStep({
                 ${court?.is_booked ? "disabled" : ""}`}
               onClick={() => {
                 setSelectedCourt(court?.court_id);
+                setSelectedPrice(Number(court?.court_fee_hrs));
                 setFormData((prev) => ({
                   ...prev,
                   court_id: court?.court_id,
-                  total_price: durationInHours * Number(court?.court_fee_hrs),
+                  total_price:
+                    formData?.book_for_four_weeks === "True"
+                      ? `${durationInHours * Number(court?.court_fee_hrs) * 4}`
+                      : court?.court_fee_hrs,
+                  on_amount: court?.court_fee_hrs,
                 }));
               }}
             >

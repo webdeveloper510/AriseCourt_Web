@@ -54,9 +54,26 @@ export default function CalendarStep({ formData, updateFormData, onNext }) {
           </div>
         ))}
         {daysArray?.map((day, idx) => {
-          const fullDate = day
-            ? currentMonth.date(day).format("YYYY-MM-DD")
-            : null;
+          let fullDate = null;
+          let displayDay = null;
+
+          if (day) {
+            // Current month day
+            fullDate = currentMonth.date(day).format("YYYY-MM-DD");
+            displayDay = day;
+          } else {
+            // Fill with previous month's date
+            const prevMonth = currentMonth.clone().subtract(1, "month");
+            const prevMonthDays = prevMonth.daysInMonth();
+
+            // Index before the first day of current month
+            const firstDayIndex = currentMonth.startOf("month").day(); // Sunday=0, Monday=1...
+            const prevDay = prevMonthDays - (firstDayIndex - idx - 1);
+
+            fullDate = prevMonth.date(prevDay).format("YYYY-MM-DD");
+            displayDay = prevDay;
+          }
+
           const isPastDate =
             fullDate && dayjs(fullDate).isBefore(dayjs().startOf("day"));
 
@@ -72,7 +89,7 @@ export default function CalendarStep({ formData, updateFormData, onNext }) {
                 opacity: isPastDate ? 0.4 : 1,
               }}
             >
-              {day}
+              {displayDay}
             </div>
           );
         })}

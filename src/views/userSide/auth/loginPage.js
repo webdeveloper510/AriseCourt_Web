@@ -140,7 +140,7 @@ const LoginPage = ({
                       <span className="error_message">{errors.email}</span>
                     )}
                   </CInputGroup>
-                  <CInputGroup className="mb-4">
+                  <CInputGroup className="">
                     <div className="user_input_section">
                       <label>Password*</label>
                       <CFormInput
@@ -189,7 +189,7 @@ const LoginPage = ({
                       </CButton>
                     </CCol>
                     <CCol xs={12}>
-                      <p className="text-body-secondary mt-3 privacy_policy_text">
+                      <p className="text-body-secondary mt-1 mb-0 privacy_policy_text">
                         By proceeding you also agree to the Terms of Service and
                         Privacy Policy
                       </p>

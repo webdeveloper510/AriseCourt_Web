@@ -154,22 +154,15 @@ const App = () => {
             }
           />
 
-          <Route
-            path="/user/contact-us"
-            element={
-              <UserPublicRoute>
-                <UserContactUs />
-              </UserPublicRoute>
-            }
-          />
+          <Route path="/user/contact-us" element={<UserContactUs />} />
           {/* /payment/success */}
 
           <Route
             path="/payment/success"
             element={
-              <UserPrivateRoute>
+              // <UserPrivateRoute>
                 <PaymentSuccess />
-              </UserPrivateRoute>
+              // </UserPrivateRoute>
             }
           />
 
@@ -191,14 +184,7 @@ const App = () => {
             }
           />
 
-          <Route
-            path="/user/contact-us"
-            element={
-              <UserPrivateRoute>
-                <UserContactUs />
-              </UserPrivateRoute>
-            }
-          />
+          <Route path="/user/contact-us" element={<UserContactUs />} />
           <Route
             path="/user/forgot-password"
             element={

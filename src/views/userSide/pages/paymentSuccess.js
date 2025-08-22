@@ -6,7 +6,7 @@ import { paymentSuccess } from "../../../utils/api";
 export default function PaymentSuccess() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState(null);
 
   const query = new URLSearchParams(location.search);
@@ -17,13 +17,11 @@ export default function PaymentSuccess() {
   }, []);
 
   const checkPaymentSuccess = () => {
-    setLoading(true);
     paymentSuccess({
       payment_intent_id: payment_intent,
     })
       .then((res) => {
         setLoading(false);
-        console.log("paymentSuccess", res);
         if (res?.status === 200) {
           setStatus("success");
         } else {
