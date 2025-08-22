@@ -64,11 +64,10 @@ export default function CourtSelectionStep({
       ...formData,
       total_price: formData?.book_for_four_weeks == "True"
         ? `${durationInHours * Number(formData?.total_price) * 4}`
-        : court?.court_fee_hrs,
+        : formData?.total_price,
       on_amount: formData?.total_price,
     })
       .then((res) => {
-        console.log("addCourtBookingsaddCourtBookings", res);
         setLoading(false);
         if (res?.data?.status_code == 200 || res?.data?.status_code == 201) {
           // toast.success(res?.data?.message, { theme: "colored" });
