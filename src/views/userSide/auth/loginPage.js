@@ -75,7 +75,7 @@ const LoginPage = ({
           const userData = res?.data?.data;
           const accessToken = res?.data?.data?.access_token;
           localStorage.setItem("role", "user"); // or "user"
-          localStorage.setItem("access_valid_token", accessToken);
+          localStorage.setItem("user_access_valid_token", accessToken);
           localStorage.setItem("logged_user_data", JSON.stringify(userData));
           toast.success(res?.data?.message, { theme: "colored" });
         } else {

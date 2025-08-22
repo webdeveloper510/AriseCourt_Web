@@ -70,10 +70,18 @@ const HomeNavbar = () => {
                 style={{ maxHeight: "100px", margin: "auto" }}
                 navbarScroll
               >
-                <Nav.Link href={token ? "/user/bookings" : "/user/login"} className="header_links">
+                <Nav.Link
+                  as={Link}
+                  to={token ? "/user/bookings" : "/user/login"}
+                  className="header_links"
+                >
                   My Bookings
                 </Nav.Link>
-                <Nav.Link href={token ? "/user/contact-us" : "/user/contact-us"} className="header_links">
+                <Nav.Link
+                  as={Link}
+                  to="/user/contact-us"
+                  className="header_links"
+                >
                   Contact us
                 </Nav.Link>
               </Nav>
