@@ -63,7 +63,7 @@ export default function CourtSelectionStep({
     addCourtBookings({
       ...formData,
       total_price: formData?.book_for_four_weeks == "True"
-        ? `${durationInHours * Number(formData?.total_price) * 4}`
+        ? `${durationInHours * Number(formData?.on_amount) * 4}`
         : formData?.total_price,
       on_amount: formData?.total_price,
     })

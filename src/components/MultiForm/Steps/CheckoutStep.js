@@ -180,10 +180,10 @@ export default function CheckoutStep({ bookingDetails, onNext, onBack }) {
       </div>
 
       {/* Buttons */}
-      <div className="calendar-footer">
-        {/* <button className="prev-btn" onClick={onBack}>
+      <div className="button-row">
+        <button className="prev-btn" onClick={onBack}>
           PREVIOUS
-        </button> */}
+        </button>
         <button className="next-btn" onClick={onNext}>
           NEXT
         </button>
