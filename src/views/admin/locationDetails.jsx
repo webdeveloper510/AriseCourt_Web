@@ -458,7 +458,7 @@ const LocationDetails = () => {
                 <img
                   src={
                     formData?.logo
-                      ? `http://3.12.136.26:8000${formData?.logo?.replace("http://3.12.136.26:8000", "")}`
+                      ? `${formData?.logo?.replace("http://3.12.136.26:8000", "")}`
                       : badminton
                   }
                   alt="logo"

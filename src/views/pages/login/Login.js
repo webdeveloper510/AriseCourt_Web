@@ -106,6 +106,7 @@ const Login = () => {
         if (res.data.code == 200) {
           const userData = res?.data?.data;
           const accessToken = res?.data?.data?.access_token;
+          localStorage.setItem("role", "superadmin");
           localStorage.setItem("user_access_valid_token", accessToken);
           localStorage.setItem("logged_user_data", JSON.stringify(userData));
           if (userData?.user_type === 0 || userData?.user_type === 1) {

@@ -32,7 +32,7 @@ const AppHeaderDropdown = () => {
   const handleLogOut = () => {
     localStorage.removeItem("user_access_valid_token")
     localStorage.removeItem("logged_user_data")
-    navigate("/login")
+    navigate("/")
   }
 
   const handleProfile = () => {

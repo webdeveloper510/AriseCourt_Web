@@ -1,17 +1,43 @@
 // App.js
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useColorModes } from "@coreui/react";
+import { CContainer, useColorModes } from "@coreui/react";
 import "./scss/style.scss";
 import { useNavigate } from "react-router-dom";
 import "./scss/examples.scss";
 import ForgotEmail from "./views/pages/forgotpassword/forgotemail";
 import NewPassword from "./views/pages/forgotpassword/new-password";
-import { PrivateRoute, PublicRoute } from "./utils/RouteGuards";
+import {
+  SuperAdminPrivateRoute,
+  SuperAdminPublicRoute,
+  UserPrivateRoute,
+  UserPublicRoute,
+} from "./utils/RouteGuards";
 import VerifyEmail from "./views/admin/verifyEmail";
 import { getProfile } from "./utils/api";
 import PrivacyPolicy from "./views/pages/PrivacyPolicy";
+import HomePage from "./views/pages/Home";
+import UserLogin from "./views/userSide/auth/login";
+import ForgotPassword from "./views/userSide/auth/forgotPassword";
+import EnterOtp from "./views/userSide/auth/enterOtp";
+import SetNewPassword from "./views/userSide/auth/newPasword";
+import BookCourt from "./views/userSide/pages/addBooking";
+import MyBooking from "./views/userSide/pages/myBooking";
+import routes from "./routes";
+import UserProfile from "./views/userSide/pages/userProfile";
+import UserBookingDetails from "./views/userSide/pages/userBookingDetails";
+import UserContactUs from "./views/userSide/pages/userContactus";
+import PaymentSuccess from "./views/userSide/pages/paymentSuccess";
+import PaymentCancel from "./views/userSide/pages/paymentCancel";
+import { loadStripe } from "@stripe/stripe-js";
+import {
+  PaymentElement,
+  Elements,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+import CheckoutPage from "./views/userSide/pages/CheckoutPage";
 
 const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 const Login = React.lazy(() => import("./views/pages/login/Login"));
@@ -40,88 +66,188 @@ const App = () => {
     if (token) {
       getProfile()
         .then((res) => {
-          console.log("PrivateRoutePrivateRoute", res);
           if (res?.data.code == "200") {
           } else if (res?.data?.code == "token_not_valid") {
-            navigate("/login");
+            navigate("/");
             localStorage.removeItem("user_access_valid_token");
             localStorage.removeItem("logged_user_data");
           }
         })
         .catch((error) => {
-          navigate("/login");
+          navigate("/");
           console.log(error);
         });
     }
   };
 
+  const stripePromise = loadStripe(
+    "pk_test_51RbEv9IorG3LMbfblOcsWQtpVzPj3Hg6jRwgAeamUV6SqEICC1I0UNgEjWQPazjVmepwgHsTyulBboKdvChRnwMK00qgdQCFE2"
+  );
   return (
-    <Routes>
-      {/* Public Auth Routes */}
-      <Route
-        path="/login"
-        element={
-          <PublicRoute>
-            <Login />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/register"
-        element={
-          <PublicRoute>
-            <Register />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/forgot-password"
-        element={
-          <PublicRoute>
-            <ForgotEmail />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/new-password"
-        element={
-          <PublicRoute>
-            <NewPassword />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/verify-email/:id"
-        element={
-          // <PublicRoute>
-          <VerifyEmail />
-          // </PublicRoute>
-        }
-      />
+    <>
+      <Elements stripe={stripePromise}>
+        <Routes>
+          {/* Public Auth Routes */}
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/login"
+            element={
+              <SuperAdminPublicRoute>
+                <Login />
+              </SuperAdminPublicRoute>
+            }
+          />
+          <Route
+            path="/user/login"
+            element={
+              <UserPublicRoute>
+                <UserLogin />
+              </UserPublicRoute>
+            }
+          />
+          <Route
+            path="/user/otp"
+            element={
+              <UserPublicRoute>
+                <EnterOtp />
+              </UserPublicRoute>
+            }
+          />
+          <Route
+            path="/user/new-password"
+            element={
+              <UserPublicRoute>
+                <SetNewPassword />
+              </UserPublicRoute>
+            }
+          />
+          <Route
+            path="/user/book-court"
+            element={
+              <UserPrivateRoute>
+                <BookCourt />
+              </UserPrivateRoute>
+            }
+          />
+          <Route
+            path="/user/bookings"
+            element={
+              <UserPrivateRoute>
+                <MyBooking />
+              </UserPrivateRoute>
+            }
+          />
+          <Route
+            path="/user/booking-details/:id"
+            element={
+              <UserPrivateRoute>
+                <UserBookingDetails />
+              </UserPrivateRoute>
+            }
+          />
+          <Route
+            path="/user/profile"
+            element={
+              <UserPrivateRoute>
+                <UserProfile />
+              </UserPrivateRoute>
+            }
+          />
 
-      <Route
-        path="/privacy-policy"
-        element={
-          // <PrivateRoute>
-          <PrivacyPolicy />
-          //  </PrivateRoute>
-        }
-      />
+          <Route
+            path="/user/contact-us"
+            element={
+              <UserPublicRoute>
+                <UserContactUs />
+              </UserPublicRoute>
+            }
+          />
+          {/* /payment/success */}
 
-      {/* Error Pages - can be accessed by anyone */}
-      <Route path="/404" element={<Page404 />} />
-      <Route path="/500" element={<Page500 />} />
+          <Route
+            path="/payment/success"
+            element={
+              <UserPrivateRoute>
+                <PaymentSuccess />
+              </UserPrivateRoute>
+            }
+          />
 
-      {/* Private Routes (App) */}
-      <Route
-        path="*"
-        element={
-          <PrivateRoute>
-            <DefaultLayout />
-          </PrivateRoute>
-        }
-      />
-    </Routes>
+          <Route
+            path="/checkout-session"
+            element={
+              <UserPrivateRoute>
+                <CheckoutPage />
+              </UserPrivateRoute>
+            }
+          />
+
+          <Route
+            path="/payment/cancel"
+            element={
+              <UserPrivateRoute>
+                <PaymentCancel />
+              </UserPrivateRoute>
+            }
+          />
+
+          <Route
+            path="/user/contact-us"
+            element={
+              <UserPrivateRoute>
+                <UserContactUs />
+              </UserPrivateRoute>
+            }
+          />
+          <Route
+            path="/user/forgot-password"
+            element={
+              <UserPublicRoute>
+                <ForgotPassword />
+              </UserPublicRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <SuperAdminPublicRoute>
+                <Register />
+              </SuperAdminPublicRoute>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <SuperAdminPublicRoute>
+                <ForgotEmail />
+              </SuperAdminPublicRoute>
+            }
+          />
+          <Route
+            path="/new-password"
+            element={
+              <SuperAdminPublicRoute>
+                <NewPassword />
+              </SuperAdminPublicRoute>
+            }
+          />
+          <Route path="/verify-email/:id" element={<VerifyEmail />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          {/* Error Pages - can be accessed by anyone */}
+          <Route path="/404" element={<Page404 />} />
+          <Route path="/500" element={<Page500 />} />
+          {/* Private Routes (App) */}
+          <Route
+            path="*"
+            element={
+              <SuperAdminPrivateRoute>
+                <DefaultLayout />
+              </SuperAdminPrivateRoute>
+            }
+          />
+        </Routes>
+      </Elements>
+    </>
   );
 };
 

@@ -11,6 +11,15 @@ export const registerUser = async (data) => {
   }
 };
 
+export const userRegister = async (data) => {
+  try {
+    const response = await axios.post("/user-register/", data);
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
 export const loginUser = async (data) => {
   try {
     const response = await axios.post("/login/", data);
@@ -295,6 +304,19 @@ export const getCourtBooking = async (
   }
 };
 
+export const getMyCourtBooking = async (page) => {
+  try {
+    const response = await axios.get(`/court-bookings/?page=${page}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
 export const getCourtBookingbyId = async (id) => {
   try {
     const response = await axios.get(`/court-bookings/${id}/`, {
@@ -516,7 +538,7 @@ export const getAllLocations = async () => {
 
 export const userBasicData = async (page, search) => {
   const searchVal = search ? `&search=${search}` : "";
- 
+
   try {
     const response = await axios.get(
       `/user_basic_data/?page=${page}${searchVal}`,
@@ -532,18 +554,74 @@ export const userBasicData = async (page, search) => {
   }
 };
 
-// ?export=excel
 export const userDataExcel = async () => {
- 
   try {
-    const response = await axios.get(
-      `/download_csv/`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
-        },
-      }
-    );
+    const response = await axios.get(`/download_csv/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const userContactUS = async (data) => {
+  try {
+    const response = await axios.post(`/contact-us/`, data);
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const getBookedCourtAvailability = async (data) => {
+  try {
+    const response = await axios.post(`/check_court_availability/`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const addCourtBookings = async (data) => {
+  try {
+    const response = await axios.post(`/court-bookings/`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const paymentStripe = async (data) => {
+  try {
+    const response = await axios.post(`/create-checkout-session/`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const paymentSuccess = async (data) => {
+  try {
+    const response = await axios.post(`/payment-success/`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
     return response;
   } catch (error) {
     return error.response;

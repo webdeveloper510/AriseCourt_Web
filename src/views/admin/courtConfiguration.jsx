@@ -22,8 +22,8 @@ import {
 } from "@coreui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { DateRangePicker } from "react-date-range";
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
+import "react-date-range/dist/styles.css"; 
+import "react-date-range/dist/theme/default.css";
 import CIcon from "@coreui/icons-react";
 import {
   CDropdown,
@@ -52,7 +52,6 @@ import deleteImage from "../../assets/images/delete_image.png";
 import Select from "react-select";
 
 const CourtConfiguration = () => {
-  let SerialId = 1;
   const navigate = useNavigate();
   const calendarRef = useRef(null);
   const filterButtonRef = useRef(null);
@@ -77,8 +76,8 @@ const CourtConfiguration = () => {
   const [adminData, setAdminData] = useState([]);
   const [openMenuId, setOpenMenuId] = useState(null);
   const itemsPerPage = 10;
-  const [totalCounts, setTotalCounts] = useState(0); // Total number of items
-  const [totalPages, setTotalPages] = useState(0); // Total pages
+  const [totalCounts, setTotalCounts] = useState(0); 
+  const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
@@ -104,9 +103,8 @@ const CourtConfiguration = () => {
   };
 
   const locationOptions = (locationFilter || []).map((address) => {
-    const fullAddress = 
-    address?.name
-      // `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`.trim();
+    const fullAddress = address?.name;
+    // `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`.trim();
 
     return {
       value: fullAddress,
@@ -415,7 +413,12 @@ const CourtConfiguration = () => {
 
           <CCol sm={12} md={12} className="mt-2">
             <CRow>
-              <CCol md={6} lg={6} xl={4} className="d-flex align-items-center gap-1 my-1">
+              <CCol
+                md={6}
+                lg={6}
+                xl={4}
+                className="d-flex align-items-center gap-1 my-1"
+              >
                 <CInputGroup
                   className="search_input_group_reports"
                   style={{ height: "45px" }}
@@ -475,7 +478,6 @@ const CourtConfiguration = () => {
                         },
                       })
                     }
-                  
                     menuPortalTarget={document.body}
                   />
                 )}

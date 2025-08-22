@@ -69,7 +69,7 @@ const AppSidebar = () => {
   const handleLogOut = () => {
     localStorage.removeItem("logged_user_data");
     localStorage.removeItem("user_access_valid_token");
-    navigate("/login");
+    navigate("/");
   };
 
   return (

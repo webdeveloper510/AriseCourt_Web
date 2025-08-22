@@ -5,29 +5,29 @@ import routes from "../routes";
 
 const AppContent = () => {
   const token = localStorage.getItem("user_access_valid_token");
+
   return (
     <CContainer className="px-4" lg>
-      <Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           {token ? (
             <>
               {routes.map((route, idx) => {
-                return (
-                  route.element && (
-                    <Route
-                      key={idx}
-                      path={route.path}
-                      exact={route.exact}
-                      name={route.name}
-                      element={<route.element />}
-                    />
-                  )
-                );
+                const Component = route.element; // ✅ assign element
+                return Component ? (
+                  <Route
+                    key={idx}
+                    path={route.path}
+                    element={<Component />} // ✅ render correctly
+                  />
+                ) : null;
               })}
-              <Route path="/" element={<Navigate to="reporting" replace />} />
+              {/* Default redirect after login */}
+              <Route path="/" element={<Navigate to="/reporting" replace />} />
             </>
           ) : (
-            <Route path="/" element={<Navigate to="login" replace />} />
+            // If no token → go to login
+            <Route path="*" element={<Navigate to="/" replace />} />
           )}
         </Routes>
       </Suspense>

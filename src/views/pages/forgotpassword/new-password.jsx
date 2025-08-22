@@ -104,24 +104,21 @@ const NewPassword = () => {
   };
 
   return (
-    <div
-      className=" min-vh-100 d-flex flex-row align-items-center"
-      style={{ height: "100vh" }}
-    >
-      <CRow className="justify-content-center" style={{ width: "100%" }}>
-        <CCol md={12}>
-          <CRow
-            className="align-items-center"
-            style={{ background: "#E7F0FF" }}
-          >
-            <CCol md={6}>
-              <CCard className="p-2">
-                <img src={HomeBg} alt="login_bg" style={{ height: "96vh" }} />
-              </CCard>
-            </CCol>
-            <CCol md={6}>
-              <div className="d-flex justify-content-center form_outer_section">
-                <div className="form_inner_section">
+   <div className=" min-vh-100 d-flex flex-row align-items-center login_outer">
+        <CRow className="justify-content-center" style={{ width: "100%" }}>
+          <CCol md={12}>
+            <CRow
+              className="align-items-center"
+              style={{ background: "#E7F0FF" }}
+            >
+              <CCol md={5}>
+                <CCard className="p-3">
+                  <img src={HomeBg} alt="login_bg" style={{ height: "92vh" }} />
+                </CCard>
+              </CCol>
+              <CCol md={7}>
+                <div className="d-flex justify-content-center form_outer_section">
+                  <div className="form_inner_section">
                   <CForm onSubmit={handleFormSubmit} onKeyDown={handleKeyDown}>
                     <img src={Logo} alt="login-logo" />
                     <h2 id="traffic" className="card-title mt-3 mb-3">
