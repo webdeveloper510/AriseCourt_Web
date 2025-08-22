@@ -21,7 +21,7 @@ export const SuperAdminPublicRoute = ({ children }) => {
 
 // User private routes
 export const UserPrivateRoute = ({ children }) => {
-  const token = localStorage.getItem("user_access_valid_token");
+  const token = localStorage.getItem("access_valid_token");
   const role = localStorage.getItem("role");
   return token && role === "user"
     ? children
@@ -30,7 +30,7 @@ export const UserPrivateRoute = ({ children }) => {
 
 // User public routes
 export const UserPublicRoute = ({ children }) => {
-  const token = localStorage.getItem("user_access_valid_token");
+  const token = localStorage.getItem("access_valid_token");
   const role = localStorage.getItem("role");
   return token && role === "user"
     ? <Navigate to="/user/book-court" replace />
