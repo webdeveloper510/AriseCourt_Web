@@ -56,6 +56,7 @@ export default function CalendarStep({ formData, updateFormData, onNext }) {
         {daysArray?.map((day, idx) => {
           let fullDate = null;
           let displayDay = null;
+          let isPrevMonth = false;
 
           if (day) {
             // Current month day
@@ -66,27 +67,30 @@ export default function CalendarStep({ formData, updateFormData, onNext }) {
             const prevMonth = currentMonth.clone().subtract(1, "month");
             const prevMonthDays = prevMonth.daysInMonth();
 
-            // Index before the first day of current month
-            const firstDayIndex = currentMonth.startOf("month").day(); // Sunday=0, Monday=1...
+            const firstDayIndex = currentMonth.startOf("month").day();
             const prevDay = prevMonthDays - (firstDayIndex - idx - 1);
 
             fullDate = prevMonth.date(prevDay).format("YYYY-MM-DD");
             displayDay = prevDay;
+            isPrevMonth = true;
           }
 
           const isPastDate =
             fullDate && dayjs(fullDate).isBefore(dayjs().startOf("day"));
+          const isFutureDate =
+            fullDate && dayjs(fullDate).isAfter(dayjs().endOf("day"));
 
           return (
             <div
               key={idx}
               className={`day-cell 
         ${selectedDate === fullDate ? "selected" : ""} 
-        ${isPastDate ? "disabled" : ""}`}
+        ${isPastDate ? "disabled" : ""} 
+        ${isPrevMonth ? "prev-month" : ""} 
+        ${isFutureDate ? "future" : ""}`}
               onClick={() => day && !isPastDate && handleDateSelect(day)}
               style={{
                 pointerEvents: isPastDate ? "none" : "auto",
-                opacity: isPastDate ? 0.4 : 1,
               }}
             >
               {displayDay}
