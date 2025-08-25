@@ -24,19 +24,21 @@ const EnterOtp = () => {
   const [errors, setErrors] = useState({});
   const [otp, setOtp] = useState(Array(6).fill(""));
 
-  const [timer, setTimer] = useState(0); // start at 0 (not running)
+  const [timer, setTimer] = useState(59); // start at 59s immediately on page load
   const [canResend, setCanResend] = useState(false);
-
+  
   useEffect(() => {
-    if (timer > 0 && !canResend) {
+    if (timer > 0) {
       const interval = setInterval(() => {
         setTimer((prev) => prev - 1);
       }, 1000);
+  
       return () => clearInterval(interval);
-    } else if (timer === 0 && !canResend) {
-      setCanResend(true);
+    } else {
+      setCanResend(true); // show Resend OTP once timer finishes
     }
-  }, [timer, canResend]);
+  }, [timer]);
+  
 
   const handleChange = (e, index) => {
     const value = e.target.value;
@@ -98,7 +100,6 @@ const EnterOtp = () => {
     })
       .then((res) => {
         if (res?.data?.code == 200) {
-          // ✅ Start timer only when Continue is pressed successfully
           setCanResend(false);
           setTimer(59);
 
@@ -201,7 +202,7 @@ const EnterOtp = () => {
                       </CButton>
                     </CCol>
 
-                    <CCol xs={12} className="text-center">
+                    <CCol xs={12} className="text-left">
                       <CButton type="button" className="text_color px-0">
                         <Link to="/user-login">Back to login</Link>
                       </CButton>

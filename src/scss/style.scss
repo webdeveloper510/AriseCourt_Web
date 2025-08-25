@@ -1090,6 +1090,20 @@ input:-webkit-autofill {
   white-space: nowrap;
   text-decoration: none;
 }
+.user_name_btn1{
+  background: transparent;
+  border-radius: 34.5px;
+  color: #0860FB;
+  border: 1px solid #0860FB;
+  padding: 5px 15px;
+  height: 40px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  text-decoration: none;
+}
 
 .book_court_section {
   background-image: url("../assets/images/book_court_bg.png");

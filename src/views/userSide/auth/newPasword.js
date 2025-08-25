@@ -231,7 +231,7 @@ const SetNewPassword = () => {
                         </CButton>
                       </CCol>
 
-                      <CCol xs={12} className="text-center">
+                      <CCol xs={12} className="text-left">
                         <CButton type="button" className="text_color px-0">
                           <Link to="/user-login">Back to login</Link>
                         </CButton>

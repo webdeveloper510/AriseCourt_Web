@@ -171,7 +171,7 @@ const HomeNavbar = () => {
 
                     <Link to="/login" className="links_url">
                       {" "}
-                      <button className="user_name_btn">Staff Sign In</button>
+                      <button className="user_name_btn1">Staff Sign In</button>
                     </Link>
                   </div>
                 )}
