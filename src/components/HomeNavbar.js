@@ -12,6 +12,7 @@ import { NavDropdown } from "react-bootstrap";
 const HomeNavbar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("user_access_valid_token");
+  const role = localStorage.getItem("role");
   const [user, setUser] = useState(null);
 
   const [open, setOpen] = useState(false);
@@ -72,14 +73,14 @@ const HomeNavbar = () => {
               >
                 <Nav.Link
                   as={Link}
-                  to={token ? "/user/bookings" : "/user/login"}
+                  to={token && role == "superadmin" ? "/bookings" : role == "user" ? "/user-bookings" : "/user-login"}
                   className="header_links"
                 >
                   My Bookings
                 </Nav.Link>
                 <Nav.Link
                   as={Link}
-                  to="/user/contact-us"
+                  to="/user-contact-us"
                   className="header_links"
                 >
                   Contact us
@@ -89,7 +90,7 @@ const HomeNavbar = () => {
                 {token ? (
                   <>
                     {" "}
-                    <Link to="/user/book-court" className="links_url">
+                    <Link to={role == "user" ? "/user-book-court" : "/book-court"} className="links_url">
                       <button className="book_court_btn mx-1">
                         Book a Court
                       </button>
@@ -122,7 +123,7 @@ const HomeNavbar = () => {
                       {open && (
                         <div className="user_dropdown">
                           <ul>
-                            <li onClick={() => navigate("/user/profile")}>
+                            <li onClick={() => navigate("/user-profile")}>
                               <i className="bi bi-person-fill"></i> Profile
                             </li>
                             <li onClick={() => handleLogout()}>
@@ -135,7 +136,7 @@ const HomeNavbar = () => {
                   </>
                 ) : (
                   <div className="d-flex">
-                    <Link to="/user/login" className="links_url">
+                    <Link to="/user-login" className="links_url">
                       <button className="book_court_btn mx-1">
                         Book a Court
                       </button>

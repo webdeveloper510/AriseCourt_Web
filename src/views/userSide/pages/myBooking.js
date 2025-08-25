@@ -97,78 +97,77 @@ export default function MyBooking() {
         <div className="container position-relative pe-0">
           <h3 className="book_court_title">My Bookigs</h3>
 
-          {loading ? (
+          {loading && (
             <div className="loader_outer">
               <span className="loader"></span>
             </div>
-          ) : (
-            <div className="booking-container">
-              <table className="booking-table">
-                <thead>
-                  <tr>
-                    <th>Sr no</th>
-                    <th>Location Name & ID</th>
-                    <th>Date & Time</th>
-                    <th>Court No.</th>
-                    <th>Contact Details</th>
-                    <th>Price & Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {allBooking?.map((b, i) => (
-                    <tr key={i}>
-                      <td>{i + 1}</td>
-                      <td>
-                        <div className="location">
-                          <span className="loc-id">{b?.locationId}</span>
-                          <span className="loc-name">
-                            {b?.court?.location?.name}
-                          </span>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="datetime">
-                          <span className="loc-id">{`${b?.start_time ? convertToAmPm(b?.start_time) : ""} - ${b?.end_time ? convertToAmPm(b?.end_time) : ""}`}</span>
-                          <span>
-                            {b?.duration_time
-                              ? convertToHoursAndMinutes(b?.duration_time)
-                              : ""}
-                          </span>
-                          <span>{b?.booking_date}</span>
-                        </div>
-                      </td>
-                      <td>{b?.court?.court_number}</td>
-                      <td>
-                        <div className="contact">
-                          <span className="loc-id">{b?.user?.phone}</span>
-                          <span>{b?.user?.email}</span>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="status">
-                          <span className={b?.status.toLowerCase()}>
-                            {b?.status}
-                          </span>
-                          <span>${Number(b?.on_amount) || b?.total_price}</span>
-                        </div>
-                      </td>
-                      <td>
-                        <button
-                          onClick={() =>
-                            navigate(`/user/booking-details/${b?.booking_id}`)
-                          }
-                          className="action-btn"
-                        >
-                          ›
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
           )}
+          <div className="booking-container">
+            <table className="booking-table">
+              <thead>
+                <tr>
+                  <th>Sr no</th>
+                  <th>Location Name & ID</th>
+                  <th>Date & Time</th>
+                  <th>Court No.</th>
+                  <th>Contact Details</th>
+                  <th>Price & Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allBooking?.map((b, i) => (
+                  <tr key={i}>
+                    <td>{(currentPage - 1) * itemsPerPage + i + 1}</td>
+                    <td>
+                      <div className="location">
+                        <span className="loc-id">{b?.locationId}</span>
+                        <span className="loc-name">
+                          {b?.court?.location?.name}
+                        </span>
+                      </div>
+                    </td>
+                    <td>
+                      <div className="datetime">
+                        <span className="loc-id">{`${b?.start_time ? convertToAmPm(b?.start_time) : ""} - ${b?.end_time ? convertToAmPm(b?.end_time) : ""}`}</span>
+                        <span>
+                          {b?.duration_time
+                            ? convertToHoursAndMinutes(b?.duration_time)
+                            : ""}
+                        </span>
+                        <span>{b?.booking_date}</span>
+                      </div>
+                    </td>
+                    <td>{b?.court?.court_number}</td>
+                    <td>
+                      <div className="contact">
+                        <span className="loc-id">{b?.user?.phone}</span>
+                        <span>{b?.user?.email}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div className="status">
+                        <span className={b?.status.toLowerCase()}>
+                          {b?.status}
+                        </span>
+                        <span>${Number(b?.on_amount) || b?.total_price}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <button
+                        onClick={() =>
+                          navigate(`/user-booking-details/${b?.booking_id}`)
+                        }
+                        className="action-btn"
+                      >
+                        ›
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           {allBooking?.length > 0 && (
             <div className="px-5">
@@ -197,6 +196,9 @@ export default function MyBooking() {
                           <CPaginationItem
                             key={page}
                             active={currentPage === page}
+                            className={
+                              currentPage === page ? "active_page" : ""
+                            }
                             onClick={() => handlePageChange(page)}
                           >
                             {page}

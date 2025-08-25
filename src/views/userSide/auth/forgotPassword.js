@@ -56,7 +56,7 @@ const ForgotPassword = () => {
         setLoading(false);
         if (res.data.code == 200) {
           toast.success(res?.data?.message, { theme: "colored" });
-          navigate("/user/otp", {state : {email : formData?.email}});
+          navigate("/user-otp", {state : {email : formData?.email}});
         } else {
           toast.error(res?.data?.message, {
             theme: "colored",
@@ -135,7 +135,7 @@ const ForgotPassword = () => {
 
                       <CCol xs={12} className="text-center">
                         <CButton type="button" className="text_color px-0">
-                          <Link to="/user/login">Back to login</Link>
+                          <Link to="/user-login">Back to login</Link>
                         </CButton>
                       </CCol>
                     </CRow>

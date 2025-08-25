@@ -10,7 +10,7 @@ export const SuperAdminPrivateRoute = ({ children }) => {
     : <Navigate to="/" replace />;
 };
 
-// Superadmin public routes (redirect if already logged in)
+
 export const SuperAdminPublicRoute = ({ children }) => {
   const token = localStorage.getItem("user_access_valid_token");
   const role = localStorage.getItem("role");
@@ -19,7 +19,6 @@ export const SuperAdminPublicRoute = ({ children }) => {
     : children;
 };
 
-// User private routes
 export const UserPrivateRoute = ({ children }) => {
   const token = localStorage.getItem("user_access_valid_token");
   const role = localStorage.getItem("role");
@@ -33,6 +32,6 @@ export const UserPublicRoute = ({ children }) => {
   const token = localStorage.getItem("user_access_valid_token");
   const role = localStorage.getItem("role");
   return token && role === "user"
-    ? <Navigate to="/user/book-court" replace />
+    ? <Navigate to="/user-book-court" replace />
     : children;
 };

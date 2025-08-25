@@ -96,7 +96,7 @@ const EnterOtp = () => {
     })
       .then((res) => {
         if (res?.data?.code == 200) {
-          navigate("/user/new-password", {state : {email : location?.state?.email}});
+          navigate("/user-new-password", {state : {email : location?.state?.email}});
           toast.success(res?.data?.message, {
             theme: "colored",
           });
@@ -195,7 +195,7 @@ const EnterOtp = () => {
 
                     <CCol xs={12} className="text-center">
                       <CButton type="button" className="text_color px-0">
-                        <Link to="/user/login">Back to login</Link>
+                        <Link to="/user-login">Back to login</Link>
                       </CButton>
                     </CCol>
                   </CRow>

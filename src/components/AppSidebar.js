@@ -84,7 +84,7 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarHeader>
-        <CSidebarBrand to="/">
+        <CSidebarBrand onClick={()=>navigate("/")} style={{cursor:"pointer"}}>
           <img src={logo} alt="logo" className="sidebar-brand-full" />
           <img src={sygnet} alt="logo" className="sidebar-brand-narrow" />
         </CSidebarBrand>

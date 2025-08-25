@@ -5,7 +5,7 @@ import UserLayout from "../../../components/UserLayout/index.js";
 const HomePage = () => {
   return (
     <UserLayout>
-      <div className="">
+      <div className="mt-5">
         <div className="container">
           <div className="row">
             <div className="col-md-6 d-flex align-items-center">

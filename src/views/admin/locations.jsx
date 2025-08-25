@@ -322,9 +322,10 @@ const Locations = () => {
                   <CTableHeaderCell scope="col">Logo</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Email</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Location Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">City</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Country</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">No. of Courts</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Courts</CTableHeaderCell>
                   <CTableHeaderCell scope="col">View Courts</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                 </CTableRow>
@@ -364,6 +365,7 @@ const Locations = () => {
                         <CTableDataCell style={{whiteSpace:"nowrap"}}>
                           {item?.phone ? formatPhoneNumber(item?.phone) : ""}
                         </CTableDataCell>
+                        <CTableDataCell style={{whiteSpace:"nowrap"}}>{item?.name}</CTableDataCell>
                         <CTableDataCell style={{whiteSpace:"nowrap"}}>{item?.city}</CTableDataCell>
                         <CTableDataCell style={{whiteSpace:"nowrap"}}>{item?.country}</CTableDataCell>
                         <CTableDataCell>{item?.courts?.length}</CTableDataCell>

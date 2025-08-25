@@ -14,7 +14,8 @@ const CourtDetails = React.lazy(() => import('./views/admin/courtDetails'))
 const Users = React.lazy(() => import('./views/admin/users'))
 const VerifyEmail = React.lazy(() => import('./views/admin/verifyEmail'))
 const PrivacyPolicy = React.lazy(() => import('./views/pages/PrivacyPolicy'))
-// const BookCourt = React.lazy(() => import('./views/userSide/pages/addBooking'))
+const BookCourt = React.lazy(() => import('./views/userSide/pages/addBooking'))
+const MyBooking = React.lazy(() => import('./views/userSide/pages/myBooking'))
 
 
 const routes = [
@@ -35,7 +36,8 @@ const routes = [
   { path: '/price-configuration', name: 'PriceConfiguration', element: PriceConfiguration },
   { path: '/court-bookings', name: 'CourtConfiguration', element: CourtConfiguration },
   { path: '/court-details/:id', name: 'CourtDetails', element: CourtDetails },
-  // { path: '/user/book-court', name: 'BookCourt', element: BookCourt },
+  // { path: '/book-court', name: 'BookCourt', element: BookCourt },
+  // { path: '/bookings', name: 'MyBooking', element: MyBooking },
   // { path: '/verify-email/:id', name: 'VerifyEmail', element: VerifyEmail },
   { path: '/privacy-policy', name: 'PrivacyPolicy', element: PrivacyPolicy },
   

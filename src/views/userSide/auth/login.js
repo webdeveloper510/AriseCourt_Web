@@ -158,9 +158,7 @@ const UserLogin = () => {
                 })
               ) : (
                 <>
-                  {
-                    searchLocation && <h3 className="mt-5" style={{fontWeight:"600"}}>Data Not Found</h3>
-                  }
+                 
                 </>
               )}
             </div>

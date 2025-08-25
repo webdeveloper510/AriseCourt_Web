@@ -195,7 +195,7 @@ export default function UserBookingDetails() {
           )}
           <div className="summary-footer">
             <button
-              onClick={() => navigate("/user/book-court")}
+              onClick={() => navigate("/user-book-court")}
               className="rebook-btn"
             >
               REBOOK NOW

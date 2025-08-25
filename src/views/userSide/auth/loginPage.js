@@ -71,10 +71,10 @@ const LoginPage = ({
       .then((res) => {
         setLoading(false);
         if (res.data.code == 200) {
-          navigate("/user/book-court");
+          navigate("/user-book-court");
           const userData = res?.data?.data;
           const accessToken = res?.data?.data?.access_token;
-          localStorage.setItem("role", "user"); // or "user"
+          localStorage.setItem("role", "user");
           localStorage.setItem("user_access_valid_token", accessToken);
           localStorage.setItem("logged_user_data", JSON.stringify(userData));
           toast.success(res?.data?.message, { theme: "colored" });
@@ -177,7 +177,7 @@ const LoginPage = ({
                   <CRow>
                     <CCol xs={12} className="">
                       <CButton type="button" className="text_color px-0">
-                        <Link to="/user/forgot-password">Forgot password?</Link>
+                        <Link to="/user-forgot-password">Forgot password?</Link>
                       </CButton>
                     </CCol>
                     <CCol xs={12}>

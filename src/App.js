@@ -32,10 +32,7 @@ import PaymentSuccess from "./views/userSide/pages/paymentSuccess";
 import PaymentCancel from "./views/userSide/pages/paymentCancel";
 import { loadStripe } from "@stripe/stripe-js";
 import {
-  PaymentElement,
   Elements,
-  useStripe,
-  useElements,
 } from "@stripe/react-stripe-js";
 import CheckoutPage from "./views/userSide/pages/CheckoutPage";
 
@@ -98,7 +95,7 @@ const App = () => {
             }
           />
           <Route
-            path="/user/login"
+            path="/user-login"
             element={
               <UserPublicRoute>
                 <UserLogin />
@@ -106,7 +103,7 @@ const App = () => {
             }
           />
           <Route
-            path="/user/otp"
+            path="/user-otp"
             element={
               <UserPublicRoute>
                 <EnterOtp />
@@ -114,7 +111,7 @@ const App = () => {
             }
           />
           <Route
-            path="/user/new-password"
+            path="/user-new-password"
             element={
               <UserPublicRoute>
                 <SetNewPassword />
@@ -122,7 +119,7 @@ const App = () => {
             }
           />
           <Route
-            path="/user/book-court"
+            path="/user-book-court"
             element={
               <UserPrivateRoute>
                 <BookCourt />
@@ -130,15 +127,32 @@ const App = () => {
             }
           />
           <Route
-            path="/user/bookings"
+            path="/user-bookings"
             element={
               <UserPrivateRoute>
                 <MyBooking />
               </UserPrivateRoute>
             }
           />
+
+<Route
+            path="/book-court"
+            element={
+              <SuperAdminPrivateRoute>
+                <BookCourt />
+              </SuperAdminPrivateRoute>
+            }
+          />
           <Route
-            path="/user/booking-details/:id"
+            path="/bookings"
+            element={
+              <SuperAdminPrivateRoute>
+                <MyBooking />
+              </SuperAdminPrivateRoute>
+            }
+          />
+          <Route
+            path="/user-booking-details/:id"
             element={
               <UserPrivateRoute>
                 <UserBookingDetails />
@@ -146,7 +160,7 @@ const App = () => {
             }
           />
           <Route
-            path="/user/profile"
+            path="/user-profile"
             element={
               <UserPrivateRoute>
                 <UserProfile />
@@ -154,7 +168,7 @@ const App = () => {
             }
           />
 
-          <Route path="/user/contact-us" element={<UserContactUs />} />
+          <Route path="/user-contact-us" element={<UserContactUs />} />
           {/* /payment/success */}
 
           <Route
@@ -184,9 +198,9 @@ const App = () => {
             }
           />
 
-          <Route path="/user/contact-us" element={<UserContactUs />} />
+          <Route path="/user-contact-us" element={<UserContactUs />} />
           <Route
-            path="/user/forgot-password"
+            path="/user-forgot-password"
             element={
               <UserPublicRoute>
                 <ForgotPassword />
