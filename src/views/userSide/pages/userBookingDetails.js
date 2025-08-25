@@ -128,8 +128,8 @@ export default function UserBookingDetails() {
                     <div className="mb-1">
                       <span className="label">Amount Paid</span>
                       <span className="value">
-                        {allBooking?.on_amount
-                          ? `$${allBooking?.on_amount}`
+                        {allBooking?.total_price
+                          ? `$${allBooking?.total_price}`
                           : ""}
                       </span>
                     </div>
