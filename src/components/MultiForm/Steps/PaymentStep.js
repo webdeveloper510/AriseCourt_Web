@@ -11,6 +11,7 @@ export default function PaymentStep({ bookingDetails, onBack }) {
   const navigate = useNavigate();
 
   const userData = JSON.parse(localStorage.getItem("logged_user_data"));
+  console.log("userDatauserData",userData)
   const role = localStorage.getItem("role");
   useEffect(() => {
     setAllBooking(bookingDetails);
@@ -66,7 +67,7 @@ export default function PaymentStep({ bookingDetails, onBack }) {
           <span className="label">Amount :</span>
           <span className="value">
             {" "}
-            {allBooking?.total_price ? `$${allBooking?.total_price}` : ""}
+            {allBooking?.total_price ? `$${parseFloat(allBooking?.total_price)?.toFixed(2)}` : ""}
           </span>
         </div>
         <div className="summary-row">
@@ -85,7 +86,7 @@ export default function PaymentStep({ bookingDetails, onBack }) {
         <div className="summary-row">
           <span className="label summary">Summary :</span>
           <span className="value summary">
-            {allBooking?.summary ? `$${allBooking?.summary}` : ""}
+            {allBooking?.summary ? `$${parseFloat(allBooking?.summary)?.toFixed(2)}` : ""}
           </span>
         </div>
       </div>
@@ -99,7 +100,7 @@ export default function PaymentStep({ bookingDetails, onBack }) {
         {/* <CheckoutPage booking_id={String(allBooking?.booking_id)} /> */}
 
         <div>
-          {userData?.user_type != 3 && (
+          {(userData?.user_type ==  1 || userData?.user_type == 0) && (
             <button
               className="next-btn me-2"
               onClick={() => {

@@ -129,7 +129,7 @@ export default function UserBookingDetails() {
                       <span className="label">Amount Paid</span>
                       <span className="value">
                         {allBooking?.total_price
-                          ? `$${allBooking?.total_price}`
+                          ? `$${parseFloat(allBooking?.total_price)?.toFixed(2)}`
                           : ""}
                       </span>
                     </div>
@@ -184,7 +184,7 @@ export default function UserBookingDetails() {
                   <div className="col-6 col-md-3 mb-1">
                     <span className="label">Summary</span>
                     <span className="value">
-                      {allBooking?.on_amount ? `$${allBooking?.on_amount}` : ""}
+                      {allBooking?.on_amount ? `$${parseFloat(allBooking?.on_amount)?.toFixed(2)}` : ""}
                     </span>
                   </div>
                 </div>
