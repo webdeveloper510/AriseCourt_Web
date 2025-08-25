@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UserLayout from "../../../components/UserLayout";
 import { getProfile, updateProfile } from "../../../utils/api";
+import UserImage from "src/assets/images/user_image.png";
 import {
   CButton,
   CCol,
@@ -15,6 +16,7 @@ import { toast } from "react-toastify";
 
 export default function UserProfile() {
   const [loading, setLoading] = useState(false);
+  const [profileImage, setProfileImage] = useState(null);
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -22,12 +24,22 @@ export default function UserProfile() {
     phone: "",
     country: "US",
     user_type: "2",
+    // image: "",
   });
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     getUserData();
   }, []);
+
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const userImage = URL.createObjectURL(file);
+  //     setProfileImage(userImage);
+  //     setFormData({ ...formData, image: userImage });
+  //   }
+  // };
 
   const getUserData = () => {
     setLoading(true);
@@ -36,6 +48,7 @@ export default function UserProfile() {
         setLoading(false);
         if (res?.data?.code == 200) {
           setFormData(res?.data?.data);
+          setProfileImage(res?.data?.image);
         }
       })
       .catch((error) => {
@@ -98,7 +111,14 @@ export default function UserProfile() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    const updatedFormData = { ...formData, [name]: value };
+    const capitalizedValue =
+      name === "first_name" || name === "last_name"
+        ? value.charAt(0).toUpperCase() + value.slice(1)
+        : value;
+
+    const updatedFormData = { ...formData, [name]: capitalizedValue };
+
+    setFormData(updatedFormData);
 
     setFormData(updatedFormData);
 
@@ -174,6 +194,25 @@ export default function UserProfile() {
         <div className="container">
           <h3 className="book_court_title">User Profile</h3>
           <div className="">
+            {/* <div className="d-flex justify-content-center mb-4">
+              <div className="profile-pic-wrapper">
+                <img
+                  src={profileImage || UserImage}
+                  alt="Profile"
+                  className="profile-pic"
+                />
+                <label htmlFor="profileImageUpload" className="camera-icon">
+                  <i className="bi bi-camera-fill"></i>
+                </label>
+                <input
+                  type="file"
+                  id="profileImageUpload"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={handleImageChange}
+                />
+              </div>
+            </div> */}
             <CRow>
               <CCol md={12}>
                 <div className="d-flex justify-content-center form_outer_section">

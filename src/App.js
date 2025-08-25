@@ -31,10 +31,9 @@ import UserContactUs from "./views/userSide/pages/userContactus";
 import PaymentSuccess from "./views/userSide/pages/paymentSuccess";
 import PaymentCancel from "./views/userSide/pages/paymentCancel";
 import { loadStripe } from "@stripe/stripe-js";
-import {
-  Elements,
-} from "@stripe/react-stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import CheckoutPage from "./views/userSide/pages/CheckoutPage";
+import SelectLocation from "./views/userSide/pages/selectLocation";
 
 const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 const Login = React.lazy(() => import("./views/pages/login/Login"));
@@ -134,8 +133,7 @@ const App = () => {
               </UserPrivateRoute>
             }
           />
-
-<Route
+          <Route
             path="/book-court"
             element={
               <SuperAdminPrivateRoute>
@@ -167,19 +165,16 @@ const App = () => {
               </UserPrivateRoute>
             }
           />
-
           <Route path="/user-contact-us" element={<UserContactUs />} />
           {/* /payment/success */}
-
           <Route
-            path="/payment/success"
+            path="/payment-success"
             element={
               // <UserPrivateRoute>
-                <PaymentSuccess />
+              <PaymentSuccess />
               // </UserPrivateRoute>
             }
           />
-
           <Route
             path="/checkout-session"
             element={
@@ -188,16 +183,14 @@ const App = () => {
               </UserPrivateRoute>
             }
           />
-
           <Route
-            path="/payment/cancel"
+            path="/payment-cancel"
             element={
               <UserPrivateRoute>
                 <PaymentCancel />
               </UserPrivateRoute>
             }
           />
-
           <Route path="/user-contact-us" element={<UserContactUs />} />
           <Route
             path="/user-forgot-password"
@@ -215,6 +208,7 @@ const App = () => {
               </SuperAdminPublicRoute>
             }
           />
+          <Route path="/select-location" element={<SelectLocation />} />
           <Route
             path="/forgot-password"
             element={

@@ -37,80 +37,88 @@ const RegisterPage = ({ locationId, setRegisterPage }) => {
     setShowConfPassword(!showConfPassword);
   };
 
+  // validate a single field
+  const validateField = (name, value, formData) => {
+    let error = "";
+
+    switch (name) {
+      case "first_name":
+        if (!value) {
+          error = "First name is required.";
+        } else if (value.length < 2) {
+          error = "First name must be at least 2 characters.";
+        } else if (value.length > 100) {
+          error = "First name must be no more than 100 characters.";
+        }
+        break;
+
+      case "last_name":
+        if (!value) {
+          error = "Last name is required.";
+        } else if (value.length < 2) {
+          error = "Last name must be at least 2 characters.";
+        } else if (value.length > 100) {
+          error = "Last name must be no more than 100 characters.";
+        }
+        break;
+
+      case "email":
+        if (!value) {
+          error = "Email is required.";
+        } else if (!/\S+@\S+\.\S+/.test(value)) {
+          error = "Email is not valid.";
+        }
+        break;
+
+      case "phone":
+        if (!value) {
+          error = "Phone number is required.";
+        } else if (value.length < 7) {
+          error = "Phone number must be at least 7 characters.";
+        }
+        break;
+
+      case "password":
+        if (!value) {
+          error = "Password is required.";
+        } else {
+          const strongPasswordRegex =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+          if (!strongPasswordRegex.test(value)) {
+            error =
+              "Password must be 8+ chars with upper, lower, number & special (!@#$&%).";
+          }
+        }
+        break;
+
+      case "confirm_password":
+        if (!value) {
+          error = "Confirm password is required.";
+        } else if (formData.password && value !== formData.password) {
+          error = "Passwords do not match.";
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    return error;
+  };
+
+  // validate all fields (for form submit)
   const validateFormData = (formData) => {
     const errors = {};
-
     Object.keys(formData).forEach((field) => {
       const value = formData[field]?.trim?.() || "";
-
-      switch (field) {
-        case "first_name":
-          if (!value) {
-            errors.first_name = "First name is required.";
-          } else if (value.length < 2) {
-            errors.first_name = "First name must be at least 2 characters.";
-          } else if (value.length > 100) {
-            errors.first_name =
-              "First name must be no more than 100 characters.";
-          }
-          break;
-
-        case "last_name":
-          if (!value) {
-            errors.last_name = "Last name is required.";
-          } else if (value.length < 2) {
-            errors.last_name = "Last name must be at least 2 characters.";
-          } else if (value.length > 100) {
-            errors.last_name = "Last name must be no more than 100 characters.";
-          }
-          break;
-
-        case "email":
-          if (!value) {
-            errors.email = "Email is required.";
-          } else if (!/\S+@\S+\.\S+/.test(value)) {
-            errors.email = "Email is not valid.";
-          }
-          break;
-
-        case "phone":
-          if (!value) {
-            errors.phone = "Phone number is required.";
-          } else if (value.length < 7) {
-            errors.phone = "Phone number must be at least 7 characters.";
-          }
-          break;
-
-        case "password":
-          if (!value) {
-            errors.password = "Password is required.";
-          } else if (value) {
-            const strongPasswordRegex =
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-
-            if (!strongPasswordRegex.test(value)) {
-              errors.password =
-                "Password must be 6+ characters with upper, lower, number & special (!@#$&%)";
-            }
-          }
-          break;
-
-        case "confirm_password":
-          if (!value) {
-            errors.confirm_password = "Confirm password is required.";
-          } else if (formData.password && value !== formData.password) {
-            errors.confirm_password = "Passwords do not match.";
-          }
-          break;
-
-        default:
-          break;
-      }
+      const error = validateField(field, value, formData);
+      if (error) errors[field] = error;
     });
-
     return errors;
   };
 
+  // handle input change (validate only changed field)
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const capitalizedValue =
@@ -122,10 +130,26 @@ const RegisterPage = ({ locationId, setRegisterPage }) => {
 
     setFormData(updatedFormData);
 
-    const validationErrors = validateFormData(updatedFormData);
-    setErrors(validationErrors);
+    // validate only this field
+    const error = validateField(name, capitalizedValue, updatedFormData);
+    setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
+  // handle phone change (same idea: validate only phone)
+  const handlePhoneChange = (value, data) => {
+    const updatedFormData = {
+      ...formData,
+      phone: value,
+      country: data.countryCode?.toUpperCase() || "",
+    };
+
+    setFormData(updatedFormData);
+
+    const error = validateField("phone", value, updatedFormData);
+    setErrors((prev) => ({ ...prev, phone: error }));
+  };
+
+  // on submit validate everything
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
@@ -136,24 +160,26 @@ const RegisterPage = ({ locationId, setRegisterPage }) => {
       setLoading(false);
       return;
     }
-    setLoading(true)
+
+    setLoading(true);
     userRegister(formData)
       .then((res) => {
-        console.log("userRegister", res);
-        setLoading(true)
-        if (res?.data?.code == 200 || res?.data?.code == 201 || res?.status == 200 || res?.status == 201) {
-          toast.success(res?.data?.message, {
-            theme: "colored",
-          });
-          setRegisterPage(false)
+        setLoading(false);
+        if (
+          res?.data?.code == 200 ||
+          res?.data?.code == 201 ||
+          res?.status == 200 ||
+          res?.status == 201
+        ) {
+          toast.success(res?.data?.message, { theme: "colored" });
+          setRegisterPage(false);
         } else {
-          toast.error(res?.data?.message, {
-            theme: "colored",
-          });
+          toast.error(res?.data?.message, { theme: "colored" });
         }
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
   };
 
@@ -161,27 +187,6 @@ const RegisterPage = ({ locationId, setRegisterPage }) => {
     if (e.key === "Enter") {
       handleFormSubmit(e);
     }
-  };
-
-  const handlePhoneChange = (value, data) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      phone: value,
-      country: data.countryCode?.toUpperCase() || "", // Save "US", "IN", etc.
-    }));
-
-    const fieldErrors = validateFormData(
-      {
-        ...formData,
-        phone: value,
-        country: data.countryCode?.toUpperCase() || "",
-      },
-      "phone"
-    );
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      phone: fieldErrors.phone || "",
-    }));
   };
 
   return (

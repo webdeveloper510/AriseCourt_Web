@@ -93,7 +93,9 @@ export default function MyBooking() {
 
   return (
     <UserLayout>
-      <div className="book_court_section">
+      <div className="book_court_section"
+       style={{ height: allBooking?.length > 5 ? "auto" : "450px" }}
+       >
         <div className="container position-relative pe-0">
           <h3 className="book_court_title">My Bookigs</h3>
 

@@ -33,33 +33,46 @@ const LoginPage = ({
     setShowPassword(!showPassword);
   };
 
-  const validateFormData = (formData) => {
-    let errors = {};
+  const validateField = (name, value) => {
+    let error = "";
 
-    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = "Email is required and must be valid.";
+    if (name === "email") {
+      if (!value || !/\S+@\S+\.\S+/.test(value)) {
+        error = "Email is required and must be valid.";
+      }
     }
 
-    if (!formData.password) {
-      errors.password = "Password is required";
+    if (name === "password") {
+      if (!value) {
+        error = "Password is required";
+      } else if (value.length < 6) {
+        error = "Password must be at least 6 characters.";
+      }
     }
 
-    return errors;
+    return error;
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    const fieldErrors = validateFormData({ ...formData, [name]: value });
-    setErrors(fieldErrors);
+    // validate only the current field
+    const error = validateField(name, value);
+    setErrors({ ...errors, [name]: error });
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const validationErrors = validateFormData(formData);
+    // validate all fields on submit
+    const validationErrors = {};
+    Object.keys(formData).forEach((key) => {
+      const error = validateField(key, formData[key]);
+      if (error) validationErrors[key] = error;
+    });
+
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length > 0) {
@@ -67,6 +80,7 @@ const LoginPage = ({
       return;
     }
 
+    // proceed with login
     loginUser(formData)
       .then((res) => {
         setLoading(false);
@@ -79,9 +93,7 @@ const LoginPage = ({
           localStorage.setItem("logged_user_data", JSON.stringify(userData));
           toast.success(res?.data?.message, { theme: "colored" });
         } else {
-          toast.error(res?.data?.message, {
-            theme: "colored",
-          });
+          toast.error(res?.data?.message, { theme: "colored" });
         }
       })
       .catch((error) => {

@@ -2,16 +2,16 @@ import React, { useEffect, useRef, useState } from "react";
 import logo from "src/assets/images/login_logo.png";
 import UserImage from "src/assets/images/user_image.png";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import { getProfile } from "../utils/api";
-import { NavDropdown } from "react-bootstrap";
 
 const HomeNavbar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("user_access_valid_token");
+  const selectedLocationId = localStorage.getItem("selectedLocationId");
+  const userData = JSON.parse(localStorage.getItem("logged_user_data"));
   const role = localStorage.getItem("role");
   const [user, setUser] = useState(null);
 
@@ -73,7 +73,13 @@ const HomeNavbar = () => {
               >
                 <Nav.Link
                   as={Link}
-                  to={token && role == "superadmin" ? "/bookings" : role == "user" ? "/user-bookings" : "/user-login"}
+                  to={
+                    token && role == "superadmin"
+                      ? "/bookings"
+                      : role == "user"
+                        ? "/user-bookings"
+                        : "/user-login"
+                  }
                   className="header_links"
                 >
                   My Bookings
@@ -90,7 +96,16 @@ const HomeNavbar = () => {
                 {token ? (
                   <>
                     {" "}
-                    <Link to={role == "user" ? "/user-book-court" : "/book-court"} className="links_url">
+                    <Link
+                      to={
+                        role == "user"
+                          ? "/user-book-court"
+                          : userData?.user_type == 0 && !selectedLocationId
+                            ? "/select-location"
+                            : "/book-court"
+                      }
+                      className="links_url"
+                    >
                       <button className="book_court_btn mx-1">
                         Book a Court
                       </button>
@@ -113,8 +128,8 @@ const HomeNavbar = () => {
                           alt="User"
                         />
                         <span>
-                          {`${user?.first_name ? user?.first_name : ""} ${
-                            user?.last_name ? user?.last_name : ""
+                          {`${userData?.first_name ? userData?.first_name : ""} ${
+                            userData?.last_name ? userData?.last_name : ""
                           }`}
                         </span>
                       </button>
@@ -123,11 +138,23 @@ const HomeNavbar = () => {
                       {open && (
                         <div className="user_dropdown">
                           <ul>
-                            <li onClick={() => navigate("/user-profile")}>
-                              <i className="bi bi-person-fill"></i> Profile
+                            {role == "superadmin" && (
+                              <li onClick={() => navigate("/reporting")}>
+                                <i className="bi bi-card-list me-1"></i> Dashboard
+                              </li>
+                            )}
+
+                            <li
+                              onClick={() =>
+                                navigate(
+                                  `${role == "user" ? "user-profile" : "profile"}`
+                                )
+                              }
+                            >
+                              <i className="bi bi-person-fill me-1"></i> Profile
                             </li>
                             <li onClick={() => handleLogout()}>
-                              <i className="bi bi-box-arrow-right"></i> Logout
+                              <i className="bi bi-box-arrow-right me-1"></i> Logout
                             </li>
                           </ul>
                         </div>

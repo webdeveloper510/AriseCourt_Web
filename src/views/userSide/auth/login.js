@@ -90,7 +90,10 @@ const UserLogin = () => {
 
   return (
     <UserLayout>
-      <div className="book_court_section" style={{height : filteredLocation?.length > 2 ? "auto" : "450px"}}>
+      <div
+        className="book_court_section"
+        style={{ height: filteredLocation?.length > 2 || loginPage ? "auto" : "450px" }}
+      >
         {!loginPage && (
           <div className="container text-center">
             <h4 className="book_court_title">Search Court</h4>
@@ -103,8 +106,14 @@ const UserLogin = () => {
                     placeholder="Search Organization..."
                     name="searchLocation"
                     value={searchLocation}
+                    autoComplete="off"
                     onChange={(e) => {
                       setSearchLocation(e.target.value);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleSearchLocation(e);
+                      }
                     }}
                   />
                   <div
@@ -130,7 +139,7 @@ const UserLogin = () => {
                       onClick={() => {
                         handleLocationSelect(item?.name, item?.id);
                       }}
-                      className={`locations_name_section ${locationName == item?.name ? "selected_name" : ""} ${i%2 == 0 ? "even_bg" : "odd_bg"}`}
+                      className={`locations_name_section ${locationName == item?.name ? "selected_name" : ""} ${i % 2 == 0 ? "even_bg" : "odd_bg"}`}
                     >
                       <div className="location_detail_section">
                         <div>
@@ -157,9 +166,7 @@ const UserLogin = () => {
                   );
                 })
               ) : (
-                <>
-                 
-                </>
+                <></>
               )}
             </div>
 

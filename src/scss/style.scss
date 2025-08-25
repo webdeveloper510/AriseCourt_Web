@@ -2033,3 +2033,26 @@ hr {
 .active .page-link{
   background: #0860FB !important;
 }
+
+.profile-pic-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #007bff;
+}
+.camera-icon {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background: #007bff;
+  color: white;
+  border-radius: 50%;
+  padding: 6px 10px;
+  cursor: pointer;
+}

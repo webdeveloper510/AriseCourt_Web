@@ -22,13 +22,13 @@ export default function CheckoutForm() {
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/payment/success`,
+        return_url: `${window.location.origin}/payment-success`,
       },
     });
     setLoading(false);
     if (error) {
       setMessage(error.message);
-      navigate("/payment/cancel")
+      navigate("/payment-cancel")
     } else if (paymentIntent?.status === "succeeded") {
       setMessage("✅ Payment Successful");
     }
