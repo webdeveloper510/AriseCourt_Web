@@ -1,43 +1,35 @@
 import React, { useEffect, useState } from "react";
 import StripeImage from "../../../assets/images/stripe_image.png";
-import { paymentStripe } from "../../../utils/api";
-import CheckoutForm from "../../../views/userSide/pages/checkoutForm";
-import { Elements } from "@stripe/react-stripe-js";
-import CheckoutPage from "../../../views/userSide/pages/CheckoutPage";
+import { updateCourtBookings } from "../../../utils/api";
 import { useNavigate } from "react-router-dom";
 
-export default function PaymentStep({
-  bookingDetails,
-  onBack,
-  onConfirm,
-  formData,
-}) {
+export default function PaymentStep({ bookingDetails, onBack }) {
   const [paymentMethod, setPaymentMethod] = useState("stripe");
   const [allBooking, setAllBooking] = useState([]);
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const userData = JSON.parse(localStorage.getItem("logged_user_data"));
+  const role = localStorage.getItem("role");
   useEffect(() => {
     setAllBooking(bookingDetails);
   }, [allBooking]);
 
-  const handlePayment = () => {
+  const handleConfirm = () => {
+    const id = allBooking?.booking_id;
     setLoading(true);
-    paymentStripe({
-      booking_id: String(allBooking?.booking_id),
+    updateCourtBookings(id, {
+      status: "confirmed",
     })
       .then((res) => {
         setLoading(false);
-        console.log("handlePayment", res);
-        if (res?.status == 200) {
-          const url = res?.data?.checkout_url;
-          if (url) {
-            window.location.href = url;
-          }
-        }
+        console.log("confirmed", res);
+        navigate(`${role == "user" ? "/user-bookings" : "/bookings"}`);
       })
       .catch((error) => {
-        setLoading(false);
         console.log(error);
+        setLoading(false);
       });
   };
 
@@ -48,7 +40,6 @@ export default function PaymentStep({
           <span className="loader"></span>
         </div>
       )}
-
       <div className="section">
         <h5 className="my_details_title">Payment Method</h5>
         <label className="payment-option">
@@ -69,7 +60,6 @@ export default function PaymentStep({
 
       <hr />
 
-      {/* Payment Summary */}
       <div className="section">
         <h5 className="my_details_title">Payment Summary</h5>
         <div className="summary-row">
@@ -108,16 +98,29 @@ export default function PaymentStep({
 
         {/* <CheckoutPage booking_id={String(allBooking?.booking_id)} /> */}
 
-        <button
-          className="next-btn"
-          onClick={() => {
-            navigate("/checkout-session", {
-              state: String(allBooking?.booking_id),
-            });
-          }}
-        >
-          CONFIRM & PAY NOW
-        </button>
+        <div>
+          {userData?.user_type != 3 && (
+            <button
+              className="next-btn me-2"
+              onClick={() => {
+                handleConfirm();
+              }}
+            >
+              CONFIRM
+            </button>
+          )}
+
+          <button
+            className="next-btn"
+            onClick={() => {
+              navigate("/checkout-session", {
+                state: String(allBooking?.booking_id),
+              });
+            }}
+          >
+            CONFIRM & PAY NOW
+          </button>
+        </div>
       </div>
       {/* <CheckoutPage booking_id={String(allBooking?.booking_id)} /> */}
     </div>

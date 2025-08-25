@@ -11,8 +11,6 @@ import CIcon from '@coreui/icons-react'
 import {
   cilMenu,
 } from '@coreui/icons'
-
-import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 
 const AppHeader = () => {
@@ -23,6 +21,7 @@ const AppHeader = () => {
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
   useEffect(() => {
+    setColorMode("white")
     document.addEventListener('scroll', () => {
       headerRef.current &&
         headerRef.current.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0)

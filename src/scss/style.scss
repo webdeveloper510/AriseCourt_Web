@@ -1416,10 +1416,10 @@ input:-webkit-autofill {
   border-color: #0077ff;
 }
 
-.court-box.disabled {
-  background: #bcd4f6;
-  color: #7a8aa8;
-  cursor: not-allowed;
+.day-cell.disabled {
+  background: #bcd4f6 !important;
+  color: #7a8aa8 !important;
+  cursor: not-allowed !important;
 }
 
 .checkout-container {
@@ -2057,6 +2057,6 @@ hr {
   cursor: pointer;
 }
 .day-cell.prev-month {
-  background-color: #f0f0f0; /* faded bg */
-  color: #999;              /* dim text */
+  background-color: #f0f0f0 !important; /* faded bg */
+  color: #999 !important;              /* dim text */
 }

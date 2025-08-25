@@ -17,7 +17,6 @@ export default function CourtSelectionStep({
     formData?.court_id || null
   );
 
-  console.log("selectedCourt", selectedCourt);
   const [courtData, setCourtData] = useState([]);
   const [loading, setLoading] = useState(false);
 

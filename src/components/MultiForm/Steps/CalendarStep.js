@@ -85,7 +85,7 @@ export default function CalendarStep({ formData, updateFormData, onNext }) {
               key={idx}
               className={`day-cell 
         ${selectedDate === fullDate ? "selected" : ""} 
-        ${isPastDate ? "disabled" : ""} 
+        ${isPastDate ? "disabled " : ""} 
         ${isPrevMonth ? "prev-month" : ""} 
         ${isFutureDate ? "future" : ""}`}
               onClick={() => day && !isPastDate && handleDateSelect(day)}

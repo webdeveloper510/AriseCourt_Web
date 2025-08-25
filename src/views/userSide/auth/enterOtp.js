@@ -9,7 +9,7 @@ import {
 } from "@coreui/react";
 import Logo from "../../../assets/images/login_logo.png";
 import OtpImage from "../../../assets/images/otp-banner-image.png";
-import { loginUser, verifyOtp } from "../../../utils/api";
+import { loginUser, resendOtp, verifyOtp } from "../../../utils/api";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import UserLayout from "../../../components/UserLayout";
 import { toast } from "react-toastify";
@@ -24,16 +24,16 @@ const EnterOtp = () => {
   const [errors, setErrors] = useState({});
   const [otp, setOtp] = useState(Array(6).fill(""));
 
-  const [timer, setTimer] = useState(59); // Timer for resend (in seconds)
-  const [canResend, setCanResend] = useState(false); // Button state (enabled or disabled)
+  const [timer, setTimer] = useState(0); // start at 0 (not running)
+  const [canResend, setCanResend] = useState(false);
 
   useEffect(() => {
     if (timer > 0 && !canResend) {
       const interval = setInterval(() => {
         setTimer((prev) => prev - 1);
       }, 1000);
-      return () => clearInterval(interval); // Clear interval on component unmount
-    } else if (timer === 0) {
+      return () => clearInterval(interval);
+    } else if (timer === 0 && !canResend) {
       setCanResend(true);
     }
   }, [timer, canResend]);
@@ -67,7 +67,9 @@ const EnterOtp = () => {
   };
 
   const handleResendOtp = () => {
-    resendOtp(formData).then((res) => {
+    resendOtp({
+      email: location?.state?.email,
+    }).then((res) => {
       if (res.data?.code == 200) {
         setCanResend(false);
         setTimer(59);
@@ -96,11 +98,17 @@ const EnterOtp = () => {
     })
       .then((res) => {
         if (res?.data?.code == 200) {
-          navigate("/user-new-password", {state : {email : location?.state?.email}});
+          // ✅ Start timer only when Continue is pressed successfully
+          setCanResend(false);
+          setTimer(59);
+
+          navigate("/user-new-password", {
+            state: { email: location?.state?.email },
+          });
+
           toast.success(res?.data?.message, {
             theme: "colored",
           });
-          setVisible(false);
           setOtp(Array(6).fill(""));
         } else {
           toast.error(res?.data?.message, {

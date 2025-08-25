@@ -627,3 +627,16 @@ export const paymentSuccess = async (data) => {
     return error.response;
   }
 };
+
+export const updateCourtBookings = async (id,data) => {
+  try {
+    const response = await axios.put(`/court-bookings/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
