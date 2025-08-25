@@ -165,7 +165,7 @@ const App = () => {
               </UserPrivateRoute>
             }
           />
-          <Route path="/user-contact-us" element={<UserContactUs />} />
+
           {/* /payment/success */}
           <Route
             path="/payment-success"

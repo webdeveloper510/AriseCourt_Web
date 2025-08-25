@@ -147,7 +147,7 @@ const HomeNavbar = () => {
                             <li
                               onClick={() =>
                                 navigate(
-                                  `${role == "user" ? "user-profile" : "profile"}`
+                                  `${role == "user" ? "/user-profile" : "/profile"}`
                                 )
                               }
                             >

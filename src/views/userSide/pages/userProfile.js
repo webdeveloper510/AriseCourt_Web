@@ -24,7 +24,7 @@ export default function UserProfile() {
     phone: "",
     country: "US",
     user_type: "2",
-    // image: "",
+    image: null,
   });
   const [errors, setErrors] = useState({});
 
@@ -32,14 +32,15 @@ export default function UserProfile() {
     getUserData();
   }, []);
 
-  // const handleImageChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     const userImage = URL.createObjectURL(file);
-  //     setProfileImage(userImage);
-  //     setFormData({ ...formData, image: userImage });
-  //   }
-  // };
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    console.log("filefile", file);
+    if (file) {
+      const userImage = URL.createObjectURL(file);
+      setProfileImage(userImage);
+    }
+    setFormData({ ...formData, image: file });
+  };
 
   const getUserData = () => {
     setLoading(true);
@@ -136,8 +137,21 @@ export default function UserProfile() {
       setLoading(false);
       return;
     }
+
+    const dataToSubmit = new FormData();
+
+    Object.keys(formData).forEach((key) => {
+      if (key === "image") {
+        if (formData.image instanceof File) {
+          dataToSubmit.append("image", formData.image);
+        }
+      } else {
+        dataToSubmit.append(key, formData[key]);
+      }
+    });
+
     setLoading(true);
-    updateProfile(formData)
+    updateProfile(dataToSubmit)
       .then((res) => {
         setLoading(false);
         if (res?.data?.code == 200) {
@@ -194,25 +208,6 @@ export default function UserProfile() {
         <div className="container">
           <h3 className="book_court_title">User Profile</h3>
           <div className="">
-            {/* <div className="d-flex justify-content-center mb-4">
-              <div className="profile-pic-wrapper">
-                <img
-                  src={profileImage || UserImage}
-                  alt="Profile"
-                  className="profile-pic"
-                />
-                <label htmlFor="profileImageUpload" className="camera-icon">
-                  <i className="bi bi-camera-fill"></i>
-                </label>
-                <input
-                  type="file"
-                  id="profileImageUpload"
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  onChange={handleImageChange}
-                />
-              </div>
-            </div> */}
             <CRow>
               <CCol md={12}>
                 <div className="d-flex justify-content-center form_outer_section">
@@ -221,6 +216,28 @@ export default function UserProfile() {
                       onSubmit={handleFormSubmit}
                       onKeyDown={handleKeyDown}
                     >
+                      <div className="d-flex justify-content-center mb-4">
+                        <div className="profile-pic-wrapper">
+                          <img
+                            src={formData?.image ? `https://api.get1court.com/${formData?.image}` : profileImage ? profileImage : UserImage}
+                            alt="Profile"
+                            className="profile-pic"
+                          />
+                          <label
+                            htmlFor="profileImageUpload"
+                            className="camera-icon"
+                          >
+                            <i className="bi bi-camera-fill"></i>
+                          </label>
+                          <input
+                            type="file"
+                            id="profileImageUpload"
+                            accept="image/*"
+                            style={{ display: "none" }}
+                            onChange={handleImageChange}
+                          />
+                        </div>
+                      </div>
                       <div className="user_login_section">
                         <CRow>
                           <CCol sm={12}>

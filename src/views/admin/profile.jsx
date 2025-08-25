@@ -39,14 +39,17 @@ const Profile = () => {
   }, []);
 
   const getProfileData = () => {
+    setLoading(true)
     getProfile()
       .then((res) => {
+        setLoading(false)
         if (res?.data.code == "200") {
           setUserData(res?.data?.data);
           setFormData(res?.data?.data);
         }
       })
       .catch((error) => {
+        setLoading(false)
         console.log(error);
       });
   };
@@ -104,17 +107,17 @@ const Profile = () => {
           }
           break;
 
-        case "EMAIL_HOST_USER":
-          if (!value.trim()) {
-            errors.EMAIL_HOST_USER = "Email host user is required.";
-          }
-          break;
+        // case "EMAIL_HOST_USER":
+        //   if (!value.trim()) {
+        //     errors.EMAIL_HOST_USER = "Email host user is required.";
+        //   }
+        //   break;
 
-        case "EMAIL_HOST_PASSWORD":
-          if (!value.trim()) {
-            errors.EMAIL_HOST_PASSWORD = "Email host password is required.";
-          }
-          break;
+        // case "EMAIL_HOST_PASSWORD":
+        //   if (!value.trim()) {
+        //     errors.EMAIL_HOST_PASSWORD = "Email host password is required.";
+        //   }
+        //   break;
 
         default:
           break;
@@ -150,7 +153,8 @@ const Profile = () => {
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
     const newValue = name === "image" ? files[0] : value;
-
+    
+    console.log("handleInputChange",files[0])
     const updatedData = { ...formData, [name]: newValue };
     setFormData(updatedData);
 
@@ -233,7 +237,7 @@ const Profile = () => {
                   src={
                     userData?.image
                       ? typeof userData?.image === "string"
-                        ? `http://3.12.136.26:8000/${userData?.image}`
+                        ? `https://api.get1court.com/${userData?.image}`
                         : URL.createObjectURL(userData?.image)
                       : UserImage
                   }
@@ -247,7 +251,7 @@ const Profile = () => {
               <CRow>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Name</h6>
-                  <p className="details_description">{`${userData?.first_name} ${userData?.last_name}`}</p>
+                  <p className="details_description">{`${userData?.first_name ? userData?.first_name : ""} ${userData?.last_name ? userData?.last_name : ""}`}</p>
                 </CCol>
                 <CCol sm={12} md={4} className="my-1">
                   <h6 className="detail_title">Email</h6>
@@ -349,7 +353,7 @@ const Profile = () => {
                     <img
                       src={
                         typeof formData?.image === "string"
-                          ? `http://3.12.136.26:8000/${formData?.image}`
+                          ? `https://api.get1court.com${formData?.image}`
                           : URL.createObjectURL(formData?.image)
                       }
                       className=""
