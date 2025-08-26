@@ -52,28 +52,28 @@ const App = () => {
     setColorMode("white");
   }, []);
 
+  const token = localStorage.getItem("user_access_valid_token");
+
   useEffect(() => {
-    getProfileData();
-  }, []);
+    if (token) {
+      getProfileData();
+    }
+  }, [token]);
 
   const getProfileData = () => {
-    const token = localStorage.getItem("user_access_valid_token");
-
-    if (token) {
-      getProfile()
-        .then((res) => {
-          if (res?.data.code == "200") {
-          } else if (res?.data?.code == "token_not_valid") {
-            navigate("/");
-            localStorage.removeItem("user_access_valid_token");
-            localStorage.removeItem("logged_user_data");
-          }
-        })
-        .catch((error) => {
+    getProfile()
+      .then((res) => {
+        if (res?.data.code == "200") {
+        } else if (res?.data?.code == "token_not_valid") {
           navigate("/");
-          console.log(error);
-        });
-    }
+          localStorage.removeItem("user_access_valid_token");
+          localStorage.removeItem("logged_user_data");
+        }
+      })
+      .catch((error) => {
+        navigate("/");
+        console.log(error);
+      });
   };
 
   const stripePromise = loadStripe(

@@ -31,8 +31,10 @@ const HomeNavbar = () => {
   }, []);
 
   useEffect(() => {
-    getProfileData();
-  }, []);
+    if (token) {
+      getProfileData();
+    }
+  }, [token]);
 
   const getProfileData = () => {
     getProfile()
@@ -140,7 +142,8 @@ const HomeNavbar = () => {
                           <ul>
                             {role == "superadmin" && (
                               <li onClick={() => navigate("/reporting")}>
-                                <i className="bi bi-card-list me-1"></i> Dashboard
+                                <i className="bi bi-card-list me-1"></i>{" "}
+                                Dashboard
                               </li>
                             )}
 
@@ -154,7 +157,8 @@ const HomeNavbar = () => {
                               <i className="bi bi-person-fill me-1"></i> Profile
                             </li>
                             <li onClick={() => handleLogout()}>
-                              <i className="bi bi-box-arrow-right me-1"></i> Logout
+                              <i className="bi bi-box-arrow-right me-1"></i>{" "}
+                              Logout
                             </li>
                           </ul>
                         </div>
