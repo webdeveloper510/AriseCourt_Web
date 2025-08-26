@@ -33,11 +33,6 @@ export default function BookCourt() {
   };
 
   const handleNext = () => {
-    console.log("Step:", step, "Form Data:", formData);
-
-    if (step === 4) {
-      console.log("📌 Final Checkout Data:", formData);
-    }
 
     if (step < 5) setStep(step + 1);
   };

@@ -11,7 +11,6 @@ export default function PaymentStep({ bookingDetails, onBack }) {
   const navigate = useNavigate();
 
   const userData = JSON.parse(localStorage.getItem("logged_user_data"));
-  console.log("userDatauserData",userData)
   const role = localStorage.getItem("role");
   useEffect(() => {
     setAllBooking(bookingDetails);
