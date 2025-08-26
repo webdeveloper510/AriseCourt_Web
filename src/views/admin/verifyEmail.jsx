@@ -1,10 +1,37 @@
 import { CButton, CModal, CModalBody, CRow } from "@coreui/react";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { verifyEmail } from "../../utils/api";
 
 const VerifyEmail = () => {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(true);
+ const [status, setStatus] = useState(null);
+  const location = useLocation();
+
+  const query = new URLSearchParams(location.search);
+  const uuid = query.get("uuid");
+
+    useEffect(() => {
+      checkVerifyEmail();
+    }, []);
+  
+    const checkVerifyEmail = () => {
+      verifyEmail(uuid)
+        .then((res) => {
+          if (res?.status === 200) {
+            setStatus("success");
+          } else {
+            setStatus("failed");
+            navigate("/")
+          }
+        })
+        .catch((error) => {
+          setStatus("failed");
+          console.error(error);
+        });
+    };
+
   return (
     <>
       <div className=" min-vh-100 d-flex flex-row align-items-center login_outer">
@@ -13,7 +40,7 @@ const VerifyEmail = () => {
             alignment="center"
             visible={visible}
             onClose={() => {setVisible(true)
-              navigate("/login")
+              navigate("/")
             }}
             aria-labelledby="LiveDemoExampleLabel"
           >
@@ -30,19 +57,19 @@ const VerifyEmail = () => {
                 >
                   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
                 </svg>
-                <h1 className="card-title mt-4">
-                  Email verified successfully!
-                </h1>
-                <h4 className="card-title-cancel">You can now log in.</h4>
+                <h2 className="title success mt-4">
+                  Email verified successfully! 🎉
+                </h2>
+                <h4 className="message">You can now log in.</h4>
 
                 <div className="d-flex gap-2 mt-4 justify-content-center">
-                  <CButton
+                  <button
                     type="button"
                     onClick={() => navigate("/")}
-                    className="delet_yes"
+                    className="btn success"
                   >
                     Login
-                  </CButton>
+                  </button>
                 </div>
               </div>
             </CModalBody>

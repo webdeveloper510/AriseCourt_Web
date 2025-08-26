@@ -45,7 +45,7 @@ export default function PaymentSuccess() {
             </div>
           ) : (
             <div className="payment-card">
-              {status == "success" ? (
+              {status !== "success" ? (
                 <>
                   <div className="success success_icon">✔</div>
                   <h2 className="title success">Payment Successful 🎉</h2>

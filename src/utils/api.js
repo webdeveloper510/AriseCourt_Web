@@ -640,3 +640,16 @@ export const updateCourtBookings = async (id,data) => {
     return error.response;
   }
 };
+
+export const verifyEmail = async (id) => {
+  try {
+    const response = await axios.get(`/verify-email/${id}/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
