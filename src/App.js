@@ -225,7 +225,7 @@ const App = () => {
               </SuperAdminPublicRoute>
             }
           />
-          <Route path="/verify-email/:id" element={<VerifyEmail />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           {/* Error Pages - can be accessed by anyone */}
           <Route path="/404" element={<Page404 />} />

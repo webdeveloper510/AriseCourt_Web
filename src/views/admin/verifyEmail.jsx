@@ -36,13 +36,13 @@ const VerifyEmail = () => {
                 <h4 className="card-title-cancel">You can now log in.</h4>
 
                 <div className="d-flex gap-2 mt-4 justify-content-center">
-                  {/* <CButton
+                  <CButton
                     type="button"
-                    onClick={() => navigate("/login")}
+                    onClick={() => navigate("/")}
                     className="delet_yes"
                   >
                     Login
-                  </CButton> */}
+                  </CButton>
                 </div>
               </div>
             </CModalBody>
