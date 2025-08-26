@@ -23,7 +23,7 @@ const VerifyEmail = () => {
             setStatus("success");
           } else {
             setStatus("failed");
-            navigate("/")
+            // navigate("/")
           }
         })
         .catch((error) => {
