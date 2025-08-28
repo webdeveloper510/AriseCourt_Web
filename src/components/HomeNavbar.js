@@ -102,7 +102,7 @@ const HomeNavbar = () => {
                       to={
                         role == "user"
                           ? "/user-book-court"
-                          : userData?.user_type == 0 && !selectedLocationId
+                          : (userData?.user_type == 0 || userData?.user_type == 1) && !selectedLocationId
                             ? "/select-location"
                             : "/book-court"
                       }
