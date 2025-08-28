@@ -109,6 +109,13 @@ const Login = () => {
           localStorage.setItem("role", "superadmin");
           localStorage.setItem("user_access_valid_token", accessToken);
           localStorage.setItem("logged_user_data", JSON.stringify(userData));
+          if (userData?.user_type === 1) {
+            localStorage.setItem(
+              "selectedLocationId",
+              res?.data?.data?.locations[0]
+            );
+          }
+
           if (userData?.user_type === 0 || userData?.user_type === 1) {
             toast.success(res?.data?.message, { theme: "colored" });
             if (
@@ -151,9 +158,8 @@ const Login = () => {
   };
 
   const options = locationFilter.map((address) => {
-    const fullAddress = 
-    address?.name
-      // `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`.trim();
+    const fullAddress = address?.name;
+    // `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`.trim();
 
     return {
       value: address?.id,
