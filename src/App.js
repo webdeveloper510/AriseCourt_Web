@@ -231,6 +231,15 @@ const App = () => {
           <Route path="/404" element={<Page404 />} />
           <Route path="/500" element={<Page500 />} />
           {/* Private Routes (App) */}
+
+          <Route
+            path="/user-booking-detail/:id"
+            element={
+              <SuperAdminPrivateRoute>
+                <UserBookingDetails />
+              </SuperAdminPrivateRoute>
+            }
+          />
           <Route
             path="*"
             element={

@@ -12,6 +12,7 @@ export default function MyBooking() {
   const [totalCounts, setTotalCounts] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const role = localStorage.getItem("role")
 
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
@@ -161,7 +162,7 @@ export default function MyBooking() {
                     <td>
                       <button
                         onClick={() =>
-                          navigate(`/user-booking-details/${b?.booking_id}`)
+                          navigate(`${role == "superadmin" ? `/user-booking-detail/${b?.booking_id}` : `/user-booking-details/${b?.booking_id}`}`)
                         }
                         className="action-btn"
                       >
