@@ -630,7 +630,7 @@ export const paymentSuccess = async (data) => {
 
 export const updateCourtBookings = async (id,data) => {
   try {
-    const response = await axios.put(`/court-bookings/${id}`, data, {
+    const response = await axios.put(`/court-bookings/${id}/`, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
       },
