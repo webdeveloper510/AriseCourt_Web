@@ -1,6 +1,7 @@
 import React from "react";
 import BannerImage from "src/assets/images/banner-image.png";
 import UserLayout from "../../../components/UserLayout/index.js";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
@@ -19,7 +20,7 @@ const HomePage = () => {
                   do eiusmod tempor incididunt ut labore et dolore magna
                   aliqua.{" "}
                 </p>
-                <button className="book_court_btn">Contact Us</button>
+               <Link to="/user-contact-us"> <button className="book_court_btn">Contact Us</button></Link>
               </div>
             </div>
             <div className="col-md-6 text-center">
