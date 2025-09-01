@@ -128,8 +128,8 @@ export default function UserBookingDetails() {
                     <div className="mb-1">
                       <span className="label">Amount Paid</span>
                       <span className="value">
-                        {allBooking?.total_price
-                          ? `$${parseFloat(allBooking?.total_price)?.toFixed(2)}`
+                        {allBooking?.on_amount
+                          ? `$${parseFloat(allBooking?.on_amount)?.toFixed(2)}`
                           : ""}
                       </span>
                     </div>
