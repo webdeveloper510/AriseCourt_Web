@@ -1,6 +1,10 @@
 import React from "react";
 import BannerImage from "src/assets/images/banner-image.png";
 import BannerImage2 from "src/assets/images/how-it-works-banner.jpeg";
+import AppSectionImage from "src/assets/images/app_Section.png";
+import LoginLogo from "src/assets/images/login_logo.png";
+import AppStore from "src/assets/images/app-store.png";
+import PlayStore from "src/assets/images/play-store.png";
 import UserLayout from "../../../components/UserLayout/index.js";
 import { Link } from "react-router-dom";
 
@@ -64,43 +68,59 @@ const HomePage = () => {
           </div>
           {/* <h4 className="book_court_title">Book Court</h4>
             <MultiStepForm /> */}
-          <div className="row mt-5">
-            
-            <div className="col-md-6 text-center">
+          <div className="row mt-5 px-0 ps-0 pe-0" style={{ background: "#D2E3FF", borderRadius:"15px" }}>
+            <div className="col-md-6 text-center mx-0 px-0 ps-0 pe-0">
               <img
-                src={BannerImage2}
+                src={AppSectionImage}
                 alt="BannerImage"
-                style={{ width: "70%" }}
+                style={{ width: "100%" }}
               />
             </div>
-            <div className="col-md-6 d-flex align-items-center">
+            <div className="col-md-6 d-flex align-items-center px-5">
               <div>
-                <h1 className="banner_title">Arise Court <br/> Booking System</h1>
-                <p>Available on App Store and Google Play Store</p>
+                <img src={LoginLogo} alt="BannerImage" className="mb-5" />
+                <div className="row">
+                  <div className="col-md-6">
+                    <img
+                      src={AppStore}
+                      alt="BannerImage"
+                      style={{ width: "100%" }}
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <img
+                      src={PlayStore}
+                      alt="BannerImage"
+                      style={{ width: "100%" }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="my-5 px-4">
-          <h1 className="">How It Works:</h1>
-            {howToWorks?.map((item, i) => {
-              return (
-                <>
-                  <div className="row align-items-center my-2">
-                    <div className="col-md-2">
-                      <i className={`${item?.icon} how_works_icon`}></i>
+          <div className="my-5">
+            <h1 className="text-center how_work_heading mb-3">How It Works</h1>
+            <div className="how_work_section">
+              {howToWorks?.map((item, i) => {
+                return (
+                  <>
+                    <div className="row align-items-center my-2">
+                      <div className="col-md-2">
+                        <i className={`${item?.icon} how_works_icon`}></i>
+                      </div>
+                      <div className="col-md-2">
+                        <h5 className="how_works_step">Step {i + 1}</h5>
+                      </div>
+                      <div className="col-md-8 how_works_text">
+                        <h4>{item?.title}</h4>
+                        <p>{item?.description}</p>
+                      </div>
                     </div>
-                    <div className="col-md-2">
-                      <h5 className="how_works_step">Step {i + 1}</h5>
-                    </div>
-                    <div className="col-md-8 how_works_text">
-                      <h4>{item?.title}</h4>
-                      <p>{item?.description}</p>
-                    </div>
-                  </div>
-                </>
-              );
-            })}
+                  </>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

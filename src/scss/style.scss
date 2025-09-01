@@ -2102,7 +2102,7 @@ hr {
   z-index: -1;
 }
 
-.navbar-light{
+.navbar-light {
   background-color: transparent !important;
 }
 
@@ -2117,25 +2117,37 @@ hr {
   font-weight: 600;
 }
 
-.how_works_text h4{
+.how_works_text h4 {
   font-size: 24px;
   font-weight: 600;
 }
 
-.how_works_text p{
+.how_works_text p {
   font-size: 18px;
 }
 
-.location_back{
+.location_back {
   color: #182B4D;
   font-weight: 600;
   text-transform: capitalize;
   cursor: pointer;
 }
 
-.end_time{
+.end_time {
   font-size: 14px;
   font-weight: 600;
   color: black;
   text-transform: uppercase;
+}
+
+.how_work_heading {
+  font-size: 24px;
+  font-weight: 600;
+  color: #182B4D;
+}
+
+.how_work_section {
+  background: #D2E3FF;
+  padding: 20px 40px;
+  border-radius: 20px;
 }
