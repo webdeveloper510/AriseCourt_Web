@@ -34,6 +34,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutPage from "./views/userSide/pages/CheckoutPage";
 import SelectLocation from "./views/userSide/pages/selectLocation";
+import HowItWorks from "./views/userSide/pages/how-it-works";
 
 const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 const Login = React.lazy(() => import("./views/pages/login/Login"));
@@ -192,6 +193,7 @@ const App = () => {
             }
           />
           <Route path="/user-contact-us" element={<UserContactUs />} />
+          <Route path="/how-it-works" element={<HowItWorks />} />
           <Route
             path="/user-forgot-password"
             element={

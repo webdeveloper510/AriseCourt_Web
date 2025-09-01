@@ -2074,3 +2074,14 @@ hr {
   background-color: #f0f0f0 !important; /* faded bg */
   color: #999 !important;              /* dim text */
 }
+.banner_section{
+  background-image: url("../assets/images/how-it-works-banner.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll;
+  background-repeat: no-repeat;
+  height: 400px;
+  object-fit: cover;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+}

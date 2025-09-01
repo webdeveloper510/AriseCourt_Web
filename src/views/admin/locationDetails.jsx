@@ -61,10 +61,12 @@ const LocationDetails = () => {
   const [expanded, setExpanded] = useState(false);
   const charLimit = 50;
 
-  const location =  formData?.address_1  ? `${formData?.address_1} 
+  const location = formData?.address_1
+    ? `${formData?.address_1} 
   ${formData?.address_2 ? `${formData?.address_2}` : ""}
    ${formData?.address_3 ? `${formData?.address_3}` : ""} 
-   ${formData?.address_4 ? `${formData?.address_4}` : ""}` : "";
+   ${formData?.address_4 ? `${formData?.address_4}` : ""}`
+    : "";
 
   const isLong = location?.length > charLimit;
   const displayText =
@@ -246,27 +248,35 @@ const LocationDetails = () => {
     navigate(`/update-locations/${id}`);
   };
 
+  const normalizeTime = (time) => {
+    if (!time) return "";
+    return time.length === 8 ? time.slice(0, 5) : time; // convert "10:00:00" -> "10:00"
+  };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    const validationErrors = validateCourtData(addCourt);
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-    setLoading(true);
     const body = {
       location_id: id || formData?.id,
       court_number: addCourt?.court_number,
       court_fee_hrs: addCourt?.court_fee_hrs,
       tax: addCourt?.tax,
       cc_fees: addCourt?.cc_fees,
-      start_time: addCourt?.start_time,
-      end_time: addCourt?.end_time,
-      availability: false,
+      start_time: normalizeTime(addCourt?.start_time),
+      end_time: normalizeTime(addCourt?.end_time),
+      availability: addCourt?.availability,
     };
+
+    const validationErrors = validateCourtData(body);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    setLoading(true);
+
     if (courtId) {
-      updateCourt(courtId, addCourt)
+      updateCourt(courtId, body)
         .then((res) => {
           setLoading(false);
           if (res?.status == 200 || res?.status == 201) {
@@ -619,7 +629,9 @@ const LocationDetails = () => {
                       Taxes percentage
                     </CTableHeaderCell>
                     <CTableHeaderCell scope="col">cc fees%</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Closing from</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">
+                      Closing from
+                    </CTableHeaderCell>
                     <CTableHeaderCell scope="col">Closing to</CTableHeaderCell>
                     <CTableHeaderCell scope="col">
                       Availability
@@ -631,7 +643,9 @@ const LocationDetails = () => {
                   {currentItems?.map((item, i) => {
                     return (
                       <CTableRow key={i}>
-                        <CTableDataCell>{(currentPage - 1) * itemsPerPage + i + 1}</CTableDataCell>
+                        <CTableDataCell>
+                          {(currentPage - 1) * itemsPerPage + i + 1}
+                        </CTableDataCell>
                         <CTableDataCell>{item?.court_number}</CTableDataCell>
                         {/* <CTableDataCell>{item?.location_id}</CTableDataCell> */}
                         <CTableDataCell>{`$${item?.court_fee_hrs}/hr`}</CTableDataCell>

@@ -86,6 +86,13 @@ const HomeNavbar = () => {
                 >
                   My Bookings
                 </Nav.Link>
+                {/* <Nav.Link
+                  as={Link}
+                  to="/how-it-works"
+                  className="header_links"
+                >
+                  How it Works
+                </Nav.Link> */}
                 <Nav.Link
                   as={Link}
                   to="/user-contact-us"
@@ -93,6 +100,8 @@ const HomeNavbar = () => {
                 >
                   Contact us
                 </Nav.Link>
+
+
               </Nav>
               <div className="d-flex">
                 {token ? (

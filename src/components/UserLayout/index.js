@@ -6,9 +6,7 @@ const UserLayout = ({ children }) => {
     <>
       <div>
         <HomeNavbar />
-        <div className="mt-1">
-            {children}
-        </div>
+        <div className="mt-1">{children}</div>
       </div>
     </>
   );

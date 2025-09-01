@@ -17,6 +17,24 @@ export default function TimeSlotStep({ formData, updateFormData, onNext, onBack,
 
   const timeOptions = generateTimeOptions();
 
+  const timeSlots = [
+    "12:00 AM", "12:30 AM", "01:00 AM", "01:30 AM",
+    "02:00 AM", "02:30 AM", "03:00 AM", "03:30 AM",
+    "04:00 AM", "04:30 AM", "05:00 AM", "05:30 AM",
+    "06:00 AM", "06:30 AM", "07:00 AM", "07:30 AM",
+    "08:00 AM", "08:30 AM", "09:00 AM", "09:30 AM",
+    "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
+    "12:00 PM", "12:30 PM", "01:00 PM", "01:30 PM",
+    "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM",
+    "04:00 PM", "04:30 PM", "05:00 PM", "05:30 PM",
+    "06:00 PM", "06:30 PM", "07:00 PM", "07:30 PM",
+    "08:00 PM", "08:30 PM", "09:00 PM", "09:30 PM",
+    "10:00 PM", "10:30 PM", "11:00 PM", "11:30 PM"
+  ];
+  
+  // 👉 Remove last element when showing start times
+  const startTimes = timeSlots.slice(0, -1);
+
   // Convert to 24hr format
   const to24Hour = (time) => {
     return dayjs(`2023-01-01 ${time}`, "YYYY-MM-DD hh:mm A").format("HH:mm:ss");
@@ -25,7 +43,7 @@ export default function TimeSlotStep({ formData, updateFormData, onNext, onBack,
   // Calculate end time based on duration
   const calculateEndTime = (start, dur) => {
     return dayjs(`2023-01-01 ${start}`, "YYYY-MM-DD hh:mm A")
-      .add(dur * 60, "minute") // multiply hours by 60 minutes
+      .add(dur * 60, "minute")
       .format("HH:mm:ss");
   };
 
@@ -38,6 +56,14 @@ export default function TimeSlotStep({ formData, updateFormData, onNext, onBack,
 
   const startTime24 = to24Hour(startTime);
   const endTime24 = calculateEndTime(startTime, duration);
+
+  // ✅ Find max duration (so end time never exceeds midnight)
+  const maxDuration = (() => {
+    const start = dayjs(`2023-01-01 ${startTime}`, "YYYY-MM-DD hh:mm A");
+    const endOfDay = dayjs("2023-01-01 23:59", "YYYY-MM-DD HH:mm");
+    const diffMinutes = endOfDay.diff(start, "minute") + 1; // include last minute
+    return diffMinutes / 60; // convert to hours (decimal)
+  })();
 
   const handleNext = () => {
     updateFormData({
@@ -63,9 +89,12 @@ export default function TimeSlotStep({ formData, updateFormData, onNext, onBack,
         <div className="time-input">
           <select
             value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
+            onChange={(e) => {
+              setStartTime(e.target.value);
+              setDuration(1); // reset duration when changing time
+            }}
           >
-            {timeOptions.map((t, i) => (
+            {startTimes?.map((t, i) => (
               <option key={i} value={t}>
                 {t}
               </option>
@@ -78,13 +107,21 @@ export default function TimeSlotStep({ formData, updateFormData, onNext, onBack,
       <div className="time-row">
         <label className="duration_text">Duration</label>
         <div className="duration-input">
-          <button disabled={duration == 1} onClick={() => setDuration(Math.max(0.5, duration - 0.5))}>
+          <button
+            disabled={duration <= 1}
+            onClick={() => setDuration(Math.max(1, duration - 0.5))}
+          >
             −
           </button>
           <span className="duration_time">
             {duration % 1 === 0 ? `${duration} hr` : `${Math.floor(duration)} hr 30 min`}
           </span>
-          <button onClick={() => setDuration(duration + 0.5)}>+</button>
+          <button
+            disabled={duration >= maxDuration}
+            onClick={() => setDuration(Math.min(maxDuration, duration + 0.5))}
+          >
+            +
+          </button>
         </div>
       </div>
 
