@@ -73,24 +73,23 @@ const HomeNavbar = () => {
                 style={{ maxHeight: "100px", margin: "auto" }}
                 navbarScroll
               >
-                <Nav.Link
-                  as={Link}
-                  to={
-                    token && role == "superadmin"
-                      ? "/bookings"
-                      : role == "user"
-                        ? "/user-bookings"
-                        : "/user-login"
-                  }
-                  className="header_links"
-                >
-                  My Bookings
-                </Nav.Link>
-                {/* <Nav.Link
-                  as={Link}
-                  to="/how-it-works"
-                  className="header_links"
-                >
+                {token && (
+                  <Nav.Link
+                    as={Link}
+                    to={
+                      token && role == "superadmin"
+                        ? "/bookings"
+                        : role == "user"
+                          ? "/user-bookings"
+                          : "/user-select-location"
+                    }
+                    className="header_links"
+                  >
+                    My Bookings
+                  </Nav.Link>
+                )}
+
+                {/* <Nav.Link as={Link} to="/how-it-works" className="header_links">
                   How it Works
                 </Nav.Link> */}
                 <Nav.Link
@@ -100,8 +99,6 @@ const HomeNavbar = () => {
                 >
                   Contact us
                 </Nav.Link>
-
-
               </Nav>
               <div className="d-flex">
                 {token ? (
@@ -111,7 +108,7 @@ const HomeNavbar = () => {
                       to={
                         role == "user"
                           ? "/user-book-court"
-                          : (userData?.user_type == 0) && !selectedLocationId
+                          : userData?.user_type == 0 && !selectedLocationId
                             ? "/select-location"
                             : "/book-court"
                       }
@@ -176,7 +173,7 @@ const HomeNavbar = () => {
                   </>
                 ) : (
                   <div className="d-flex">
-                    <Link to="/user-login" className="links_url">
+                    <Link to="/user-select-location" className="links_url">
                       <button className="book_court_btn mx-1">
                         Book a Court
                       </button>

@@ -35,6 +35,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutPage from "./views/userSide/pages/CheckoutPage";
 import SelectLocation from "./views/userSide/pages/selectLocation";
 import HowItWorks from "./views/userSide/pages/how-it-works";
+import SelectUserLocation from "./views/userSide/auth/select-location";
 
 const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 const Login = React.lazy(() => import("./views/pages/login/Login"));
@@ -80,6 +81,7 @@ const App = () => {
   const stripePromise = loadStripe(
     "pk_test_51RbEv9IorG3LMbfblOcsWQtpVzPj3Hg6jRwgAeamUV6SqEICC1I0UNgEjWQPazjVmepwgHsTyulBboKdvChRnwMK00qgdQCFE2"
   );
+
   return (
     <>
       <Elements stripe={stripePromise}>
@@ -99,6 +101,15 @@ const App = () => {
             element={
               <UserPublicRoute>
                 <UserLogin />
+              </UserPublicRoute>
+            }
+          />
+          
+          <Route
+            path="/user-select-location"
+            element={
+              <UserPublicRoute>
+                <SelectUserLocation />
               </UserPublicRoute>
             }
           />

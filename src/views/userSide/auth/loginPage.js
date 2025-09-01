@@ -45,8 +45,6 @@ const LoginPage = ({
     if (name === "password") {
       if (!value) {
         error = "Password is required";
-      } else if (value.length < 6) {
-        error = "Password must be at least 6 characters.";
       }
     }
 
@@ -88,6 +86,8 @@ const LoginPage = ({
           navigate("/user-book-court");
           const userData = res?.data?.data;
           const accessToken = res?.data?.data?.access_token;
+          localStorage.setItem("selectedLocation", locationName);
+          localStorage.setItem("selectedLocationId", locationId);
           localStorage.setItem("role", "user");
           localStorage.setItem("user_access_valid_token", accessToken);
           localStorage.setItem("logged_user_data", JSON.stringify(userData));
@@ -129,12 +129,19 @@ const LoginPage = ({
             <div className="form_inner_section">
               <CForm onSubmit={handleFormSubmit} onKeyDown={handleKeyDown}>
                 <div className="user_login_section">
+                  <div
+                    className="flex align-items-center mb-2 location_back"
+                    onClick={() => handleBackLocation()}
+                  >
+                    {" "}
+                    <i className="bi bi-arrow-left"></i>{" "}
+                    <span className="mx-1">{locationName}</span>
+                  </div>
                   <img src={Logo} alt="login-logo" />
                   <h2 id="traffic" className="card-title mt-3 mb-0">
                     Login
                   </h2>
                   <p className="text-body-secondary">Welcome Back</p>
-
                   <CInputGroup className="mb-3">
                     <div className="user_input_section">
                       <label>Email Address*</label>
@@ -185,7 +192,6 @@ const LoginPage = ({
                       <span className="error_message">{errors.password}</span>
                     )}
                   </CInputGroup>
-
                   <CRow>
                     <CCol xs={12} className="">
                       <CButton type="button" className="text_color px-0">
@@ -206,7 +212,7 @@ const LoginPage = ({
                         Privacy Policy
                       </p>
                     </CCol>
-                    <CCol md={6}>
+                    {/* <CCol md={6}>
                       <CButton
                         type="button"
                         onClick={() => handleBackLocation()}
@@ -214,8 +220,8 @@ const LoginPage = ({
                       >
                         <span>Back</span>
                       </CButton>
-                    </CCol>
-                    <CCol md={6} className="text-end">
+                    </CCol> */}
+                    <CCol md={6} className="">
                       <CButton
                         type="button"
                         onClick={() => setRegisterPage(true)}

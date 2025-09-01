@@ -107,6 +107,13 @@ export default function UserContactUs() {
         setLoading(false);
         if (res?.data?.code == 200 || res?.data?.code == 201) {
           toast.success(res?.data?.message, { theme: "colored" });
+          setFormData({
+            first_name: "",
+            last_name: "",
+            email: "",
+            phone: "",
+            message: "",
+          })
         } else {
           toast.error(res?.data?.message, { theme: "colored" });
         }

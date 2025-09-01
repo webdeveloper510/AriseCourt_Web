@@ -1090,7 +1090,8 @@ input:-webkit-autofill {
   white-space: nowrap;
   text-decoration: none;
 }
-.user_name_btn1{
+
+.user_name_btn1 {
   background: transparent;
   border-radius: 34.5px;
   color: #0860FB;
@@ -1545,10 +1546,12 @@ input:-webkit-autofill {
   justify-content: space-between;
   border: 1px solid #C2DAFF;
 }
-.even_bg{
+
+.even_bg {
   background: #D2E3FF;
 }
-.odd_bg{
+
+.odd_bg {
   background: #DBE9FF;
 }
 
@@ -2040,11 +2043,13 @@ hr {
   width: 500px;
   margin: auto;
 }
-.duration_time{
+
+.duration_time {
   width: 100px;
   text-align: center;
 }
-.active .page-link{
+
+.active .page-link {
   background: #0860FB !important;
 }
 
@@ -2053,6 +2058,7 @@ hr {
   width: 120px;
   height: 120px;
 }
+
 .profile-pic {
   width: 120px;
   height: 120px;
@@ -2060,6 +2066,7 @@ hr {
   object-fit: cover;
   border: 3px solid #007bff;
 }
+
 .camera-icon {
   position: absolute;
   bottom: 5px;
@@ -2070,12 +2077,16 @@ hr {
   padding: 6px 10px;
   cursor: pointer;
 }
+
 .day-cell.prev-month {
-  background-color: #f0f0f0 !important; /* faded bg */
-  color: #999 !important;              /* dim text */
+  background-color: #f0f0f0 !important;
+  /* faded bg */
+  color: #999 !important;
+  /* dim text */
 }
-.banner_section{
-  background-image: url("../assets/images/how-it-works-banner.jpeg");
+
+.banner_section {
+  background-image: url("../assets/images/badminton.jpeg");
   background-size: cover;
   background-position: center;
   background-attachment: scroll;
@@ -2084,4 +2095,47 @@ hr {
   object-fit: cover;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
+  position: absolute;
+  top: 0;
+  left: 30px;
+  right: 30px;
+  z-index: -1;
+}
+
+.navbar-light{
+  background-color: transparent !important;
+}
+
+.how_works_icon {
+  font-size: 50px;
+  color: #182B4D;
+}
+
+.how_works_step {
+  font-size: 28px;
+  color: #0860FB;
+  font-weight: 600;
+}
+
+.how_works_text h4{
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.how_works_text p{
+  font-size: 18px;
+}
+
+.location_back{
+  color: #182B4D;
+  font-weight: 600;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.end_time{
+  font-size: 14px;
+  font-weight: 600;
+  color: black;
+  text-transform: uppercase;
 }

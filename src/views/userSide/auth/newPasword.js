@@ -100,7 +100,7 @@ const SetNewPassword = () => {
       .then((res) => {
         setLoading(false);
         if (res.data?.code == 200) {
-          navigate("/user-login");
+          navigate("/user-select-location");
           toast.success(res?.data?.message, { theme: "colored" });
         } else {
           toast.error(res?.data?.message, {
@@ -233,7 +233,7 @@ const SetNewPassword = () => {
 
                       <CCol xs={12} className="text-left">
                         <CButton type="button" className="text_color px-0">
-                          <Link to="/user-login">Back to login</Link>
+                          <Link to="/user-select-location">Back to login</Link>
                         </CButton>
                       </CCol>
                     </CRow>
