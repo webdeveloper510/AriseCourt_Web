@@ -60,9 +60,9 @@ const Login = () => {
       errors.email = "Email is required and must be valid.";
     }
 
-    if (!formData.password || formData.password.length < 6) {
+    if (!formData.password) {
       errors.password =
-        "Password is required and must be at least 6 characters long.";
+        "Password is required";
     }
 
     if (!formData.location && userType == "staff") {

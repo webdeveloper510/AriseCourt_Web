@@ -99,7 +99,7 @@ export default function MyBooking() {
         style={{ height: allBooking?.length > 5 ? "auto" : "450px" }}
       >
         <div className="container position-relative pe-0">
-          <h3 className="book_court_title">My Bookigs</h3>
+          <h3 className="book_court_title">My Bookings</h3>
 
           {loading && (
             <div className="loader_outer">

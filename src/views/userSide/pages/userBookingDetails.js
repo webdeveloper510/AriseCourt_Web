@@ -95,7 +95,7 @@ export default function UserBookingDetails() {
                           : ""
                       } ${
                         allBooking?.court?.location?.address_4
-                          ? `${allBooking?.court?.location?.address_4},`
+                          ? `${allBooking?.court?.location?.address_4}`
                           : ""
                       }`}
                     </span>
@@ -172,13 +172,13 @@ export default function UserBookingDetails() {
                   <div className="col-6 col-md-3 mb-1">
                     <span className="label">CC Fees</span>
                     <span className="value">
-                      {allBooking?.cc_fees ? `$${allBooking?.cc_fees}` : ""}
+                      {allBooking?.cc_fees || allBooking?.full_cc_fees ? `$${allBooking?.cc_fees || allBooking?.full_cc_fees}` : ""}
                     </span>
                   </div>
                   <div className="col-6 col-md-3 mb-1">
                     <span className="label">Tax</span>
                     <span className="value">
-                      {allBooking?.tax ? `$${allBooking?.tax}` : ""}
+                      {allBooking?.tax || allBooking?.full_tax ? `$${allBooking?.tax || allBooking?.full_tax}` : ""}
                     </span>
                   </div>
                   <div className="col-6 col-md-3 mb-1">

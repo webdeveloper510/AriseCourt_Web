@@ -853,6 +853,10 @@ input:-webkit-autofill {
 }
 
 @media screen and (max-width: 580px) {
+  .app_store_section {
+    margin: 0 !important;
+  }
+
   .registration_form {
     height: 100%;
   }

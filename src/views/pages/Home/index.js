@@ -68,7 +68,7 @@ const HomePage = () => {
           </div>
           {/* <h4 className="book_court_title">Book Court</h4>
             <MultiStepForm /> */}
-          <div className="row mt-5 px-0 ps-0 pe-0" style={{ background: "#D2E3FF", borderRadius:"15px" }}>
+          <div className="row mt-5 px-0 ps-0 pe-0 app_store_section" style={{ background: "#D2E3FF", borderRadius:"15px" }}>
             <div className="col-md-6 text-center mx-0 px-0 ps-0 pe-0">
               <img
                 src={AppSectionImage}
@@ -76,18 +76,18 @@ const HomePage = () => {
                 style={{ width: "100%" }}
               />
             </div>
-            <div className="col-md-6 d-flex align-items-center px-5">
+            <div className="col-md-6 d-flex align-items-center px-5 py-4">
               <div>
                 <img src={LoginLogo} alt="BannerImage" className="mb-5" />
                 <div className="row">
-                  <div className="col-md-6">
+                  <div className="col-md-6 my-2">
                     <img
                       src={AppStore}
                       alt="BannerImage"
                       style={{ width: "100%" }}
                     />
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-md-6 my-2">
                     <img
                       src={PlayStore}
                       alt="BannerImage"

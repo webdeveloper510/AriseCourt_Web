@@ -56,7 +56,7 @@ export default function PaymentSuccess() {
                     className="btn success"
                     onClick={() => navigate("/user-bookings")}
                   >
-                    Go to Dashboard
+                    Go to my bookings
                   </button>
                 </>
               ) : (
