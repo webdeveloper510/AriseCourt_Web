@@ -3,7 +3,6 @@ import UserLayout from "../../../components/UserLayout";
 import LoginPage from "./loginPage";
 import RegisterPage from "./registerPage";
 import { getAllLocations } from "../../../utils/api";
-import { CCol, CRow } from "@coreui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const UserLogin = () => {
@@ -16,12 +15,18 @@ const UserLogin = () => {
   const [filteredLocation, setFilteredLocation] = useState([]);
   const state = useLocation();
 
+  const location = localStorage.getItem("selectedLocation");
+  const locationID = localStorage.getItem("selectedLocationId");
+
   useEffect(() => {
     if (state) {
       setLocationName(state?.state?.locationName);
       setLocationId(state?.state?.locationId);
+    } else if (location) {
+      setLocationName(location);
+      setLocationId(locationID);
     }
-  }, [state]);
+  }, []);
 
   useEffect(() => {
     getAllLocationData();
@@ -54,15 +59,15 @@ const UserLogin = () => {
         <div className="container text-center">
           {registerPage ? (
             <RegisterPage
-              locationName={state?.state?.locationName}
-              locationId={state?.state?.locationId}
+              locationName={locationName}
+              locationId={locationId}
               setRegisterPage={setRegisterPage}
               handleBackLocation={handleBackLocation}
             />
           ) : (
             <LoginPage
-              locationName={state?.state?.locationName}
-              locationId={state?.state?.locationId}
+              locationName={locationName}
+              locationId={locationId}
               setRegisterPage={setRegisterPage}
               handleBackLocation={handleBackLocation}
             />

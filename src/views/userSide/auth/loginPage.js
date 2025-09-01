@@ -29,6 +29,8 @@ const LoginPage = ({
   });
   const [errors, setErrors] = useState({});
 
+  console.log("locationId",locationId)
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -78,8 +80,11 @@ const LoginPage = ({
       return;
     }
 
-    // proceed with login
-    loginUser(formData)
+    loginUser({
+      email: formData?.email,
+      password: formData?.password,
+      location: locationId,
+    })
       .then((res) => {
         setLoading(false);
         if (res.data.code == 200) {
