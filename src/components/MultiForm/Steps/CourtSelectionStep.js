@@ -63,9 +63,9 @@ export default function CourtSelectionStep({
       ...formData,
       total_price:
         formData?.book_for_four_weeks == "True"
-          ? `${Number(formData?.total_price) * 4}`
-          : formData?.total_price,
-      on_amount: formData?.on_amount,
+          ? `${Number(formData?.total_price) * 4 * durationInHours}`
+          : formData?.total_price * durationInHours,
+      on_amount: formData?.on_amount * durationInHours,
     })
       .then((res) => {
         setLoading(false);
@@ -115,8 +115,8 @@ export default function CourtSelectionStep({
                 setFormData((prev) => ({
                   ...prev,
                   court_id: court?.court_id,
-                  total_price: `${durationInHours * Number(court?.court_fee_hrs)}`,
-                  on_amount: durationInHours * Number(court?.court_fee_hrs),
+                  total_price: `${Number(court?.court_fee_hrs)}`,
+                  on_amount: Number(court?.court_fee_hrs),
                 }));
               }}
             >
