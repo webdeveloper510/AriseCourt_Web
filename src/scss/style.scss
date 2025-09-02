@@ -832,6 +832,13 @@ input:-webkit-autofill {
 }
 
 @media screen and (max-width: 768px) {
+  .court-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)) !important;
+    gap: 15px;
+  }
+
+  
   .multi-step-container {
     display: block !important;
   }
@@ -1438,6 +1445,12 @@ input:-webkit-autofill {
   gap: 15px;
 }
 
+// .court-box {
+//   width: 90px;   /* fixed width */
+//   height: 90px;  /* optional if you want square buttons */
+//   text-align: center;
+// }
+
 .court-box {
   background: white;
   padding: 12px 0;
@@ -1764,6 +1777,7 @@ hr {
   text-align: left;
   padding: 12px;
   font-size: 14px;
+  white-space: nowrap;
 }
 
 .booking-table td {
@@ -2223,4 +2237,7 @@ hr {
 .privacy_points{
   font-size: 24px;
   font-weight: 600;
+}
+.court_location{
+  width: 90% !important;
 }

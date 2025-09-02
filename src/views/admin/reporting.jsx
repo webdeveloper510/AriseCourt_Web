@@ -74,12 +74,11 @@ const Reporting = () => {
   const [reportTable, setReportTable] = useState([]);
   const [bookingType, setBookingType] = useState("");
   const [locationFilter, setLocationFilter] = useState([]);
-  const [excelData, setExcelData] = useState([])
+  const [excelData, setExcelData] = useState([]);
 
   const locationOptions = (locationFilter || []).map((address) => {
-    const fullAddress = 
-    address?.name
-      // `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`.trim();
+    const fullAddress = address?.name;
+    // `${address?.address_1 || ""} ${address?.address_2 || ""} ${address?.address_3 || ""} ${address?.address_4 || ""}`.trim();
     return {
       label: fullAddress,
       value: fullAddress,
@@ -137,12 +136,17 @@ const Reporting = () => {
   };
 
   useEffect(() => {
-    getLocationData(bookingType, currentPage, searchQuery, selectedLocation);
+    getLocationData(
+      bookingType,
+      currentPage,
+      searchQuery,
+      selectedLocation,
+    );
   }, [bookingType, currentPage, searchQuery, selectedLocation]);
 
   useEffect(() => {
     getAllLocationData();
-    getExcelData()
+    getExcelData();
   }, []);
 
   const getAllLocationData = () => {
@@ -196,6 +200,7 @@ const Reporting = () => {
   };
 
   const handleFilterClick = () => {
+    setCurrentPage(1)
     getLocationData(
       bookingType,
       currentPage,
@@ -263,6 +268,7 @@ const Reporting = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSelectedLocation(value);
+    setCurrentPage(1)
   };
 
   const getVisiblePageNumbers = () => {
@@ -284,15 +290,17 @@ const Reporting = () => {
     return pages;
   };
 
-  const getExcelData = () =>{
-    userDataExcel().then((res)=>{
-      if(res?.status == 200){
-        setExcelData(res?.data)
-      }
-    }).catch((error)=>{
-      console.log("error", error)
-    })
-  }
+  const getExcelData = () => {
+    userDataExcel()
+      .then((res) => {
+        if (res?.status == 200) {
+          setExcelData(res?.data);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
 
   const exportToExcel = () => {
     const dataToExport = excelData.map((item, index) => ({
@@ -306,7 +314,7 @@ const Reporting = () => {
       Email: item.user?.email,
       Phone: item.user?.phone,
       Country: item.user?.country,
-      "Amount": `$${item.court?.court_fee_hrs || 0}`,
+      Amount: `$${item.court?.court_fee_hrs || 0}`,
       "Sales Tax": `$${item.court?.tax || 0}`,
       "CC Fees": `$${item.court?.cc_fees || 0}`,
       "Total Amount": `$${parseFloat(item.on_amount).toFixed(2)}`,
@@ -421,7 +429,12 @@ const Reporting = () => {
 
           <CCol sm={12} xl={12} className="my-1">
             <CRow>
-              <CCol  md={6} lg={6} xl={4} className="my-1 d-flex align-items-center gap-1 ">
+              <CCol
+                md={6}
+                lg={6}
+                xl={4}
+                className="my-1 d-flex align-items-center gap-1 "
+              >
                 {userData?.user_type == 0 && (
                   <>
                     <div className="input_section mt-1">
@@ -468,7 +481,12 @@ const Reporting = () => {
                   </>
                 )}
               </CCol>
-              <CCol md={6} lg={6} xl={4} className="my-1 d-flex align-items-center gap-1 ">
+              <CCol
+                md={6}
+                lg={6}
+                xl={4}
+                className="my-1 d-flex align-items-center gap-1 "
+              >
                 <CInputGroup
                   className="search_input_group_reports"
                   style={{ height: "45px" }}
@@ -638,9 +656,7 @@ const Reporting = () => {
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}
-                          {item?.tax || item?.tax == 0
-                            ? `$${item?.tax}`
-                            : ""}
+                          {item?.tax || item?.tax == 0 ? `$${item?.tax}` : ""}
                         </CTableDataCell>
                         <CTableDataCell>
                           {" "}

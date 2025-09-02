@@ -18,19 +18,10 @@ import {
   CTableRow,
   CModal,
   CModalBody,
-  CModalFooter,
-  CModalHeader,
-  CModalTitle,
-  CFormSelect,
 } from "@coreui/react";
 import { Link, useNavigate } from "react-router-dom";
-import { DateRangePicker } from "react-date-range";
 import CIcon, { CIconSvg } from "@coreui/icons-react";
 import {
-  cilCalendar,
-  cilCloudUpload,
-  cilDelete,
-  cilFilter,
   cilPencil,
   cilReload,
   cilSearch,
@@ -41,14 +32,11 @@ import deleteImage from "../../assets/images/delete_image.png";
 import { toast } from "react-toastify";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import moment from "moment";
 import parsePhoneNumberFromString from "libphonenumber-js";
 
 const Locations = () => {
   let SerialId = 1;
   const navigate = useNavigate();
-  const calendarRef = useRef(null);
-  const filterButtonRef = useRef(null);
   const [locationData, setLocationData] = useState([]);
   const [locationFilter, setLocationFilter] = useState([]);
   const [selectLocation, setSelectLocation] = useState("");

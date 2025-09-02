@@ -22,7 +22,7 @@ import {
 } from "@coreui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { DateRangePicker } from "react-date-range";
-import "react-date-range/dist/styles.css"; 
+import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import CIcon from "@coreui/icons-react";
 import {
@@ -76,7 +76,7 @@ const CourtConfiguration = () => {
   const [adminData, setAdminData] = useState([]);
   const [openMenuId, setOpenMenuId] = useState(null);
   const itemsPerPage = 10;
-  const [totalCounts, setTotalCounts] = useState(0); 
+  const [totalCounts, setTotalCounts] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -90,15 +90,15 @@ const CourtConfiguration = () => {
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page); // Update current page
-      getCourtBookingData(
-        bookingType,
-        page,
-        searchQuery,
-        selectLocation,
-        startDate,
-        endDate,
-        "loader"
-      );
+      // getCourtBookingData(
+      //   bookingType,
+      //   page,
+      //   searchQuery,
+      //   selectLocation,
+      //   startDate,
+      //   endDate,
+      //   "loader"
+      // );
     }
   };
 
@@ -197,6 +197,7 @@ const CourtConfiguration = () => {
       "selectLocation",
       selectLocation
     );
+    setCurrentPage(1);
     getCourtBookingData(
       bookingType,
       currentPage,
@@ -209,7 +210,14 @@ const CourtConfiguration = () => {
   };
 
   useEffect(() => {
-    getCourtBookingData(bookingType, currentPage, searchQuery, selectLocation);
+    getCourtBookingData(
+      bookingType,
+      currentPage,
+      searchQuery,
+      selectLocation,
+      startDate,
+      endDate
+    );
     getLocationData();
   }, [bookingType, currentPage, searchQuery, selectLocation]);
 
@@ -285,6 +293,7 @@ const CourtConfiguration = () => {
   const handleLocationChange = (e) => {
     const value = e.target.value;
     setSelectLocation(value);
+    setCurrentPage(1);
     // const filteredData = locationFilter?.filter(
     //   (location) => location.city === value
     // );
@@ -389,7 +398,9 @@ const CourtConfiguration = () => {
         <CRow className="mt-2">
           <CCol sm={12} md={12} className="d-flex">
             <CButton
-              onClick={() => setBookingType("")}
+              onClick={() => {
+                setBookingType(""), setCurrentPage(1);
+              }}
               style={{
                 color: bookingType === "past" ? "" : "#0860FB",
                 fontWeight: bookingType === "500" ? "" : "600",
@@ -400,7 +411,9 @@ const CourtConfiguration = () => {
             </CButton>
 
             <CButton
-              onClick={() => setBookingType("past")}
+              onClick={() => {
+                setBookingType("past"), setCurrentPage(1);
+              }}
               style={{
                 color: bookingType === "past" ? "#0860FB" : "",
                 fontWeight: bookingType === "600" ? "" : "500",
@@ -461,7 +474,7 @@ const CourtConfiguration = () => {
               <CCol md={6} lg={6} xl={4} className="my-1">
                 {userData?.user_type == 0 && (
                   <Select
-                    className=""
+                    className="court_location"
                     placeholder={placeholderOption.label}
                     options={locationOptions}
                     name="location"
