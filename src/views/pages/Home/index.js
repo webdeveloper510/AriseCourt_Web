@@ -53,7 +53,7 @@ const HomePage = () => {
                   do eiusmod tempor incididunt ut labore et dolore magna
                   aliqua.{" "}
                 </p>
-                <Link to="/user-contact-us">
+                <Link to="/user-contact-us" target="_blank">
                   {" "}
                   <button className="book_court_btn">Contact Us</button>
                 </Link>
@@ -79,7 +79,7 @@ const HomePage = () => {
                 style={{ width: "90%" }}
               />
             </div>
-            <div className="col-md-6 d-flex align-items-center px-5 py-4 order_section2">
+            <div className="col-md-6 d-flex align-items-end px-5 pt-4 order_section2">
               <div>
                 <img src={LoginLogo} alt="BannerImage" className="mb-3" />
                 <h2 className="download_app mb-3">Download Our App</h2>
@@ -118,9 +118,9 @@ const HomePage = () => {
                       <div className="col-md-2">
                         <i className={`${item?.icon} how_works_icon`}></i>
                       </div>
-                      <div className="col-md-2">
+                      {/* <div className="col-md-2">
                         <h5 className="how_works_step">Step {i + 1}</h5>
-                      </div>
+                      </div> */}
                       <div className="col-md-8 how_works_text">
                         <h4>{item?.title}</h4>
                         <p>{item?.description}</p>

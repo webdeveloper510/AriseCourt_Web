@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
     const current_year = new Date().getFullYear();
@@ -8,9 +9,8 @@ const Footer = () => {
         <div className="col-md-6">
           <div>
             <ul className="footer_list">
-              <li>Privacy Policy</li>
+              <li><Link to="/privacy-policy">Privacy Policy</Link></li>
               <li>Terms & Conditions </li>
-              <li>Support</li>
             </ul>
           </div>
         </div>

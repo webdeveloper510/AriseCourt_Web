@@ -2193,6 +2193,15 @@ hr {
   padding: 0px;
   font-size: 14px;
 }
+.footer_list a{
+  color: #182B4D !important;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+.footer_list a:hover{
+  color: #0860FB !important;
+  font-weight: 500 !important;
+}
 .download_app{
   color: black;
   font-weight: 700;
@@ -2202,4 +2211,16 @@ hr {
   color: #757373;
   font-weight: 400;
   font-size: 18px;
+}
+
+.privacy-policy-heading{
+  font-weight: 600;
+}
+.privacy-policy-effective{
+  font-size: 18px;
+  font-weight: 500;
+}
+.privacy_points{
+  font-size: 24px;
+  font-weight: 600;
 }

@@ -179,7 +179,7 @@ const HomeNavbar = () => {
                       </button>
                     </Link>
 
-                    <Link to="/login" className="links_url">
+                    <Link to="/login" className="links_url" target="_blank">
                       {" "}
                       <button className="user_name_btn1">Staff Sign In</button>
                     </Link>
