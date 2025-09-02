@@ -79,7 +79,7 @@ const HomePage = () => {
                 style={{ width: "90%" }}
               />
             </div>
-            <div className="col-md-6 d-flex align-items-end px-5 pt-4 order_section2">
+            <div className="col-md-6 d-flex align-items-center px-5 py-4 order_section2">
               <div>
                 <img src={LoginLogo} alt="BannerImage" className="mb-3" />
                 <h2 className="download_app mb-3">Download Our App</h2>
@@ -114,7 +114,7 @@ const HomePage = () => {
               {howToWorks?.map((item, i) => {
                 return (
                   <>
-                    <div className="row align-items-center my-2">
+                    <div className="row align-items-center justify-content-center my-2">
                       <div className="col-md-2">
                         <i className={`${item?.icon} how_works_icon`}></i>
                       </div>
