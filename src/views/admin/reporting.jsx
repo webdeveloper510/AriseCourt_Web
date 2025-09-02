@@ -67,8 +67,8 @@ const Reporting = () => {
   const [totalCounts, setTotalCounts] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [startDate, setStartDate] = useState(formatDate(new Date())); // Start date for API
-  const [endDate, setEndDate] = useState(formatDate(new Date()));
+  const [startDate, setStartDate] = useState(""); 
+  const [endDate, setEndDate] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [reportData, setReportData] = useState({});
   const [reportTable, setReportTable] = useState([]);

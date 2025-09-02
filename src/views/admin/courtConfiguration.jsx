@@ -69,8 +69,8 @@ const CourtConfiguration = () => {
     return `${year}-${month}-${day}`;
   };
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const [startDate, setStartDate] = useState(formatDate(new Date())); // Start date for API
-  const [endDate, setEndDate] = useState(formatDate(new Date()));
+  const [startDate, setStartDate] = useState(""); // Start date for API
+  const [endDate, setEndDate] = useState("");
   const [locationFilter, setLocationFilter] = useState([]);
   const [selectLocation, setSelectLocation] = useState("");
   const [adminData, setAdminData] = useState([]);
