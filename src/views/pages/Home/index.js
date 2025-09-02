@@ -64,6 +64,7 @@ const HomePage = () => {
                 src={BannerImage}
                 alt="BannerImage"
                 style={{ width: "60%" }}
+                className="banner_img"
               />
             </div>
           </div>
@@ -88,14 +89,14 @@ const HomePage = () => {
                   aliqua.{" "}
                 </p>
                 <div className="row px-0">
-                  <div className="col-md-6 my-2">
+                  <div className="col-6 my-2">
                     <img
                       src={AppStore}
                       alt="BannerImage"
                       style={{ width: "100%", objectFit:"cover" }}
                     />
                   </div>
-                  <div className="col-md-6 my-2">
+                  <div className="col-6 my-2">
                     <img
                       src={PlayStore}
                       alt="BannerImage"
