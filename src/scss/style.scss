@@ -853,6 +853,13 @@ input:-webkit-autofill {
 }
 
 @media screen and (max-width: 580px) {
+
+  .copyright_section{
+    text-align: center !important;
+  }
+  .footer_list{
+    justify-content: center;
+  }
   .app_store_section {
     margin: 0 !important;
   }
@@ -2116,18 +2123,18 @@ hr {
 }
 
 .how_works_step {
-  font-size: 28px;
+  font-size: 22px;
   color: #0860FB;
   font-weight: 600;
 }
 
 .how_works_text h4 {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
 }
 
 .how_works_text p {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .location_back {
@@ -2145,7 +2152,7 @@ hr {
 }
 
 .how_work_heading {
-  font-size: 24px;
+  font-size: 35px;
   font-weight: 600;
   color: #182B4D;
 }
@@ -2154,4 +2161,16 @@ hr {
   background: #D2E3FF;
   padding: 20px 40px;
   border-radius: 20px;
+}
+
+.copyright_section{
+  text-align: end;
+  font-size: 14px;
+}
+.footer_list{
+  display: flex;
+  gap: 15px;
+  list-style: none;
+  padding: 0px;
+  font-size: 14px;
 }

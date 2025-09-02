@@ -62,7 +62,7 @@ const HomeNavbar = () => {
       </div>
       <div className="container">
         <Navbar expand="lg" className="bg-body-tertiary p-0 m-0">
-          <Container fluid>
+          <Container fluid className="px-0">
             <Navbar.Brand href="/">
               <img src={logo} alt="logo" />
             </Navbar.Brand>
@@ -92,13 +92,13 @@ const HomeNavbar = () => {
                 {/* <Nav.Link as={Link} to="/how-it-works" className="header_links">
                   How it Works
                 </Nav.Link> */}
-                <Nav.Link
+                {/* <Nav.Link
                   as={Link}
                   to="/user-contact-us"
                   className="header_links"
                 >
                   Contact us
-                </Nav.Link>
+                </Nav.Link> */}
               </Nav>
               <div className="d-flex">
                 {token ? (

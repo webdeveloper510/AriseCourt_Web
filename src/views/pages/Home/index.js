@@ -7,6 +7,7 @@ import AppStore from "src/assets/images/app-store.png";
 import PlayStore from "src/assets/images/play-store.png";
 import UserLayout from "../../../components/UserLayout/index.js";
 import { Link } from "react-router-dom";
+import Footer from "../../../components/Footer/index.js";
 
 const HomePage = () => {
   const howToWorks = [
@@ -66,14 +67,12 @@ const HomePage = () => {
               />
             </div>
           </div>
-          {/* <h4 className="book_court_title">Book Court</h4>
-            <MultiStepForm /> */}
           <div className="row mt-5 px-0 ps-0 pe-0 app_store_section" style={{ background: "#D2E3FF", borderRadius:"15px" }}>
-            <div className="col-md-6 text-center mx-0 px-0 ps-0 pe-0">
+            <div className="col-md-6 text-center mx-0 px-0 ps-0 pe-0 ">
               <img
                 src={AppSectionImage}
                 alt="BannerImage"
-                style={{ width: "100%" }}
+                style={{ width: "100%" }}              
               />
             </div>
             <div className="col-md-6 d-flex align-items-center px-5 py-4">
@@ -124,6 +123,8 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+
+      <Footer />
     </UserLayout>
   );
 };
