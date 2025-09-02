@@ -854,6 +854,16 @@ input:-webkit-autofill {
 
 @media screen and (max-width: 580px) {
 
+  .order_section1{
+    order: 2;
+  }
+  .order_section1 img{
+    width: 1100% !important;
+  }
+  .order_section2{
+    order: 1;
+    padding: 0px !important;
+  }
   .copyright_section{
     text-align: center !important;
   }
@@ -2173,4 +2183,14 @@ hr {
   list-style: none;
   padding: 0px;
   font-size: 14px;
+}
+.download_app{
+  color: black;
+  font-weight: 700;
+  font-size: 34px;
+}
+.lorem_text{
+  color: #757373;
+  font-weight: 400;
+  font-size: 18px;
 }
