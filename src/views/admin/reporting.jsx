@@ -56,8 +56,8 @@ const Reporting = () => {
   const calendarRef = useRef(null);
   const filterButtonRef = useRef(null);
   const [selectionRange, setSelectionRange] = useState({
-    startDate: "",
-    endDate: "",
+    startDate: formatDate(new Date()),
+    endDate: formatDate(new Date()),
     key: "selection",
   });
   const [loading, setLoading] = useState(false);
@@ -67,8 +67,8 @@ const Reporting = () => {
   const [totalCounts, setTotalCounts] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [startDate, setStartDate] = useState(""); 
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
   const [searchQuery, setSearchQuery] = useState("");
   const [reportData, setReportData] = useState({});
   const [reportTable, setReportTable] = useState([]);
@@ -136,13 +136,17 @@ const Reporting = () => {
   };
 
   useEffect(() => {
+    const start_date = selectionRange.startDate;
+    const end_date = selectionRange.endDate;
     getLocationData(
       bookingType,
       currentPage,
       searchQuery,
       selectedLocation,
+      start_date,
+      end_date
     );
-  }, [bookingType, currentPage, searchQuery, selectedLocation]);
+  }, []);
 
   useEffect(() => {
     getAllLocationData();
@@ -200,10 +204,10 @@ const Reporting = () => {
   };
 
   const handleFilterClick = () => {
-    setCurrentPage(1)
+    setCurrentPage(1);
     getLocationData(
       bookingType,
-      currentPage,
+      1,
       searchQuery,
       selectedLocation,
       startDate,
@@ -227,8 +231,17 @@ const Reporting = () => {
   };
 
   const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value); // Update search query
-    setCurrentPage(1); // Reset to the first page when a new search is made
+    const value = event.target.value;
+    setSearchQuery(value);
+    setCurrentPage(1);
+    getLocationData(
+      bookingType,
+      currentPage,
+      value,
+      selectedLocation,
+      startDate,
+      endDate
+    );
   };
 
   const convertToHoursAndMinutes = (timeString) => {
@@ -268,7 +281,15 @@ const Reporting = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSelectedLocation(value);
-    setCurrentPage(1)
+    setCurrentPage(1);
+    getLocationData(
+      bookingType,
+      currentPage,
+      searchQuery,
+      value,
+      startDate,
+      endDate
+    );
   };
 
   const getVisiblePageNumbers = () => {
@@ -507,17 +528,30 @@ const Reporting = () => {
                 <CButton
                   type="button"
                   onClick={() => {
+                    const booking_type = "";
+                    const page = 1;
+                    const query = "";
+                    const selected_location = "";
+                    const start_date = formatDate(new Date());
+                    const end_date = formatDate(new Date());
                     setSearchQuery("");
                     setCurrentPage(1);
                     setStartDate(new Date());
                     setEndDate(new Date());
                     setSelectionRange({
-                      startDate: new Date(),
-                      endDate: new Date(),
+                      startDate: formatDate(new Date()),
+                      endDate: formatDate(new Date()),
                       key: "selection",
                     });
                     setSelectedLocation("");
-                    getLocationData();
+                    getLocationData(
+                      booking_type,
+                      page,
+                      query,
+                      selected_location,
+                      start_date,
+                      end_date
+                    );
                   }}
                   className="add_new_butn"
                   style={{ height: "50px !important" }}

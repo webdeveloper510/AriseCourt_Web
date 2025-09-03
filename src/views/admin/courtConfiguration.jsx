@@ -55,12 +55,6 @@ const CourtConfiguration = () => {
   const navigate = useNavigate();
   const calendarRef = useRef(null);
   const filterButtonRef = useRef(null);
-  const [visible, setVisible] = useState(false);
-  const [selectionRange, setSelectionRange] = useState({
-    startDate: "",
-    endDate: "",
-    key: "selection",
-  });
   const formatDate = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
@@ -68,6 +62,14 @@ const CourtConfiguration = () => {
 
     return `${year}-${month}-${day}`;
   };
+
+  const [visible, setVisible] = useState(false);
+  const [selectionRange, setSelectionRange] = useState({
+    startDate: formatDate(new Date()),
+    endDate: formatDate(new Date()),
+    key: "selection",
+  });
+
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [startDate, setStartDate] = useState(""); // Start date for API
   const [endDate, setEndDate] = useState("");
@@ -90,15 +92,15 @@ const CourtConfiguration = () => {
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page); // Update current page
-      // getCourtBookingData(
-      //   bookingType,
-      //   page,
-      //   searchQuery,
-      //   selectLocation,
-      //   startDate,
-      //   endDate,
-      //   "loader"
-      // );
+      getCourtBookingData(
+        bookingType,
+        page,
+        searchQuery,
+        selectLocation,
+        startDate,
+        endDate,
+        "loader"
+      );
     }
   };
 
@@ -114,6 +116,17 @@ const CourtConfiguration = () => {
 
   // Optional: Add "Select Location" placeholder as an option (or keep it as placeholder only)
   const placeholderOption = { label: "Select Location", value: "" };
+
+  const options = [{ label: "All", value: "" }, ...locationOptions];
+
+  // Prevent duplicates
+  const uniqueOptions = options.filter(
+    (option, index, self) =>
+      index === self.findIndex((o) => o.value === option.value)
+  );
+
+  // Add 'All' option at the beginning
+  options.unshift({ label: "All", value: "" });
 
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
@@ -200,7 +213,7 @@ const CourtConfiguration = () => {
     setCurrentPage(1);
     getCourtBookingData(
       bookingType,
-      currentPage,
+      1,
       searchQuery,
       selectLocation,
       startDate,
@@ -210,20 +223,32 @@ const CourtConfiguration = () => {
   };
 
   useEffect(() => {
+    const start_date = selectionRange.startDate;
+    const end_date = selectionRange.endDate;
     getCourtBookingData(
       bookingType,
       currentPage,
       searchQuery,
       selectLocation,
-      startDate,
-      endDate
+      start_date,
+      end_date
     );
     getLocationData();
-  }, [bookingType, currentPage, searchQuery, selectLocation]);
+  }, [bookingType]);
 
   const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
+    const value = event.target.value;
+    setSearchQuery(value);
     setCurrentPage(1);
+    getCourtBookingData(
+      bookingType,
+      currentPage,
+      value,
+      selectLocation,
+      startDate,
+      endDate,
+      "loader"
+    );
   };
 
   const handleSelect = (ranges) => {
@@ -294,6 +319,15 @@ const CourtConfiguration = () => {
     const value = e.target.value;
     setSelectLocation(value);
     setCurrentPage(1);
+    getCourtBookingData(
+      bookingType,
+      currentPage,
+      searchQuery,
+      value,
+      startDate,
+      endDate,
+      "loader"
+    );
     // const filteredData = locationFilter?.filter(
     //   (location) => location.city === value
     // );
@@ -452,17 +486,30 @@ const CourtConfiguration = () => {
                 <CButton
                   type="button"
                   onClick={() => {
+                    const booking_type = "";
+                    const page = 1;
+                    const query = "";
+                    const selected_location = "";
+                    const start_date = formatDate(new Date());
+                    const end_date = formatDate(new Date());
                     setSearchQuery("");
                     setStartDate(new Date());
                     setCurrentPage(1);
                     setEndDate(new Date());
                     setSelectLocation("");
                     setSelectionRange({
-                      startDate: "",
-                      endDate: "",
+                      startDate: formatDate(new Date()),
+                      endDate: formatDate(new Date()),
                       key: "selection",
                     });
-                    getCourtBookingData();
+                    getCourtBookingData(
+                      booking_type,
+                      page,
+                      query,
+                      selected_location,
+                      start_date,
+                      end_date
+                    );
                   }}
                   className="add_new_butn"
                   style={{ height: "50px !important" }}
@@ -476,13 +523,16 @@ const CourtConfiguration = () => {
                   <Select
                     className="court_location"
                     placeholder={placeholderOption.label}
-                    options={locationOptions}
+                    options={uniqueOptions}
+                    value={uniqueOptions.find(
+                      (opt) => opt.value === selectLocation
+                    )}
                     name="location"
-                    value={
-                      locationOptions.find(
-                        (opt) => opt.value === selectLocation
-                      ) || null
-                    }
+                    // value={
+                    //   locationOptions.find(
+                    //     (opt) => opt.value === selectLocation
+                    //   ) || null
+                    // }
                     onChange={(selected) =>
                       handleLocationChange({
                         target: {
