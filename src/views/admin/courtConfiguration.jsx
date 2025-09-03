@@ -43,6 +43,7 @@ import {
   getAllBookedLocation,
   getCourtBooking,
   getCourtBookingByAdmin,
+  GetCourtBookings,
   getLocation,
   updateCourtBooking,
 } from "../../utils/api";
@@ -70,9 +71,17 @@ const CourtConfiguration = () => {
     key: "selection",
   });
 
+  const [selectedRange, setSeletedRange] = useState({
+    startDate: formatDate(new Date()),
+    endDate: formatDate(new Date()),
+    key: "selection",
+  });
+
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [startDate, setStartDate] = useState(""); // Start date for API
   const [endDate, setEndDate] = useState("");
+  const [selectStartDate, setSelectStartDate] = useState();
+  const [selectEndDate, setSelectEndDate] = useState();
   const [locationFilter, setLocationFilter] = useState([]);
   const [selectLocation, setSelectLocation] = useState("");
   const [adminData, setAdminData] = useState([]);
@@ -134,9 +143,10 @@ const CourtConfiguration = () => {
   }
 
   const toggleMenu = (id) => {
-    console.log("openMenuId === item?.booking_id", id);
-    setOpenMenuId((prevId) => (prevId === id ? null : id)); // Toggle
+    setOpenMenuId((prevId) => (prevId === id ? null : id)); 
   };
+
+
 
   const getCourtBookingData = (
     bookingType = "",
@@ -149,7 +159,7 @@ const CourtConfiguration = () => {
   ) => {
     setLoading(query ? false : true);
     if (userData?.user_type == 0) {
-      getCourtBooking(
+      GetCourtBookings(
         bookingType,
         page,
         query,
@@ -200,41 +210,56 @@ const CourtConfiguration = () => {
   };
 
   const handleFilterClick = () => {
-    console.log(
-      "bookingType",
-      bookingType,
-      "currentPage",
-      currentPage,
-      "searchQuery",
-      searchQuery,
-      "selectLocation",
-      selectLocation
-    );
     setCurrentPage(1);
+    setStartDate(selectStartDate);
+    setEndDate(selectEndDate);
     getCourtBookingData(
       bookingType,
       1,
       searchQuery,
       selectLocation,
-      startDate,
-      endDate,
+      selectStartDate,
+      selectEndDate,
       "loader"
     );
   };
 
   useEffect(() => {
-    const start_date = selectionRange.startDate;
-    const end_date = selectionRange.endDate;
+    const interval = setInterval(() => {
+      const today = formatDate(new Date());
+
+      if (
+        today !== selectionRange.startDate ||
+        today !== selectionRange.endDate
+      ) {
+        setSelectionRange({
+          startDate: today,
+          endDate: today,
+          key: "selection",
+        });
+        setSeletedRange({
+          startDate: now,
+          endDate: now,
+          key: "selection",
+        });
+      }
+    }, 60 * 1000); // check every 1 minute
+
+    return () => clearInterval(interval);
+  }, [selectionRange]);
+
+  useEffect(() => {
+    const { startDate, endDate } = selectionRange;
     getCourtBookingData(
       bookingType,
       currentPage,
       searchQuery,
       selectLocation,
-      start_date,
-      end_date
+      startDate,
+      endDate
     );
     getLocationData();
-  }, [bookingType]);
+  }, [bookingType, selectionRange]);
 
   const handleSearchChange = (event) => {
     const value = event.target.value;
@@ -252,13 +277,13 @@ const CourtConfiguration = () => {
   };
 
   const handleSelect = (ranges) => {
-    setSelectionRange(ranges.selection); // Update selection range with the new dates
+    setSeletedRange(ranges.selection); // Update selection range with the new dates
     setIsCalendarOpen(false); // Close the calendar after selecting the date range
     const formattedStartDate = formatDate(ranges.selection.startDate);
     const formattedEndDate = formatDate(ranges.selection.endDate);
 
-    setStartDate(formattedStartDate);
-    setEndDate(formattedEndDate);
+    setSelectStartDate(formattedStartDate);
+    setSelectEndDate(formattedEndDate);
   };
 
   const handleCalendarClick = () => {
@@ -502,6 +527,11 @@ const CourtConfiguration = () => {
                       endDate: formatDate(new Date()),
                       key: "selection",
                     });
+                    setSeletedRange({
+                      startDate: formatDate(new Date()),
+                      endDate: formatDate(new Date()),
+                      key: "selection",
+                    });
                     getCourtBookingData(
                       booking_type,
                       page,
@@ -564,10 +594,10 @@ const CourtConfiguration = () => {
                     <span>
                       <CIcon icon={cilCalendar}></CIcon>{" "}
                       {`${
-                        selectionRange.startDate
-                          ? moment(selectionRange.startDate).format("ll")
+                        selectedRange.startDate
+                          ? moment(selectedRange.startDate).format("ll")
                           : "Start Date"
-                      } - ${selectionRange.endDate ? moment(selectionRange.endDate).format("ll") : "End Date"}`}
+                      } - ${selectedRange.endDate ? moment(selectedRange.endDate).format("ll") : "End Date"}`}
                     </span>
                   </div>
 

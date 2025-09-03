@@ -29,6 +29,7 @@ import CourtsIcon from "../../assets/images/report_court_icon.png";
 import ProfitIcon from "../../assets/images/report_profit_icon.png";
 import {
   getAllLocations,
+  GetCourtBookings,
   getLocation,
   getReportBooking,
   getReportData,
@@ -176,26 +177,26 @@ const Reporting = () => {
   //   return () => clearInterval(interval);
   // }, []);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     const today = formatDate(new Date());
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const today = formatDate(new Date());
 
-  //     if (today !== selectionRange.startDate || today !== selectionRange.endDate) {
-  //       setSelectionRange({
-  //         startDate: today,
-  //         endDate: today,
-  //         key: "selection",
-  //       });
-  //       setSeletedRange({
-  //         startDate: now,
-  //         endDate: now,
-  //         key: "selection",
-  //       });
-  //     }
-  //   }, 60 * 1000); // check every 1 minute
+      if (today !== selectionRange.startDate || today !== selectionRange.endDate) {
+        setSelectionRange({
+          startDate: today,
+          endDate: today,
+          key: "selection",
+        });
+        setSeletedRange({
+          startDate: now,
+          endDate: now,
+          key: "selection",
+        });
+      }
+    }, 60 * 1000); // check every 1 minute
 
-  //   return () => clearInterval(interval);
-  // }, [selectionRange]);
+    return () => clearInterval(interval);
+  }, [selectionRange]);
 
   useEffect(() => {
     const { startDate, endDate } = selectionRange;
@@ -209,7 +210,7 @@ const Reporting = () => {
     );
     getReportAllData();
     getAllLocationData();
-  }, []);
+  }, [selectionRange]);
 
   useEffect(() => {
     getAllLocationData();
@@ -241,7 +242,7 @@ const Reporting = () => {
     loader
   ) => {
     setLoading(query ? false : true);
-    getReportBooking(
+    GetCourtBookings(
       bookingType,
       page,
       query,
@@ -609,6 +610,11 @@ const Reporting = () => {
                       endDate: formatDate(new Date()),
                       key: "selection",
                     });
+                    setSeletedRange({
+                      startDate: formatDate(new Date()),
+                      endDate: formatDate(new Date()),
+                      key: "selection",
+                    });
                     setSelectedLocation("");
                     getLocationData(
                       booking_type,
@@ -653,7 +659,7 @@ const Reporting = () => {
                     {isCalendarOpen && (
                       <div style={{ position: "absolute", zIndex: 10 }}>
                         <DateRangePicker
-                          ranges={[selectionRange]}
+                          ranges={[selectedRange]}
                           onChange={handleSelect}
                         />
                       </div>

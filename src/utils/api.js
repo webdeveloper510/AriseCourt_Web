@@ -653,3 +653,29 @@ export const verifyEmail = async (id) => {
     return error.response;
   }
 };
+// https://api.get1court.com/get_courtbookings/
+
+export const GetCourtBookings = async (
+  type,
+  page,
+  search,
+  selectLocation,
+  startDate,
+  endDate
+) => {
+  const bookingType = type ? type : "";
+  const searchVal = search ? `&search=${search}` : "";
+  const start_date = startDate
+    ? `&start_date=${startDate}&end_date=${endDate}`
+    : "";
+  const address = selectLocation ? `&location=${selectLocation}` : "";
+
+  try {
+    const response = await axios.get(
+      `/get_courtbookings/?type=${bookingType}&page=${page}${searchVal}${start_date}${address}`
+    );
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
