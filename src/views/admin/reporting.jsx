@@ -53,9 +53,31 @@ const Reporting = () => {
 
     return `${year}-${month}-${day}`;
   };
+
+  const formatDateTime = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    hours = hours % 12;
+    hours = hours ? hours : 12; // 0 -> 12
+
+    return `${year}-${month}-${day} ${hours}:${minutes} ${ampm}`;
+  };
+
   const calendarRef = useRef(null);
   const filterButtonRef = useRef(null);
   const [selectionRange, setSelectionRange] = useState({
+    startDate: formatDate(new Date()),
+    endDate: formatDate(new Date()),
+    key: "selection",
+  });
+
+  const [selectedRange, setSeletedRange] = useState({
     startDate: formatDate(new Date()),
     endDate: formatDate(new Date()),
     key: "selection",
@@ -69,6 +91,8 @@ const Reporting = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const [selectStartDate, setSelectStartDate] = useState();
+  const [selectEndDate, setSelectEndDate] = useState();
   const [searchQuery, setSearchQuery] = useState("");
   const [reportData, setReportData] = useState({});
   const [reportTable, setReportTable] = useState([]);
@@ -117,10 +141,6 @@ const Reporting = () => {
     pageNumbers.push(i);
   }
 
-  useEffect(() => {
-    getReportAllData();
-  }, []);
-
   const getReportAllData = () => {
     getReportData()
       .then((res) => {
@@ -135,17 +155,60 @@ const Reporting = () => {
       });
   };
 
+  // useEffect(() => {
+  //   const interval = setInterval(
+  //     () => {
+  //       const now = formatDate(new Date());
+  //       setSelectionRange({
+  //         startDate: now,
+  //         endDate: now,
+  //         key: "selection",
+  //       });
+  //       setSeletedRange({
+  //         startDate: now,
+  //         endDate: now,
+  //         key: "selection",
+  //       });
+  //     },
+  //     1 * 60 * 1000
+  //   ); // 2 minutes
+
+  //   return () => clearInterval(interval);
+  // }, []);
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const today = formatDate(new Date());
+
+  //     if (today !== selectionRange.startDate || today !== selectionRange.endDate) {
+  //       setSelectionRange({
+  //         startDate: today,
+  //         endDate: today,
+  //         key: "selection",
+  //       });
+  //       setSeletedRange({
+  //         startDate: now,
+  //         endDate: now,
+  //         key: "selection",
+  //       });
+  //     }
+  //   }, 60 * 1000); // check every 1 minute
+
+  //   return () => clearInterval(interval);
+  // }, [selectionRange]);
+
   useEffect(() => {
-    const start_date = selectionRange.startDate;
-    const end_date = selectionRange.endDate;
+    const { startDate, endDate } = selectionRange;
     getLocationData(
       bookingType,
       currentPage,
       searchQuery,
       selectedLocation,
-      start_date,
-      end_date
+      startDate,
+      endDate
     );
+    getReportAllData();
+    getAllLocationData();
   }, []);
 
   useEffect(() => {
@@ -205,25 +268,28 @@ const Reporting = () => {
 
   const handleFilterClick = () => {
     setCurrentPage(1);
+    // setSelectionRange(selectedRange)
+    setStartDate(selectStartDate)
+    setEndDate(selectEndDate)
     getLocationData(
       bookingType,
       1,
       searchQuery,
       selectedLocation,
-      startDate,
-      endDate,
+      selectStartDate,
+      selectEndDate,
       "loader"
     );
   };
 
   const handleSelect = (ranges) => {
-    setSelectionRange(ranges.selection); // Update selection range with the new dates
+    setSeletedRange(ranges.selection); // Update selection range with the new dates
     setIsCalendarOpen(false); // Close the calendar after selecting the date range
     const formattedStartDate = formatDate(ranges.selection.startDate);
     const formattedEndDate = formatDate(ranges.selection.endDate);
 
-    setStartDate(formattedStartDate);
-    setEndDate(formattedEndDate);
+    setSelectStartDate(formattedStartDate);
+    setSelectEndDate(formattedEndDate);
   };
 
   const handleCalendarClick = () => {
@@ -577,10 +643,10 @@ const Reporting = () => {
                       }}
                     >
                       <span>{`${
-                        selectionRange.startDate
-                          ? moment(selectionRange.startDate).format("ll")
+                        selectedRange.startDate
+                          ? moment(selectedRange.startDate).format("ll")
                           : "Start Date"
-                      } - ${selectionRange.endDate ? moment(selectionRange.endDate).format("ll") : "End Date"}`}</span>
+                      } - ${selectedRange.endDate ? moment(selectedRange.endDate).format("ll") : "End Date"}`}</span>
                     </div>
 
                     {/* Display DateRangePicker when calendar is open */}

@@ -61,8 +61,7 @@ const Login = () => {
     }
 
     if (!formData.password) {
-      errors.password =
-        "Password is required";
+      errors.password = "Password is required";
     }
 
     if (!formData.location && userType == "staff") {
@@ -184,28 +183,41 @@ const Login = () => {
                 <img src={HomeBg} alt="login_bg" style={{ height: "92vh" }} />
               </CCard>
             </CCol>
-            <CCol md={7}>
-              <div className="d-flex justify-content-center form_outer_section">
+            <CCol md={7} className="login_section">
+              <div className="d-flex justify-content-center form_outer_section ">
                 <div className="form_inner_section">
                   <CForm onSubmit={handleFormSubmit} onKeyDown={handleKeyDown}>
-                    <img src={Logo} alt="login-logo" />
+                    <img
+                      src={Logo}
+                      alt="login-logo"
+                      className="super_admin_logo"
+                      onClick={() => setUserType("super")}
+                    />
                     <h2 id="traffic" className="card-title mt-3 mb-0">
                       Login
                     </h2>
                     <p className="text-body-secondary">Welcome Back</p>
-                    <div className="mb-2">
-                      <CButton
+                    <div className="">
+                      {userType === "super" && (
+                        <i
+                          className="bi bi-arrow-left-circle-fill"
+                          onClick={() => setUserType("staff")}
+                          style={{ fontSize: "22px", cursor:"pointer" }}
+                        ></i>
+                      )}
+
+                      {/* <CButton
                         onClick={() => setUserType("staff")}
                         className={`${userType == "staff" ? "add_new_butn" : "selected_type"}`}
                       >
                         Staff sign in
-                      </CButton>
-                      <CButton
+                      </CButton> */}
+                      {/* <CButton
                         onClick={() => setUserType("super")}
                         className={`mx-2 ${userType == "super" ? "add_new_butn" : "selected_type"}`}
                       >
                         Super User
-                      </CButton>
+                      </CButton> */}
                     </div>
                     <CInputGroup className="mb-3">
                       <div className="input_section">
