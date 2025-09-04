@@ -171,13 +171,13 @@ const ForgotEmail = () => {
 
   return (
     <div className=" min-vh-100 d-flex flex-row align-items-center login_outer">
-         <CRow className="justify-content-center" style={{ width: "100%" }}>
+         <CRow className="justify-content-center m-0" style={{ width: "100%" }}>
            <CCol md={12}>
              <CRow
                className="align-items-center"
                style={{ background: "#E7F0FF" }}
              >
-               <CCol md={5}>
+               <CCol md={5} className="login_image_banner">
                  <CCard className="p-3">
                    <img src={HomeBg} alt="login_bg" style={{ height: "92vh" }} />
                  </CCard>

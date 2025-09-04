@@ -928,7 +928,11 @@ input:-webkit-autofill {
   }
 
   .form_inner_section {
-    margin-top: 20px;
+    margin: 25px 0px;
+  }
+
+  .add_court_modal img{
+    width: 40% !important;
   }
 
   .stepper li {
@@ -2462,6 +2466,12 @@ hr {
 }
 
 @media screen and (max-width: 580px) {
+  .login_image_banner{
+    display: none !important;
+  }
+  .admin_login_form{
+    margin-top: 50px !important;
+  }
   .stepper {
     width: 100% !important;
     height: auto !important;

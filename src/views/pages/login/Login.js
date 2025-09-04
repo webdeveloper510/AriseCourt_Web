@@ -178,14 +178,14 @@ const Login = () => {
             className="align-items-center"
             style={{ background: "#E7F0FF" }}
           >
-            <CCol md={5}>
+            <CCol md={5} className="login_image_banner">
               <CCard className="p-3">
                 <img src={HomeBg} alt="login_bg" style={{ height: "92vh" }} />
               </CCard>
             </CCol>
             <CCol md={7} className="login_section">
               <div className="d-flex justify-content-center form_outer_section ">
-                <div className="form_inner_section">
+                <div className="form_inner_section admin_login_form">
                   <CForm onSubmit={handleFormSubmit} onKeyDown={handleKeyDown}>
                     <img
                       src={Logo}
