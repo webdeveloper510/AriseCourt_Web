@@ -2451,6 +2451,16 @@ hr {
   max-width: 100% !important;
 }
 
+@media screen and (max-width: 375px) {
+  .navbar-brand {
+    width: 60% !important;
+  }
+
+  .navbar-brand img {
+    width: 100% !important;
+  }
+}
+
 @media screen and (max-width: 580px) {
   .stepper {
     width: 100% !important;
@@ -2488,6 +2498,7 @@ hr {
     scrollbar-width: none;
   }
 }
+
 // @media screen and (min-width: 320px) and (max-width: 375px) {
 //   .payment_form {
 //     width: 320px !important;
