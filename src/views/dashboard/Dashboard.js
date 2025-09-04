@@ -366,15 +366,14 @@ const Dashboard = () => {
                         </CTableDataCell>
                         {/* <CTableDataCell>0</CTableDataCell> */}
                         <CTableDataCell>{item?.email}</CTableDataCell>
-                        <CTableDataCell>
+                        <CTableDataCell style={{whiteSpace:"nowrap"}}>
                           {item?.phone ? formatPhoneNumber(item?.phone) : ""}
                         </CTableDataCell>
-                        <CTableDataCell
+                        <CTableDataCell style={{whiteSpace:"nowrap"}}
                           title={location}
-                          style={{ width: "20%" }}
                         >
-                          {location?.length > 50
-                            ? `${location?.slice(0, 50)}...`
+                          {location?.length > 30
+                            ? `${location?.slice(0, 30)}...`
                             : location}
                         </CTableDataCell>
                         <CTableDataCell>
@@ -491,12 +490,12 @@ const Dashboard = () => {
           <div className="pagination_outer mt-5">
             <div className="pagination_section">
               <CRow className="align-items-center">
-                <CCol md={6}>
+                <CCol md={6} className="my-1">
                   <p className="showing_page">
                     {`Showing ${(currentPage - 1) * itemsPerPage + 1} to ${Math.min(currentPage * itemsPerPage, totalCounts)} of ${totalCounts} entries`}
                   </p>
                 </CCol>
-                <CCol md={6}>
+                <CCol md={6} className="my-1">
                   <CPagination align="end" aria-label="Page navigation example">
                     <CPaginationItem
                       disabled={currentPage === 1}

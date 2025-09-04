@@ -172,7 +172,7 @@ const Login = () => {
 
   return (
     <div className=" min-vh-100 d-flex flex-row align-items-center login_outer">
-      <CRow className="justify-content-center" style={{ width: "100%" }}>
+      <CRow className="justify-content-center m-0" style={{ width: "100%" }}>
         <CCol md={12}>
           <CRow
             className="align-items-center"
@@ -320,7 +320,7 @@ const Login = () => {
                           />
                         </div>
                         {errors.location && (
-                          <div className="text-danger">{errors.location}</div>
+                          <div className="error_message">{errors.location}</div>
                         )}
                       </>
                     )}

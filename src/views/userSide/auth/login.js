@@ -52,9 +52,9 @@ const UserLogin = () => {
     <UserLayout>
       <div
         className="book_court_section"
-        style={{
-          height: filteredLocation?.length > 2 || loginPage ? "auto" : "450px",
-        }}
+        // style={{
+        //   height: filteredLocation?.length > 2 || loginPage ? "auto" : "450px",
+        // }}
       >
         <div className="container text-center">
           {registerPage ? (

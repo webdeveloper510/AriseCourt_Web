@@ -21,12 +21,7 @@ import {
 } from "@coreui/react";
 import { Link, useNavigate } from "react-router-dom";
 import CIcon, { CIconSvg } from "@coreui/icons-react";
-import {
-  cilPencil,
-  cilReload,
-  cilSearch,
-  cilX,
-} from "@coreui/icons";
+import { cilPencil, cilReload, cilSearch, cilX } from "@coreui/icons";
 import { deleteLocationbyId, getLocation } from "../../utils/api";
 import deleteImage from "../../assets/images/delete_image.png";
 import { toast } from "react-toastify";
@@ -210,18 +205,20 @@ const Locations = () => {
       {/* <CCard className="mb-4"> */}
       <CCardBody className="p-2 position-relative">
         <CRow>
-          <CCol sm={12} md={6}>
+          <CCol xs={6} md={6}>
             <h4 id="traffic" className="card-title mb-0">
               Locations
             </h4>
-            <div className="card_description">
-              List of locations configured for court bookings.
-            </div>
           </CCol>
-          <CCol sm={12} md={6} className="text-end">
+          <CCol xs={6} md={6} className="text-end">
             <Link to="/add-locations">
               <CButton className="add_new_butn">+ Add New</CButton>
             </Link>
+          </CCol>
+          <CCol xs={12}>
+            <div className="card_description my-2">
+              List of locations configured for court bookings.
+            </div>
           </CCol>
           <CCol sm={12} md={6} className="my-3 d-flex align-items-center gap-1">
             <CInputGroup
@@ -350,12 +347,18 @@ const Locations = () => {
                           )}
                         </CTableDataCell>
                         <CTableDataCell>{item?.email}</CTableDataCell>
-                        <CTableDataCell style={{whiteSpace:"nowrap"}}>
+                        <CTableDataCell style={{ whiteSpace: "nowrap" }}>
                           {item?.phone ? formatPhoneNumber(item?.phone) : ""}
                         </CTableDataCell>
-                        <CTableDataCell style={{whiteSpace:"nowrap"}}>{item?.name}</CTableDataCell>
-                        <CTableDataCell style={{whiteSpace:"nowrap"}}>{item?.city}</CTableDataCell>
-                        <CTableDataCell style={{whiteSpace:"nowrap"}}>{item?.country}</CTableDataCell>
+                        <CTableDataCell style={{ whiteSpace: "nowrap" }}>
+                          {item?.name}
+                        </CTableDataCell>
+                        <CTableDataCell style={{ whiteSpace: "nowrap" }}>
+                          {item?.city}
+                        </CTableDataCell>
+                        <CTableDataCell style={{ whiteSpace: "nowrap" }}>
+                          {item?.country}
+                        </CTableDataCell>
                         <CTableDataCell>{item?.courts?.length}</CTableDataCell>
                         <CTableDataCell>
                           <i
@@ -458,12 +461,12 @@ const Locations = () => {
           <div className="pagination_outer mt-5 pt-4">
             <div className="pagination_section">
               <CRow className="align-items-center">
-                <CCol md={6}>
+                <CCol md={6} className="my-1">
                   <p className="showing_page">
                     {`Showing ${(currentPage - 1) * itemsPerPage + 1} to ${Math.min(currentPage * itemsPerPage, totalCounts)} of ${totalCounts} entries`}
                   </p>
                 </CCol>
-                <CCol md={6}>
+                <CCol md={6} className="my-1">
                   <CPagination align="end" aria-label="Page navigation example">
                     <CPaginationItem
                       disabled={currentPage === 1}

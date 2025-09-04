@@ -710,12 +710,12 @@ const LocationDetails = () => {
             <div className="pagination_outer mt-5 pt-4">
               <div className="pagination_section">
                 <CRow className="align-items-center">
-                  <CCol md={6}>
+                  <CCol md={6} className="my-1">
                     <p className="showing_page">
                       {`Showing ${(currentPage - 1) * itemsPerPage + 1} to ${Math.min(currentPage * itemsPerPage, totalCounts)} of ${totalCounts} entries`}
                     </p>
                   </CCol>
-                  <CCol md={6}>
+                  <CCol md={6} className="my-1">
                     <CPagination
                       align="end"
                       aria-label="Page navigation example"

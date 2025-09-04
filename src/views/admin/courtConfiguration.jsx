@@ -143,10 +143,8 @@ const CourtConfiguration = () => {
   }
 
   const toggleMenu = (id) => {
-    setOpenMenuId((prevId) => (prevId === id ? null : id)); 
+    setOpenMenuId((prevId) => (prevId === id ? null : id));
   };
-
-
 
   const getCourtBookingData = (
     bookingType = "",
@@ -633,7 +631,12 @@ const CourtConfiguration = () => {
             <CTable className="mt-4 main_table" striped>
               <CTableHead>
                 <CTableRow>
-                  <CTableHeaderCell scope="col">Sr no.</CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    Sr no.
+                  </CTableHeaderCell>
                   <CTableHeaderCell
                     scope="col"
                     style={{ whiteSpace: "nowrap" }}
@@ -705,7 +708,7 @@ const CourtConfiguration = () => {
                         {/* <CTableDataCell>{item?.user?.first_name}</CTableDataCell> */}
                         <CTableDataCell>
                           <div>
-                            <p className="mb-0 user_phone">
+                            <p className="mb-0 user_phone" style={{ whiteSpace: "nowrap" }}>
                               {item?.start_time
                                 ? `${convertToAmPm(item?.start_time)} - ${convertToAmPm(item?.end_time)}`
                                 : ""}
@@ -747,11 +750,11 @@ const CourtConfiguration = () => {
                                   : ""}
                         </CTableDataCell> */}
                         <CTableDataCell
+                          style={{ whiteSpace: "nowrap" }}
                           title={locationaddress}
-                          style={{ width: "20%" }}
                         >
-                          {locationaddress?.length > 50
-                            ? `${locationaddress?.slice(0, 50)}...`
+                          {locationaddress?.length > 30
+                            ? `${locationaddress?.slice(0, 30)}...`
                             : locationaddress}
                         </CTableDataCell>
                         <CTableDataCell>
@@ -873,12 +876,12 @@ const CourtConfiguration = () => {
           <div className="pagination_outer mt-5 pt-4">
             <div className="pagination_section">
               <CRow className="align-items-center">
-                <CCol md={6}>
+                <CCol md={6} className="my-1">
                   <p className="showing_page">
                     {`Showing ${(currentPage - 1) * itemsPerPage + 1} to ${Math.min(currentPage * itemsPerPage, totalCounts)} of ${totalCounts} entries`}
                   </p>
                 </CCol>
-                <CCol md={6}>
+                <CCol md={6} className="my-1">
                   <CPagination align="end" aria-label="Page navigation example">
                     <CPaginationItem
                       disabled={currentPage === 1}

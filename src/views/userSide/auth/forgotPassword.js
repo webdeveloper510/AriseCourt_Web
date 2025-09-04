@@ -135,7 +135,7 @@ const ForgotPassword = () => {
 
                       <CCol xs={12} className="text-left">
                         <CButton type="button" className="text_color px-0">
-                          <Link to="/user-login">Back to login</Link>
+                          <Link to="/user-select-location">Back to login</Link>
                         </CButton>
                       </CCol>
                     </CRow>

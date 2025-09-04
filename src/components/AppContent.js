@@ -7,7 +7,7 @@ const AppContent = () => {
   const token = localStorage.getItem("user_access_valid_token");
 
   return (
-    <CContainer className="px-4" lg>
+    <CContainer className="px-4 main_container" lg>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           {token ? (

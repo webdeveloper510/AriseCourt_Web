@@ -45,10 +45,10 @@ const HomePage = () => {
             <div className="col-md-6 d-flex align-items-center">
               <div>
                 <h1 className="banner_title">
-                  Booking a Badminton Court Easier Using The Arise Court
+                  Booking a Badminton Court <br/> Easier Using The <br/> Arise Court
                   Website{" "}
                 </h1>
-                <p>
+                <p className="banner_desc">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna
                   aliqua.{" "}
@@ -80,9 +80,9 @@ const HomePage = () => {
               />
             </div>
             <div className="col-md-6 d-flex align-items-center px-5 py-4 order_section2">
-              <div>
-                <img src={LoginLogo} alt="BannerImage" className="mb-3" />
-                <h2 className="download_app mb-3">Download Our App</h2>
+              <div className="app_sction">
+                <img src={LoginLogo} alt="BannerImage" className="mb-3 bannerimage2" />
+                <h2 className="download_app">Download Our App</h2>
                 <p className="lorem_text mb-3">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna

@@ -100,7 +100,7 @@ const HomeNavbar = () => {
                   Contact us
                 </Nav.Link> */}
               </Nav>
-              <div className="d-flex">
+              <div className="d-flex gap-2">
                 {token ? (
                   <>
                     {" "}
@@ -172,7 +172,7 @@ const HomeNavbar = () => {
                     </div>
                   </>
                 ) : (
-                  <div className="d-flex">
+                  <div className="d-flex gap-2">
                     <Link to="/user-select-location" className="links_url">
                       <button className="book_court_btn mx-1">
                         Book a Court

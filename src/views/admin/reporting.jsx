@@ -172,7 +172,7 @@ const Reporting = () => {
   //       });
   //     },
   //     1 * 60 * 1000
-  //   ); // 2 minutes
+  //   ); // 1 minutes
 
   //   return () => clearInterval(interval);
   // }, []);
@@ -504,12 +504,12 @@ const Reporting = () => {
         </div>
 
         <CRow className="mt-5">
-          <CCol sm={12} xl={4} className="my-1">
+          <CCol xs={6} md={6} className="my-1">
             <h6 id="traffic" className="card-title mb-0">
               Reports
             </h6>
           </CCol>
-          <CCol sm={12} xl={8} className="my-1 text-end">
+          <CCol xs={6} md={6} className="my-1 text-end">
             <CButton className="add_new_butn" onClick={exportToExcel}>
               Download XLS
             </CButton>
@@ -635,18 +635,10 @@ const Reporting = () => {
               <CCol md={6} lg={6} xl={4} className="my-1">
                 <div className="text-end date_filter_section">
                   {/* Calendar area */}
-                  <div>
+                  <div className="date_section">
                     <div
+                    className="selected_date"
                       onClick={handleCalendarClick}
-                      style={{
-                        padding: "10px",
-                        border: "1px solid #ddd",
-                        display: "inline-block",
-                        cursor: "pointer",
-                        borderRadius: "12px",
-                        height: "50px",
-                        background: "white",
-                      }}
                     >
                       <span>{`${
                         selectedRange.startDate
@@ -666,7 +658,7 @@ const Reporting = () => {
                     )}
                   </div>
 
-                  <div>
+                  <div className="search_butn">
                     <CButton
                       className="filter_butn"
                       ref={filterButtonRef}
@@ -687,16 +679,16 @@ const Reporting = () => {
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">Sr no.</CTableHeaderCell>
-                  <CTableHeaderCell scope="col" style={{ width: "20%" }}>
+                  <CTableHeaderCell scope="col" style={{ whiteSpace:"nowrap" }}>
                     Booking Date
                   </CTableHeaderCell>
-                  <CTableHeaderCell scope="col" style={{ width: "20%" }}>
+                  <CTableHeaderCell scope="col" style={{ whiteSpace:"nowrap" }}>
                     Reservation Date
                   </CTableHeaderCell>
-                  <CTableHeaderCell scope="col" style={{ width: "20%" }}>
+                  <CTableHeaderCell scope="col" style={{ whiteSpace:"nowrap" }}>
                     Reservation From Time
                   </CTableHeaderCell>
-                  <CTableHeaderCell scope="col" style={{ width: "20%" }}>
+                  <CTableHeaderCell scope="col" style={{ whiteSpace:"nowrap" }}>
                     Duration
                   </CTableHeaderCell>
                   <CTableHeaderCell scope="col">Court Number</CTableHeaderCell>
@@ -794,12 +786,12 @@ const Reporting = () => {
           <div className="pagination_outer mt-5 pt-4">
             <div className="pagination_section">
               <CRow className="align-items-center">
-                <CCol md={6}>
+                <CCol sm={6} className="my-1">
                   <p className="showing_page">
                     {`Showing ${(currentPage - 1) * itemsPerPage + 1} to ${Math.min(currentPage * itemsPerPage, totalCounts)} of ${totalCounts} entries`}
                   </p>
                 </CCol>
-                <CCol md={6}>
+                <CCol sm={6} className="my-1">
                   <CPagination align="end" aria-label="Page navigation example">
                     <CPaginationItem
                       disabled={currentPage === 1}
