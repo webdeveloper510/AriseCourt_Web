@@ -930,13 +930,16 @@ input:-webkit-autofill {
   .form_inner_section {
     margin: 25px 0px;
   }
+
   .card-title {
     font-size: 24px !important;
   }
-  .form_inner_section img{
+
+  .form_inner_section img {
     width: 70% !important;
   }
-  .add_court_modal img{
+
+  .add_court_modal img {
     width: 40% !important;
   }
 
@@ -2471,12 +2474,14 @@ hr {
 }
 
 @media screen and (max-width: 580px) {
-  .login_image_banner{
+  .login_image_banner {
     display: none !important;
   }
-  .admin_login_form{
+
+  .admin_login_form {
     margin-top: 60px !important;
   }
+
   .stepper {
     width: 100% !important;
     height: auto !important;
@@ -2486,6 +2491,11 @@ hr {
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
     /* smooth scrolling */
+  }
+
+  .profile-pic-wrapper .profile-pic {
+    width: 112px !important;
+    height: 112px !important;
   }
 
   .stepper ul {

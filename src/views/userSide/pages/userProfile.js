@@ -34,7 +34,6 @@ export default function UserProfile() {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    console.log("filefile", file);
     if (file) {
       const userImage = URL.createObjectURL(file);
       setProfileImage(userImage);
@@ -219,7 +218,13 @@ export default function UserProfile() {
                       <div className="d-flex justify-content-center mb-4">
                         <div className="profile-pic-wrapper">
                           <img
-                            src={formData?.image ? `https://api.get1court.com/${formData?.image}` : profileImage ? profileImage : UserImage}
+                            src={
+                              profileImage
+                                ? profileImage
+                                : formData?.image
+                                  ? `https://api.get1court.com/${formData?.image}`
+                                  : UserImage
+                            }
                             alt="Profile"
                             className="profile-pic"
                           />
