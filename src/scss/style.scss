@@ -930,7 +930,12 @@ input:-webkit-autofill {
   .form_inner_section {
     margin: 25px 0px;
   }
-
+  .card-title {
+    font-size: 24px !important;
+  }
+  .form_inner_section img{
+    width: 70% !important;
+  }
   .add_court_modal img{
     width: 40% !important;
   }
@@ -2470,7 +2475,7 @@ hr {
     display: none !important;
   }
   .admin_login_form{
-    margin-top: 50px !important;
+    margin-top: 60px !important;
   }
   .stepper {
     width: 100% !important;
