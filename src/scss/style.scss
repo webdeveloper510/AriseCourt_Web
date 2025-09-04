@@ -879,9 +879,37 @@ input:-webkit-autofill {
 }
 
 @media screen and (max-width: 580px) {
-  .super_admin_logo{
+  .payment_form {
+    width: auto !important;
+    margin: auto;
+  }
+
+  .super_admin_logo {
     width: 40% !important;
   }
+
+  .button-row {
+    gap: 10px !important;
+  }
+
+  .next-btn,
+  .prev-btn {
+    padding: 7px 10px !important;
+  }
+
+  .duration_time {
+    font-size: 13px !important;
+  }
+
+  .time-row {
+    gap: 10px !important;
+  }
+
+  .duration_time {
+    width: 80px !important;
+    text-align: center;
+  }
+
   .form_outer_section {
     width: 95%;
     height: auto;
@@ -899,9 +927,10 @@ input:-webkit-autofill {
     width: 60% !important;
   }
 
-  .form_inner_section{
+  .form_inner_section {
     margin-top: 20px;
   }
+
   .stepper li {
     margin-bottom: 10px !important;
   }
@@ -2411,6 +2440,11 @@ hr {
   .navbar-brand img {
     width: 100% !important;
   }
+
+  // .payment_form {
+  //   width: 300px;
+  //   margin: auto;
+  // }
 }
 
 .main_container {
@@ -2421,10 +2455,12 @@ hr {
   .stepper {
     width: 100% !important;
     height: auto !important;
-    overflow-x: auto;   /* allow scroll */
+    overflow-x: auto;
+    /* allow scroll */
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;   /* smooth scrolling */
+    scroll-behavior: smooth;
+    /* smooth scrolling */
   }
 
   .stepper ul {
@@ -2446,8 +2482,29 @@ hr {
   .stepper::-webkit-scrollbar {
     display: none;
   }
+
   .stepper {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
 }
+// @media screen and (min-width: 320px) and (max-width: 375px) {
+//   .payment_form {
+//     width: 320px !important;
+//     margin: auto;
+// }
+// }
+
+// @media screen and (min-width: 376px) and (max-width: 425px) {
+//   .payment_form {
+//     width: 350px !important;
+//     margin: auto;
+// }
+// }
+
+// @media screen and (min-width: 426px) and (max-width: 580px) {
+//   .payment_form {
+//     width: 500px !important;
+//     margin: auto;
+// }
+// }
