@@ -576,41 +576,34 @@ const CourtConfiguration = () => {
 
               <CCol md={6} lg={6} xl={4} className="my-1">
                 <div className="text-end date_filter_section">
-                  <div
-                    onClick={handleCalendarClick}
-                    style={{
-                      padding: "10px",
-                      border: "1px solid #ddd",
-                      display: "inline-block",
-                      cursor: "pointer",
-                      borderRadius: "12px",
-                      whiteSpace: "nowrap",
-                      height: "50px",
-                      background: "white",
-                    }}
-                  >
-                    <span>
-                      <CIcon icon={cilCalendar}></CIcon>{" "}
-                      {`${
-                        selectedRange.startDate
-                          ? moment(selectedRange.startDate).format("ll")
-                          : "Start Date"
-                      } - ${selectedRange.endDate ? moment(selectedRange.endDate).format("ll") : "End Date"}`}
-                    </span>
-                  </div>
-
-                  {/* Display DateRangePicker when calendar is open */}
-                  {isCalendarOpen && (
+                  <div className="date_section">
                     <div
-                      ref={calendarRef}
-                      style={{ position: "absolute", zIndex: 10, top: "130px" }}
+                      className="selected_date"
+                      onClick={handleCalendarClick}
                     >
-                      <DateRangePicker
-                        ranges={[selectionRange]}
-                        onChange={handleSelect} // Update the selection when a date is selected
-                      />
+                      <span>
+                        <CIcon icon={cilCalendar}></CIcon>{" "}
+                        {`${
+                          selectedRange.startDate
+                            ? moment(selectedRange.startDate).format("ll")
+                            : "Start Date"
+                        } - ${selectedRange.endDate ? moment(selectedRange.endDate).format("ll") : "End Date"}`}
+                      </span>
                     </div>
-                  )}
+
+                    {/* Display DateRangePicker when calendar is open */}
+                    {isCalendarOpen && (
+                      <div
+                        ref={calendarRef}
+                        style={{ position: "absolute", zIndex: 10 }}
+                      >
+                        <DateRangePicker
+                          ranges={[selectionRange]}
+                          onChange={handleSelect} // Update the selection when a date is selected
+                        />
+                      </div>
+                    )}
+                  </div>
 
                   {/* Filter Button */}
                   <CButton
@@ -708,7 +701,10 @@ const CourtConfiguration = () => {
                         {/* <CTableDataCell>{item?.user?.first_name}</CTableDataCell> */}
                         <CTableDataCell>
                           <div>
-                            <p className="mb-0 user_phone" style={{ whiteSpace: "nowrap" }}>
+                            <p
+                              className="mb-0 user_phone"
+                              style={{ whiteSpace: "nowrap" }}
+                            >
                               {item?.start_time
                                 ? `${convertToAmPm(item?.start_time)} - ${convertToAmPm(item?.end_time)}`
                                 : ""}
