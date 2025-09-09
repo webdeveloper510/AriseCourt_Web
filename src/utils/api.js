@@ -1,6 +1,8 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "https://api.get1court.com";
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+// "https://api.get1court.com";
+console.log("process.env.REACT_APP_API_URL", import.meta.env.VITE_API_URL)
 
 export const registerUser = async (data) => {
   try {

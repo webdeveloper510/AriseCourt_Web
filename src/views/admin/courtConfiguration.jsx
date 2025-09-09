@@ -460,7 +460,8 @@ const CourtConfiguration = () => {
               }}
               style={{
                 color: bookingType === "past" ? "" : "#0860FB",
-                fontWeight: bookingType === "500" ? "" : "600",
+                fontWeight: "600",
+                border: bookingType === "past" ?  "none" : "1px solid #3d99f5 !important"
               }}
               className="upcoming_booking"
             >
@@ -473,7 +474,8 @@ const CourtConfiguration = () => {
               }}
               style={{
                 color: bookingType === "past" ? "#0860FB" : "",
-                fontWeight: bookingType === "600" ? "" : "500",
+                fontWeight: "600" ,
+                border: bookingType === "past" ?  "1px solid #3d99f5 !important" : "none"
               }}
               className="upcoming_booking mx-1"
             >

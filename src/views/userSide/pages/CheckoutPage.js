@@ -10,9 +10,9 @@ import {
 import { useLocation, useParams } from "react-router-dom";
 import CheckoutForm from "./checkoutForm";
 
-const stripePromise = loadStripe(
-  "pk_test_51RbEv9IorG3LMbfblOcsWQtpVzPj3Hg6jRwgAeamUV6SqEICC1I0UNgEjWQPazjVmepwgHsTyulBboKdvChRnwMK00qgdQCFE2"
-);
+const secretKey = import.meta.env.VITE_APP_CLIENT_SECRET_KET;
+
+const stripePromise = loadStripe(secretKey);
 
 export default function CheckoutPage({ booking_id }) {
   const [clientSecret, setClientSecret] = useState("");
