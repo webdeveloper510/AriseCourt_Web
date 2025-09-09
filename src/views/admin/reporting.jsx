@@ -653,6 +653,8 @@ const Reporting = () => {
                         <DateRangePicker
                           ranges={[selectedRange]}
                           onChange={handleSelect}
+                          startDatePlaceholder="Start Date"
+                          endDatePlaceholder="End Date"
                         />
                       </div>
                     )}

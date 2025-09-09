@@ -599,7 +599,9 @@ const CourtConfiguration = () => {
                       >
                         <DateRangePicker
                           ranges={[selectionRange]}
-                          onChange={handleSelect} // Update the selection when a date is selected
+                          onChange={handleSelect}
+                          startDatePlaceholder="Start Date"
+                          endDatePlaceholder="End Date"
                         />
                       </div>
                     )}
