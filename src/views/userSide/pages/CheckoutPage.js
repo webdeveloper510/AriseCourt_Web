@@ -17,14 +17,9 @@ const stripePromise = loadStripe(secretKey);
 export default function CheckoutPage({ booking_id }) {
   const [clientSecret, setClientSecret] = useState("");
 
-  const stripe = useStripe();
-  const elements = useElements();
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
 
   const state = useLocation();
-  const params = useParams();
-  const location = window.location;
 
   useEffect(() => {
     if (state) {
