@@ -5,7 +5,9 @@ import { Navigate } from "react-router-dom";
 export const SuperAdminPrivateRoute = ({ children }) => {
   const token = localStorage.getItem("user_access_valid_token");
   const role = localStorage.getItem("role");
-  return token && role === "superadmin"
+  const userData = JSON.parse(localStorage.getItem("logged_user_data"));
+  
+  return token && (role === "superadmin" || userData?.user_type == 0 || userData?.user_type == 1)
     ? children
     : <Navigate to="/" replace />;
 };

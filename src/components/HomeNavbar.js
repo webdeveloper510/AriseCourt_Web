@@ -146,7 +146,7 @@ const HomeNavbar = () => {
                       {open && (
                         <div className="user_dropdown">
                           <ul>
-                            {role == "superadmin" && (
+                            {(userData?.user_type == 0 || userData?.user_type == 1) && (
                               <li onClick={() => navigate("/reporting")}>
                                 <i className="bi bi-card-list me-1"></i>{" "}
                                 Dashboard
