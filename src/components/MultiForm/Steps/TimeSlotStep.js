@@ -195,7 +195,7 @@ export default function TimeSlotStep({
               }
 
               return (
-                <option key={i} value={t}>
+                <option key={i} value={t} disabled={disabled}>
                   {t}
                 </option>
               );
