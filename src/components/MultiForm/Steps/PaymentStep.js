@@ -95,14 +95,14 @@ export default function PaymentStep({ bookingDetails, onBack }) {
       </div>
 
       {/* Buttons */}
-      <div className="button-row">
+      <div className="button-row-payment">
         <button className="prev-btn" onClick={onBack}>
           PREVIOUS
         </button>
 
         {/* <CheckoutPage booking_id={String(allBooking?.booking_id)} /> */}
 
-        <div>
+        <div className="footer_confirm">
           {(userData?.user_type == 1 || userData?.user_type == 0) && (
             <button
               className="next-btn me-2"
@@ -115,7 +115,7 @@ export default function PaymentStep({ bookingDetails, onBack }) {
           )}
 
           <button
-            className="next-btn"
+            className="next-btn payment-confirm"
             onClick={() => {
               navigate("/checkout-session", {
                 state: String(allBooking?.booking_id),
