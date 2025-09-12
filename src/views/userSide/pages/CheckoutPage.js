@@ -9,17 +9,27 @@ import {
 } from "@stripe/react-stripe-js";
 import { useLocation, useParams } from "react-router-dom";
 import CheckoutForm from "./checkoutForm";
+import { getStripeKey } from "../../../utils/api";
 
-const secretKey = import.meta.env.VITE_APP_CLIENT_SECRET_KET;
+// const secretKey = import.meta.env.VITE_APP_CLIENT_SECRET_KET;
 
-const stripePromise = loadStripe(secretKey);
+// const stripePromise = loadStripe(secretKey);
 
-export default function CheckoutPage({ booking_id }) {
+export default function CheckoutPage() {
   const [clientSecret, setClientSecret] = useState("");
-
+  const [stripeKey, setStripeKey] = useState("");
   const [loading, setLoading] = useState(false);
-
   const state = useLocation();
+
+  useEffect(()=>{
+    getStripeKey().then((res)=>{
+      if(res?.status == 200){
+        setStripeKey(loadStripe(res?.data?.publishableKey))
+      }
+    }).catch((error)=>{
+      console.log(error)
+    })
+  },[])
 
   useEffect(() => {
     if (state) {
@@ -53,7 +63,7 @@ export default function CheckoutPage({ booking_id }) {
       <div className="payment_form">
         {clientSecret && (
           <Elements
-            stripe={stripePromise}
+            stripe={stripeKey}
             options={{ clientSecret, appearance }}
           >
             <CheckoutForm />

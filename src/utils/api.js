@@ -681,3 +681,16 @@ export const GetCourtBookings = async (
     return error.response;
   }
 };
+
+export const getStripeKey = async () => {
+  try {
+    const response = await axios.get(`/stripe_key/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("user_access_valid_token")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
