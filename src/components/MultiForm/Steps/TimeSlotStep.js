@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+const TIME_ZONE = "America/Chicago";
 
 export default function TimeSlotStep({
   formData,
@@ -176,22 +183,25 @@ export default function TimeSlotStep({
             {startTimes?.map((t, i) => {
               const slotTime = dayjs(`2023-01-01 ${t}`, "YYYY-MM-DD hh:mm A");
 
-              // ✅ If booking_date is today → round current time to next half-hour
               let disabled = false;
+
               if (isToday) {
+                // Get current time from user’s system (where browser runs)
                 const now = dayjs();
+
+                // Round up to next 30-min slot
                 const minAllowedTime =
                   now.minute() < 30
                     ? now.minute(30).second(0)
                     : now.add(1, "hour").minute(0).second(0);
 
-                // compare slot against this cutoff
-                disabled = slotTime.isBefore(
-                  dayjs(
-                    `2023-01-01 ${minAllowedTime.format("hh:mm A")}`,
-                    "YYYY-MM-DD hh:mm A"
-                  )
+                // Convert both to same base date for comparison
+                const cutoff = dayjs(
+                  `2023-01-01 ${minAllowedTime.format("hh:mm A")}`,
+                  "YYYY-MM-DD hh:mm A"
                 );
+
+                disabled = slotTime.isBefore(cutoff);
               }
 
               return (
