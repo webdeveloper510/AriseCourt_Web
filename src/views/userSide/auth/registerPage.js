@@ -164,6 +164,7 @@ const RegisterPage = ({ locationId, setRegisterPage }) => {
     setLoading(true);
     userRegister(formData)
       .then((res) => {
+        console.log("userRegister", res)
         setLoading(false);
         if (
           res?.data?.code == 200 ||
@@ -174,7 +175,7 @@ const RegisterPage = ({ locationId, setRegisterPage }) => {
           toast.success(res?.data?.message, { theme: "colored" });
           setRegisterPage(false);
         } else {
-          toast.error(res?.data?.message, { theme: "colored" });
+          toast.error(res?.data?.errors[0] || "User registration failed.", { theme: "colored" });
         }
       })
       .catch((error) => {

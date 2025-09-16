@@ -22,7 +22,7 @@ import { DateRangePicker } from "react-date-range";
 import CIcon, { CIconSvg } from "@coreui/icons-react";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { cilReload, cilSearch } from "@coreui/icons";
+import { cilCalendar, cilReload, cilSearch } from "@coreui/icons";
 import UserIcon from "../../assets/images/report_user_icon.png";
 import BookingIcon from "../../assets/images/report_booking_icon.png";
 import CourtsIcon from "../../assets/images/report_court_icon.png";
@@ -46,8 +46,11 @@ const Reporting = () => {
   let SerialId = 1;
   const navigate = useNavigate();
   const userData = JSON.parse(localStorage.getItem("logged_user_data"));
-
   const formatDate = (date) => {
+    if (typeof date === "string") {
+      const splitted_date = date.split("-");
+      return `${splitted_date[0]}-${splitted_date[1]}-${splitted_date[2]}`;
+    }
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
     const day = String(date.getDate()).padStart(2, "0");
@@ -83,6 +86,9 @@ const Reporting = () => {
     endDate: formatDate(new Date()),
     key: "selection",
   });
+  useEffect(() => {
+    console.log(selectedRange);
+  }, [selectedRange]);
   const [loading, setLoading] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -181,7 +187,10 @@ const Reporting = () => {
     const interval = setInterval(() => {
       const today = formatDate(new Date());
 
-      if (today !== selectionRange.startDate || today !== selectionRange.endDate) {
+      if (
+        today !== selectionRange.startDate ||
+        today !== selectionRange.endDate
+      ) {
         setSelectionRange({
           startDate: today,
           endDate: today,
@@ -270,8 +279,8 @@ const Reporting = () => {
   const handleFilterClick = () => {
     setCurrentPage(1);
     // setSelectionRange(selectedRange)
-    setStartDate(selectStartDate)
-    setEndDate(selectEndDate)
+    setStartDate(selectStartDate);
+    setEndDate(selectEndDate);
     getLocationData(
       bookingType,
       1,
@@ -288,7 +297,6 @@ const Reporting = () => {
     setIsCalendarOpen(false); // Close the calendar after selecting the date range
     const formattedStartDate = formatDate(ranges.selection.startDate);
     const formattedEndDate = formatDate(ranges.selection.endDate);
-
     setSelectStartDate(formattedStartDate);
     setSelectEndDate(formattedEndDate);
   };
@@ -339,11 +347,24 @@ const Reporting = () => {
 
   const formatNewDate = (dateStr) => {
     const date = new Date(dateStr);
-    const mm = String(date.getMonth() + 1).padStart(2, "0");
-    const dd = String(date.getDate()).padStart(2, "0");
-    const yyyy = date.getFullYear();
+    const formatter = new Intl.DateTimeFormat("en-IN", {
+      timeZone: "Asia/Kolkata",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+    const [{ value: dd }, , { value: mm }, , { value: yyyy }] =
+      formatter.formatToParts(date);
     return `${mm}-${dd}-${yyyy}`;
   };
+
+  // const formatNewDate = (dateStr) => { const date = new Date(dateStr);
+  //  console.log(date);
+  //  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  //  const dd = String(date.getDate()).padStart(2, "0");
+  //  const yyyy = date.getFullYear();
+  //  return ${mm}-${dd}-${yyyy};
+  //  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -391,7 +412,7 @@ const Reporting = () => {
   };
 
   const exportToExcel = () => {
-    const dataToExport = excelData.map((item, index) => ({
+    const dataToExport = reportTable?.map((item, index) => ({
       "S.No": index + 1,
       "Booking Date": formatNewDate(item.created_at),
       "Reservation Date": formatNewDate(item.booking_date),
@@ -637,19 +658,23 @@ const Reporting = () => {
                   {/* Calendar area */}
                   <div className="date_section">
                     <div
-                    className="selected_date"
+                      className="selected_date"
                       onClick={handleCalendarClick}
                     >
-                      <span>{`${
-                        selectedRange.startDate
-                          ? moment(selectedRange.startDate).format("ll")
-                          : "Start Date"
-                      } - ${selectedRange.endDate ? moment(selectedRange.endDate).format("ll") : "End Date"}`}</span>
+                      <span>
+                        {" "}
+                        <CIcon icon={cilCalendar}></CIcon>{" "}
+                        {`${
+                          selectedRange.startDate
+                            ? moment(selectedRange.startDate).format("ll")
+                            : "Start Date"
+                        } - ${selectedRange.endDate ? moment(selectedRange.endDate).format("ll") : "End Date"}`}
+                      </span>
                     </div>
 
                     {/* Display DateRangePicker when calendar is open */}
                     {isCalendarOpen && (
-                      <div style={{ position: "absolute", zIndex: 10 }}>
+                      <div style={{ position: "absolute", zIndex: 999999 }}>
                         <DateRangePicker
                           ranges={[selectedRange]}
                           onChange={handleSelect}
@@ -681,16 +706,28 @@ const Reporting = () => {
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">Sr no.</CTableHeaderCell>
-                  <CTableHeaderCell scope="col" style={{ whiteSpace:"nowrap" }}>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
                     Booking Date
                   </CTableHeaderCell>
-                  <CTableHeaderCell scope="col" style={{ whiteSpace:"nowrap" }}>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
                     Reservation Date
                   </CTableHeaderCell>
-                  <CTableHeaderCell scope="col" style={{ whiteSpace:"nowrap" }}>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
                     Reservation From Time
                   </CTableHeaderCell>
-                  <CTableHeaderCell scope="col" style={{ whiteSpace:"nowrap" }}>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
                     Duration
                   </CTableHeaderCell>
                   <CTableHeaderCell scope="col">Court Number</CTableHeaderCell>

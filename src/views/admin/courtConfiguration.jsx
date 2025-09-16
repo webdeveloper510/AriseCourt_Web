@@ -57,6 +57,10 @@ const CourtConfiguration = () => {
   const calendarRef = useRef(null);
   const filterButtonRef = useRef(null);
   const formatDate = (date) => {
+    if (typeof date === "string") {
+      const splitted_date = date.split("-");
+      return `${splitted_date[0]}-${splitted_date[1]}-${splitted_date[2]}`;
+    }
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
     const day = String(date.getDate()).padStart(2, "0");
@@ -78,8 +82,8 @@ const CourtConfiguration = () => {
   });
 
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const [startDate, setStartDate] = useState(""); // Start date for API
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(); // Start date for API
+  const [endDate, setEndDate] = useState();
   const [selectStartDate, setSelectStartDate] = useState();
   const [selectEndDate, setSelectEndDate] = useState();
   const [locationFilter, setLocationFilter] = useState([]);
@@ -279,7 +283,6 @@ const CourtConfiguration = () => {
     setIsCalendarOpen(false); // Close the calendar after selecting the date range
     const formattedStartDate = formatDate(ranges.selection.startDate);
     const formattedEndDate = formatDate(ranges.selection.endDate);
-
     setSelectStartDate(formattedStartDate);
     setSelectEndDate(formattedEndDate);
   };
@@ -461,7 +464,10 @@ const CourtConfiguration = () => {
               style={{
                 color: bookingType === "past" ? "" : "#0860FB",
                 fontWeight: "600",
-                border: bookingType === "past" ?  "none" : "1px solid #3d99f5 !important"
+                border:
+                  bookingType === "past"
+                    ? "none"
+                    : "1px solid #3d99f5 !important",
               }}
               className="upcoming_booking"
             >
@@ -474,8 +480,11 @@ const CourtConfiguration = () => {
               }}
               style={{
                 color: bookingType === "past" ? "#0860FB" : "",
-                fontWeight: "600" ,
-                border: bookingType === "past" ?  "1px solid #3d99f5 !important" : "none"
+                fontWeight: "600",
+                border:
+                  bookingType === "past"
+                    ? "1px solid #3d99f5 !important"
+                    : "none",
               }}
               className="upcoming_booking mx-1"
             >
@@ -597,10 +606,10 @@ const CourtConfiguration = () => {
                     {isCalendarOpen && (
                       <div
                         ref={calendarRef}
-                        style={{ position: "absolute", zIndex: 10 }}
+                        style={{ position: "absolute", zIndex: 999999 }}
                       >
                         <DateRangePicker
-                          ranges={[selectionRange]}
+                          ranges={[selectedRange]}
                           onChange={handleSelect}
                           startDatePlaceholder="Start Date"
                           endDatePlaceholder="End Date"
