@@ -50,11 +50,11 @@ const HomePage = () => {
           <div className="row">
             <div className="col-md-6 d-flex align-items-center">
               <div>
-                <h1 className="banner_title">Ready to Play?</h1>
-                <p className="banner_desc">
+                <p className="banner_desc">Ready to Play?</p>
+                <h1 className="banner_title">
                   Find, book, and secure your court in just a few clicks — fast,
                   simple, and reliable
-                </p>
+                </h1>
                 <Link to="/user-contact-us" target="_blank">
                   {" "}
                   <button className="book_court_btn">Contact Us</button>
