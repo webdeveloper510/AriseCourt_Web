@@ -710,7 +710,7 @@ const Reporting = () => {
                     scope="col"
                     style={{ whiteSpace: "nowrap" }}
                   >
-                    Request date
+                    Request Date
                   </CTableHeaderCell>
                   <CTableHeaderCell
                     scope="col"

@@ -12,6 +12,12 @@ import Footer from "../../../components/Footer/index.js";
 const HomePage = () => {
   const howToWorks = [
     {
+      title: "Search Courts",
+      description:
+        "Start by searching for the court you want to play on (e.g., Arise). The app will instantly show you available options so you can move ahead with booking.",
+      icon: "bi bi-search",
+    },
+    {
       title: "Register",
       description:
         "Create an account by providing your details. This will allow you to manage your bookings and track your court history.",
@@ -44,14 +50,10 @@ const HomePage = () => {
           <div className="row">
             <div className="col-md-6 d-flex align-items-center">
               <div>
-                <h1 className="banner_title">
-                  Booking a Badminton Court <br/> Easier Using The <br/> Arise Court
-                  Website{" "}
-                </h1>
+                <h1 className="banner_title">Ready to Play?</h1>
                 <p className="banner_desc">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna
-                  aliqua.{" "}
+                  Find, book, and secure your court in just a few clicks — fast,
+                  simple, and reliable
                 </p>
                 <Link to="/user-contact-us" target="_blank">
                   {" "}
@@ -70,7 +72,7 @@ const HomePage = () => {
           </div>
           <div
             className="row mt-5 px-0 ps-0 pe-0 app_store_section"
-            style={{borderRadius: "15px" }}
+            style={{ borderRadius: "15px" }}
           >
             <div className="col-md-6 text-center mx-0 px-0 ps-0 pe-0 order_section1">
               <img
@@ -81,26 +83,28 @@ const HomePage = () => {
             </div>
             <div className="col-md-6 d-flex align-items-center px-5 py-4 order_section2">
               <div className="app_sction">
-                <img src={LoginLogo} alt="BannerImage" className="mb-3 bannerimage2" />
+                <img
+                  src={LoginLogo}
+                  alt="BannerImage"
+                  className="mb-3 bannerimage2"
+                />
                 <h2 className="download_app">Download Our App</h2>
                 <p className="lorem_text mb-3">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna
-                  aliqua.{" "}
+                  Your game, just a tap away — download now and book instantly.
                 </p>
                 <div className="row px-0">
                   <div className="col-6 my-2">
                     <img
                       src={AppStore}
                       alt="BannerImage"
-                      style={{ width: "100%", objectFit:"cover" }}
+                      style={{ width: "100%", objectFit: "cover" }}
                     />
                   </div>
                   <div className="col-6 my-2">
                     <img
                       src={PlayStore}
                       alt="BannerImage"
-                      style={{ width: "100%" , objectFit:"cover"}}
+                      style={{ width: "100%", objectFit: "cover" }}
                     />
                   </div>
                 </div>

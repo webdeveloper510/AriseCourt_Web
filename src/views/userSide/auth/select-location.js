@@ -116,7 +116,7 @@ const SelectUserLocation = () => {
                 </div>
               </div>
               <span className="letter_validtaion">
-                Enter at least 3 characters
+                Enter at least 3 characters (e.g., Arise).
               </span>
             </CCol>
           </CRow>
